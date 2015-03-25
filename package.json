@@ -1,0 +1,42 @@
+{
+  "name": "makeup",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "antixrist",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.8.1",
+    "gulp-changed": "*",
+    "gulp-count": "*",
+    "gulp-callback": "*",
+    "gulp-tap": "*",
+    "gulp-filter": "*",
+    "gulp-plumber": "*",
+    "gulp-watch": "*",
+    "gulp-concat": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-csso": "*",
+    "gulp-uglify": "*",
+    "gulp-rename": "*",
+    "gulp-imagemin": "*",
+    "imagemin-pngquant": "*",
+    "gulp-ruby-sass": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-rigger": "*",
+    "gulp-autopolyfiller": "*",
+    "gulp-cached": "*",
+    "gulp-clean": "*",
+    "q": "*",
+    "opn": "*",
+    "rimraf": "*",
+    "request": "*",
+    "criticalcss": "*",
+    "mkpath": "*",
+    "run-sequence": "*",
+    "browser-sync": "*"
+  }
+}

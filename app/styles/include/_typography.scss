@@ -1,0 +1,563 @@
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
+html {
+  color: $base-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+::-moz-selection {
+  background: $selection-color;
+  text-shadow: none;
+}
+
+::selection {
+  background: $selection-color;
+  text-shadow: none;
+}
+
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+iframe,
+img,
+svg,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden],
+template {
+  display: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+dfn {
+  font-style: italic;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0 0 1em;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+figure {
+  margin: 0 1.5em 1em 1.5em;
+}
+
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0 0 1em;
+  padding: 0;
+}
+
+
+pre {
+  overflow: auto;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  line-height: normal;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+optgroup {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a, .link {
+  @include link();
+
+  &.no-border {
+    border: none !important;
+  }
+  &.pseudo {
+    @include link-pseudo();
+  }
+
+  .logo &, &.logo {
+    text-decoration: none !important;
+    border:none !important;
+  }
+}
+
+dd {
+  @include em(margin-left, 40px);
+}
+menu, ol, ul {
+  @include em(padding-left, 40px);
+}
+
+.unstyled-list {
+  @include no-bullets();
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  li {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+  }
+}
+
+b, strong, .strong {
+  font-weight: 600;
+}
+
+.v-center-wrap {
+  display: table;
+  width: 100%;
+}
+.v-center {
+  display: table-cell;
+  margin-top: inherit;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+.block {
+  display: block;
+}
+.block-center {
+  display: block;
+  margin-left   : auto;
+  margin-right  : auto;
+}
+
+@mixin input-style () {
+  &:focus {
+    //    border-color: #ffde00;
+  }
+  .error > &,
+  &.error {
+    border-color: $error-color;
+
+    &:focus {
+      border-color: $error-color;
+    }
+  }
+}
+
+input[type=text],
+input[type=email],
+input[type=number],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=url],
+input[type=color],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=month],
+input[type=time],
+input[type=week],
+textarea {
+  @include input-style();
+}
+
+.form-required {
+  position: relative;
+  display: inline-block;
+
+  &:after {
+    content:'*';
+    position:absolute;
+    right:0;
+    top: 0;
+  }
+  input, textarea {
+    display: block;
+    width: 100%;
+  }
+}
+
+* > *:first-child {
+  margin-top: 0;
+}
+* > *:last-child {
+  margin-bottom: 0;
+}
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  box-shadow: em(0 1px 3px, $btn-font-size-base) rgba(#000, .8);
+  @include button-size($btn-padding-base-vertical, $btn-padding-base-horizontal, $btn-font-size-base, $btn-line-height-base, $btn-border-radius-base);
+  @include user-select(none);
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus;
+    }
+  }
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    box-shadow: em(0 1px 1px, $btn-font-size-base) rgba(#000, .8);
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    opacity: .65;
+    box-shadow: none;
+  }
+}
+
+
+.btn-default {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+}
+.btn-primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+}
+.btn-block {
+  display: block;
+  width: 100%;
+}
+// Vertically space out multiple block buttons
+.btn-block + .btn-block {
+  margin-top: 5px;
+}
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+
+
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+/* ==========================================================================
+   Print styles
+   ========================================================================== */
+
+@media print {
+  *,
+  *:before,
+  *:after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}

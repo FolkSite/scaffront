@@ -1,0 +1,308 @@
+@mixin backgroundSize ($size){
+  @include background-size($size);
+  -ms-behavior: url('/js/vendor/backgroundsize.min.htc');
+}
+
+@mixin link ($color-link: #6da3bd, $color-active: #ff0000) {
+  @include link-colors($color-link, $color-link, $color-active, $color-link, $color-active);
+  @include transition(border-color .2s ease-out, color .2s ease-out, text-shadow .2s ease-out);
+
+  cursor: pointer;
+  text-decoration : none;
+  border-bottom : 1px solid;
+  border-color  : transparentize($color-link, .7);
+
+  &:hover {
+    border-color: $color-link;
+    &:focus {
+      text-shadow: 0 1px 0 transparent;
+      color: $color-active;
+    }
+  }
+  &:active {
+    text-shadow: 0 1px 0 transparent;
+    border-color: $color-active;
+    // &:hover {
+    //  border-color: $normal-color;
+    // }
+  }
+  &:focus {
+    text-shadow: 0 1px 0 transparent;
+    border-color: $color-active;
+  }
+
+  .no-rgba & {
+    border-color: lighten($color-link, 30%);
+
+    &:hover {
+      border-color: $color-link;
+      &:focus {
+        text-shadow: 0 1px 0 transparent;
+        color: $color-active;
+      }
+    }
+    &:active {
+      text-shadow: 0 1px 0 transparent;
+      border-color: $color-active;
+      // &:hover {
+      //  border-color: $normal-color;
+      // }
+    }
+    &:focus {
+      text-shadow: 0 1px 0 transparent;
+      border-color: $color-active;
+    }
+  }
+};
+
+@mixin link-pseudo () {
+  border-bottom-style: dashed;
+  border-width: 1px;
+  .no-rgba & {
+    border-bottom-style: dashed;
+  }
+}
+
+/* inline-block элементы */
+@mixin ib ($full-width: false, $child-selector: '*', $child-width: auto, $font-size: $base-font-size) {
+  list-style      : none;
+  letter-spacing  : -1px;
+  line-height     : 0;
+  font-size       : 0;
+  text-decoration : none;
+  padding         : 0;
+  margin          : 0;
+  @if $full-width == true {
+    @include em(font-size, $font-size);
+    // font-size    : $font-size;
+    text-align      : justify;
+    text-justify    : newspaper;
+    text-align-last : justify;
+    noindex         :-o-prefocus & {
+      font-size : 2px;
+    }
+    &:after {
+      width      : 100%;
+      height     : 0px;
+      visibility : hidden;
+      overflow   : hidden;
+      content    : '';
+      display    : inline-block;
+    }
+    .ie6 &, .ie7 & {
+      zoom: 1;
+    }
+  }
+  @if $child-selector != false {
+    & > #{unquote($child-selector)} {
+      @include rem(font-size, $font-size);
+      letter-spacing : normal;
+      line-height    : normal;
+      vertical-align : top;
+      display        : -moz-inline-stack;
+      display        : inline-block;
+
+      @if $full-width == true {
+        @include rem(width, $child-width);
+        // width   : $child-width;
+        text-align : left;
+      }
+      .ie6 &, .ie7 & {
+        zoom    : 1;
+        display : inline;
+      }
+    }
+  }
+}
+@mixin ib-child ($width: auto, $font-size: $base-font-size) {
+  @include rem(font-size, $font-size);
+  letter-spacing : normal;
+  line-height    : normal;
+  vertical-align : top;
+  display        : -moz-inline-stack;
+  display        : inline-block;
+
+  @if $width != auto {
+    @include rem(width, $width);
+    // width   : $child-width;
+    text-align : left;
+  }
+  .ie6 &, .ie7 & {
+    zoom    : 1;
+    display : inline;
+  }
+}
+
+@mixin image-dimentions ($image, $ratio: 1, $unit: rem, $font-size: $base-font-size) {
+  $width  : image-width($image) / $ratio;
+  $height : image-height($image)  / $ratio;
+  @if $unit == rem {
+    @include rem(width, $width);
+    @include rem(height, $height);
+  } @elseif $unit == em {
+    @include em(width, $width, $font-size);
+    @include em(height, $height, $font-size);
+  } @else {
+    width : $width;
+    height: $height;
+  }
+}
+
+$opacity-list-transition: opacity .2s ease-in !default;
+$opacity-list-opacity: .5 !default;
+@mixin opacity-list ($child-selector: '> *', $opacity: $opacity-list-opacity, $transition: $opacity-list-transition) {
+  $child-selector: unquote($child-selector);
+  & #{$child-selector} {
+    @include transition($transition);
+  }
+  &:hover #{unquote($child-selector)} {
+    opacity: $opacity;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@function get-dimentions-summ ($value, $dir: vertical, $font-size: $base-font-size, $unit: rem) {
+  // summ in pixels
+  $summ: 0;
+  $length: length($value);
+  @if type-of($value) == list {
+    $value: px($value);
+    @if $length == 2 {
+      @if $dir == vertical {
+        $summ: $summ + (nth($value, 1) * 2);
+      } @elseif $dir == horizontal {
+        $summ: $summ + (nth($value, 2) * 2);
+      }
+    } @elseif $length == 3 {
+      @if $dir == vertical {
+        $summ: $summ + nth($value, 1) + nth($value, 3);
+      } @elseif $dir == horizontal {
+        $summ: $summ + nth($value, 2);
+      }
+    } @elseif $length == 4 {
+      @if $dir == vertical {
+        $summ: $summ + nth($value, 1) + nth($value, 3);
+      } @elseif $dir == horizontal {
+        $summ: $summ + nth($value, 2) + nth($value, 4);
+      }
+    }
+
+  } @elseif type-of($value) == number {
+  // and $dir == horizontal 
+    // $summ: $summ + px($value, $font-size);
+    $summ: px($value, $font-size) * 2;
+  }
+  // convert to needed $unit
+  @return to-unit($summ, $unit);
+}
+
+//@function calc-input-height ($input-font-size: 1em, $input-padding: .1em, $input-border-width: 1px, $unit: rem, $base-size: $base-font-size) {
+//  $input-font-size: to-unit($input-font-size, $base-size, $unit);
+//  $input-padding:
+//  $input-border-width
+//  $height: 0;
+//  $height: $height + to-unit($input-font-size, $unit);
+//  $height: $height + get-dimentions-summ($input-border-width, vertical, $input-font-size, $unit);
+//  $height: $height + get-dimentions-summ($input-padding, vertical, $input-font-size, $unit);
+//  $height: to-unit($height, $unit);
+//  @return $height;
+//}
+
+@mixin e($names...) {
+  @if length($names) {
+    @for $i from 1 through length($names) {
+      @at-root &__#{nth($names, $i)} {
+        @content;
+      }
+    }
+  }
+
+  // @at-root #{&}__#{$name} {
+  //   @content;
+  // }
+}
+@mixin m($names...) {
+  @if length($names) {
+    @for $i from 1 through length($names) {
+      @at-root &--#{nth($names, $i)} {
+        @content;
+      }
+    }
+  }
+
+  // @at-root #{&}--#{$name} {
+  //   @content;
+  // }
+}
+
+@mixin button-variant($color, $background, $border) {
+  color: $color;
+  $bg-top-color: lighten($background, 10%);
+  $bg-bottom-color: darken($background, 10%);
+  background: linear-gradient(to bottom, $bg-top-color, $bg-bottom-color);
+  border: none;
+  //  border-color: $border;
+  &:hover,
+  &:visited,
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    color: $color;
+    background: linear-gradient(to bottom, lighten($bg-top-color, 10%), $bg-bottom-color);
+    //    border-color: darken($border, 12%);
+    border: none;
+  }
+  &:active,
+  &.active {
+    background: linear-gradient(to bottom, $bg-bottom-color, $bg-top-color);
+    border: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background: linear-gradient(to bottom, $bg-bottom-color, $bg-top-color);
+      border: none;
+    }
+  }
+  &,
+  &:active,
+  &.active,
+  &:hover,
+  &.hover {
+    &:focus,
+    &.focus {
+      color: $color;
+    }
+  }
+
+}
+// Button sizes
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
+  padding: em($padding-vertical $padding-horizontal, $font-size);
+  font-size: rem($font-size);
+  line-height: em($line-height, $font-size);
+  border-radius: em($border-radius, $font-size);
+  &.active,
+  &:active {
+    $paddingTop: px($padding-vertical, $font-size)+1px;
+    $paddingBottom: px($padding-vertical, $font-size)-1px;
+    padding: em($paddingTop $padding-horizontal $paddingBottom, $font-size);
+    //    padding: em((to-unit($padding-vertical, $font-size, px) + 1) $padding-horizontal (to-unit($padding-vertical, $font-size, px) - 1));
+  }
+}
+@mixin tab-focus() {
+  // Default
+  outline: thin dotted;
+  // WebKit
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}

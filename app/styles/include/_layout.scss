@@ -1,0 +1,119 @@
+* {
+  @include box-sizing('border-box');
+}
+
+@if $layout-sticky-footer-height != 0 {
+  html, body {
+    height: 100%;
+  }
+
+  .layout {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+  }
+
+  .content {
+    padding-bottom: rem($layout-sticky-footer-height);
+  }
+
+  .footer {
+    margin-top: rem(-$layout-sticky-footer-height);
+    height: rem($layout-sticky-footer-height);
+    position: relative;
+  }
+}
+
+.wrapper {
+
+}
+@if $layout-min-width or $layout-max-width {
+  .wrapper {
+    @extend .block-center;
+    @if $layout-max-width {
+      max-width: $layout-max-width
+    }
+    @if $layout-min-width {
+      min-width: $layout-min-width
+    }
+
+    @if $layout-side-space {
+      #{$layout-side-space-style}: $layout-side-space;
+    }
+  }
+}
+
+.layout {
+  margin: 0;
+  width: 100%;
+
+//  background: inline-image('bg.jpg') repeat-x 0 0 #e8edf7;
+  background: inline-image('bg.png') repeat-x 0 0 #e8edf7;
+}
+
+.header {
+  height: 150px;
+}
+
+.content {
+}
+
+.footer {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@include sgs-change('debug', true);
+
+.grid {
+  @extend .clearfix;
+  outline: 1px solid black;
+
+  @include add-grid(4 2 4 2);
+  @include add-gutter(5em);
+  @include add-gutter-style('split' 'fixed');
+//  @include add-gutter-style('opposite');
+  @include sgs-change('output', 'isolation');
+
+  @include background-grid($color: #eee);
+
+  @include e(item) {
+    outline: 1px solid red;
+    //    @include grid-span(1, 1);
+
+    @include m(one) {
+      @include grid-span(1, 1);
+    }
+    @include m(two) {
+      @include grid-span(1, 2);
+    }
+    @include m(three) {
+      @include grid-span(1, 3);
+    }
+    @include m(four) {
+      @include grid-span(1, 4);
+    }
+
+  }
+}
+

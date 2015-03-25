@@ -1,0 +1,34 @@
+$base-font-size: 14px;
+$base-line-height: 1.4;
+
+$base-color: #000;
+$base-color-variant: #191746;
+$mark-color: #cb0e13;
+$error-color: #cb0e13;
+$contrast-color: #fff;
+$widget-color: #0860ac;
+$selection-color: #b3d4fc;
+
+$layout-min-width: 1000px;
+$layout-max-width: 1250px;
+$layout-side-space: 20px;
+$layout-side-space-style: "padding"; // or "margin"
+$layout-sticky-footer-height: 150px;
+
+$base-font-family: Tahoma, "Geneva CY", sans-serif;
+
+@include sgs-change('debug', false);
+
+$btn-padding-base-vertical: 10px;
+$btn-padding-base-horizontal: 65px;
+$btn-font-size-base: 25px;
+$btn-line-height-base: 1em;
+$btn-border-radius-base: 4px;
+
+$btn-default-color: #fff;
+$btn-default-bg: #237bb5;
+$btn-default-border: none;
+$btn-primary-color: #fff;
+$btn-primary-bg: #af0a0b;
+$btn-primary-border: none;
+
