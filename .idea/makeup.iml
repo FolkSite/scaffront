@@ -6,13 +6,11 @@
     <option name="compassSupportEnabled" value="true" />
     <option name="importPaths">
       <list>
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/compass-core-1.0.0.alpha.20/stylesheets" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/compass-blend-modes-0.0.2/lib/compass/../../stylesheets" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/compass-recipes-0.3.0/lib/../stylesheets" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/compass-normalize-1.5/lib/../stylesheets" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/sassy-maps-0.4.0/sass" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/breakpoint-2.4.2/lib/../stylesheets" />
-        <option value="C:/Ruby200/lib/ruby/gems/2.0.0/gems/singularitygs-1.2.1/lib/../stylesheets" />
+        <option value="C:/Ruby21/lib/ruby/gems/2.1.0/gems/sassy-maps-0.4.0/sass" />
+        <option value="C:/Ruby21/lib/ruby/gems/2.1.0/gems/breakpoint-2.5.0/stylesheets" />
+        <option value="C:/Ruby21/lib/ruby/gems/2.1.0/gems/toolkit-2.7.0/stylesheets" />
+        <option value="C:/Ruby21/lib/ruby/gems/2.1.0/gems/compass-core-1.0.3/stylesheets" />
+        <option value="C:/Ruby21/lib/ruby/gems/2.1.0/gems/singularitygs-1.5.1/stylesheets" />
       </list>
     </option>
   </component>

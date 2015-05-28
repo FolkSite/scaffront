@@ -37,6 +37,7 @@ var paths = {
   dist: {
     html: 'dist/',
     js: 'dist/js/',
+    jsPlugins: 'dist/js/plugins/',
     jsVendors: 'dist/js/vendor/',
     jsPolyfillsFilename: 'polyfills.js',
     css: 'dist/css/',
@@ -51,6 +52,7 @@ var paths = {
     html: 'app/html/*.html',
     root: 'app/root/**/*.*',
     js: 'app/js/*.js',
+    jsPlugins: 'app/js/plugins/*.js',
     jsVendors: 'app/js/vendor/*.js',
     //css: 'app/css/*.(scss|sass)',
     css: 'app/styles/',
@@ -113,6 +115,11 @@ gulp.task('js:app', function () {
     //.pipe(count('## css handled'))
     .pipe(gulp.dest(paths.dist.js));
 });
+gulp.task('js:plugins', function () {
+  return gulp.src(paths.src.jsPlugins)
+      .pipe(plumber({errorHandler: handleError}))
+      .pipe(gulp.dest(paths.dist.jsPlugins));
+});
 gulp.task('js:vendors', function() {
   return gulp.src(paths.src.jsVendors)
     .pipe(plumber({errorHandler: handleError}))
@@ -126,8 +133,8 @@ gulp.task('js:polyfills', function() {
     }))
     .pipe(gulp.dest(paths.dist.js));
 });
-gulp.task('js:build', ['js:app', 'js:vendors']);
-gulp.task('js:min', /*['js:build'], */function () {
+gulp.task('js:build', ['js:app', 'js:plugins', 'js:vendors']);
+gulp.task('js:min:app', /*['js:build'], */function () {
   var notMinFilter = filter(['*.js', '!*.min.js']);
   return gulp.src(paths.dist.js +'**/*.js')
     .pipe(plumber({errorHandler: handleError}))
@@ -143,9 +150,30 @@ gulp.task('js:min', /*['js:build'], */function () {
     }))
     .pipe(gulp.dest(paths.dist.js));
 });
+gulp.task('js:min:plugins', /*['js:build'], */function () {
+  var notMinFilter = filter(['*.js', '!*.min.js']);
+  return gulp.src(paths.dist.jsPlugins +'**/*.js')
+    .pipe(plumber({errorHandler: handleError}))
+    .pipe(notMinFilter)
+    //.pipe(tap(function (file,t) {
+    //  console.log(path.basename(file.path));
+    //}))
+    .pipe(uglify())
+    .pipe(rename(function (path) {
+      if (!path.basename.match(/\.min$/)) {
+        path.basename += '.min';
+      }
+    }))
+    .pipe(gulp.dest(paths.dist.jsPlugins));
+});
+gulp.task('js:min', function() {
+  runSequence(
+    ['js:min:app', 'js:min:plugins']
+  );
+});
 gulp.task('js:dist', function() {
   runSequence(
-    ['js:app', 'js:vendors'],
+    ['js:app', 'js:plugins', 'js:vendors'],
     'js:polyfills',
     'js:min'
   );
