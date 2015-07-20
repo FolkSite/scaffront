@@ -237,68 +237,6 @@ $opacity-list-opacity: .5 !default;
   // }
 }
 
-@mixin button-variant($color, $background, $border) {
-  color: $color;
-  $bg-top-color: lighten($background, 10%);
-  $bg-bottom-color: darken($background, 10%);
-  background: linear-gradient(to bottom, $bg-top-color, $bg-bottom-color);
-  border: none;
-  //  border-color: $border;
-  &:hover,
-  &:visited,
-  &:focus,
-  &.focus,
-  &:active,
-  &.active {
-    color: $color;
-    background: linear-gradient(to bottom, lighten($bg-top-color, 10%), $bg-bottom-color);
-    //    border-color: darken($border, 12%);
-    border: none;
-  }
-  &:active,
-  &.active {
-    background: linear-gradient(to bottom, $bg-bottom-color, $bg-top-color);
-    border: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:focus,
-    &.focus,
-    &:active,
-    &.active {
-      background: linear-gradient(to bottom, $bg-bottom-color, $bg-top-color);
-      border: none;
-    }
-  }
-  &,
-  &:active,
-  &.active,
-  &:hover,
-  &.hover {
-    &:focus,
-    &.focus {
-      color: $color;
-    }
-  }
-
-}
-// Button sizes
-@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
-  padding: em($padding-vertical $padding-horizontal, $font-size);
-  font-size: rem($font-size);
-  line-height: em($line-height, $font-size);
-  border-radius: em($border-radius, $font-size);
-  &.active,
-  &:active {
-    $paddingTop: px($padding-vertical, $font-size)+1px;
-    $paddingBottom: px($padding-vertical, $font-size)-1px;
-    padding: em($paddingTop $padding-horizontal $paddingBottom, $font-size);
-    //    padding: em((to-unit($padding-vertical, $font-size, px) + 1) $padding-horizontal (to-unit($padding-vertical, $font-size, px) - 1));
-  }
-}
 @mixin tab-focus() {
   // Default
   outline: thin dotted;
@@ -306,3 +244,79 @@ $opacity-list-opacity: .5 !default;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
+
+@mixin auto-asides ($gutter: 0, $gutter-style: 'margin') {
+  @extend .clearfix;
+
+  @include e (aside) {
+
+    @include m (left) {
+      float: left;
+      #{$gutter-style}-right: $gutter;
+    }
+    @include m (right) {
+      float: right;
+      #{$gutter-style}-left: $gutter;
+    }
+  }
+  @include e (content) {
+    overflow: hidden;
+  }
+}
+
+.auto-asides {
+  @include auto-asides();
+}
+
+
+@mixin grid-columns ($count: 0, $gutter: 0, $selector: '> *') {
+  @if ($count != 0) {
+    @for $index from 1 through $count {
+      @if $index == 1 {
+        #{$selector}:nth-child(#{$count}n+#{$index}) {
+          @include isolation-span(1, $index, left);
+          padding-left: $gutter;
+//          margin-bottom: $gutter;
+        }
+      }
+      @else if $index < $count {
+        #{$selector}:nth-child(#{$count}n+#{$index}) {
+          @include isolation-span(1, $index, none);
+          padding-left: $gutter;
+//          margin-bottom: $gutter;
+        }
+      }
+      @else {
+        #{$selector}:nth-child(#{$count}n+#{$index}) {
+          @include isolation-span(1, $index, right);
+          padding-left: $gutter;
+//          margin-bottom: $gutter;
+        }
+      }
+    }
+  }
+}
+
+@mixin grid ($count: 0, $gutter: 0, $children-selectors: '> *', $layout: $count) {
+  @include clearfix;
+
+  @if ($count != 0) {
+    @include add-grid($layout);
+    @include add-gutter(0);
+
+    margin-left: -$gutter;
+//    @include add-gutter-style('split' 'fixed');
+
+    @if $children-selectors != '' {
+      @include grid-columns($count, $gutter, $children-selectors);
+
+//      #{$children-selectors} {
+//        margin-bottom: $gutter;
+//      }
+    }
+  }
+
+  @content;
+}
+
+

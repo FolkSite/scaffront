@@ -102,6 +102,7 @@ gulp.task('copyroot', function () {
 
 gulp.task('fonts:build', function () {
   gulp.src(paths.src.fonts)
+    .pipe(plumber({errorHandler: handleError}))
     .pipe(gulp.dest(paths.dist.fonts));
 });
 gulp.task('fonts:dist', ['fonts:build']);
@@ -488,12 +489,15 @@ gulp.task('html:dist', ['html:build']);
 gulp.task('build', function() {
   runSequence(
     ['removeDist', 'clearCache'],
-    ['copyroot', 'fonts:build', 'js:build', 'styles:build', 'images:build'],
-    'html:build'
+    ['copyroot', 'fonts:build', 'js:build', 'images:build'],
+    'styles:build', 'html:build'
   );
 });
 gulp.task('dist', ['removeDist'], function() {
-  return gulp.start('copyroot', 'html:dist', 'js:dist', 'styles:dist', 'images:dist', 'fonts:dist');
+  runSequence(
+    ['copyroot', 'html:dist', 'js:dist', 'images:dist', 'fonts:dist'],
+    'styles:dist'
+  );
 });
 
 gulp.task('server', function() {
@@ -519,8 +523,8 @@ gulp.task('default', function() {
   runSequence(
     // build task
     ['removeDist'],
-    ['copyroot', 'fonts:build', 'js:build', 'styles:build', 'images:build'],
-    'html:build',
+    ['copyroot', 'fonts:build', 'js:build', 'images:build', 'html:build'],
+    'styles:build',
     // server & watch
     ['server', 'watch']
   );

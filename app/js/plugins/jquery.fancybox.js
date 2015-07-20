@@ -1201,6 +1201,7 @@
 				iframe,
 				body;
 
+
 			// Reset dimensions so we could re-check actual size
 			wrap.add(skin).add(inner).width('auto').height('auto').removeClass('fancybox-tmp');
 

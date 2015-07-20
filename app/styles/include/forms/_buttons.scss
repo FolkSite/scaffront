@@ -1,0 +1,175 @@
+
+@mixin button-variant($color, $bg-normal-top, $bg-normal-bottom, $bg-hover-top, $bg-hover-bottom, $border-normal, $border-hover) {
+  color: $color !important;
+  background: linear-gradient($bg-normal-top, $bg-normal-bottom);
+  border-color: $border-normal;
+
+  &:focus,
+  &.focus,
+  &:hover {
+    color: $color !important;
+    background: linear-gradient($bg-hover-top, $bg-hover-bottom);
+    border-color: $border-hover;
+  }
+  &:active,
+  &.active {
+    color: $color !important;
+    background: linear-gradient($bg-hover-bottom, $bg-hover-top);
+    border-color: $border-hover;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background-color: $bg-normal-top;
+      border-color: $border-normal;
+    }
+  }
+}
+
+// Button sizes
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
+  padding: $padding-vertical $padding-horizontal $padding-vertical;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-radius: $border-radius;
+
+  &:active,
+  &.active {
+    padding-top: $padding-vertical + 1;
+    padding-bottom: $padding-vertical - 1;
+  }
+
+}
+
+
+.button {
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  @include button-size(7px, 30px, $base-font-size, 1, 4px);
+  @include user-select(none);
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $base-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+//    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: default;
+    @include opacity(.65);
+    @include box-shadow(none);
+  }
+
+  > * {
+    vertical-align: middle;
+  }
+
+  @include button-variant($base-color, #ffdd49, #ffd137, #ffca08, #ffb806, #f2cdb2, #f2cdb2);
+}
+
+.button--flat {
+  $transparent: rgba(0, 0, 0, 0);
+  @include button-variant($base-color, $transparent, $transparent, $transparent, $transparent, #c4c4c4, #ffbf07);
+  font-weight: normal;
+}
+.button--contrast {
+  @include button-variant($base-color, #ffdd49, #ffd137, #ffca08, #ffb806, #794e2b, #794e2b);
+}
+
+a.button {
+  text-decoration: none;
+  &.disabled,
+  fieldset[disabled] & {
+    pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+  }
+}
+
+.button--big {
+  @include button-size(12px, 30px, $base-font-size, 1, 4px);
+}
+
+.button--block {
+  display: block;
+  width: 100%;
+  white-space: normal;
+}
+
+.button__inner {
+  display: inline-block;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: baseline;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.button--block {
+    width: 100%;
+  }
+}
+
+.button {
+  input[type=file] {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+
+.arrow-button-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+
+
+

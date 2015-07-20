@@ -2,33 +2,16 @@
   @include box-sizing('border-box');
 }
 
-@if $layout-sticky-footer-height != 0 {
-  html, body {
-    height: 100%;
-  }
-
-  .layout {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-  }
-
-  .content {
-    padding-bottom: rem($layout-sticky-footer-height);
-  }
-
-  .footer {
-    margin-top: rem(-$layout-sticky-footer-height);
-    height: rem($layout-sticky-footer-height);
-    position: relative;
-  }
+html, body {
+  height: 100%;
 }
 
-.wrapper {
+.layout-block {
+  outline: none !important;
 
 }
 @if $layout-min-width or $layout-max-width {
-  .wrapper {
+  .width-limiter {
     @extend .block-center;
     @if $layout-max-width {
       max-width: $layout-max-width
@@ -38,7 +21,8 @@
     }
 
     @if $layout-side-space {
-      #{$layout-side-space-style}: $layout-side-space;
+      #{$layout-side-space-style}-left: $layout-side-space;
+      #{$layout-side-space-style}-right: $layout-side-space;
     }
   }
 }
@@ -46,74 +30,47 @@
 .layout {
   margin: 0;
   width: 100%;
-
-//  background: inline-image('bg.jpg') repeat-x 0 0 #e8edf7;
-  background: inline-image('bg.png') repeat-x 0 0 #e8edf7;
-}
-
-.header {
-  height: 150px;
-}
-
-.content {
-}
-
-.footer {
-
 }
 
 
+.preview {
+  position: relative;
+  display: inline-block;
+  border: none;
+  text-decoration: none;
+  max-width: 100%;
 
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
 
+//    background: inline-image('loupe.png') no-repeat center center transparent;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@include sgs-change('debug', true);
-
-.grid {
-  @extend .clearfix;
-  outline: 1px solid black;
-
-  @include add-grid(4 2 4 2);
-  @include add-gutter(5em);
-  @include add-gutter-style('split' 'fixed');
-//  @include add-gutter-style('opposite');
-  @include sgs-change('output', 'isolation');
-
-  @include background-grid($color: #eee);
-
-  @include e(item) {
-    outline: 1px solid red;
-    //    @include grid-span(1, 1);
-
-    @include m(one) {
-      @include grid-span(1, 1);
-    }
-    @include m(two) {
-      @include grid-span(1, 2);
-    }
-    @include m(three) {
-      @include grid-span(1, 3);
-    }
-    @include m(four) {
-      @include grid-span(1, 4);
-    }
-
+    opacity: 0.8;
+  }
+  &:hover:after {
+    opacity: 1;
+  }
+  &:active:after {
+    opacity: .7;
   }
 }
+
+.inline-blocks {
+  @include ib();
+}
+
+@import 'blocks/_slider';
+@import 'blocks/_modals';
+
 

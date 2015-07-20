@@ -1,21 +1,23 @@
 $base-font-size: 14px;
 $base-line-height: 1.4;
 
-$base-color: #000;
-$base-color-variant: #191746;
+$base-color: #3b3b3b;
+$base-color-contrast: #fff;
+$selection-color: #b3d4fc;
+
+
+
 $mark-color: #cb0e13;
 $error-color: #cb0e13;
 $contrast-color: #fff;
 $widget-color: #0860ac;
-$selection-color: #b3d4fc;
 
-$layout-min-width: 1000px;
-$layout-max-width: 1250px;
-$layout-side-space: 20px;
+
+$layout-side-space: 85px;
+$layout-min-width: 960px + $layout-side-space*2;
+$layout-max-width: $layout-min-width;
 $layout-side-space-style: "padding"; // or "margin"
-$layout-sticky-footer-height: 150px;
-
-$base-font-family: Tahoma, "Geneva CY", sans-serif;
+$layout-sticky-footer-height: 0;
 
 @include sgs-change('debug', false);
 

@@ -31,7 +31,7 @@
           fieldMessageAttr: 'data-message'
         },
         loading: {
-          timer: 1000,
+          timer: 300,
           disableInputs: true
         },
         defaultErrorMessage: 'Извините, но произошла какая-то ошибка :-(<br>Проверьте, пожалуйста, - подключен ли у вас интернет.'
@@ -85,10 +85,9 @@
         selector = '[name="'+ name +'"]';
         value = value && value.toString() || '';
         selector += (value) ? '[value="'+ value +'"]' : '';
-        //return false;
         $inputs = $(selector, self.$element);
-        //console.log(selector, $inputs);
       }
+
       return $inputs;
     },
     setFieldFocus: function (name, value) {
@@ -145,7 +144,7 @@
             $messageBlocks = $wrapper.find(self.options.selectors.fieldMessage);
           }
         } else {
-          $messageBlocks = $(inputMessageSelector);
+          $messageBlocks = self.$element.find(inputMessageSelector);
         }
 
         $messageBlocks.each(function () {
@@ -201,64 +200,53 @@
       var self = this, key;
 
       if (!self.response) {return;}
-      var fieldErrors = (typeof self.response.errors != 'undefined') ? self.response.errors : {};
       var firstErrorField = {
         name : '',
         value: ''
       };
 
-      if (self.timerResponseOver && self.timerMinTimeOver) {
-        self.timerResponseOver = false;
-        self.timerMinTimeOver = false;
+      if (!self.timerResponseOver || !self.timerMinTimeOver) { return; }
 
-        if (!self.invokeEvent('beforePrepareResult')) {return;}
+      self.timerResponseOver = false;
+      self.timerMinTimeOver = false;
 
-        if ($.isPlainObject(self.response.object)) {
-          for (key in self.response.object) {
-            if (self.response.object.hasOwnProperty(key)) {
-              var fieldValue = self.response.object[key];
-              var fieldSuccess, fieldMessage;
-
-              if (typeof fieldErrors[key] != 'undefined') {
-                fieldSuccess = false;
-                fieldMessage = fieldErrors[key];
-
-                if (!firstErrorField.name) {
-                  firstErrorField.name = key;
-                  firstErrorField.value = fieldValue;
-                }
-              } else {
-                fieldSuccess = true;
-                fieldMessage = '';
-              }
-              self.setFieldStatus(fieldMessage, fieldSuccess, key, fieldValue);
+      if (!self.invokeEvent('beforePrepareResult')) {return;}
+      if ($.isPlainObject(self.response.data)) {
+        for (key in self.response.data) {
+          if (self.response.data.hasOwnProperty(key)) {
+            var fieldMessage = self.response.data[key];
+            var fieldSuccess = false;
+            if (!firstErrorField.name) {
+              firstErrorField.name = key;
             }
+            self.setFieldStatus(fieldMessage, fieldSuccess, key);
           }
         }
-
-        var success = (typeof self.response.success != 'undefined') ? !!self.response.success : false;
-        if (success) {
-          self.resetForm();
-        } else {
-          self.resetLoadingForm();
-        }
-        self.setFormResultStatus(success, self.response.message || '');
-        if (!success && firstErrorField.name) {
-          self.setFieldFocus(firstErrorField.name, firstErrorField.value);
-        }
-
-        var eventName = 'success';
-        if (!!success) {
-          if (typeof self.response.ajaxError != 'undefined' && self.response.ajaxError) {
-            eventName = 'ajaxError';
-          } else {
-            eventName = 'error';
-          }
-        }
-        self.invokeEvent(eventName);
-        //self.invokeEvent('afterPrepareResult');
-        self.response = null;
       }
+
+      var success = (typeof self.response.success != 'undefined') ? !!self.response.success : false;
+      if (success) {
+        self.resetForm();
+      } else {
+        self.resetLoadingForm();
+      }
+      self.setFormResultStatus(success, self.response.message || '');
+      if (!success && firstErrorField.name) {
+        self.setFieldFocus(firstErrorField.name);
+      }
+
+      var eventName = 'success';
+      if (!success) {
+        if (typeof self.response.ajaxError != 'undefined' && self.response.ajaxError) {
+          eventName = 'ajaxError';
+        } else {
+          eventName = 'error';
+        }
+      }
+
+      self.invokeEvent(eventName);
+      //self.invokeEvent('afterPrepareResult');
+      self.response = null;
     },
     resetForm: function () {
       var self = this;
@@ -310,7 +298,7 @@
             message: self.options.defaultErrorMessage,
             ajaxError: true
           };
-          self.invokeEvent('ajaxError');
+          //self.invokeEvent('ajaxError');
           self.prepareResult();
         },
         url: (typeof afConfig !== 'undefined') ? afConfig.actionUrl : (self.$element.attr('action') || ''),

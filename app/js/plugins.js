@@ -19,3 +19,22 @@
     }
   }
 }());
+
+//= plugins/jquery.slicer.js
+//= plugins/jquery.fancybox.js
+//= plugins/jquery.bootstrap.modal.js
+//= plugins/jquery.actual.js
+//= plugins/jquery.ba-throttle-debounce.js
+
+//= plugins/jquery.easing.1.3.js
+//= plugins/ytiframe.js
+//= plugins/jquery.fitvids.js
+//= plugins/jquery.bootstrap.tabs.js
+//= plugins/jquery.stickyNavbar.js
+//= plugins/unslider.custom.js
+//= plugins/slick.js
+//= plugins/jquery.form.js
+//= plugins/jquery.ajax.form.loader.js
+//= plugins/url.js
+//= plugins/waiter.js
+//= plugins/targets.metrika.js

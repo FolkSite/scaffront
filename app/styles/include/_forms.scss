@@ -1,0 +1,125 @@
+.form {
+  font-size: 14px;
+
+  .form-title {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+  @include e(title) {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  @include m(modal) {
+    background: #fff;
+    max-width: 400px;
+    padding: 40px 50px;
+
+    > * {
+      margin: 0 0 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+
+@mixin form-states ($error-color: #ff0000) {
+  @include e(message) {
+    display: block;
+    text-align: center;
+
+    &:empty {
+      display: none;
+    }
+
+    &.error,
+    .error & {
+      color: $error-color;
+    }
+
+    .success &,
+    &.success {
+      color: #3a9814;
+      font-weight: bold;
+    }
+  }
+
+  @include e(group) {
+
+    &.error,
+    .error & {
+
+    }
+  }
+  @include e(group-message) {
+    display: block;
+
+    &:empty {
+      display: none;
+    }
+    &.error,
+    .error & {
+      //      color: $error-color;
+    }
+  }
+
+  position:relative;
+  z-index:1;
+
+  &:after {
+    content:'';
+    top:0;
+    right: 0;
+    bottom:0;
+    left:0;
+    position:absolute;
+    z-index:5;
+    background: rgba(#fff, .65);
+  }
+  &:before {
+    $loader: 'loader.gif';
+    content:'';
+    top:50%;
+    left:50%;
+    position:absolute;
+    z-index:10;
+    background: inline-image($loader) no-repeat center center transparent;
+    background-size: 100% 100%;
+    @include image-dimentions($loader);
+    @include rem(margin-top, -#{image-height($loader)/2});
+    @include rem(margin-left, -#{image-width($loader)/2});
+
+    @include breakpoint(min-resolution 1.5dppx) {
+      $loaderBig: 'loader@x2.gif';
+      @include hidpi-image($loaderBig);
+      background-image: inline-image($loaderBig);
+    }
+  }
+  &:before, &:after {
+    display:none;
+  }
+  &.loading:before,
+  &.loading:after {
+    display:block;
+  }
+  .lt-ie9 &:before {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#65FFFFFF,endColorstr=#65FFFFFF);
+    zoom: 1;
+  }
+
+  .fake {
+    display: none !important;
+  }
+}
+
+.form {
+  @include form-states(#c80606);
+}
+
+
+
+@import 'forms/_buttons';
+@import 'forms/_inputs';

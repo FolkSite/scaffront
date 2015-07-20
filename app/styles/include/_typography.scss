@@ -4,24 +4,23 @@ html {
   color: $base-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
-  font-family: $base-font-family;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+//  -ms-text-size-adjust: 100%;
+//  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
 }
 
-::-moz-selection {
-  background: $selection-color;
-  text-shadow: none;
-}
-
-::selection {
-  background: $selection-color;
-  text-shadow: none;
-}
+//::-moz-selection {
+//  background: $selection-color;
+//  text-shadow: none;
+//}
+//
+//::selection {
+//  background: $selection-color;
+//  text-shadow: none;
+//}
 
 
 article,
@@ -377,73 +376,16 @@ textarea {
   margin-bottom: 0;
 }
 
-.btn {
-  display: inline-block;
-  margin-bottom: 0; // For input.btn
+
+.text-left {
+  text-align: left;
+}
+.text-center {
   text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  border: 1px solid transparent;
-  white-space: nowrap;
-  box-shadow: em(0 1px 3px, $btn-font-size-base) rgba(#000, .8);
-  @include button-size($btn-padding-base-vertical, $btn-padding-base-horizontal, $btn-font-size-base, $btn-line-height-base, $btn-border-radius-base);
-  @include user-select(none);
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      @include tab-focus;
-    }
-  }
-  &:hover,
-  &:focus,
-  &.focus {
-    color: $btn-default-color;
-    text-decoration: none;
-  }
-  &:active,
-  &.active {
-    outline: 0;
-    background-image: none;
-    box-shadow: em(0 1px 1px, $btn-font-size-base) rgba(#000, .8);
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    cursor: not-allowed;
-    pointer-events: none; // Future-proof disabling of clicks
-    opacity: .65;
-    box-shadow: none;
-  }
 }
-
-
-.btn-default {
-  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+.text-right {
+  text-align: right;
 }
-.btn-primary {
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
-}
-.btn-block {
-  display: block;
-  width: 100%;
-}
-// Vertically space out multiple block buttons
-.btn-block + .btn-block {
-  margin-top: 5px;
-}
-// Specificity overrides
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-  &.btn-block {
-    width: 100%;
-  }
-}
-
 
 
 .browserupgrade {
@@ -453,6 +395,19 @@ input[type="button"] {
   padding: 0.2em 0;
 }
 
+.ir {
+  background-color: transparent;
+  border: 0;
+  overflow: hidden;
+  *text-indent: -9999px;
+}
+
+.ir:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 100%;
+}
 
 .hidden {
   display: none !important;

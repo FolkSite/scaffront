@@ -1,14 +1,25 @@
 {
-  "name": "makeup",
+  "name": "gulp-boilerplate",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antixrist/gulp-boilerplate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antixrist/gulp-boilerplate/issues"
+  },
+  "homepage": "https://github.com/antixrist/gulp-boilerplate#readme",
   "author": "antixrist",
-  "license": "ISC",
-  "devDependencies": {
+  "license": "WTFPL",
+  "keywords": [
+    "gulp"
+  ],
+  "dependencies": {
     "gulp": "^3.8.1",
     "gulp-changed": "*",
     "gulp-count": "*",

@@ -1,0 +1,40 @@
+.input {
+  display: inline-block;
+  min-width: 200px;
+//  height: 40px;
+  padding: 9px 15px;
+  font-size: $base-font-size;
+  line-height: 1;
+  color: $base-color;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  vertical-align: middle;
+
+  &.focus,
+  &:focus {
+    border-color: #ffbf07;
+  }
+
+  &[disabled],
+  &[readonly],
+  fieldset[disabled] & {
+    background-color: #eee;
+    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: default;
+  }
+
+
+}
+
+.input--block {
+  display: block;
+  width: 100%;
+  min-width: auto;
+  max-width: auto;
+}
