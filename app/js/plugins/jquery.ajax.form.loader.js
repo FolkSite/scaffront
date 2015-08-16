@@ -40,9 +40,9 @@
   function Plugin ( element, options ) {
     this.element = element;
     this.$element = $(element);
-    this.options = $.extend(true, {}, defaults, options);
+    this.config = $.extend(true, {}, defaults, options);
     this._defaults = defaults;
-    this._name = pluginName;
+    this.name = pluginName;
     this.init();
   }
 
@@ -62,14 +62,14 @@
       message = message.toString() || '';
       var className = '';
       if (success !== null) {
-        className = (!!success) ? self.options.classes.message.success : self.options.classes.message.error;
+        className = (!!success) ? self.config.classes.message.success : self.config.classes.message.error;
       }
 
-      var $messageBlocks = $(self.options.selectors.formMessage, self.element);
+      var $messageBlocks = $(self.config.selectors.formMessage, self.element);
       $messageBlocks.each(function () {
         var $messageBlock = $(this);
         $messageBlock.html(message);
-        $messageBlock.removeClass(self.options.classes.message.error +' '+ self.options.classes.message.success).addClass(className);
+        $messageBlock.removeClass(self.config.classes.message.error +' '+ self.config.classes.message.success).addClass(className);
       });
     },
     clearFormMessage: function () {
@@ -101,10 +101,10 @@
       message = message.toString() || '';
       var className = '';
       if (success !== null) {
-        className = (!!success) ? self.options.classes.form.success : self.options.classes.form.error;
+        className = (!!success) ? self.config.classes.form.success : self.config.classes.form.error;
       }
 
-      self.$element.removeClass(self.options.classes.form.success +' '+ self.options.classes.form.error).addClass(className);
+      self.$element.removeClass(self.config.classes.form.success +' '+ self.config.classes.form.error).addClass(className);
 
       if (message) {
         self.setFormMessage(message, success);
@@ -123,25 +123,25 @@
           wrapperClassName = '',
           messageClassName = '';
       if (success !== null) {
-        inputClassName =    (!!success) ? self.options.classes.field.success        : self.options.classes.field.error;
-        wrapperClassName =  (!!success) ? self.options.classes.fieldWrapper.success : self.options.classes.fieldWrapper.error;
-        messageClassName =  (!!success) ? self.options.classes.fieldMessage.success : self.options.classes.fieldMessage.error;
+        inputClassName =    (!!success) ? self.config.classes.field.success        : self.config.classes.field.error;
+        wrapperClassName =  (!!success) ? self.config.classes.fieldWrapper.success : self.config.classes.fieldWrapper.error;
+        messageClassName =  (!!success) ? self.config.classes.fieldMessage.success : self.config.classes.fieldMessage.error;
       }
 
       self._getInputs(name, value).each(function () {
         var $input = $(this);
-        $input.removeClass(self.options.classes.field.error +' '+ self.options.classes.field.success).addClass(inputClassName);
+        $input.removeClass(self.config.classes.field.error +' '+ self.config.classes.field.success).addClass(inputClassName);
 
-        var $wrapper = $input.closest(self.options.selectors.fieldWrapper);
+        var $wrapper = $input.closest(self.config.selectors.fieldWrapper);
         if ($wrapper.length) {
-          $wrapper.removeClass(self.options.classes.fieldWrapper.error +' '+ self.options.classes.fieldWrapper.success).addClass(wrapperClassName);
+          $wrapper.removeClass(self.config.classes.fieldWrapper.error +' '+ self.config.classes.fieldWrapper.success).addClass(wrapperClassName);
         }
 
         var $messageBlocks = $();
-        var inputMessageSelector = $input.attr(self.options.selectors.fieldMessageAttr);
+        var inputMessageSelector = $input.attr(self.config.selectors.fieldMessageAttr);
         if (!inputMessageSelector) {
           if ($wrapper.length) {
-            $messageBlocks = $wrapper.find(self.options.selectors.fieldMessage);
+            $messageBlocks = $wrapper.find(self.config.selectors.fieldMessage);
           }
         } else {
           $messageBlocks = self.$element.find(inputMessageSelector);
@@ -150,7 +150,7 @@
         $messageBlocks.each(function () {
           var $messageBlock = $(this);
           $messageBlock.html(message);
-          $messageBlock.removeClass(self.options.classes.fieldMessage.error +' '+ self.options.classes.fieldMessage.success).addClass(messageClassName);
+          $messageBlock.removeClass(self.config.classes.fieldMessage.error +' '+ self.config.classes.fieldMessage.success).addClass(messageClassName);
         });
       });
     },
@@ -163,13 +163,13 @@
       //if (!self.invokeEvent('beforesetloading')) {return;}
 
       self.loading = true;
-      self.$element.addClass(self.options.classes.form.loading);
+      self.$element.addClass(self.config.classes.form.loading);
 
       self.clearFormMessage();
       self._getInputs().each(function (index, input) {
         //var $input = $(this);
         self.clearFieldStatus(input.name);
-        if (self.options.loading.disableInputs) {
+        if (self.config.loading.disableInputs) {
           $(input).attr('disabled', 'disabled').prop('disabled', true);
         }
       });
@@ -180,8 +180,8 @@
       var self = this;
       if (!self.invokeEvent('beforeresetloading')) {return;}
 
-      self.$element.removeClass(self.options.classes.form.loading);
-      if (self.options.loading.disableInputs) {
+      self.$element.removeClass(self.config.classes.form.loading);
+      if (self.config.loading.disableInputs) {
         self._getInputs().each(function () {
           $(this).prop('disabled', false).removeAttr('disabled');
         });
@@ -252,10 +252,10 @@
       var self = this;
       //if (!self.invokeEvent('beforereset')) {return;}
 
-      self.$element.removeClass(self.options.classes.form.error +' '+ self.options.classes.form.success);
+      self.$element.removeClass(self.config.classes.form.error +' '+ self.config.classes.form.success);
       self.resetLoadingForm();
       self.clearFormMessage();
-      if (self.options.loading.disableInputs) {
+      if (self.config.loading.disableInputs) {
         self._getInputs().each(function () {
           var $input = $(this);
           $input.prop('disabled', false).removeAttr('disabled');
@@ -283,7 +283,7 @@
           $form.data('loadingTimer', setTimeout(function () {
             self.timerMinTimeOver = true;
             self.prepareResult();
-          }, self.options.loading.timer || 0));
+          }, self.config.loading.timer || 0));
         },
         success: function (responseText, statusText, xhr, $form) {
           self.timerResponseOver = true;
@@ -295,7 +295,7 @@
           self.timerResponseOver = true;
           self.response = {
             success: false,
-            message: self.options.defaultErrorMessage,
+            message: self.config.defaultErrorMessage,
             ajaxError: true
           };
           //self.invokeEvent('ajaxError');
@@ -310,7 +310,7 @@
       name = name.toString() || '';
       if (!name) {return;}
 
-      var result = self.$element.triggerHandler(name +'.'+ self._name, self, data || {});
+      var result = self.$element.triggerHandler(name +'.'+ self.name, self, data || {});
       if (result !== false) {
         result = true;
       }

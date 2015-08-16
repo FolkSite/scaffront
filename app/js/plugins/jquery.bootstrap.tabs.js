@@ -33,7 +33,7 @@
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    if ($this.parent('li').hasClass('active')) return
+    if ($this.parentNode('li').hasClass('active')) return
 
     var $previous = $ul.find('.active:last a')
     var hideEvent = $.Event('hide.bs.tab', {
@@ -51,7 +51,7 @@
     var $target = $(selector)
 
     this.activate($this.closest('li'), $ul)
-    this.activate($target, $target.parent(), function () {
+    this.activate($target, $target.parentNode(), function () {
       $previous.trigger({
         type: 'hidden.bs.tab',
         relatedTarget: $this[0]
@@ -90,7 +90,7 @@
         element.removeClass('fade')
       }
 
-      if (element.parent('.dropdown-menu').length) {
+      if (element.parentNode('.dropdown-menu').length) {
         element
             .closest('li.dropdown')
             .addClass('active')

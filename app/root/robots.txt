@@ -1,5 +1,8 @@
-# www.robotstxt.org/
+User-agent: Yandex
+Disallow:
+# Host: http://localhost
+# Sitemap: http://localhost/sitemap.xml
 
-# Allow crawling of all content
 User-agent: *
 Disallow:
+# Sitemap: http://localhost/sitemap.xml

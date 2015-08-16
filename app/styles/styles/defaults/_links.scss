@@ -1,0 +1,38 @@
+$link-color-normal: #0d44a0 !default;
+$link-color-hover: $link-color-normal !default;
+$link-color-focus: $link-color-normal !default;
+$link-color-active: #ff0000 !default;
+$link-color-visited: $link-color-normal !default;
+$link-border-color-normal: rgba($link-color-normal, .7) !default;
+$link-border-color-hover: $link-color-hover !default;
+$link-border-color-focus: $link-color-focus !default;
+$link-border-color-active: $link-color-active !default;
+$link-border-color-visited: $link-color-visited !default;
+$link-border-width-normal: 0 0 1px 0 !default;
+$link-border-width-hover: $link-border-width-normal !default;
+$link-border-width-focus: $link-border-width-normal !default;
+$link-border-width-active: $link-border-width-normal !default;
+$link-border-width-visited: $link-border-width-normal !default;
+
+$links: (
+  default: (
+    selector: '.link, %link',
+    options: (
+      $link-color-normal,
+      $link-color-hover,
+      $link-color-focus,
+      $link-color-active,
+      $link-color-visited,
+      $link-border-color-normal,
+      $link-border-color-hover,
+      $link-border-color-focus,
+      $link-border-color-active,
+      $link-border-color-visited,
+      $link-border-width-normal,
+      $link-border-width-hover,
+      $link-border-width-focus,
+      $link-border-width-active,
+      $link-border-width-visited
+    )
+  )
+) !default;

@@ -14,7 +14,7 @@
   // ======================
 
   var Modal = function (element, options) {
-    this.options             = options
+    this.config             = options
     this.$body               = $(document.body)
     this.$element            = $(element)
     this.$dialog             = this.$element.find('.modal-dialog')
@@ -24,10 +24,10 @@
     this.scrollbarWidth      = 0
     this.ignoreBackdropClick = false
 
-    if (this.options.remote) {
+    if (this.config.remote) {
       this.$element
         .find('.modal-content')
-        .load(this.options.remote, $.proxy(function () {
+        .ajaxLoadFile(this.config.remote, $.proxy(function () {
           this.$element.trigger('loaded.bs.modal')
         }, this))
     }
@@ -76,7 +76,7 @@
     this.backdrop(function () {
       var transition = $.support.transition && that.$element.hasClass('fade')
 
-      if (!that.$element.parent().length) {
+      if (!that.$element.parentNode().length) {
         that.$element.appendTo(that.$body) // don't move modals dom position
       }
 
@@ -147,7 +147,7 @@
   }
 
   Modal.prototype.escape = function () {
-    if (this.isShown && this.options.keyboard) {
+    if (this.isShown && this.config.keyboard) {
       this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
         e.which == 27 && this.hide()
       }, this))
@@ -184,7 +184,7 @@
     var that = this
     var animate = this.$element.hasClass('fade') ? 'fade' : ''
 
-    if (this.isShown && this.options.backdrop) {
+    if (this.isShown && this.config.backdrop) {
       var doAnimate = $.support.transition && animate
 
       this.$backdrop = $(document.createElement('div'))
@@ -197,7 +197,7 @@
           return
         }
         if (e.target !== e.currentTarget) return
-        this.options.backdrop == 'static'
+        this.config.backdrop == 'static'
           ? this.$element[0].focus()
           : this.hide()
       }, this))

@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/content.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/footer.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/head.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/header.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/scripts.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/scripts.ya.map.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/sidebar-left.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/index/sidebar-right.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/scaffolding/browserupgrade.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/scaffolding/head.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/scaffolding/scripts.counters.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/scaffolding/scripts.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/template/content.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/template/footer.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/template/scripts.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/template/sidebar-left.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/html/chunks/template/sidebar-right.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/Url.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/big.brother.counters.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.actual.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.ba-throttle-debounce.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.bootstrap.modal.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.bootstrap.tabs.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.fancybox.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.fitvids.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.form.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.magnific-popup.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.ready.safe.bottom.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.ready.safe.bottom.min.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.ready.safe.top.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.ready.safe.top.min.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.simpleslider.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.slicer.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/jquery.stickyNavbar.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/normalizeconsole.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/requiredInput.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/slick.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/unslider.custom.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/waiter.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/plugins/ytiframe.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/scripts.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/js/vendor/modernizr-2.8.3.min.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/styles/roboto.regular.css" charset="UTF-8" />
+  </component>
 </project>
-

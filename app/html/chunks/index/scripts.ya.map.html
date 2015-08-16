@@ -1,0 +1,41 @@
+<script type="text/javascript">
+  var wf = document.createElement('script');
+  wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+  '://api-maps.yandex.ru/2.0-stable/?lang=ru-RU&coordorder=longlat&load=package.full&wizard=constructor&onload=showMap';
+  wf.type = 'text/javascript';
+  wf.async = 'true';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(wf, s);
+</script>
+<!--
+<script>
+  function showMap(ymaps) {
+    ymaps.option.presetStorage.add('my#preset1', {
+      iconLayout:"default#imageWithContent",
+      iconImageHref: '/i/marker.png',
+      iconImageSize: [60, 69],
+      iconImageOffset: [-22, -62],
+      iconContentOffset:[0, 0]
+    });
+
+    var map = new ymaps.Map('yaMap', {
+      center: [50.078089,53.188020],
+      zoom: 16,
+      type: 'yandex#map'
+    });
+    map.controls
+        .add('zoomControl')
+        .add('mapTools')
+        .add(new ymaps.control.TypeSelector(['yandex#map', 'yandex#satellite', 'yandex#hybrid', 'yandex#publicMap']));
+    map.geoObjects
+        .add(new ymaps.Placemark([50.08193, 53.187559], {
+//          balloonContentBody: '',
+//          balloonContentHeader: '',
+//          balloonContentFooter: ''
+        }, {
+//          preset: 'twirl#lightblueDotIcon'
+          preset: 'my#preset1'
+        }));
+  };
+</script>
+-->

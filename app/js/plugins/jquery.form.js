@@ -317,7 +317,7 @@ $.fn.ajaxSubmit = function(options) {
                 if (xhr.upload) {
                     xhr.upload.addEventListener('progress', function(event) {
                         var percent = 0;
-                        var position = event.loaded || event.position; /*event.position is deprecated*/
+                        var position = event.done || event.position; /*event.position is deprecated*/
                         var total = event.total;
                         if (event.lengthComputable) {
                             percent = Math.ceil(position / total * 100);
@@ -1137,7 +1137,7 @@ $.fieldValue = function(el, successful) {
         if (index < 0) {
             return null;
         }
-        var a = [], ops = el.options;
+        var a = [], ops = el.config;
         var one = (t == 'select-one');
         var max = (one ? index+1 : ops.length);
         for(var i=(one ? index : 0); i < max; i++) {
@@ -1247,7 +1247,7 @@ $.fn.selected = function(select) {
             this.checked = select;
         }
         else if (this.tagName.toLowerCase() == 'option') {
-            var $sel = $(this).parent('select');
+            var $sel = $(this).parentNode('select');
             if (select && $sel[0] && $sel[0].type == 'select-one') {
                 // deselect all other options
                 $sel.find('option').selected(false);

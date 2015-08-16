@@ -1,37 +1,58 @@
 //'use strict';
 
-var gulp = require('gulp'),
-    q = require('q'),
-    changed = require('gulp-changed'),
-    count = require('gulp-count'),
-    tap = require('gulp-tap'),
-    callback = require('gulp-callback'),
-    watch = require('gulp-watch'),
-    filter = require('gulp-filter'),
-    plumber = require('gulp-plumber'),
-    concat = require('gulp-concat'),
-    autoprefixer = require('gulp-autoprefixer'),
-    //sass = require('gulp-sass'),
-    sass = require('gulp-ruby-sass'),
-    rename = require('gulp-rename'),
-    sourcemaps = require('gulp-sourcemaps'),
-    rigger = require('gulp-rigger'),
-    imagemin = require('gulp-imagemin'),
-    pngquant = require('imagemin-pngquant'),
-    rimraf = require('rimraf'),
-    opn = require('opn'),
-    csso = require('gulp-csso'),
-    uglify = require('gulp-uglify'),
+var Gulp = require('gulp'),
+    Q = require('q'),
+    Extend = require('extend'),
+    //Changed = require('gulp-changed'),
+    Tap = require('gulp-tap'),
+    Filter = require('gulp-filter'),
+    Callback = require('gulp-callback'),
+    Plumber = require('gulp-plumber'),
+    Concat = require('gulp-concat'),
+    Autoprefixer = require('gulp-autoprefixer'),
+    Sass = require('gulp-ruby-sass'),
+    Rename = require('gulp-rename'),
+    //sourcemaps = require('gulp-sourcemaps'),
+    FileInclude = require('gulp-file-include'),
+    ImageMin = require('gulp-imagemin'),
+    PngQuant = require('imagemin-pngquant'),
+    RimRaf = require('rimraf'),
+    CssO = require('gulp-csso'),
+    Uglify = require('gulp-uglify'),
     //closureCompiler = require('gulp-closure-compiler'),
-    autopolyfiller = require('gulp-autopolyfiller'),
-    cache = require('gulp-cached'),
-    clean = require('gulp-clean'),
-    runSequence = require('run-sequence'),
-    browserSync = require('browser-sync'),
-    path = require('path'),
-    criticalcss = require('criticalcss'),
-    mkpath = require('mkpath'),
-    fs = require('fs');
+    AutoPolyfiller = require('gulp-autopolyfiller'),
+    Cache = require('gulp-cached'),
+    //Clean = require('gulp-clean'),
+    Order = require('gulp-order'),
+    RunSequence = require('run-sequence').use(Gulp),
+    BrowserSync = require('browser-sync'),
+    Path = require('path'),
+    MkPath = require('mkpath'),
+    CriticalCSS = require('criticalcss'),
+    FS = require('fs'),
+    Crypto = require('crypto'),
+    Merge = require('event-stream').merge,
+    //Nightmare = require('nightmare'),
+    Phantom = require('phantom'),
+    _ = require('lodash');
+
+var md5 = function (content) {
+  return Crypto.createHash('md5').update(content).digest('hex');
+};
+
+var Is = function (file) {
+  var extname = Path.extname(file.path);
+  var filename = Path.basename(file.path, extname);
+
+  return {
+    css: extname === '.css',
+    scss: extname === '.scss',
+    sass: extname === '.sass',
+    js: extname === '.js',
+    minified: /\.min$/.test(filename),
+    underscored: /^_/.test(filename)
+  };
+};
 
 var paths = {
   dist: {
@@ -39,9 +60,8 @@ var paths = {
     js: 'dist/js/',
     jsPlugins: 'dist/js/plugins/',
     jsVendors: 'dist/js/vendor/',
-    jsPolyfillsFilename: 'polyfills.js',
     css: 'dist/css/',
-    criticalStyles: 'dist/css/criticals/',
+    criticalCss: 'dist/css/critical/',
     images: {
       inline: 'dist/i/',
       content: 'dist/images/'
@@ -51,11 +71,13 @@ var paths = {
   src: {
     html: 'app/html/*.html',
     root: 'app/root/**/*.*',
-    js: 'app/js/*.js',
-    jsPlugins: 'app/js/plugins/*.js',
-    jsVendors: 'app/js/vendor/*.js',
+    js: [
+      'app/js/**/*.js',
+      '!app/js/vendor/**/*.*'
+    ],
+    jsVendors: 'app/js/vendor/**/*.*',
     //css: 'app/css/*.(scss|sass)',
-    css: 'app/styles/',
+    css: 'app/styles/*.css',
     sass: 'app/styles/',
     images: {
       inline: 'app/img/inline/**/*.*',
@@ -68,6 +90,7 @@ var paths = {
     html: 'app/html/**/*.html',
     js: 'app/js/**/*.js',
     css: 'app/styles/**/*.css',
+    //sass: ['app/styles/*.scss', 'app/styles/.sass'],
     sass: 'app/styles/**/*.@(scss|sass)',
     images: {
       inline: 'app/img/inline/**/*.*',
@@ -75,116 +98,166 @@ var paths = {
     },
     fonts: 'app/fonts/**/*.*'
   },
-  clean: 'dist',
-  closureCompiler: 'compiler.jar'
+  clean: 'dist'
 };
+
+var config = {
+  phantomJsPath: Path.join(Path.dirname(require('phantomjs').path), '/'),
+  criticalCss: {
+    injectFiles: [
+      //'criticalcss/jquery-1.11.2.min.js',
+      'criticalcss/Url.js',
+      'criticalcss/collectCss.js'
+    ]
+  },
+  FileInclude: {
+    prefix: '//= ',
+    basepath: '@file'
+  },
+  Autoprefixer: {
+    browsers: [
+      'last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'],
+    cascade : false,
+    remove  : true
+  },
+  AutoPolyfiller: {
+    browsers: ['last 3 version', 'ie 8', 'ie 9']
+  },
+  BrowserSync: {
+    port: 666,
+    server: {
+      baseDir: 'dist'
+    }
+  },
+  BrowserSyncDist: {
+    port: 1313,
+    open: false,
+    server: {
+      baseDir: 'dist'
+    }
+  },
+  ImageMin: {
+    progressive: true,
+    svgoPlugins: [{removeViewBox: false}],
+    interlaced: true
+  },
+  PngQuant: {
+    quality: '80-90',
+    speed: 4
+  }
+};
+
+var startServer = function (config) {
+  config = config || config.BrowserSync;
+  return function (cb) {
+    return BrowserSync(config, cb);
+  };
+};
+
+var stopServer = function () {
+  return function () {
+    return BrowserSync.exit();
+  };
+};
+
 
 function handleError(e) {
   console.log(e.toString());
   this.emit('end');
 }
-var replaceDistPath = function (filepath) {
-  var index = filepath.indexOf(paths.dist.html);
-  if (index === 0 || index === 1) {
-    return filepath.substr(index + paths.dist.html.length - 1);
-  }
-  return filepath;
-};
 
-gulp.task('removeDist', function (callback) {
-  rimraf(paths.clean, callback);
+Gulp.task('removeDist', function (cb) {
+  RimRaf(paths.clean, cb);
 });
-gulp.task('copyroot', function () {
-  gulp.src(paths.src.root)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(gulp.dest(paths.dist.html));
+Gulp.task('copyroot', function () {
+  return Gulp.src(paths.src.root)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Gulp.dest(paths.dist.html));
 });
 
-gulp.task('fonts:build', function () {
-  gulp.src(paths.src.fonts)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(gulp.dest(paths.dist.fonts));
+Gulp.task('fonts:build', function () {
+  return Gulp.src(paths.src.fonts)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Gulp.dest(paths.dist.fonts));
 });
-gulp.task('fonts:dist', ['fonts:build']);
+Gulp.task('fonts:dist', function (cb) {
+  return RunSequence('fonts:build', cb);
+});
 
-gulp.task('js:app', function () {
-  return gulp.src(paths.src.js)
-    .pipe(plumber({errorHandler: handleError}))
-    //.pipe(changed(paths.dist.js))
-    //.pipe(count('## css'))
-    .pipe(rigger())
-    //.pipe(count('## css handled'))
-    .pipe(gulp.dest(paths.dist.js));
-});
-gulp.task('js:plugins', function () {
-  return gulp.src(paths.src.jsPlugins)
-      .pipe(plumber({errorHandler: handleError}))
-      .pipe(gulp.dest(paths.dist.jsPlugins));
-});
-gulp.task('js:vendors', function() {
-  return gulp.src(paths.src.jsVendors)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(gulp.dest(paths.dist.jsVendors));
-});
-gulp.task('js:polyfills', function() {
-  return gulp.src(paths.dist.js +'*!(.min).js')
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(autopolyfiller(paths.dist.jsPolyfillsFilename, {
-      browsers: ['last 3 version', 'ie 8', 'ie 9']
+Gulp.task('js:app', function () {
+  return Gulp.src(paths.src.js)
+    .pipe(Plumber({errorHandler: handleError}))
+    //.pipe(Changed(paths.dist.js))
+    .pipe(Filter(function (file) {
+      var is = Is(file);
+      return !is.underscored;
     }))
-    .pipe(gulp.dest(paths.dist.js));
+    .pipe(FileInclude(config.FileInclude))
+    .pipe(Gulp.dest(paths.dist.js));
 });
-gulp.task('js:build', ['js:app', 'js:plugins', 'js:vendors']);
-gulp.task('js:min:app', /*['js:build'], */function () {
-  var notMinFilter = filter(['*.js', '!*.min.js']);
-  return gulp.src(paths.dist.js +'**/*.js')
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(notMinFilter)
-    //.pipe(tap(function (file,t) {
-    //  console.log(path.basename(file.path));
-    //}))
-    .pipe(uglify())
-    .pipe(rename(function (path) {
+Gulp.task('js:vendors', function() {
+  return Gulp.src(paths.src.jsVendors)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Gulp.dest(paths.dist.jsVendors));
+});
+Gulp.task('js:polyfilly', function(cb) {
+  return Gulp.src(paths.dist.js +'/*.js')
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Filter(function (file) {
+      var is = Is(file);
+      return is.js && !is.minified;
+    }))
+    .pipe(Tap(function (file) {
+      var filePath = file.path;
+      var extname = Path.extname(filePath);
+      var filename = Path.basename(filePath);
+      var basename = Path.basename(filePath, extname);
+      var path = filePath.replace(new RegExp(basename + extname +'$'), '');
+      var polyfillsFileName = basename + '.polyfills' + extname;
+
+      var FileStream = Gulp.src(file.path);
+      var polyfillsStream = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));
+      return Merge(FileStream, polyfillsStream)
+        .pipe(Order([
+          polyfillsFileName,
+          filename
+        ]))
+        .pipe(Concat(filename))
+        .pipe(Gulp.dest(path));
+    }));
+});
+Gulp.task('js:build', function (cb) {
+  RunSequence(['js:app', 'js:vendors'], cb);
+});
+Gulp.task('js:min', function () {
+  return Gulp.src(paths.dist.js +'/**/*.js')
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Filter(function (file) {
+      var is = Is(file);
+      return is.js && !is.minified;
+    }))
+    .pipe(Uglify())
+    .pipe(Rename(function (path) {
       if (!path.basename.match(/\.min$/)) {
         path.basename += '.min';
       }
     }))
-    .pipe(gulp.dest(paths.dist.js));
+    .pipe(Gulp.dest(paths.dist.js));
 });
-gulp.task('js:min:plugins', /*['js:build'], */function () {
-  var notMinFilter = filter(['*.js', '!*.min.js']);
-  return gulp.src(paths.dist.jsPlugins +'**/*.js')
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(notMinFilter)
-    //.pipe(tap(function (file,t) {
-    //  console.log(path.basename(file.path));
-    //}))
-    .pipe(uglify())
-    .pipe(rename(function (path) {
-      if (!path.basename.match(/\.min$/)) {
-        path.basename += '.min';
-      }
-    }))
-    .pipe(gulp.dest(paths.dist.jsPlugins));
-});
-gulp.task('js:min', function() {
-  runSequence(
-    ['js:min:app', 'js:min:plugins']
-  );
-});
-gulp.task('js:dist', function() {
-  runSequence(
-    ['js:app', 'js:plugins', 'js:vendors'],
-    'js:polyfills',
-    'js:min'
+Gulp.task('js:dist', function (cb) {
+  RunSequence(
+    'js:build',
+    'js:polyfilly',
+    'js:min',
+    cb
   );
 });
 
-gulp.task('sass:build', function () {
-  return sass(paths.src.sass, {
+Gulp.task('sass:build', function () {
+  return Sass(paths.src.sass, {
     style: 'expanded',
-    //debugInfo: true,
-    //sourcemap: true,
+    debugInfo: true,
+    sourcemap: true,
     compass: true
   }).on('error', function (err) {
     console.error(err);
@@ -194,344 +267,477 @@ gulp.task('sass:build', function () {
   //  includeContent: false,
   //  sourceRoot: paths.src.sass
   //}))
-  .pipe(gulp.dest(paths.dist.css))
-  .pipe(browserSync.reload({stream: true}));
+  .pipe(Gulp.dest(paths.dist.css))
+  .pipe(BrowserSync.reload({stream: true}));
 });
-gulp.task('css:build', function () {
-  var filterCss = filter('[^_]*.css');
-  return gulp.src(paths.src.css +'**/*.css')
-    .pipe(plumber({errorHandler: handleError}))
-    //.pipe(changed(paths.dist.css))
-    //.pipe(count('## css'))
+Gulp.task('css:build', function () {
+  return Gulp.src(paths.src.css)
+    .pipe(Plumber({errorHandler: handleError}))
+    //.pipe(Changed(paths.dist.css))
     //.pipe(sourcemaps.init())
-    .pipe(filterCss)
+    .pipe(Filter(function (file) {
+      var is = Is(file);
+      return !is.underscored;
+    }))
     //.pipe(sourcemaps.write({
     //  includeContent: false,
     //  sourceRoot: paths.src.css
     //}))
-    .pipe(rigger())
+    .pipe(FileInclude(config.FileInclude))
     //.pipe(base64({
     //  extensions: ['jpg', 'png'],
-    //  maxImageSize: 32*1024 // размер указывается в байтах, тут он 32кб потому и больше уже плохо для IE8
+    //  maxImageSize: 32*1024 // размер указывается в байтах, тут он 32кб потому, что больше уже плохо для IE8
     //}))
-    //.pipe(count('## css handled'))
-    .pipe(gulp.dest(paths.dist.css))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(Gulp.dest(paths.dist.css))
+    .pipe(BrowserSync.reload({stream: true}));
+});
+Gulp.task('styles:critical:clean', function (cb) {
+  return RimRaf(paths.dist.criticalCss, cb);
+});
+Gulp.task('styles:critical:build', function (cb) {
 
-});
-gulp.task('styles:critical:clean', function (callback) {
-  return rimraf(paths.dist.criticalStyles, callback);
-});
-gulp.task('styles:critical:build', function() {
-  var parsePath = function (_path) {
-    var extname = path.extname(_path);
-    return {
-      path: _path,
-      dirname: path.dirname(_path),
-      basename: path.basename(_path, extname),
-      extname: extname
-    };
+  console.time('criticalCss');
+
+  if (!_.isArray(config.criticalCss.injectFiles)) {
+    config.criticalCss.injectFiles = [config.criticalCss.injectFiles];
+  }
+
+  var tearDown = function (ph, localServer) {
+    console.timeEnd('criticalCss');
+    ph && ph.exit();
+    localServer && localServer.exit();
+    cb();
   };
 
-  //var tmpDir = paths.dist.css;
-  var tmpDir = require('os').tmpdir();
-  // '+ (new Date).getTime() +'.
-  var tmpFilename = 'critical.'+ (new Date).getTime() +'.css';
-  var tmpCriticalCssFile = path.join(tmpDir, tmpFilename);
-  var criticalCssFolder = path.resolve(path.join(__dirname, paths.dist.criticalStyles));
+  Phantom.create(function (ph) {
+    ph.createPage(function (page) {
+      page.set('viewportSize', {
+        width: 1920,
+        height: 1080
+      });
+      page.set('settings.userAgent', 'Mozilla/5.0 (Windows NT 6.1; rv:39.0) Gecko/20100101 Firefox/39.0');
+      page.set('settings.loadImages', false);
+      page.set('settings.resourceTimeout', 10000);
 
-  var unlinkTmpFile = function (needException) {
-    needException = (typeof needException != 'undefined') ? !!needException : false;
-    fs.unlink(tmpCriticalCssFile, (function (needException) {
-      return function (e) {
-        if (e && needException) {
-          throw new Error(e);
-        }
-        console.log('Temp file removed');
-      };
-    })(needException));
-  };
+      var localServer = BrowserSync.create('CriticalCSS-'+ (new Date()).getTime());
+      //console.log(JSON.stringify(_.toArray(localServer)));
+      localServer.init(config.BrowserSyncDist, function () {
+        page.open("http://localhost:1313/index.html", function (status) {
+          if (status === "success") {
+            page.render(Path.join(__dirname, 'criticalcss/'+ (new Date).getTime() +'.png'));
 
-  var stylesConcatDeferred = q.defer();
-  var notMinFilter = filter(['*.css', '!*.min.css']);
-  gulp.src(paths.dist.css +'*.css')
-      .pipe(plumber({errorHandler: function (e) {
-        stylesConcatDeferred.reject(e);
-      }}))
-      .pipe(notMinFilter)
-    //.pipe(tap(function (file,t) {
-    //  console.log(path.basename(file.path));
-    //}))
-      .pipe(concat(tmpFilename, {stat: {mode: '0666'}}))
-      .pipe(csso())
-      .pipe(gulp.dest(tmpDir))
-      .pipe(callback(function() {
-        stylesConcatDeferred.resolve();
-      }));
-
-  stylesConcatDeferred.promise.then(function () {
-    console.log('Temp file created');
-    var deferred = q.defer();
-    criticalcss.getRules(tmpCriticalCssFile, function(err, output) {
-      setTimeout(function(){
-        if (err) {
-          deferred.reject(err);
-        } else {
-          mkpath(criticalCssFolder, '0755', function (err) {
-            if (err) {
-              deferred.reject(err);
-            } else {
-              fs.readdir(paths.dist.html, function (err, files) {
-                if (err) {
-                  deferred.reject(err);
-                } else {
-                  var htmlFiles = files.map(function (file) {
-                    var filePath = path.resolve(path.join(__dirname, paths.dist.html, file));
-                    return parsePath(filePath);
-                  }).filter(function (File) {
-                    return (File.extname == '.html' || File.extname == '.htm');
-                  });
-                  var filesCount = htmlFiles.length;
-                  var readyCount = 0;
-                  var increment = function () {
-                    readyCount = readyCount + 1;
-                    if (readyCount == filesCount) {
-                      deferred.resolve();
-                    }
-                  };
-                  htmlFiles.forEach(function (File, index) {
-                    criticalcss.findCritical(File.path, {
-                      rules: JSON.parse(output)
-                    }, (function (File, index) {
-                      return function (err, output) {
-                        if (err) {
-                          deferred.reject(err);
-                        } else {
-                          var criticalCssFilePath = path.join(criticalCssFolder, File.basename + '.css');
-                          fs.writeFile(criticalCssFilePath, output, {flag: 'w+'}, function (err) {
-                            if (err) {
-                              deferred.reject(err);
-                            } else {
-                              increment();
-                            }
-                          });
-                        }
-
-                      }
-                    })(File, index));
-                  });
-                }
-              });
-            }
-          });
-        }
-      }, 0)
-    });
-
-    deferred.promise.then(function () {
-      console.log('Criticals css created');
-      unlinkTmpFile(true);
-
-      var notMinFilter = filter(['*.css', '!*.min.css']);
-      return gulp.src(paths.dist.criticalStyles +'*.css')
-          .pipe(plumber({errorHandler: handleError}))
-        //.pipe(count('## before filter'))
-          .pipe(notMinFilter)
-        //.pipe(count('## after filter'))
-          .pipe(csso())
-          .pipe(tap(function (file,t) {
-            var File = parsePath(file.path);
-            var filename = File.basename +'.html';
-            var htmlFilePath = path.resolve(path.join(__dirname, paths.dist.html, filename));
-            fs.exists(htmlFilePath, function (exists) {
-              if (!exists) {
-                console.log('HTML file "'+ path.basename(file.path) +'" doesn\'t exists.');
-                return;
-              }
-              fs.readFile(htmlFilePath, {encoding: 'utf8'},
-                  (function (htmlFilePath, filename, file) {
-                    return function (e, data) {
-                      if (e) {
-                        throw new Error(e);
-                      }
-                      var match = '<style>\/\\*\\* critical css \\*\\*\/';
-                      if (new RegExp(match, 'gm').test(data)) {
-                        data = data.replace(new RegExp('('+ match +')', 'gm'), '$1' + file.contents + '</style>');
-                      } else {
-                        data = data.replace(/([ \t]*)(<head[^>]*>)/, '$1$2\n$1  <style>/** critical css **/'+ file.contents + '</style>');
-                      }
-
-                      fs.writeFile(htmlFilePath, data, (function (filename) {
-                        return function(e) {
-                          if (e) {
-                            throw new Error(e);
-                          }
-                          console.log('Critical CSS injected to', filename);
-                        };
-                      })(filename));
-                    }
-
-                  })(htmlFilePath, filename, file)
-              );
+            _.forEach(config.criticalCss.injectFiles, function (script) {
+              script = Path.join(__dirname, script);
+              page.injectJs(script);
             });
-          }))
-          .pipe(rename(function (path) {
-            path.basename += '.min';
-          }))
-          .pipe(gulp.dest(paths.dist.criticalStyles));
 
-    }, function (e) {
-      unlinkTmpFile();
-      throw new Error(e);
+            page.evaluate(function () {
+              return JSON.stringify(window.criticalCss || ['Хуй тебе']);
+            }, function (result) {
+              console.log(result);
+              tearDown(ph, localServer);
+            });
+          }
+        });
+      });
     });
-  }, function (e) {
-    handleError(e);
+  }, {
+    dnodeOpts: {
+      weak: false
+    },
+    //port: 1313,
+    //hostname: 'localhost',
+    path: config.phantomJsPath
   });
+
+/*
+  var nm = new Nightmare({
+    timeout: 10000,
+    weak: false,
+    loadImages: true,
+    phantomPath: config.phantomJsPath,
+    ignoreSslErrors: true,
+    webSecurity: false
+  });
+  nm.useragent('Mozilla/5.0 (Windows NT 6.1; rv:39.0) Gecko/20100101 Firefox/39.0');
+  nm.viewport(1920, 1080);
+  nm.on('loadFinished', function (status) {
+    //throw status;
+  });
+
+  var localServer = BrowserSync.create('CriticalCSS-'+ (new Date()).getTime());
+  localServer.init(config.BrowserSyncDist, function () {
+    nm.goto('http://localhost:1313/index.html');
+    //nm.goto('http://localhost:1313/index.html');
+    //nm.goto('http://yandex.ru');
+    nm.wait();
+    //nm.screenshot('criticalcss/'+ (new Date).getTime() +'.png');
+
+    nm.url(function (url) {
+      nm.evaluate(function (NMUrl) {
+        window.NMUrl = NMUrl;
+
+        return NMUrl;
+      }, function (NMUrl) {
+        console.log('NMUrl', NMUrl);
+        if (Array.isArray(config.criticalCss.injectFiles)) {
+          config.criticalCss.injectFiles.forEach(function (file) {
+            nm.inject('js', file);
+          });
+        } else if (typeof config.criticalCss.injectFiles == 'string') {
+          nm.inject('js', config.criticalCss.injectFiles);
+        }
+        nm.evaluate(function () {
+          if (typeof window.criticalCss != 'undefined') {
+            return JSON.stringify(window.criticalCss);
+          }
+          return null;
+        }, function (result) {
+          console.log('result:', result && JSON.parse(result) || 'Error :(');
+        });
+      }, url);
+    });
+
+    nm.run(function (err) {
+      if (err) { throw new Error(err); }
+      console.log('Done.');
+      localServer.exit();
+    });
+
+  });
+//*/
+
+  Gulp.src(paths.dist.html +'*.html')
+    .pipe(Tap(function (file) {
+      var filename = Path.basename(file.path);
+      console.log(filename);
+      var content = file.contents;
+      //var styles = content.match(/<(style|link)( rel="stylesheet" type="text\/css"><\/\\1>/gm);
+        //console.log($('style, link[type$=css]'));
+    }));
+
+  //
+  //var parsePath = function (_path) {
+  //  var extname = Path.extname(_path);
+  //  return {
+  //    path: _path,
+  //    dirname: Path.dirname(_path),
+  //    basename: Path.basename(_path, extname),
+  //    extname: extname
+  //  };
+  //};
+  //
+  ////var tmpDir = paths.dist.css;
+  //var tmpDir = require('os').tmpdir();
+  //// '+ (new Date).getTime() +'.
+  //var tmpFilename = 'critical.'+ (new Date).getTime() +'.css';
+  //var tmpCriticalCssFile = Path.join(tmpDir, tmpFilename);
+  //var criticalCssFolder = Path.resolve(Path.join(__dirname, paths.dist.criticalCss));
+  //
+  //var unlinkTmpFile = function (needException) {
+  //  needException = (typeof needException != 'undefined') ? !!needException : false;
+  //  FS.unlink(tmpCriticalCssFile, (function (needException) {
+  //    return function (e) {
+  //      if (e && needException) {
+  //        throw new Error(e);
+  //      }
+  //      console.log('Temp file removed');
+  //    };
+  //  })(needException));
+  //};
+  //
+  //var stylesConcatDeferred = Q.defer();
+  //var notMinFilter = Filter(['*.css', '!*.min.css']);
+  //Gulp.src(paths.dist.css +'*.css')
+  //    .pipe(Plumber({errorHandler: function (e) {
+  //      stylesConcatDeferred.reject(e);
+  //    }}))
+  //    .pipe(notMinFilter)
+  //  //.pipe(tap(function (file,t) {
+  //  //  console.log(path.basename(file.path));
+  //  //}))
+  //    .pipe(Concat(tmpFilename, {stat: {mode: '0666'}}))
+  //    .pipe(CssO())
+  //    .pipe(Gulp.dest(tmpDir))
+  //    .pipe(Callback(function() {
+  //      stylesConcatDeferred.resolve();
+  //    }));
+  //
+  //return stylesConcatDeferred.promise.then(function () {
+  //  console.log('Temp file created');
+  //  var deferred = Q.defer();
+  //  CriticalCSS.getRules(tmpCriticalCssFile, function(err, output) {
+  //    setTimeout(function(){
+  //      if (err) {
+  //        deferred.reject(err);
+  //      } else {
+  //        MkPath(criticalCssFolder, '0755', function (err) {
+  //          if (err) {
+  //            deferred.reject(err);
+  //          } else {
+  //            FS.readdir(paths.dist.html, function (err, files) {
+  //              if (err) {
+  //                deferred.reject(err);
+  //              } else {
+  //                var htmlFiles = files.map(function (file) {
+  //                  var filePath = Path.resolve(Path.join(__dirname, paths.dist.html, file));
+  //                  return parsePath(filePath);
+  //                }).filter(function (File) {
+  //                  return (File.extname == '.html' || File.extname == '.htm');
+  //                });
+  //                var filesCount = htmlFiles.length;
+  //                var readyCount = 0;
+  //                var increment = function () {
+  //                  readyCount = readyCount + 1;
+  //                  if (readyCount == filesCount) {
+  //                    deferred.resolve();
+  //                  }
+  //                };
+  //                htmlFiles.forEach(function (File, index) {
+  //                  CriticalCSS.findCritical(File.path, {
+  //                    rules: JSON.parse(output),
+  //                    ignoreConsole: true
+  //                  }, (function (File, index) {
+  //                    return function (err, output) {
+  //                      if (err) {
+  //                        deferred.reject(err);
+  //                      } else {
+  //                        var criticalCssFilePath = Path.join(criticalCssFolder, File.basename + '.css');
+  //                        FS.writeFile(criticalCssFilePath, output, {flag: 'w+'}, function (err) {
+  //                          if (err) {
+  //                            deferred.reject(err);
+  //                          } else {
+  //                            increment();
+  //                          }
+  //                        });
+  //                      }
+  //
+  //                    }
+  //                  })(File, index));
+  //                });
+  //              }
+  //            });
+  //          }
+  //        });
+  //      }
+  //    }, 0)
+  //  });
+  //
+  //  return deferred.promise.then(function () {
+  //    console.log('Criticals css created');
+  //    unlinkTmpFile(true);
+  //
+  //    var notMinFilter = Filter(['*.css', '!*.min.css']);
+  //    return Gulp.src(paths.dist.criticalCss +'*.css')
+  //        .pipe(Plumber({errorHandler: handleError}))
+  //      //.pipe(Count('## before filter'))
+  //        .pipe(notMinFilter)
+  //      //.pipe(Count('## after filter'))
+  //        .pipe(CssO())
+  //        .pipe(Tap(function (file,t) {
+  //          var File = parsePath(file.path);
+  //          var filename = File.basename +'.html';
+  //          var htmlFilePath = Path.resolve(Path.join(__dirname, paths.dist.html, filename));
+  //          FS.exists(htmlFilePath, function (exists) {
+  //            if (!exists) {
+  //              console.log('HTML file "'+ Path.basename(file.path) +'" doesn\'t exists.');
+  //              return;
+  //            }
+  //            FS.readFile(htmlFilePath, {encoding: 'utf8'},
+  //                (function (htmlFilePath, filename, file) {
+  //                  return function (e, data) {
+  //                    if (e) {
+  //                      throw new Error(e);
+  //                    }
+  //                    var match = '<style>\/** critical css **\/';
+  //                    if (new RegExp(match, 'gm').test(data)) {
+  //                      data = data.replace(new RegExp('('+ match +')', 'gm'), '$1' + file.contents + '</style>');
+  //                    } else {
+  //                      data = data.replace(/([ \t]*)(<head[^>]*>)/, '$1$2\n$1  <style>/** critical css **/'+ file.contents + '</style>');
+  //                    }
+  //
+  //                    FS.writeFile(htmlFilePath, data, (function (filename) {
+  //                      return function(e) {
+  //                        if (e) {
+  //                          throw new Error(e);
+  //                        }
+  //                        console.log('Critical CSS injected to', filename);
+  //                      };
+  //                    })(filename));
+  //                  }
+  //
+  //                })(htmlFilePath, filename, file)
+  //            );
+  //          });
+  //        }))
+  //        .pipe(Rename(function (path) {
+  //          path.basename += '.min';
+  //        }))
+  //        .pipe(Gulp.dest(paths.dist.criticalCss));
+  //
+  //  }, function (e) {
+  //    unlinkTmpFile();
+  //    handleError(e);
+  //  });
+  //}, function (e) {
+  //  handleError(e);
+  //});
 
   //*/
 });
-gulp.task('styles:critical', function () {
-  return runSequence(
+Gulp.task('styles:critical', function (cb) {
+  return RunSequence(
     'styles:critical:clean',
-    'styles:critical:build'
+    'styles:critical:build',
+    cb
   );
 });
-gulp.task('styles:min', function () {
-  var notMinFilter = filter(['*.css', '!*.min.css']);
-  return gulp.src(paths.dist.css +'*.css')
-      .pipe(plumber({errorHandler: handleError}))
-      .pipe(notMinFilter)
-    //.pipe(tap(function (file,t) {
-    //  console.log(path.basename(file.path));
-    //}))
-      .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-      .pipe(csso())
-      .pipe(rename(function (path) {
+Gulp.task('styles:min', function () {
+  return Gulp.src(paths.dist.css +'/**/*.css')
+      .pipe(Plumber({errorHandler: handleError}))
+      .pipe(Filter(function (file) {
+        var is = Is(file);
+        return is.css && !is.minified;
+      }))
+      .pipe(Autoprefixer(config.Autoprefixer))
+      .pipe(CssO())
+      .pipe(Rename(function (path) {
         if (!path.basename.match(/\.min$/)) {
           path.basename += '.min';
         }
       }))
-      .pipe(gulp.dest(paths.dist.css));
+      .pipe(Gulp.dest(paths.dist.css));
 });
-gulp.task('styles:build', function() {
-  return gulp.start('sass:build', 'css:build');
-});
-gulp.task('styles:dist', function() {
-  return runSequence(
+Gulp.task('styles:build', function (cb) {
+  return RunSequence(
     ['sass:build', 'css:build'],
-    ['styles:min', 'styles:critical']
-    //'styles:critical:build'
+    cb
   );
-
-  //return gulp.start('styles:min', 'styles:critical');
+});
+Gulp.task('styles:dist', function(cb) {
+  return RunSequence(
+    'styles:build',
+    //'styles:critical',
+    //'styles:min',
+    'styles:min',
+    //'styles:critical',
+    cb
+  );
 });
 
-gulp.task('images:content:build', function () {
-  return gulp.src(paths.src.images.content)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(cache('images:content:build'))
-    //.pipe(count('## content images files changed'))
-    .pipe(gulp.dest(paths.dist.images.content));
+Gulp.task('images:content:build', function () {
+  return Gulp.src(paths.src.images.content)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Cache('images:content:build'))
+    .pipe(Gulp.dest(paths.dist.images.content));
 });
-gulp.task('images:inline:build', function () {
-  return gulp.src(paths.src.images.inline)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(cache('images:inline:build'))
-    //.pipe(count('## inline images files changed'))
-    .pipe(gulp.dest(paths.dist.images.inline));
+Gulp.task('images:inline:build', function () {
+  return Gulp.src(paths.src.images.inline)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Cache('images:inline:build'))
+    .pipe(Gulp.dest(paths.dist.images.inline));
 });
-gulp.task('images:build', ['images:content:build', 'images:inline:build']);
-gulp.task('images:inline:min', function () {
-  return gulp.src(paths.dist.images.inline +'**/*.*')
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(imagemin({
-      progressive: true,
-      svgoPlugins: [{removeViewBox: false}],
-      use: [pngquant({
-        quality: '80-90',
-        speed: 4
-      })],
-      interlaced: true
-    }))
-    .pipe(gulp.dest(paths.dist.images.inline));
+Gulp.task('images:build', function (cb) {
+  return RunSequence(['images:content:build', 'images:inline:build'], cb);
 });
-gulp.task('images:content:min', function () {
-  return gulp.src(paths.dist.images.content +'**/*.*')
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(imagemin({
-      progressive: true,
-      svgoPlugins: [{removeViewBox: false}],
-      use: [pngquant({
-        quality: '80-90',
-        speed: 4
-      })],
-      interlaced: true
-    }))
-    .pipe(gulp.dest(paths.dist.images.content));
+Gulp.task('images:inline:min', function () {
+  return Gulp.src(paths.dist.images.inline +'**/*.*')
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(ImageMin(Extend(config.ImageMin, {
+      use: [PngQuant(config.PngQuant)]
+    })))
+    .pipe(Gulp.dest(paths.dist.images.inline));
 });
-gulp.task('images:min', ['images:content:min', 'images:inline:min']);
-gulp.task('images:inline:dist', ['images:inline:build'], function() {
-  return gulp.start('images:inline:min');
+Gulp.task('images:content:min', function () {
+  return Gulp.src(paths.dist.images.content)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(ImageMin(Extend(config.ImageMin, {
+      use: [PngQuant(config.PngQuant)]
+    })))
+    .pipe(Gulp.dest(paths.dist.images.content));
 });
-gulp.task('images:content:dist', ['images:content:build'], function() {
-  return gulp.start('images:content:min');
+Gulp.task('images:min', function (cb) {
+  return RunSequence(
+    ['images:content:min', 'images:inline:min'],
+    cb
+  );
 });
-gulp.task('images:dist', ['images:content:dist', 'images:inline:dist']);
+Gulp.task('images:inline:dist', function (cb) {
+  return RunSequence(
+    'images:inline:build',
+    'images:inline:min',
+    cb
+  );
+});
+Gulp.task('images:content:dist', function (cb) {
+  return RunSequence(
+    'images:content:build',
+    'images:content:min',
+    cb
+  );
+});
+Gulp.task('images:dist', function (cb) {
+  return RunSequence(
+    ['images:content:dist', 'images:inline:dist'],
+    cb
+  );
+});
 
-gulp.task('html:build', function () {
-  return gulp.src(paths.src.html)
-    .pipe(plumber({errorHandler: handleError}))
-    .pipe(rigger())
-    .pipe(gulp.dest(paths.dist.html));
+Gulp.task('html:build', function () {
+  return Gulp.src(paths.src.html)
+    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(FileInclude(config.FileInclude))
+    .pipe(Gulp.dest(paths.dist.html));
 });
-gulp.task('html:dist', ['html:build']);
+Gulp.task('html:dist', function (cb) {
+  return RunSequence('html:build', cb);
+});
 
-gulp.task('build', function() {
-  runSequence(
+Gulp.task('build', function (cb) {
+  RunSequence(
     ['removeDist', 'clearCache'],
     ['copyroot', 'fonts:build', 'js:build', 'images:build'],
-    'styles:build', 'html:build'
+    'styles:build', 'html:build',
+    cb
   );
 });
-gulp.task('dist', ['removeDist'], function() {
-  runSequence(
+Gulp.task('dist', function (cb) {
+  RunSequence(
+    'removeDist',
     ['copyroot', 'html:dist', 'js:dist', 'images:dist', 'fonts:dist'],
-    'styles:dist'
+    'styles:dist',
+    cb
   );
 });
 
-gulp.task('server', function() {
-  return browserSync({
-    port: 666,
-    server: {
-      baseDir: 'dist'
-    }
-  });
+Gulp.task('server:start', function (cb) {
+  return BrowserSync(config.BrowserSync, cb);
 });
-gulp.task('watch', ['server'], function() {
-  gulp.watch(paths.watch.images.inline, ['images:inline:build'], browserSync.reload);
-  gulp.watch(paths.watch.images.content, ['images:content:build'], browserSync.reload);
-  gulp.watch(paths.watch.css, ['css:build'], browserSync.reload({stream: true}));
-  gulp.watch(paths.watch.sass, ['sass:build'], browserSync.reload({stream: true}));
-  gulp.watch(paths.watch.js, ['js:build', browserSync.reload]);
-  gulp.watch(paths.watch.html, ['html:build', browserSync.reload]);
-  gulp.watch(paths.watch.root, ['copyroot', browserSync.reload]);
-  gulp.watch(paths.watch.fonts, ['fonts:build', browserSync.reload]);
+Gulp.task('server:stop', function () {
+  return BrowserSync.exit();
+});
+Gulp.task('watch', ['server:start'], function () {
+  Gulp.watch(paths.watch.images.inline, ['images:inline:build'], BrowserSync.reload);
+  Gulp.watch(paths.watch.images.content, ['images:content:build'], BrowserSync.reload);
+  Gulp.watch(paths.watch.css, ['css:build']
+    //,BrowserSync.reload({stream: true})
+  );
+  Gulp.watch(paths.watch.sass, ['sass:build']
+    //,BrowserSync.reload({stream: true})
+  );
+  Gulp.watch(paths.watch.js, ['js:build', BrowserSync.reload]);
+  Gulp.watch(paths.watch.html, ['html:build', BrowserSync.reload]);
+  Gulp.watch(paths.watch.root, ['copyroot', BrowserSync.reload]);
+  Gulp.watch(paths.watch.fonts, ['fonts:build', BrowserSync.reload]);
 });
 
-gulp.task('default', function() {
-  runSequence(
-    // build task
-    ['removeDist'],
+Gulp.task('default', function (cb) {
+  RunSequence(
+    'removeDist',
     ['copyroot', 'fonts:build', 'js:build', 'images:build', 'html:build'],
     'styles:build',
-    // server & watch
-    ['server', 'watch']
+    ['server:start', 'watch'],
+    cb
   );
 });
 
-
-
-//gulp.task('default', function () {
-//
-//});

@@ -16,6 +16,10 @@ require "sassy-buttons"
 # sass_dir = "scss"
 images_dir = "dist/i"
 http_images_path = "/i"
+http_generated_images_path = "/i"
+# sprite_load_path = "dist/i"
+# generated_images_dir  = "/i"
+# generated_images_path = "/i"
 # javascripts_dir = "js"
 
 # You can select your preferred output style here (can be overridden via the command line):

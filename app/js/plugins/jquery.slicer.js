@@ -10,11 +10,11 @@
   function Plugin ( element, options ) {
     this.element = element;
     this.$element = $(element);
-    this.options = $.extend(true, {}, defaults, options);
+    this.config = $.extend(true, {}, defaults, options);
     //this._defaults = defaults;
-    this._name = pluginName;
+    this.name = pluginName;
 
-    if (this.options.count && this.options.items) {
+    if (this.config.count && this.config.items) {
       this.init();
     }
   }
@@ -24,18 +24,18 @@
       var self = this;
       self.containers = [];
 
-      self.$items = $(self.options.items, self.$element);
+      self.$items = $(self.config.items, self.$element);
       self.getContainers();
       self.unwrap();
 
-      for (var i = 0; i < self.$items.length; i = i + self.options.count) {
-        self.wrap(self.$items.slice(i, i + self.options.count));
+      for (var i = 0; i < self.$items.length; i = i + self.config.count) {
+        self.wrap(self.$items.slice(i, i + self.config.count));
       }
     },
     getContainers: function ($nodes) {
       var self = this;
       $nodes = $nodes || self.$items;
-      var $parent = $nodes.parent();
+      var $parent = $nodes.parentNode();
       if (!$parent.is(self.$element)) {
         self.containers.push($parent.clone(true).html(''));
         self.getContainers($parent);
@@ -46,10 +46,10 @@
       if (!length) { return; }
 
       var $nodes = this.$items;
-      var $parent = this.$items.parent();
+      var $parent = this.$items.parentNode();
 
       while (!$parent.is(this.$element)) {
-        $parent = $parent.parent();
+        $parent = $parent.parentNode();
         $nodes.unwrap();
       }
 
@@ -59,7 +59,7 @@
       var length = self.containers.length;
       for (var i = 0; i < length; i++) {
         $nodes.wrapAll(self.containers[i].clone(true));
-        $nodes = $nodes.parent();
+        $nodes = $nodes.parentNode();
       }
     }
   });

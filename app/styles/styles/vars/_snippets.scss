@@ -1,0 +1,23 @@
+$opacity-states: ''; // selector
+$opacity-states-normal: .8;
+$opacity-states-hover: 1;
+$opacity-states-active: .5;
+
+$opacity-list: ''; // selector
+$opacity-list-child-selector: '> *';
+$opacity-list-opacity: .5;
+$opacity-list-transition: opacity .2s ease-in;
+
+$preview: ''; // selector
+$preview-image: '';
+$preview-image-hidpi: '';
+$preview-bg-inline: 1;
+$preview-opacity-normal: 0.8;
+$preview-opacity-hover: 1;
+$preview-opacity-active: 0.7;
+
+$arrow-block: ''; // selector
+$arrow-block-direction: right;
+$arrow-block-arrow-size: 80px;
+$arrow-block-bg-color: #FAEA26;
+$arrow-block-padding: 35px;

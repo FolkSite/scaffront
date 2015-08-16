@@ -142,7 +142,7 @@
             if (options.selector === 'a') {
               $self.find('li a[href~="#' + this.id + '"]').addClass(options.activeClass);
             } else {
-              $self.find('li a[href~="#' + this.id + '"]').parent().addClass(options.activeClass);
+              $self.find('li a[href~="#' + this.id + '"]').parentNode().addClass(options.activeClass);
             }
           }
         });
@@ -256,7 +256,7 @@
       $(window).scroll(mainFunc); // scroll fn end
       $(window).ready(mainFunc);
       $(window).resize(mainFunc);
-      $(window).load(mainFunc);
+      $(window).ajaxLoadFile(mainFunc);
 
     }); // return this.each end
   }; // $.fn.stickyNavbar end

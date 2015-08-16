@@ -1,0 +1,25 @@
+//*********************************************
+//    Carcass
+//*********************************************
+
+$layout-sidebars-selector-container: '.layout' !default;
+$layout-sidebars-selector-content-container: '.layout-content-container' !default;
+$layout-sidebars-selector-content: '.layout-content' !default;
+$layout-sidebars-selector-sidebar-left: '.layout-sidebar-left' !default;
+$layout-sidebars-selector-sidebar-right: '.layout-sidebar-right' !default;
+$layout-sidebars-sidebar-left-width: 250px !default;
+$layout-sidebars-sidebar-left-gutter: 20px !default;
+$layout-sidebars-sidebar-right-width: 0 !default;
+$layout-sidebars-sidebar-right-gutter: 0 !default;
+
+$layout-sticky-footer-height: 100px !default;
+$layout-sticky-footer-selector-container: '.layout' !default;
+$layout-sticky-footer-selector-content: '.layout-middle' !default;
+$layout-sticky-footer-selector-footer: '.layout-footer' !default;
+
+$layout-width: '.layout-width' !default;
+$layout-width-min: 960px !default;
+$layout-width-max: 1200px !default;
+$layout-width-side-space: 20px !default;
+$layout-width-side-space-type: padding !default; // or "margin"
+
