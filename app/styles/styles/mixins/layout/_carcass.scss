@@ -35,6 +35,7 @@ $layout-sidebars-sidebar-right-gutter: 0 !default;
   $sidebar-right-width: $layout-sidebars-sidebar-right-width,
   $sidebar-right-gutter: $layout-sidebars-sidebar-right-gutter
 ) {
+  @debug($selector-container);
   #{$selector-container} {
     @include clearfix;
   }

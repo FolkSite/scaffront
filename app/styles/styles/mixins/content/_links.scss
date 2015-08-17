@@ -36,7 +36,7 @@ $link-border-width-visited: $link-border-width-normal !default;
 ) {
   cursor: pointer;
   text-decoration : none;
-  border-type: solid;
+  border-style: solid;
   transition: all .2s ease-out;
 
   @include link-colors($color-normal, $color-hover, $color-active, $color-visited, $color-focus);
@@ -72,6 +72,14 @@ $link-border-width-visited: $link-border-width-normal !default;
     color: $color-active;
     border-color: $border-color-active;
     border-width: $border-width-active;
+
+    #{$focused} {
+      @include unfocus();
+
+      color: $color-active;
+      border-color: $border-color-active;
+      border-width: $border-width-active;
+    }
 
     // #{$hovered} {
     //  border-color: $border-normal-color;

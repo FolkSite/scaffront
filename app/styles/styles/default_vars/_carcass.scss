@@ -2,13 +2,13 @@
 //    Carcass
 //*********************************************
 
-$layout-sidebars-selector-container: '.layout' !default;
+$layout-sidebars-selector-container: '.layout-middle' !default;
 $layout-sidebars-selector-content-container: '.layout-content-container' !default;
 $layout-sidebars-selector-content: '.layout-content' !default;
 $layout-sidebars-selector-sidebar-left: '.layout-sidebar-left' !default;
 $layout-sidebars-selector-sidebar-right: '.layout-sidebar-right' !default;
-$layout-sidebars-sidebar-left-width: 250px !default;
-$layout-sidebars-sidebar-left-gutter: 20px !default;
+$layout-sidebars-sidebar-left-width: 0 !default;
+$layout-sidebars-sidebar-left-gutter: 0 !default;
 $layout-sidebars-sidebar-right-width: 0 !default;
 $layout-sidebars-sidebar-right-gutter: 0 !default;
 
