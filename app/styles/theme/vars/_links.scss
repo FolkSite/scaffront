@@ -1,0 +1,38 @@
+$link-color-normal: #0d44a0;
+$link-color-hover: $link-color-normal;
+$link-color-focus: $link-color-normal;
+$link-color-active: #ff0000;
+$link-color-visited: $link-color-normal;
+$link-border-color-normal: rgba($link-color-normal, .5);
+$link-border-color-hover: $link-color-hover;
+$link-border-color-focus: $link-color-focus;
+$link-border-color-active: $link-color-active;
+$link-border-color-visited: $link-color-visited;
+$link-border-width-normal: 0 0 1px 0;
+$link-border-width-hover: $link-border-width-normal;
+$link-border-width-focus: $link-border-width-normal;
+$link-border-width-active: $link-border-width-normal;
+$link-border-width-visited: $link-border-width-normal;
+
+$links: (
+  default: (
+    selector: '.link, %link',
+    options: (
+      $link-color-normal,
+      $link-color-hover,
+      $link-color-focus,
+      $link-color-active,
+      $link-color-visited,
+      $link-border-color-normal,
+      $link-border-color-hover,
+      $link-border-color-focus,
+      $link-border-color-active,
+      $link-border-color-visited,
+      $link-border-width-normal,
+      $link-border-width-hover,
+      $link-border-width-focus,
+      $link-border-width-active,
+      $link-border-width-visited
+    )
+  )
+);

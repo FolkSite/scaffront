@@ -1,0 +1,28 @@
+$base-font-size: 14px;
+$base-line-height: 17px;
+$base-color: #5e5e5e;
+$base-font: roboto;
+
+$selection-color: #363636;
+$selection-background: #b3d4fc;
+$selection-text-shadow: none;
+
+$color-scheme-white: #fff;
+$color-scheme-green: #30bb43;
+
+body {
+  background: #ccc;
+}
+
+$fonts: (
+  (name: roboto, type: regular, font: font-stack(RobotoRegular, tahoma), weight: 400, style: normal),
+  (name: roboto-italic, type: regular, font: font-stack(RobotoItalic, tahoma), weight: 400, style: italic),
+  (name: roboto-bold, type: regular, font: font-stack(RobotoBold, tahoma), weight: 700, style: normal),
+  (name: roboto-bold-italic, type: regular, font: font-stack(RobotoBoldItalic, tahoma), weight: 700, style: italic)
+);
+
+$validated-error-color: #ff0000;
+$validated-success-color: #3a9814;
+
+$background-size-behavior: '/js/vendor/backgroundsize.min.htc';
+

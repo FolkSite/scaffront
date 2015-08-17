@@ -1,0 +1,20 @@
+@if (type-of($links) == map) {
+  @each $type, $parameters in $links {
+    @if (type-of($parameters) == map and map-has-key($parameters, 'selector') and map-has-key($parameters, 'options')) {
+      #{map-get($parameters, 'selector')} {
+        $options: map-get($parameters, 'options');
+        @include link($options...);
+
+        &.no-border {
+          @include no-border();
+        }
+        &.pseudo,
+        &.link--pseudo {
+          @include link-pseudo();
+        }
+      }
+    }
+  }
+}
+
+

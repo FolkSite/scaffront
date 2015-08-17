@@ -1,0 +1,140 @@
+//*********************************************
+//    Buttons
+//*********************************************
+$btn: '.btn';
+$btn-block: '.btn--block, %btn--block';
+$btn-file: '.btn--file, %btn--file';
+
+$btn-height: auto;
+$btn-font-size: $base-font-size;
+$btn-line-height: 16px;
+$btn-border-width: 1px;
+$btn-padding-vertical: 5px;
+$btn-padding-horizontal: 20px;
+$btn-lines: 1;
+$btn-active-offset: 1px;
+$btn-active-offset-type: inner; // inner|outer|none/false
+
+$btn-sizes: (
+  default: (
+    selector: '.btn, %btn',
+    options: (
+      $btn-height,
+      $btn-font-size,
+      $btn-line-height,
+      $btn-border-width,
+      $btn-padding-vertical,
+      $btn-padding-horizontal,
+      $btn-lines,
+      $btn-active-offset,
+      $btn-active-offset-type
+    )
+  )
+);
+
+
+$btn-default-color-normal:  $color-scheme-white;
+$btn-default-color-focus: $btn-default-color-normal;
+$btn-default-color-hover: $color-scheme-white;
+$btn-default-color-active: $btn-default-color-hover;
+$btn-default-color-bg-normal: $color-scheme-green;
+$btn-default-color-bg-focus: $btn-default-color-bg-normal;
+$btn-default-color-bg-hover: #119b24;
+$btn-default-color-bg-active: $btn-default-color-bg-hover;
+$btn-default-color-border-normal: #30bb43;
+$btn-default-color-border-focus: $btn-default-color-border-normal;
+$btn-default-color-border-hover: $btn-default-color-border-normal;
+$btn-default-color-border-active: $btn-default-color-border-hover;
+$btn-border-radius: 4px;
+
+$btn-light-white-color-normal: $color-scheme-white;
+$btn-light-white-color-focus: $btn-light-white-color-normal;
+$btn-light-white-color-hover: $color-scheme-white;
+$btn-light-white-color-active: $btn-light-white-color-hover;
+$btn-light-white-color-bg-normal: transparent;
+$btn-light-white-color-bg-focus: $btn-light-white-color-bg-normal;
+$btn-light-white-color-bg-hover: $color-scheme-green;
+$btn-light-white-color-bg-active: $btn-light-white-color-bg-hover;
+$btn-light-white-color-border-normal: $color-scheme-white;
+$btn-light-white-color-border-focus: $btn-light-white-color-border-normal;
+$btn-light-white-color-border-hover: $color-scheme-green;
+$btn-light-white-color-border-active: $btn-light-white-color-border-hover;
+$btn-border-radius: 4px;
+
+$btn-light-green-color-normal: $color-scheme-green;
+$btn-light-green-color-focus: $btn-light-green-color-normal;
+$btn-light-green-color-hover: $color-scheme-white;
+$btn-light-green-color-active: $btn-light-green-color-hover;
+$btn-light-green-color-bg-normal: transparent;
+$btn-light-green-color-bg-focus: $btn-light-green-color-bg-normal;
+$btn-light-green-color-bg-hover: $color-scheme-green;
+$btn-light-green-color-bg-active: $btn-light-green-color-bg-hover;
+$btn-light-green-color-border-normal: $color-scheme-green;
+$btn-light-green-color-border-focus: $btn-light-green-color-border-normal;
+$btn-light-green-color-border-hover: $btn-light-green-color-border-normal;
+$btn-light-green-color-border-active: $btn-light-green-color-border-normal;
+$btn-border-radius: 4px;
+
+$btn-variants: (
+  default: (
+    selector: '.btn, %btn',
+    options: (
+      $btn-default-color-normal,
+      $btn-default-color-hover,
+      $btn-default-color-focus,
+      $btn-default-color-active,
+      $btn-default-color-bg-normal,
+      $btn-default-color-bg-hover,
+      $btn-default-color-bg-focus,
+      $btn-default-color-bg-active,
+      $btn-default-color-border-normal,
+      $btn-default-color-border-hover,
+      $btn-default-color-border-focus,
+      $btn-default-color-border-active,
+      $btn-border-radius
+    )
+  ),
+  light-white: (
+    selector: '.btn--light-white, %btn--light-white',
+    options: (
+      $btn-light-white-color-normal,
+      $btn-light-white-color-hover,
+      $btn-light-white-color-focus,
+      $btn-light-white-color-active,
+      $btn-light-white-color-bg-normal,
+      $btn-light-white-color-bg-hover,
+      $btn-light-white-color-bg-focus,
+      $btn-light-white-color-bg-active,
+      $btn-light-white-color-border-normal,
+      $btn-light-white-color-border-hover,
+      $btn-light-white-color-border-focus,
+      $btn-light-white-color-border-active,
+      $btn-border-radius
+    )
+  ),
+  light-green: (
+    selector: '.btn--light-green, %btn--light-green',
+    options: (
+      $btn-light-green-color-normal,
+      $btn-light-green-color-hover,
+      $btn-light-green-color-focus,
+      $btn-light-green-color-active,
+      $btn-light-green-color-bg-normal,
+      $btn-light-green-color-bg-hover,
+      $btn-light-green-color-bg-focus,
+      $btn-light-green-color-bg-active,
+      $btn-light-green-color-border-normal,
+      $btn-light-green-color-border-hover,
+      $btn-light-green-color-border-focus,
+      $btn-light-green-color-border-active,
+      $btn-border-radius
+    )
+  )
+);
+
+.btn, %btn {
+  #{$actived} {
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.4) inset;
+  }
+}
+
