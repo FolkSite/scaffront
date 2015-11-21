@@ -1,0 +1,100 @@
+//*********************************************
+//    Buttons
+//*********************************************
+$btn: '.btn';
+$btn-block: '.btn--block, %btn--block';
+$btn-file: '.btn--file, %btn--file';
+
+$btn-height: auto;
+$btn-font-size: $base-font-size;
+$btn-line-height: 16px;
+$btn-border-width: 1px;
+$btn-padding-vertical: 5px;
+$btn-padding-horizontal: 20px;
+$btn-lines: 1;
+$btn-active-offset: 1px;
+$btn-active-offset-type: inner; // inner|outer|none/false
+
+$btn-sizes: (
+  default: (
+    selector: '.btn, %btn',
+    options: (
+      $btn-height,
+      $btn-font-size,
+      $btn-line-height,
+      $btn-border-width,
+      $btn-padding-vertical,
+      $btn-padding-horizontal,
+      $btn-lines,
+      $btn-active-offset,
+      $btn-active-offset-type
+    )
+  )
+);
+
+
+$btn-border-radius: 4px;
+
+$btn-variants: (
+  default: (
+    selector: '.btn, %btn',
+    options: (
+      $color-scheme-white,
+      $color-scheme-white,
+      $color-scheme-white,
+      $color-scheme-white,
+      $color-scheme-green,
+      #119b24,
+      $color-scheme-green,
+      #119b24,
+      $color-scheme-green,
+      $color-scheme-green,
+      $color-scheme-green,
+      $color-scheme-green,
+      $btn-border-radius
+    )
+  ),
+  light-white: (
+    selector: '.btn--light-white, %btn--light-white',
+    options: (
+      $color-scheme-white,
+      $color-scheme-white,
+      $color-scheme-white,
+      $color-scheme-white,
+      transparent,
+      $color-scheme-green,
+      transparent,
+      $color-scheme-green,
+      $color-scheme-white,
+      $color-scheme-green,
+      $color-scheme-white,
+      $color-scheme-green,
+      $btn-border-radius
+    )
+  ),
+  light-green: (
+    selector: '.btn--light-green, %btn--light-green',
+    options: (
+      $color-scheme-green,
+      $color-scheme-white,
+      $color-scheme-green,
+      $color-scheme-white,
+      transparent,
+      $color-scheme-green,
+      transparent,
+      $color-scheme-green,
+      $color-scheme-green,
+      $color-scheme-green,
+      $color-scheme-green,
+      $color-scheme-green,
+      $btn-border-radius
+    )
+  )
+);
+
+#{map-get(map-get($btn-variants, 'default'), 'selector')} {
+  #{$actived} {
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.4) inset;
+  }
+}
+

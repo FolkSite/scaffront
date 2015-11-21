@@ -86,7 +86,7 @@ $stack: fonts-merge-with-standarts(
 @mixin font ($name, $type: regular, $stack: $stack) {
   @each $font in $stack {
     @if ($name == map-get($font, name) and $type == map-get($font, type)) {
-      font-family: unquote(map-get($font, font));
+      font-family: implode(', ', map-get($font, font));
       font-weight: map-get($font, weight);
       font-style: map-get($font, style);
     }

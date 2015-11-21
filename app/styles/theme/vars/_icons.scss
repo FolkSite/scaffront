@@ -4,7 +4,7 @@ $sprite-icons: (
   base: (
     'selector-prefix': '.icon--',
     'map': 'icons/*.png',
-    'base': false,
+    'base': true,
     'sizes-factor': 1,
     'in-links-margin': 0,
     'in-buttons-margin': 0

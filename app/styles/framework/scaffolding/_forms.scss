@@ -8,6 +8,7 @@
   }
 
   @include e(message) {
+    text-align: center;
 
     &:empty {
       display: none;

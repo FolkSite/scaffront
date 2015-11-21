@@ -1,7 +1,7 @@
 $base-font-size: 14px;
-$base-line-height: 17px;
+$base-line-height: 19px;
 $base-color: #5e5e5e;
-$base-font: roboto;
+$base-font: tahoma;
 
 $selection-color: #363636;
 $selection-background: #b3d4fc;
@@ -9,10 +9,7 @@ $selection-text-shadow: none;
 
 $color-scheme-white: #fff;
 $color-scheme-green: #30bb43;
-
-body {
-  background: #ccc;
-}
+$color-scheme-gray: #5e5e5e;
 
 $fonts: (
   (name: roboto, type: regular, font: font-stack(RobotoRegular, tahoma), weight: 400, style: normal),

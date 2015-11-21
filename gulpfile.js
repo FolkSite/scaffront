@@ -1,7 +1,36 @@
+// https://gist.github.com/HPieters/88dd18e99c8925b2cabb
+// https://github.com/BrowserSync/browser-sync/issues/786
+// http://stackoverflow.com/questions/33012041/how-i-can-use-singularity-extras-in-a-libsass-workflow
+// http://alexfedoseev.com/post/54/frontend-project-build
+
+// http://ericlbarnes.com/setting-gulp-bower-bootstrap-sass-fontawesome/
+// https://github.com/mathisonian/gulp-sass-bulk-import
+
+// http://habrahabr.ru/post/250569/#comment_8281675
+
+
+
 //'use strict';
 
+global.isProduction = (process.env.NODE_ENV === 'production');
+global.environment = (global.isProduction) ? 'production' : 'development';
+
+global.isWatching = false;
+
+var config = require('./lib/gulp/config');
+var Gulp = require('gulp');
+var Path = require('path');
+
+config.BrowserSync.instanceName = config.BrowserSync.instanceName || 'server';
+
+var tasks = require('require-dir')('./lib/gulp/tasks', {
+  recurse: true
+});
+
+
+return;
+
 var Gulp = require('gulp'),
-    Q = require('q'),
     Extend = require('extend'),
     //Changed = require('gulp-changed'),
     Tap = require('gulp-tap'),
@@ -12,12 +41,12 @@ var Gulp = require('gulp'),
     Autoprefixer = require('gulp-autoprefixer'),
     Sass = require('gulp-ruby-sass'),
     Rename = require('gulp-rename'),
-    //sourcemaps = require('gulp-sourcemaps'),
+    Sourcemaps = require('gulp-sourcemaps'),
     FileInclude = require('gulp-file-include'),
     ImageMin = require('gulp-imagemin'),
     PngQuant = require('imagemin-pngquant'),
     RimRaf = require('rimraf'),
-    CssO = require('gulp-csso'),
+    Csso = require('gulp-csso'),
     Uglify = require('gulp-uglify'),
     //closureCompiler = require('gulp-closure-compiler'),
     AutoPolyfiller = require('gulp-autopolyfiller'),
@@ -33,8 +62,22 @@ var Gulp = require('gulp'),
     Crypto = require('crypto'),
     Merge = require('event-stream').merge,
     //Nightmare = require('nightmare'),
-    Phantom = require('phantom'),
-    _ = require('lodash');
+    //Phantom = require('phantom'),
+    _ = require('lodash'),
+    del = require('del'),
+    Helpers = require('./lib/helpers/functions');
+
+//var Wrap = require('gulp-wrap');
+
+//var vinylPaths = require('vinyl-paths');
+//Gulp.task('log', function () {
+//  return Gulp.src('app/*')
+//    .pipe(vinylPaths(function (paths) {
+//      console.log('Paths:', paths);
+//      return Promise.resolve();
+//    }));
+//});
+
 
 var md5 = function (content) {
   return Crypto.createHash('md5').update(content).digest('hex');
@@ -54,6 +97,7 @@ var Is = function (file) {
   };
 };
 
+
 var paths = {
   dist: {
     html: 'dist/',
@@ -69,7 +113,7 @@ var paths = {
     fonts: 'dist/css/fonts/'
   },
   src: {
-    html: 'app/html/*.html',
+    html: 'app/html/**/*.html',
     root: 'app/root/**/*.*',
     js: [
       'app/js/**/*.js',
@@ -137,72 +181,254 @@ var config = {
     }
   },
   ImageMin: {
-    progressive: true,
-    svgoPlugins: [{removeViewBox: false}],
-    interlaced: true
-  },
-  PngQuant: {
-    quality: '80-90',
-    speed: 4
+    optimizationLevel: 2, // png
+    interlaced: true,     // gif
+    progressive: true,    // jpg
+    multipass: true,      // svg
+    svgoPlugins: [
+      { removeViewBox: false },               // don't remove the viewbox atribute from the SVG
+      { removeUselessStrokeAndFill: false },  // don't remove Useless Strokes and Fills
+      { removeEmptyAttrs: false }             // don't remove Empty Attributes from the SVG
+    ],
+    use: [
+      PngQuant({
+        quality: '80-90',
+        speed: 4
+      })
+    ]
   }
 };
-
-var startServer = function (config) {
-  config = config || config.BrowserSync;
-  return function (cb) {
-    return BrowserSync(config, cb);
-  };
-};
-
-var stopServer = function () {
-  return function () {
-    return BrowserSync.exit();
-  };
-};
-
-
-function handleError(e) {
-  console.log(e.toString());
-  this.emit('end');
-}
 
 Gulp.task('removeDist', function (cb) {
   RimRaf(paths.clean, cb);
 });
 Gulp.task('copyroot', function () {
   return Gulp.src(paths.src.root)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Gulp.dest(paths.dist.html));
 });
 
 Gulp.task('fonts:build', function () {
   return Gulp.src(paths.src.fonts)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Gulp.dest(paths.dist.fonts));
 });
 Gulp.task('fonts:dist', function (cb) {
   return RunSequence('fonts:build', cb);
 });
 
+var getRelativePath = function (from, to) {
+  var result = '';
+  from = from || null;
+  to = to || null;
+
+  if (!from) { return result; }
+
+  if (to) {
+    result = Path.relative(from, to);
+  } else if (Path.isAbsolute(from)) {
+    result = from.substr(1);
+  } else {
+    result = from;
+  }
+
+  return result;
+};
+
+/**
+ * @param {String} path
+ * @returns {Boolean}
+ */
+var hasTrailingSlash = function (path) {
+  path = path.toString() || '';
+  if (!path) { return ''; }
+
+  var lastChar = path.substr(path.length - 1);
+  return (lastChar == '/' || lastChar == '\\')
+};
+
+/**
+ * @param {String} path
+ * @returns {boolean}
+ */
+var isFile = function (path) {
+  path = path.toString() || '';
+  if (!path) { return false; }
+
+  return (!!Path.extname(path) && !hasTrailingSlash(path));
+};
+
+/**
+ *
+ * @param {{startSlash: Boolean, trailingSlash: Boolean}} [config]
+ * @param {String} [path]
+ * @param {...} [toJoin]
+ */
+var preparePath = function (config, path, toJoin) {
+  var args = _.toArray(arguments);
+
+  if (_.isPlainObject(args[0])) {
+    config = args[0];
+    path = args[1];
+    toJoin = args.slice(2);
+  } else if (_.isString(args[0])) {
+    config = {};
+    path = args[0];
+    toJoin = args.slice(1);
+  } else {
+    config = {};
+    path = null;
+    toJoin = [];
+  }
+
+  if (!path) { return ''; }
+
+  path = Path.join.apply(null, [path].concat(toJoin));
+
+  if (typeof config.startSlash != 'undefined') {
+
+    if (config.startSlash && !Path.isAbsolute(path)) {
+      path = Path.join('/', path);
+    }
+    if (!config.startSlash && Path.isAbsolute(path)) {
+      path = Path.relative('/', path);
+    }
+
+  }
+
+  if (typeof config.trailingSlash != 'undefined') {
+
+    if (config.trailingSlash && !isFile(path)) {
+      path += '/';
+    }
+    if (!config.trailingSlash) {
+      var lastChar = path.substr(path.length - 1);
+      if (lastChar == '/' || lastChar == '\/') {
+        path = path.substr(0, path.length - 1);
+      }
+    }
+
+  }
+
+  path = Path.normalize(path);
+
+  return path;
+};
+
+/**
+ *
+ * @param {String} sourceDir For example: 'app/scripts/plugins'
+ * @param {String} destDir For example: 'dist/js/plugins'
+ * @param {String} src For example: '*.js'
+ * @param {String} [watch] For example: '**\/*.js' (without backslash)
+ * @param {String|[]} [srcFilter] For example: ['*', '!_*]
+ * @param {String|[]} [watchFilter] For example: ['*', '!_*]
+ */
+var getConfig = function (sourceDir, destDir, src, watch, srcFilter, watchFilter) {
+  sourceDir = preparePath({startSlash: false, trailingSlash: false}, sourceDir);
+  destDir = preparePath({startSlash: false, trailingSlash: true}, destDir);
+
+  return {
+    src: Path.join(sourceDir, src),
+    dest: destDir,
+    watch: (watch) ? Path.join(sourceDir, watch) : false,
+    srcFilter: srcFilter || [],
+    watchFilter: watchFilter || []
+  };
+};
+
+var configTest = {
+  js: {
+    vendors: (function () {
+      var sourceDir = 'app/scripts/vendor';
+
+      return {
+        src: Path.join(sourceDir, '*.js'),
+        filter: [],
+        dest: 'dist/js/vendor/',
+        watch: Path.join(sourceDir, '*.js'),
+      };
+    })(),
+    plugins: getConfig('app/scripts/plugins', 'dist/js/plugins', '*.js', '**/*.js'),
+    app: getConfig('app/scripts/app', 'dist/js', '*.js', '**/*.js'),
+  }
+};
+
+
+
+Gulp.task('js:test', function () {
+  var filter = Filter(['*', '!_*', '!']);
+
+  //var src =
+  return Gulp.src(Path.join(getRelativePath(configTest.js.baseDir, configTest.js.src)))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
+
+    .pipe(Tap(function (file) {
+      var filename = Path.basename(file.path);
+      console.log('before', filename);
+    }))
+
+    .pipe(Filter(function (file) {
+      var is = Is(file);
+      return !is.underscored;
+    }))
+
+    .pipe(Tap(function (file) {
+      var filename = Path.basename(file.path);
+      console.log('after', filename);
+    }))
+
+    //.pipe(Sourcemaps.init())
+    .pipe(FileInclude(config.FileInclude))
+    //.pipe(Sourcemaps.write('maps', {
+    //  includeContent: true,
+    //  sourceRoot: paths.src.js
+    //}))
+    .pipe(Gulp.dest(paths.dist.js));
+});
+
 Gulp.task('js:app', function () {
+  var filter = Filter(['*', '!_*']);
   return Gulp.src(paths.src.js)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
+
+    .pipe(Tap(function (file) {
+      var filename = Path.basename(file.path);
+      console.log('before', filename);
+    }))
+
     //.pipe(Changed(paths.dist.js))
     .pipe(Filter(function (file) {
       var is = Is(file);
       return !is.underscored;
     }))
+
+    //.pipe(Filter(function (file) {
+    //  var is = Is(file);
+    //  return !is.underscored;
+    //}))
+
+    .pipe(Tap(function (file) {
+      var filename = Path.basename(file.path);
+      console.log('after', filename);
+    }))
+
+    //.pipe(Sourcemaps.init())
     .pipe(FileInclude(config.FileInclude))
+    //.pipe(Sourcemaps.write('maps', {
+    //  includeContent: true,
+    //  sourceRoot: paths.src.js
+    //}))
     .pipe(Gulp.dest(paths.dist.js));
 });
 Gulp.task('js:vendors', function() {
   return Gulp.src(paths.src.jsVendors)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Gulp.dest(paths.dist.jsVendors));
 });
 Gulp.task('js:polyfilly', function(cb) {
   return Gulp.src(paths.dist.js +'/*.js')
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Filter(function (file) {
       var is = Is(file);
       return is.js && !is.minified;
@@ -231,7 +457,7 @@ Gulp.task('js:build', function (cb) {
 });
 Gulp.task('js:min', function () {
   return Gulp.src(paths.dist.js +'/**/*.js')
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Filter(function (file) {
       var is = Is(file);
       return is.js && !is.minified;
@@ -255,24 +481,30 @@ Gulp.task('js:dist', function (cb) {
 
 Gulp.task('sass:build', function () {
   return Sass(paths.src.sass, {
-    style: 'expanded',
-    debugInfo: true,
+    //style: 'expanded',
+    //debugInfo: true,
     sourcemap: true,
-    compass: true
+    compass: true,
+    loadPath: [
+      paths.src.sass,
+      config.bower.src
+    ]
   }).on('error', function (err) {
     console.error(err);
     //throw new Error (err);
   })
-  //.pipe(sourcemaps.write({
-  //  includeContent: false,
-  //  sourceRoot: paths.src.sass
-  //}))
+  .pipe(Sourcemaps.write('maps', {
+    includeContent: true,
+    sourceRoot: paths.src.sass
+  }))
   .pipe(Gulp.dest(paths.dist.css))
   .pipe(BrowserSync.reload({stream: true}));
+  // http://www.browsersync.io/docs/gulp/
+  //pipe(browserSync.stream({match: '**/*.css'}));
 });
 Gulp.task('css:build', function () {
   return Gulp.src(paths.src.css)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     //.pipe(Changed(paths.dist.css))
     //.pipe(sourcemaps.init())
     .pipe(Filter(function (file) {
@@ -295,6 +527,10 @@ Gulp.task('styles:critical:clean', function (cb) {
   return RimRaf(paths.dist.criticalCss, cb);
 });
 Gulp.task('styles:critical:build', function (cb) {
+
+  //https://github.com/BrowserSync/browser-sync/blob/master/test/specs/instances/multi.proxy.js#L46
+  //https://github.com/BrowserSync/browser-sync/issues/816
+  return;
 
   console.time('criticalCss');
 
@@ -367,8 +603,8 @@ Gulp.task('styles:critical:build', function (cb) {
 
   var localServer = BrowserSync.create('CriticalCSS-'+ (new Date()).getTime());
   localServer.init(config.BrowserSyncDist, function () {
-    nm.goto('http://localhost:1313/index.html');
-    //nm.goto('http://localhost:1313/index.html');
+    nm.goto('http://localhost:1313/index.tpl');
+    //nm.goto('http://localhost:1313/index.tpl');
     //nm.goto('http://yandex.ru');
     nm.wait();
     //nm.screenshot('criticalcss/'+ (new Date).getTime() +'.png');
@@ -457,7 +693,7 @@ Gulp.task('styles:critical:build', function (cb) {
   //  //  console.log(path.basename(file.path));
   //  //}))
   //    .pipe(Concat(tmpFilename, {stat: {mode: '0666'}}))
-  //    .pipe(CssO())
+  //    .pipe(Csso())
   //    .pipe(Gulp.dest(tmpDir))
   //    .pipe(Callback(function() {
   //      stylesConcatDeferred.resolve();
@@ -529,11 +765,11 @@ Gulp.task('styles:critical:build', function (cb) {
   //
   //    var notMinFilter = Filter(['*.css', '!*.min.css']);
   //    return Gulp.src(paths.dist.criticalCss +'*.css')
-  //        .pipe(Plumber({errorHandler: handleError}))
+  //        .pipe(Plumber(Helpers.plumberErrorHandler))
   //      //.pipe(Count('## before filter'))
   //        .pipe(notMinFilter)
   //      //.pipe(Count('## after filter'))
-  //        .pipe(CssO())
+  //        .pipe(Csso())
   //        .pipe(Tap(function (file,t) {
   //          var File = parsePath(file.path);
   //          var filename = File.basename +'.html';
@@ -594,13 +830,13 @@ Gulp.task('styles:critical', function (cb) {
 });
 Gulp.task('styles:min', function () {
   return Gulp.src(paths.dist.css +'/**/*.css')
-      .pipe(Plumber({errorHandler: handleError}))
+      .pipe(Plumber(Helpers.plumberErrorHandler))
       .pipe(Filter(function (file) {
         var is = Is(file);
         return is.css && !is.minified;
       }))
       .pipe(Autoprefixer(config.Autoprefixer))
-      .pipe(CssO())
+      .pipe(Csso())
       .pipe(Rename(function (path) {
         if (!path.basename.match(/\.min$/)) {
           path.basename += '.min';
@@ -627,13 +863,13 @@ Gulp.task('styles:dist', function(cb) {
 
 Gulp.task('images:content:build', function () {
   return Gulp.src(paths.src.images.content)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Cache('images:content:build'))
     .pipe(Gulp.dest(paths.dist.images.content));
 });
 Gulp.task('images:inline:build', function () {
   return Gulp.src(paths.src.images.inline)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Cache('images:inline:build'))
     .pipe(Gulp.dest(paths.dist.images.inline));
 });
@@ -642,18 +878,14 @@ Gulp.task('images:build', function (cb) {
 });
 Gulp.task('images:inline:min', function () {
   return Gulp.src(paths.dist.images.inline +'**/*.*')
-    .pipe(Plumber({errorHandler: handleError}))
-    .pipe(ImageMin(Extend(config.ImageMin, {
-      use: [PngQuant(config.PngQuant)]
-    })))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
+    .pipe(ImageMin(config.ImageMin))
     .pipe(Gulp.dest(paths.dist.images.inline));
 });
 Gulp.task('images:content:min', function () {
   return Gulp.src(paths.dist.images.content)
-    .pipe(Plumber({errorHandler: handleError}))
-    .pipe(ImageMin(Extend(config.ImageMin, {
-      use: [PngQuant(config.PngQuant)]
-    })))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
+    .pipe(ImageMin(config.ImageMin))
     .pipe(Gulp.dest(paths.dist.images.content));
 });
 Gulp.task('images:min', function (cb) {
@@ -685,7 +917,7 @@ Gulp.task('images:dist', function (cb) {
 
 Gulp.task('html:build', function () {
   return Gulp.src(paths.src.html)
-    .pipe(Plumber({errorHandler: handleError}))
+    .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(FileInclude(config.FileInclude))
     .pipe(Gulp.dest(paths.dist.html));
 });

@@ -1,8 +1,8 @@
 User-agent: Yandex
 Disallow:
-# Host: http://localhost
-# Sitemap: http://localhost/sitemap.xml
+Host: agrokomplect.ru
+# Sitemap: http://agrokomplect.ru/sitemap.xml
 
 User-agent: *
 Disallow:
-# Sitemap: http://localhost/sitemap.xml
+# Sitemap: http://agrokomplect.ru/sitemap.xml

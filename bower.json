@@ -1,0 +1,26 @@
+{
+  "name": "gulp-boilerplate",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "antixrist"
+  ],
+  "license": "WTFPL",
+  "keywords": [
+    "starter"
+  ],
+  "moduleType": [],
+  "homepage": "http://github.com/antixrist/gulp-boilerplate",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/scripts/bower_components",
+    "test",
+    "tests",
+    "Gemfile",
+    "Gemfile.lock",
+    "*.gemspec"
+  ]
+}

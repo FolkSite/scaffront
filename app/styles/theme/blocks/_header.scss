@@ -1,0 +1,120 @@
+.layout-header {
+  @include bg-image($image: 'bg-header.jpg', $color: #606c6e, $inline: false);
+  @include bg-size(cover);
+
+  @include e(inner) {
+    padding-bottom: 20px;
+  }
+
+  @include m(slider) {
+    background: none;
+    @include bg-size(auto);
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 105px;
+  }
+}
+
+.header {
+  color: $color-scheme-white;
+
+  &.header--dark {
+    color: $color-scheme-gray;
+  }
+
+  @include e(top, bottom) {
+    @include clearfix;
+  }
+
+  @include e(top) {
+    margin-bottom: 15px;
+
+    @include auto-colums(
+      $gutter: 45px,
+      $selector-content: '.header__center',
+      $selector-aside-left: '.header__left',
+      $selector-aside-right: '.header__right'
+    );
+  }
+
+  .header__center {
+    overflow: visible; // fix auto-colums
+  }
+
+  //.menu {
+  //  @include clearfix;
+  //
+  //  ul {
+  //    //@include ib ($full-width: false, $child-selector: 'li', $font-size: 15px);
+  //  }
+  //  li {
+  //    float: left;
+  //    margin-left: 20px;
+  //
+  //    &:first-child {
+  //      margin-left: 0;
+  //    }
+  //
+  //    li {
+  //      float: none;
+  //    }
+  //  }
+  //}
+
+  .logo {
+    a {
+      padding: 18px 0 0 5px;
+      display: block;
+    }
+    img {
+
+    }
+  }
+
+  .contacts {
+    padding-top: 28px;
+    margin-bottom: 0;
+    margin-top: 0;
+
+    .go-to-modal {
+
+    }
+
+    .phones {
+      font-weight: bold;
+      vertical-align: middle;
+      display: inline-block;
+      margin-left: 20px;
+      font-size: 15px;
+    }
+    .phone {
+      display: block;
+      margin-top: 3px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .breadcrumbs {
+    margin-top: 10px;
+  }
+
+  .page-title {
+    @include font(roboto);
+    margin-top: 20px;
+    max-width: 50%;
+    font-weight: normal;
+  }
+
+
+}
+
+.page-title {
+  font-size: 30px;
+  line-height: 1.3;
+}
+

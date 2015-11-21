@@ -1,0 +1,27 @@
+config.param1: {{config.param1}}
+<ul>
+  {{#each items}}
+    <li>I agree. I {{emotion}} {{upcase name}}</li>
+  {{/each}}
+</ul>
+
+{{#if isProduction}}
+  is Production!!
+{{else}}
+  is Development!!
+{{/if}}
+
+
+{{!--{{raw}}}}
+{{bar}}
+{{{{/raw}}--}}
+
+{{#raw}}
+  {{bar}}
+{{/raw}}
+
+{{#raw}}
+{{foo}}
+{{/raw}}
+
+{{default qweqweqwe "No qweqweqwe available."}}

@@ -32,12 +32,13 @@ $link-border-width-visited: $link-border-width-normal !default;
   $border-width-hover: $link-border-width-hover,
   $border-width-focus: $link-border-width-focus,
   $border-width-active: $link-border-width-active,
-  $border-width-visited: $link-border-width-visited
+  $border-width-visited: $link-border-width-visited,
+  $transition: .2s ease-out
 ) {
   cursor: pointer;
   text-decoration : none;
   border-style: solid;
-  transition: all .2s ease-out;
+  transition: color $transition, border-width $transition, border-color $transition;
 
   @include link-colors($color-normal, $color-hover, $color-active, $color-visited, $color-focus);
   border-color: $border-color-normal;

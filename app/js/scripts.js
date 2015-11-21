@@ -1,53 +1,11 @@
-(function (window, document, $, undefined) {
+try{(function (window, document, $, undefined) {
 
-  var qwe = {};
-  if (Array.isArray(qwe)) {
-    console.log(qwe);
-  }
-
-  if (typeof bbc != 'undefined') {
-
-    bbc.debug = true;
-
-    $(document).on('click', '[data-bbc]:not(form)', function (e) {
-      bbc(this);
-    });
-
-    if (typeof cbhEvents != 'undefined') {
-      cbhEvents.on('phoneClick', function () {
-        bbc.metrika.push('CallbackHunter.phoneClick');
-      }).on('callbackSubmit', function () {
-        bbc.metrika.push('CallbackHunter.callbackSubmit');
-      }).on('callbackDeferredSubmit', function () {
-        bbc.metrika.push('CallbackHunter.callbackDeferredSubmit');
-      }).on('callbackLetterSubmit', function () {
-        bbc.metrika.push('CallbackHunter.callbackLetterSubmit');
-      });
-    }
-
-  }
-
-
-  if (typeof $.fn.afl != 'undefined') {
-    $('.form').afl({
-
-    }).on('success.afl', function () {
-      var $form = $(this);
-      (typeof bbc != 'undefined') && bbc($form);
-
-      var thanksPage = $form.attr('data-thanks-page');
-      var targetBlank = $form.attr('data-thanks-page-target-blank');
-      if (thanksPage) {
-        if (!!targetBlank) {
-          window.open(thanksPage, '_blank'); // опасно! браузер такое блокирует
-        } else {
-          window.location.href = thanksPage;
-        }
-      }
-    }).on('ajaxError.afl', function () {
-
-    });
-  }
+  //= include('include/forms.js')
+  //= include('include/modals.js')
+  //= include('include/product-slider.js')
+  //= include('include/layout-slider.js')
+  //= include('include/yt-video-ratio.js')
+  //= include('include/bbc.js')
 
 
 
@@ -73,4 +31,15 @@
    */
 
 
-})(window, document, jQuery);
+  $(document).on('mouseenter', '.catalog--pick-out .catalog__item', function () {
+    var $node = $(this);
+
+    $node.css({height: $node.outerHeight()}).addClass('hover');
+  }).on('mouseleave', '.catalog--pick-out .catalog__item', function () {
+    var $node = $(this);
+    $node.css({height: 'auto'}).removeClass('hover');
+  });
+
+})(window, document, jQuery);} catch (e) { console.error(e); }
+
+

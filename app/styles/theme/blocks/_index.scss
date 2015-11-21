@@ -1,7 +1,115 @@
+%base-text {
+  color: $color-scheme-gray;
+  font-size: 12px;
+  line-height: 1.2em;
+}
 
-i, em {
+%layout-content-title {
+  color: $color-scheme-gray;
+  font-weight: normal;
+  font-size: 50px;
+  line-height: 1.2;
+}
 
-  b, strong {
-
+.pub-date, %pub-date {
+  mark {
+    background: none;
+    color: $color-scheme-green;
   }
 }
+
+@import '_header';
+@import '_footer';
+
+@import '_menu';
+@import '_breadcrumbs';
+@import '_content-columns';
+@import '_partners';
+@import '_contacts';
+@import '_form-price-list';
+@import '_map';
+@import '_catalog';
+@import '_product';
+@import '_product-slider';
+@import '_news';
+@import '_layout-slider';
+@import '_text-content';
+@import '_content-nav';
+@import '_articles';
+
+
+body {
+  background: #fff;
+}
+
+.layout-content-container {
+
+  .layout-content {
+    @extend %base-text;
+
+    &:first-child {
+      padding-top: 30px;
+    }
+    &:last-child {
+      padding-bottom: 30px;
+    }
+
+    @include e(inner) {
+      //padding-top: 30px;
+      padding-bottom: 50px;
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    &:last-child {
+
+      .layout-content__inner {
+        padding-bottom: 0;
+      }
+    }
+
+
+    @include e(title) {
+      @extend %layout-content-title;
+      @include font(roboto);
+
+      border-top: 1px solid #e8e8e8;
+      padding-top: 30px;
+      margin-bottom: 45px;
+    }
+
+    @include m(marked) {
+      background: inline-image('layout-content-marked-bg.png') repeat-x top left transparent;
+      @include bg-size(auto 100%);
+
+      .layout-content__inner {
+        border: none;
+      }
+    }
+
+    &.layout-map {
+      &,
+      .layout-content__inner {
+        position: relative;
+      }
+
+      &,
+      &:last-child,
+      .layout-content__inner {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .layout-content__inner {
+        border: none;
+      }
+    }
+  }
+}
+
+.mfp-bg {
+  background: #fff;
+}
+

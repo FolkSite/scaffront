@@ -1,0 +1,11 @@
+{
+  "config": {
+    "param1": "qweqweqweqwe",
+    "param2": 123234345456
+  },
+  "title": "Its a title!",
+  "user": {
+    "username": "Its username",
+    "description": "Its description!"
+  }
+}

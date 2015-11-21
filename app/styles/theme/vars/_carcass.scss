@@ -8,15 +8,17 @@ $layout-sidebars-selector-content: '.layout-content';
 $layout-sidebars-selector-sidebar-left: '.layout-sidebar-left';
 $layout-sidebars-selector-sidebar-right: '.layout-sidebar-right';
 
-$layout-sticky-footer-height: 100px;
+$layout-sticky-footer-height: 165px;
 $layout-sticky-footer-selector-container: '.layout';
 $layout-sticky-footer-selector-content: '.layout-middle';
 $layout-sticky-footer-selector-footer: '.layout-footer';
 
 $layout-width-selector: '.layout-width, %layout-width';
-$layout-width-min: 960px;
-$layout-width-max: 1200px;
-$layout-width-side-space: 20px;
+$layout-width-selector-min: '.layout-width-min, %layout-width-min';
+$layout-width-selector-max: '.layout-width-max, %layout-width-max';
+$layout-width-min: 1100px;
+$layout-width-max: 1300px;
+$layout-width-side-space: 50px;
 $layout-width-side-space-type: padding; // or "margin"
 
 $layouts: (
@@ -29,8 +31,8 @@ $layouts: (
         'selector-content': $layout-sidebars-selector-content,
         'selector-sidebar-left': $layout-sidebars-selector-sidebar-left,
         'selector-sidebar-right': $layout-sidebars-selector-sidebar-right,
-        'sidebar-left-width': 150px,
-        'sidebar-left-gutter': 20px,
+        'sidebar-left-width': 0,
+        'sidebar-left-gutter': 0,
         'sidebar-right-width': 0,
         'sidebar-right-gutter': 0
       ),
@@ -42,6 +44,8 @@ $layouts: (
       ),
       width: (
         'selector': $layout-width-selector,
+        'selector-min': $layout-width-selector-min,
+        'selector-max': $layout-width-selector-max,
         'min': $layout-width-min,
         'max': $layout-width-max,
         'side-space': $layout-width-side-space,
@@ -49,4 +53,4 @@ $layouts: (
       )
     )
   )
-) !default;
+);

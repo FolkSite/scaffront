@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "name": "Handlebars",
+      "emotion": "love"
+    },
+    {
+      "name": "Mustache",
+      "emotion": "enjoy"
+    },
+    {
+      "name": "SproutCore",
+      "emotion": "want to learn"
+    }
+  ],
+  "comments": [
+    {
+      "author": {
+        "firstName": "Yehuda",
+        "lastName": "Katz"
+      },
+      "body": "Me too!"
+    }
+  ],
+  "body": "I Love Handlebars",
+  "author": {
+    "firstName": "Alan",
+    "lastName": "Johnson"
+  }
+}

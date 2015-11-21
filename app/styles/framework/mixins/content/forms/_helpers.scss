@@ -51,8 +51,8 @@
     border-width: $border-width
   );
 
-  $borders-height-px: dimensions-sum($unit: px, $dimentions: $border-width, $font-size: $font-size, $dir: vertical);
-  $paddings-height-px: dimensions-sum($unit: px, $dimentions: $padding-vertical, $font-size: $font-size, $dir: vertical);
+  $borders-height-px: dimensions-sum($unit: px, $dimensions: $border-width, $font-size: $font-size, $dir: vertical);
+  $paddings-height-px: dimensions-sum($unit: px, $dimensions: $padding-vertical, $font-size: $font-size, $dir: vertical);
   $line-height-px: to-unit($unit: px, $value: $line-height, $font-size: $font-size);
   $row-height-px: $line-height-px;
   $inner-height-px: $row-height-px + $paddings-height-px;

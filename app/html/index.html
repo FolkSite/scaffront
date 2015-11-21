@@ -1,53 +1,36 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
+//= include('chunks/ieclasses.html')
   <head>
 //= include('chunks/template/styles.html')
 //= include('chunks/scaffolding/head.html')
 //= include('chunks/template/meta.html')
 //= include('chunks/template/favicons.html')
-//= include('chunks/index/head.html')
   </head>
   <body>
     <div class="layout">
-      <div class="layout-width">
 //= include('chunks/scaffolding/browserupgrade.html')
-        <div class="layout-header">
-  //= include('chunks/template/header.html')
-  //= include('chunks/index/header.html')
+      <div class="layout-middle">
+        <div class="layout-content-container">
+
+          <main class="layout-content" role="main">
+            <div class="layout-content__inner">
+
+
+            </div>
+          </main>
+
         </div>
-        <div class="layout-middle">
-          <div class="layout-content-container">
-            <main class="layout-content" role="main">
-              <!--content here-->
-  //= include('chunks/template/content.html')
-  //= include('chunks/index/content.html')
-            </main>
-          </div>
-          <aside class="layout-sidebar-left">
-  //= include('chunks/template/sidebar-left.html')
-  //= include('chunks/index/sidebar-left.html')
-          </aside>
-          <aside class="layout-sidebar-right">
-  //= include('chunks/template/sidebar-right.html')
-  //= include('chunks/index/sidebar-right.html')
-          </aside>
-        </div>
+        <aside class="layout-sidebar-left"></aside>
+        <aside class="layout-sidebar-right"></aside>
       </div>
     </div>
     <footer class="layout-footer">
-      <div class="layout-width">
+      <div class="layout-footer__inner">
 //= include('chunks/template/footer.html')
-//= include('chunks/index/footer.html')
       </div>
     </footer>
 //= include('chunks/scaffolding/scripts.html')
 //= include('chunks/template/scripts.html')
-//= include('chunks/index/scripts.html')
 //= include('chunks/scaffolding/scripts.counters.html')
-<!--// = include('index/scripts.ya.map.html')-->
   </body>
 </html>
 

@@ -1,0 +1,82 @@
+$content-nav-fs: 18px;
+
+.content-nav {
+  font-size: $content-nav-fs;
+  line-height: 1.1em;
+
+  @include auto-colums ($gutter: $content-gutter *3);
+
+  @include e(prev, next, pagination) {
+    margin: 0;
+  }
+  @include e(prev) {
+    @include auto-colums-aside ($position: 'left', $gutter: $content-gutter);
+  }
+  @include e(next) {
+    @include auto-colums-aside ($position: 'right', $gutter: $content-gutter);
+  }
+  @include e(pagination) {
+    @include auto-colums-content();
+  }
+}
+
+.pagination {
+  font-size: $content-nav-fs;
+  line-height: 1.4em;
+
+  @include clearfix;
+
+  @include e(list) {
+    @include unlist;
+    @include ib($child-selector: '', $font-size: $content-nav-fs);
+
+    text-align: center;
+  }
+
+  $link-side-space: $content-gutter/2;
+  @include e(item) {
+    @include unlist-item;
+    @include ib-child ($width: auto, $font-size: $content-nav-fs);
+
+    line-height: 1.1em;
+    margin-left: 1px;
+    padding: 0 $link-side-space;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    @include m(active) {
+
+    }
+  }
+
+  @include e(link) {
+    display: block;
+    //margin: 0 $link-side-space;
+    position: relative;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: $link-side-space;
+    }
+
+    &:before {
+      right: 100%;
+    }
+    &:after {
+      left: 100%;
+    }
+  }
+}
+
+.content-nav,
+.pagination {
+  a {
+    @extend .link--green;
+  }
+}

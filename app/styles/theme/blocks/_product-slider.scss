@@ -1,0 +1,190 @@
+
+.js-slider {
+
+  .slick-slider {
+    margin-bottom: 0;
+  }
+
+  @include e(slide, preview) {
+    display: block;
+
+    &, a, img {
+      @extend .no-border;
+    }
+    img {
+      @extend .visuallyhidden;
+    }
+  }
+
+  // Slides
+  @include e(slides) {
+    margin-bottom: 20px;
+
+  }
+    @include e(slides-viewport) {
+      overflow: hidden;
+
+    }
+      @include e(slide) {
+
+      }
+        @include e(slide-content) {
+          display: block;
+          @include ir ($ratio: 550/350, $position: center, $elements: '.js-slider__slide-inner');
+        }
+          @include e(slide-inner) {
+            display: block;
+            background-repeat: no-repeat;
+            background-position: center center;
+            @include bg-size(cover);
+          }
+    @include e(slides-arrows) {
+
+    }
+
+  // Previews
+  $previewsGutter: 10px;
+  @include e(previews) {
+    position: relative;
+    margin-bottom: 20px;
+
+    .slick-list {
+      overflow: hidden;
+      margin-left: -($previewsGutter);
+    }
+  }
+    @include e(previews-viewport) {
+      position: relative;
+      overflow: hidden;
+    }
+      @include e(preview) {
+        padding-left: $previewsGutter;
+
+        // active item
+      }
+        @include e(preview-content) {
+          display: block;
+          cursor: pointer;
+          @include ir ($ratio: 130/90, $position: center, $elements: '.js-slider__preview-inner');
+        }
+          @include e(preview-inner) {
+            display: block;
+            background-repeat: no-repeat;
+            background-position: center center;
+            @include bg-size(cover);
+
+            .slick-current & {
+
+              &:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left:0;
+                border: 2px solid $color-scheme-green;
+              }
+            }
+          }
+    @include e(previews-arrows) {
+      $arrows: (
+        prev: (
+          normal: 'arrow-left',
+          hover: 'arrow-left--active',
+        ),
+        next: (
+          normal: 'arrow-right',
+          hover: 'arrow-right--active',
+        ),
+      );
+
+      .slick-arrow {
+        @extend .icon;
+        z-index: 200;
+
+        $icons-setup: map-get($sprite-icons, 'base');
+        $sprite-map: get-sprite-map(map-get($icons-setup, 'map'));
+
+        #{$actived} {
+          opacity: .8;
+        }
+
+        &.slick-prev {
+          &:before {
+            display: none;
+          }
+
+          $arrow-icon: map-get(map-get($arrows, 'prev'), 'normal');
+          $arrow-icon-data: get-sprite-icon-info($map: $sprite-map, $name: $arrow-icon, $file: false, $sizes: true, $offset: false);
+
+          @extend #{map-get($icons-setup, 'selector-prefix')}#{unquote($arrow-icon)};
+
+          $arrow-icon-width: map-get($arrow-icon-data, 'width');
+          $arrow-icon-height: map-get($arrow-icon-data, 'height');
+          @include side-position-outer(
+          $position: 'center left',
+          $width: $arrow-icon-width,
+          $height: $arrow-icon-height,
+          $offset-x: -($arrow-icon-width /2),
+          $offset-y: 0
+          );
+
+          #{$hovered} {
+            $arrow-icon: map-get(map-get($arrows, 'prev'), 'hover');
+            $arrow-icon-data: get-sprite-icon-info($map: $sprite-map, $name: $arrow-icon, $file: false, $sizes: true, $offset: false);
+
+            @extend #{map-get($icons-setup, 'selector-prefix')}#{unquote($arrow-icon)};
+
+            $arrow-icon-width: map-get($arrow-icon-data, 'width');
+            $arrow-icon-height: map-get($arrow-icon-data, 'height');
+            @include side-position-outer(
+            $position: 'center left',
+            $width: $arrow-icon-width,
+            $height: $arrow-icon-height,
+            $offset-x: -($arrow-icon-width /2),
+            $offset-y: 0
+            );
+          }
+        }
+        &.slick-next {
+          &:before {
+            display: none;
+          }
+
+          $arrow-icon: map-get(map-get($arrows, 'next'), 'normal');
+          $arrow-icon-data: get-sprite-icon-info($map: $sprite-map, $name: $arrow-icon, $file: false, $sizes: true, $offset: false);
+
+          @extend #{map-get($icons-setup, 'selector-prefix')}#{unquote($arrow-icon)};
+
+          $arrow-icon-width: map-get($arrow-icon-data, 'width');
+          $arrow-icon-height: map-get($arrow-icon-data, 'height');
+          @include side-position-outer(
+          $position: 'center right',
+          $width: $arrow-icon-width,
+          $height: $arrow-icon-height,
+          $offset-x: -($arrow-icon-width /2),
+          $offset-y: 0
+          );
+
+          #{$hovered} {
+            $arrow-icon: map-get(map-get($arrows, 'next'), 'hover');
+            $arrow-icon-data: get-sprite-icon-info($map: $sprite-map, $name: $arrow-icon, $file: false, $sizes: true, $offset: false);
+
+            @extend #{map-get($icons-setup, 'selector-prefix')}#{unquote($arrow-icon)};
+
+            $arrow-icon-width: map-get($arrow-icon-data, 'width');
+            $arrow-icon-height: map-get($arrow-icon-data, 'height');
+            @include side-position-outer(
+            $position: 'center right',
+            $width: $arrow-icon-width,
+            $height: $arrow-icon-height,
+            $offset-x: -($arrow-icon-width /2),
+            $offset-y: 0
+            );
+          }
+        }
+      }
+    }
+}
+
+

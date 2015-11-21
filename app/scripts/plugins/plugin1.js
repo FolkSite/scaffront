@@ -1,0 +1,1 @@
+var itsPlugin1 = true;

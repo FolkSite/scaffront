@@ -1,8 +1,11 @@
 require "compass"
 require "breakpoint"
+require "breakpoint-slicer"
 require "singularitygs"
 require "toolkit"
+require "SassyLists"
 require "sassy-buttons"
+require "singularity-quick-spanner"
 
 # require "sass-css-importer"
 # require "compass-recipes"

@@ -116,8 +116,10 @@ $layout-sticky-footer-selector-footer: '.layout-footer' !default;
   $selector-footer: $layout-sticky-footer-selector-footer
 ) {
   @if (type-of($height) == number and $height > 0) {
-    html, body {
-      height: 100%;
+    @at-root {
+      html, body {
+        height: 100%;
+      }
     }
 
     #{unquote($selector-container)} {
@@ -136,51 +138,86 @@ $layout-sticky-footer-selector-footer: '.layout-footer' !default;
       margin-top: -$height;
       height: $height;
       position: relative;
-      overflow: hidden;
+      //overflow: hidden;
     }
   }
 }
+
+
 
 $layout-width-min: 960px !default;
 $layout-width-max: 1200px !default;
 $layout-width-side-space: 50px !default;
 $layout-width-side-space-type: padding !default; // or "margin"
+
+@mixin layout-width-min (
+  $width: $layout-width-min,
+  $side-space: $layout-width-side-space,
+  $side-space-type: $layout-width-side-space-type
+) {
+  @if (type-of($width) == number and $width > 0) {
+    margin-left: auto;
+    margin-right: auto;
+
+    @if (type-of($side-space) == number and $side-space > 0) {
+      $side-space-type: unquote($side-space-type);
+      $min-width: $width;
+
+      @if ($side-space-type != padding) {
+        $side-space-type: margin;
+        $min-width: $width - $side-space*2;
+      }
+
+      min-width: $min-width;
+      #{$side-space-type}-left: $side-space;
+      #{$side-space-type}-right: $side-space;
+    }
+  }
+}
+
+@mixin layout-width-max (
+  $width: $layout-width-max,
+  $side-space: $layout-width-side-space,
+  $side-space-type: $layout-width-side-space-type
+) {
+  @if (type-of($width) == number and $width > 0) {
+    margin-left: auto;
+    margin-right: auto;
+
+    @if (type-of($side-space) == number and $side-space > 0) {
+      $side-space-type: unquote($side-space-type);
+      $max-width: $width;
+
+      @if ($side-space-type != padding) {
+        $side-space-type: margin;
+        $max-width: $width - $side-space*2;
+      }
+
+      max-width: $max-width;
+      #{$side-space-type}-left: $side-space;
+      #{$side-space-type}-right: $side-space;
+    }
+  }
+}
+
 @mixin layout-width (
-  $selector: '',
   $min: $layout-width-min,
   $max: $layout-width-max,
   $side-space: $layout-width-side-space,
   $side-space-type: $layout-width-side-space-type
 ) {
-  @if ($selector != '') {
-    @if (
-      (type-of($min) == number and $min > 0) or
-      (type-of($max) == number and $max > 0)
-    ) {
 
-      #{$selector} {
-        margin-left: auto;
-        margin-right: auto;
+  @include layout-width-min (
+    $width: $layout-width-min,
+    $side-space: $layout-width-side-space,
+    $side-space-type: $layout-width-side-space-type
+  );
 
-        @if ($min > 0) {
-          min-width: $min + $side-space*2;
-        }
-        @if ($max > 0) {
-          max-width: $max + $side-space*2;
-        }
-
-        @if (type-of($side-space) == number and $side-space > 0) {
-          $side-space-type: unquote($side-space-type);
-          @if ($side-space-type != padding) {
-            $side-space-type: margin;
-          }
-
-          #{$side-space-type}-left: $side-space;
-          #{$side-space-type}-right: $side-space;
-        }
-      }
-    }
-  }
+  @include layout-width-max (
+    $width: $layout-width-max,
+    $side-space: $layout-width-side-space,
+    $side-space-type: $layout-width-side-space-type
+  );
 }
 
 

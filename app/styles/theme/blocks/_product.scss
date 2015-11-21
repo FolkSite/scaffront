@@ -1,0 +1,144 @@
+%product-subtitle {
+  font-size: 30px;
+  line-height: 1.2em;
+  font-weight: normal;
+  @include font(roboto);
+}
+
+.product {
+  margin-bottom: 40px;
+
+  @include e(section) {
+    @extend .text-content;
+
+    margin-bottom: 40px;
+
+    @include e(title) {
+      @extend %product-subtitle;
+    }
+  }
+
+  @include e(layout) {
+
+    $gutter: 34px;
+    margin-left: -($gutter /2);
+    margin-right: -($gutter /2);
+
+    @include clearfix;
+    @include add-grid(5 4);
+    @include add-gutter($gutter);
+    @include add-gutter-style('split' 'fixed');
+
+    .product__gallery {
+      @include grid-span(1, 1);
+    }
+    .product__description {
+      @include grid-span(1, 2);
+    }
+  }
+
+  @include e (gallery) {
+    .project__gallery__slides {
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  @include e (description) {
+
+  }
+
+  @include e (options) {
+    margin-top: 40px;
+
+
+    @include e (title) {
+      @extend %product-subtitle;
+      text-transform: uppercase;
+      font-size: 15px;
+      line-height: 1.2em;
+      margin-bottom: 5px;
+    }
+    @include e (list) {
+      width: 100%;
+      border: none;
+    }
+  }
+  @include e (option) {
+    $padding-top: 8px;
+    border: none;
+
+    td {
+      vertical-align: bottom;
+      border: none;
+    }
+
+    @include e (name-wrapper) {
+      width: 60%;
+      position: relative;
+      border: none;
+      overflow: hidden;
+      padding: 0;
+      padding-top: $padding-top;
+    }
+    @include e (name) {
+      background: #fff;
+      overflow: hidden;
+
+      &:after {
+        content: '........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................';
+        position: absolute;
+        z-index: -1;
+        bottom: 0;
+      }
+    }
+    @include e (value) {
+      border: none;
+      padding: 0;
+      padding-top: $padding-top;
+    }
+  }
+
+  @include e(videos) {
+
+    @include e(item) {
+
+    }
+  }
+
+  @include e(video) {
+    min-height: 100px;
+    background: lighten($color-scheme-gray, 50);
+  }
+
+}
+
+.get-pricelist {
+  @include auto-colums(
+    $gutter: 20px,
+    $selector-content: '.get-pricelist__right',
+    $selector-aside-left: '.get-pricelist__left'
+  );
+
+  @include e(left) {
+
+  }
+  @include e(right) {
+    opacity: .5;
+  }
+}
+
+.sibling-products {
+
+  @include e(title) {
+    @extend %product-subtitle;
+    margin-bottom: 27px;
+  }
+
+  @include e(list) {
+
+  }
+}
+

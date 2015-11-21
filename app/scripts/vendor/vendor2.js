@@ -1,0 +1,1 @@
+var itsVendor2 = true;

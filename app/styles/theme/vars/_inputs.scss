@@ -18,12 +18,38 @@ $input-sizes: (
   default: (
     selector: '.input, %input',
     options: (
-      $input-height,
-      $input-font-size,
-      $input-line-height,
+      33px,
+      15px,
+      18px,
       $input-border-width,
       $input-padding-vertical,
       $input-padding-horizontal,
+      $input-lines,
+      $input-min-width
+    )
+  ),
+  small: (
+    selector: '.input--small, %input--small',
+    options: (
+      31px,
+      12px,
+      15px,
+      $input-border-width,
+      $input-padding-vertical,
+      $input-padding-horizontal,
+      $input-lines,
+      $input-min-width
+    )
+  ),
+  big: (
+    selector: '.input--big, %input--big',
+    options: (
+      40px,
+      $base-font-size,
+      $base-line-height,
+      $input-border-width,
+      10px,
+      18px,
       $input-lines,
       $input-min-width
     )
@@ -39,10 +65,10 @@ $input-color-bg-normal: #fff;
 $input-color-bg-hover: $input-color-bg-normal;
 $input-color-bg-focus: $input-color-bg-normal;
 $input-color-bg-active: $input-color-bg-normal;
-$input-color-border-normal: #131313;
-$input-color-border-hover: darken($input-color-border-normal, 3);
-$input-color-border-focus: darken($input-color-border-normal, 3);
-$input-color-border-active: darken($input-color-border-hover, 3);
+$input-color-border-normal: $color-scheme-green;
+$input-color-border-hover: $color-scheme-green;
+$input-color-border-focus: $color-scheme-green;
+$input-color-border-active: $input-color-border-hover;
 $input-border-radius: 3px;
 
 $input-variants: (
@@ -59,6 +85,24 @@ $input-variants: (
       $input-color-bg-active,
       $input-color-border-normal,
       $input-color-border-hover,
+      $input-color-border-focus,
+      $input-color-border-active,
+      $input-border-radius
+    )
+  ),
+  'no-border': (
+    selector: '.input--no-border, %input--no-border',
+    options: (
+      $input-color-normal,
+      $input-color-hover,
+      $input-color-focus,
+      $input-color-active,
+      $input-color-bg-normal,
+      $input-color-bg-hover,
+      $input-color-bg-focus,
+      $input-color-bg-active,
+      transparent,
+      transparent,
       $input-color-border-focus,
       $input-color-border-active,
       $input-border-radius
