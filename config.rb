@@ -4,6 +4,7 @@ require "breakpoint-slicer"
 require "singularitygs"
 require "toolkit"
 require "SassyLists"
+require "sassy-map"
 require "sassy-buttons"
 require "singularity-quick-spanner"
 
