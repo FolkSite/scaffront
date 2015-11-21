@@ -1,6 +1,6 @@
 {
   "name": "scaffront",
-  "version": "0.2",
+  "version": "0.0.2",
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antixrist/gulp-boilerplate.git"
+    "url": "git+https://github.com/antixrist/scaffront.git"
   },
   "bugs": {
-    "url": "https://github.com/antixrist/gulp-boilerplate/issues"
+    "url": "https://github.com/antixrist/scaffront/issues"
   },
-  "homepage": "https://github.com/antixrist/gulp-boilerplate#readme",
+  "homepage": "https://github.com/antixrist/scaffront#readme",
   "author": "antixrist",
   "license": "WTFPL",
   "keywords": [
