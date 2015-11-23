@@ -1,27 +1,57 @@
 var _    = require('lodash'),
     Path = require('path'),
     Extend = require('extend'),
-    FS = require('fs'),
-    ConnectGzipStatic = require('connect-gzip-static');
+    FS = require('fs');
 
 
+/**
+ * @property {String|string[]|{entry: String|string[], bundler: {options: {}, setup: Function, callback: Function}}|*[]} scripts.build.bundles May be a string, array of string, plain object or array of plain objects
+ */
 var config = {
   bower: {
     src: require('bower-directory').sync()
   },
+  copy: [{
+    src: 'app/scripts/vendor',
+    dest: 'dist/js/vendor'
+  }],
   scripts: {
-    copy: {
-      src: 'app/scripts/vendor',
-      dest: 'dist/js/vendor'
+    AutoPolyfiller: {
+      browsers: ['last 3 version', 'ie 8', 'ie 9']
     },
     build: {
       src: 'app/scripts',
-      dest: 'dist/js'
-    },
-    bundles: [{
-      src: 'app/scripts/app/js.js',
-      dest: 'dist/js'
-    }]
+      dest: 'dist/js',
+      bundles: [{
+        entry: 'app/scripts/libs.js',
+        dest: 'dist/js',
+        outfile: 'libs.js',
+        // options will be passed to Browserify constructor
+        options: {
+
+        },
+        setup: function (bundler) {
+          // можно подключать напрямую в script (классический принцип scope'а пождключаемых файлов). ignore просто выпиливает этот модуль из бандла
+          bundler.ignore('jquery');
+          // должен быть доступен из require
+          //bundler.external('jquery');
+
+          //bundler.add('app/scripts/app/js.js');
+        },
+        // callback will be passed to .bundle(callback)
+        callback: function (err, buf) {}
+      }, {
+        entry: 'app/scripts/js.js',
+        options: {
+
+        },
+        setup: function (bundler) {
+          bundler.ignore('jquery');
+          //return bundler; // optional
+        },
+        callback: function (err, buf) {}
+      }]
+    }
   },
 
   BrowserSync: {
@@ -59,7 +89,7 @@ var config = {
       data: 'dist/html'
     },
     extnames: ['hbs', 'handlebars', 'hb'],
-    globalVars: require('../../app/hbs/globalVars'),
+    globalVars: require('../app/hbs/globalVars'),
     /**
      * @param tplFile
      * @returns {{}|[]}

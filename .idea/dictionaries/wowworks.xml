@@ -2,11 +2,13 @@
   <dictionary name="wowworks">
     <words>
       <w>browserify</w>
+      <w>bundlers</w>
       <w>dest</w>
       <w>extnames</w>
       <w>lodash</w>
       <w>noop</w>
       <w>nunjucks</w>
+      <w>polyfiller</w>
       <w>preprocess</w>
       <w>uglify</w>
       <w>watchify</w>

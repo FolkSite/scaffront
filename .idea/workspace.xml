@@ -2,432 +2,37 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f4a1a41-c8d7-4d3e-aa34-e698c501363d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/.bower.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/CHANGELOG.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/LICENSE.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/_griddle-build.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/_griddle.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/vendor/backgroundsize.min.htc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bower_components/griddle/bower.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/vendor/jquery-1.11.2.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/jquery.actual.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/jquery.bootstrap.tabs.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/jquery.fitvids.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/vendor/modernizr-2.8.3.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/normalizeconsole.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/requiredInput.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/textarea.resize.event.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/waiter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/plugins/ytiframe.js" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\.idea\gulp-boilerplate.iml" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\chunks\part.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\chunks\part.min.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\index.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\index.min.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\layout.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\tpl\layout.min.js" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\@variable ||= memoized.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Check ERB Syntax.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Check Ruby Syntax.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Completion: Ruby (rcodetools).tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Convert Ruby hash to 1_9 syntax.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Enclose in * (RDoc comments).tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Enclose in + (RDoc comments).tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Enclose in _ (RDoc comments).tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Execute Line with Ruby.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Execute and Insert Results.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Insert Missing Requires.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Lookup in Documentation (Modern).tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Lookup in Documentation.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Make Destructive Call.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\New Method.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Omit from RDoc.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Open Require.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Run Rake Task.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Run Script in Terminal.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Run focused unit test.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Run.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Show RDoc for this file.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Toggle ERb Tags.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Toggle Quote Style.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Toggle String:Symbol.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\Toggle ‘do … end’ : ‘{ … }’.tmCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Commands\word_wrap()  (worw).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\DragCommands\Require Ruby File.tmDragCommand" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\Benchmark_bmbm(__) do __ end.tmMacro" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\Delete forward:backward.tmMacro" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\Overwrite } in #{ .. }.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\PStore_new( __ ).tmMacro" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\YAML.dump(.., file)  (Yd).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\YAML.load(file)  (Yl).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\class .. &lt; DelegateClass .. initialize .. end  (class).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\each_char { |chr| .. }  (eac).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\each_cons(..) { |group| .. }  (eac).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\each_slice(..) { |group| .. }  (eas).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\extend Forwardable  (Forw).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\map_with_index { |e, i| .. }  (mapwi).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\require_gem &quot;__&quot;.tmMacro" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Macros\xmlread(__).tmMacro" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Block typing pairs.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Comments.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Completion: ENV[…] variables.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Completion: require strings.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\ERb: Disable Indent Corrections.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Folding - ERB.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Folding.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Miscellaneous.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Symbo List: Method.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Symbol List: Class.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Preferences\Symbol List: No Function Call.tmPreferences" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Proxies\Documentation for Word : Selection.tmProxy" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\README.mdown" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\# encoding:  UTF-8.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\#!;usr;local;bin;ruby -w.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\#inspect.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\060 ruby if else.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\070 ruby if.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\080 ruby case.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\:yields: RDoc comment.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Add '# =&gt;' Marker.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Array.new(10) { |i| .. }  (Arr).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Benchmark_bmbm(__) do __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Dir.glob(&quot;..&quot;) do |file| .. end  (Dir).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Dir[&quot;__&quot;].tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\File.foreach (&quot;..&quot;) do |line| .. end  (File).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\File_open(&quot;__&quot;) { |file| __ }.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\File_read(&quot;__&quot;).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Hash.new { |hash, key| hash[key] = .. }  (Has).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Insert ERb's &lt;% __ %&gt; or &lt;%= __ %&gt;.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Marshal.dump(obj, file)  (Md).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Marshal.load(obj)  (Ml).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\PStore_new( __ ).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\RDoc documentation block.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\Wrap in Begin … Rescue … End.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\YAML.dump(.., file)  (Yd-).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\YAML.load(file)  (Yl-).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\__END__.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\alias_method ..  (am).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\all? { |e| .. }  (all).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\any? { |e| .. }  (any).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\application_code ..  (app).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert(..)  (as).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_equal.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_in_delta(..)  (asid).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_instance_of(..)  (asio).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_kind_of(..)  (asko).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_match(..)  (asm).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_nil(..)  (asn).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_no_match(..)  (asnm).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_not_equal(..)  (asne).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_not_nil(..)  (asnn).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_not_same(..)  (asns).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_nothing_raised(..) { .. }  (asnr).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_nothing_thrown { .. }  (asnt).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_operator(..)  (aso).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_raise(..) { .. }  (asr).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_respond_to(..)  (asrt).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_same(..)  (ass).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_send(..)  (ass).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\assert_throws(..) { .. }  (ast).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\attr_accessor ..  (rw).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\attr_reader ..  (r).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\attr_writer ..  (w).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. &lt; DelegateClass .. initialize .. end  (class).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. &lt; ParentClass .. initialize .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. &lt; Struct .. initialize .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. &lt; Test;;Unit;;TestCase .. end  (tc).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. end  (cla).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. initialize .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class .. instance_methods .. undef .. initialize .. end  (class).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class &lt;&lt; self __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\class_from_name()  (clafn).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\classify { |e| .. }  (clas).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\collect { |e| .. }  (col).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\deep_copy(..)  (dee).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def initialize __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def method_missing .. end  (mm).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def self .. end  (defs).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def test_ .. end  (t).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def_delegator .. (defd).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\def_delegators .. (defds).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\define_method ___ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\delete_if { |e| .. }  (deli).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\detect { |e| .. }  (det).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\directory().tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\do |obj| .. end (doo).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\downto(0) { |n| .. }  (dow).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each { |e| .. }  (ea).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_byte { |byte| .. }  (eab).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_char { |chr| .. }  (eac-).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_cons(..) { |group| .. }  (eac-).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_index { |i| .. }  (eai).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_key { |key| .. }  (eak).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_line { |line| .. }  (eal).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_pair { |name, val| .. }  (eap).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_slice { |group| .. }  (eas).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_value { |val| .. }  (eav).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\each_with_index { |e, i| .. }  (eawi).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\elsif ___.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\embed string variable.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\extend Forwardable  (Forw).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\fetch(name) { |key| .. }  (fet).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\fill(range) { |i| .. }  (fil).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\find { |e| .. }  (fin).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\find_all { |e| .. }  (fina).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\flatten_once  (fla).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\flunk(..)  (fl).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\grep(;pattern;) { |match| .. }  (gre).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\gsub(;..;) { |match| .. }  (gsu).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\hash pair (:).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\hash pointer.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\include Comparable ..  (Comp).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\include Enumerable ..  (Enum).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\inject(init) { |mem, var| .. }  (inj).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\lambda { |args| .. }  (lam).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\loop { __ }.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\map { |e| .. }  (map).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\map_with_index { |e, i| .. }  (mapwi).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\max { |a, b| .. }  (max).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\min { |a, b| .. }  (min).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\module .. ClassMethods .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\module .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\module .. module_function .. end.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\namespace :__ do __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\open yield block ({).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\open(&quot;path;or;url&quot;, &quot;w&quot;) do |doc| .. end (ope).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\option_parse { .. }  (optp).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\partition { |e| .. }  (par).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\pass(__).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\path_from_here( __ ).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\randomize  (ran).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\reject { |e| .. }  (rej).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\require &quot;tc_..&quot; ..  (ts).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\require '..'  (req).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\require_gem &quot;__&quot;.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\results_report(__) { __ }.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\reverse_each { |e| .. }  (rea).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\scan(;..;) { |match| .. }  (sca).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\select { |e| .. }  (sel).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\singleton_class().tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\skip(__).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\sort { |a, b| .. }  (sor).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\sort_by { |e| .. }  (sorb).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\step(2) { |e| .. }  (ste).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\sub(;..;) { |match| .. }  (sub).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\task :task_name =&gt; [:dependent, :tasks] do __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\times { |n| .. }  (tim).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\transaction( __ ) do __ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\unix_filter .. (uni).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\unless (unless).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\until ___ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\untitled.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\upto(1.0;0.0) { |n| .. }  (upt).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\usage_if()  (usai).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\usage_unless()  (usau).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\when.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\while ___ end.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\xmlread(__).tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\xpath(__) { __ }.tmSnippet" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Snippets\zip(enums) { |row| .. }  (zip).plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RakeMate\rake_mate.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RakeMate\run_rake_task.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RubyMate\catch_exception.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RubyMate\run_script.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RubyMate\test.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\RubyMate\todo.txt" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\execute_line.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\insert_requires.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\linked_ri.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\make_destructive.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\ri_lookup" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\ri_to_html" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\bin\snippet_paren.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\lib\ruby_requires.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\README" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\CHANGES" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.TDC" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.emacs" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.ja" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.method_analysis" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.vim" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\README.xmpfilter" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\Rakefile" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\Rakefile.method_analysis" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\THANKS" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\anything-rcodetools.el" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rbtest" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rct-complete" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rct-doc" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rct-fork" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rct-fork-client" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\rct-meth-args" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\ruby-toggle-file" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\bin\xmpfilter" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\icicles-rcodetools.el" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\method_analyzer.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\compat.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\completion.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\doc.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\fork.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\fork_config.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\options.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\xmpfilter.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\rcodetools\xmptestunitfilter.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\lib\ruby_toggle_file.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\license.txt" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\rcodetools.el" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\rcodetools.elc" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\rcodetools.gif" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\rcodetools.sxmp" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\rcodetools.vim" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\setup.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\attic\test_run.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\add_markers-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\add_markers-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\bindings-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\bindings-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_class_info-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_class_info-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_class_info_no_candidates-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_class_info_no_candidates-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_detect_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_detect_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_detect_rbtest2-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_detect_rbtest2-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_emacs-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_emacs-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_emacs_icicles-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_emacs_icicles-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_in_method-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_in_method-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_in_method-test.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\completion_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_detect_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_detect_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_detect_rbtest2-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_detect_rbtest2-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\doc_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\no_warnings-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\no_warnings-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\refe-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\refe-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri_emacs-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri_emacs-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri_vim-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\ri_vim-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\rspec-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\rspec-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\rspec_poetry-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\rspec_poetry-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\simple_annotation-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\simple_annotation-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_detect_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_detect_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_detect_rbtest2-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_detect_rbtest2-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_poetry-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_poetry-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_rbtest-input.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\attic\unit_test_rbtest-output.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\method_analyzer-data.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\method_args.data.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete-TDC\completion_in_method__testmethod.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete-TDC\completion_in_method__testscript.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete-TDC\completion_in_method__wrong_testmethod.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_class_info.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_class_info_no_candidates.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_detect_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_detect_rbtest2.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_emacs.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_emacs_icicles.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-complete\completion_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\doc.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\doc_detect_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\doc_detect_rbtest2.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\doc_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\refe.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\ri.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\ri_emacs.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\rct-doc\ri_vim.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\sample_test_script.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\add_markers.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\bindings.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\comment_out.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\exception.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\expectations.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\last_match.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\mult.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_1.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_2.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_3.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_4.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_5.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_6.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\multi_line_annotation_7.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\no_warnings.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\nospace.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\rspec.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\rspec_poetry.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\simple_annotation.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\unit_test.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\unit_test_detect_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\unit_test_detect_rbtest2.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\unit_test_poetry.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\unit_test_rbtest.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\data\xmpfilter\width.taf" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_completion.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_doc.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_functional.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_method_analyzer.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_method_args.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_options.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_ruby_toggle_file.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_xmpfilter.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\test_xmptestunitfilter.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\tmp_functional.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Support\vendor\rcodetools\test\tmp_run.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Syntaxes\HTML (Ruby - ERB).tmLanguage" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Syntaxes\Ruby.plist" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\division_ambiguity.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\modulo_ambiguity1.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\percent_literals.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\questionmark_ambiguity1.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\COPYING" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\g.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\newsyntax.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\p.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\regtest.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\rubylexer\w.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\Tests\test1.rb" afterPath="" />
-      <change type="DELETED" beforePath="E:\WebDev\YaCloud\repo\gulp-boilerplate\idea\textmate_bundles\info.plist" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.bowerrc" afterPath="$PROJECT_DIR$/.bowerrc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/js.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/scripts/libs.js" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\.idea\Agrocomplect.iml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\app\scripts\app\js.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.npmignore" afterPath="$PROJECT_DIR$/.npmignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/gulp/config.js" afterPath="$PROJECT_DIR$/lib/gulp/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.rb" afterPath="$PROJECT_DIR$/config.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/helpers/functions.js" afterPath="$PROJECT_DIR$/lib/helpers/functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/app/js.js" afterPath="$PROJECT_DIR$/app/scripts/app/js.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/compass_library.xml" afterPath="$PROJECT_DIR$/.idea/libraries/compass_library.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/config.js" afterPath="$PROJECT_DIR$/gulpfile.js/config.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/fonts.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/fonts.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/js/js.js" afterPath="$PROJECT_DIR$/dist/js/js.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/hbs/layout.hbs" afterPath="$PROJECT_DIR$/app/hbs/layout.hbs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/makeup_node_modules.xml" afterPath="$PROJECT_DIR$/.idea/libraries/makeup_node_modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/gulp/tasks/scripts.js" afterPath="$PROJECT_DIR$/lib/gulp/tasks/scripts.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/hbs/chunks/part.hbs" afterPath="$PROJECT_DIR$/app/hbs/chunks/part.hbs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/scripts.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/scripts.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/templateLanguages.xml" afterPath="$PROJECT_DIR$/.idea/templateLanguages.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/watchers.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/watchers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/webResources.xml" afterPath="$PROJECT_DIR$/.idea/webResources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/wowworks.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/wowworks.xml" />
     </list>
     <ignored path="makeup.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -449,138 +54,73 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="gulpfile.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gulpfile.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="watchers.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/watchers.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="functions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/helpers/functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="297" column="20" selection-start-line="297" selection-start-column="20" selection-end-line="297" selection-end-column="20" />
-              <folding>
-                <element signature="e#206#216#0" expanded="false" />
-                <element signature="e#243#319#0" expanded="false" />
-                <element signature="e#360#627#0" expanded="false" />
-                <element signature="e#467#510#0" expanded="false" />
-                <element signature="e#543#577#0" expanded="false" />
-                <element signature="e#583#607#0" expanded="false" />
-                <element signature="e#630#683#0" expanded="false" />
-                <element signature="e#721#882#0" expanded="false" />
-                <element signature="e#885#938#0" expanded="false" />
-                <element signature="e#966#1095#0" expanded="false" />
-                <element signature="e#1098#1226#0" expanded="false" />
-                <element signature="e#1275#2315#0" expanded="false" />
-                <element signature="e#1355#1430#0" expanded="false" />
-                <element signature="e#1466#1536#0" expanded="false" />
-                <element signature="e#1542#1598#0" expanded="false" />
-                <element signature="e#1732#1935#0" expanded="false" />
-                <element signature="e#1788#1830#0" expanded="false" />
-                <element signature="e#1884#1930#0" expanded="false" />
-                <element signature="e#2039#2065#0" expanded="false" />
-                <element signature="e#2097#2260#0" expanded="false" />
-                <element signature="e#2197#2254#0" expanded="false" />
-                <element signature="e#2318#2684#0" expanded="false" />
-                <element signature="e#2765#3126#0" expanded="false" />
-                <element signature="e#3129#3175#0" expanded="false" />
-                <element signature="e#3203#3271#0" expanded="false" />
-                <element signature="e#3274#3434#0" expanded="false" />
-                <element signature="e#3563#3762#0" expanded="true" />
-                <element signature="e#3862#3921#0" expanded="false" />
-                <element signature="e#3987#4354#0" expanded="false" />
-                <element signature="e#4078#4117#0" expanded="false" />
-                <element signature="e#4153#4186#0" expanded="false" />
-                <element signature="e#4233#4332#0" expanded="false" />
-                <element signature="e#4360#4403#0" expanded="false" />
-                <element signature="e#4428#4675#0" expanded="true" />
-                <element signature="e#4518#4644#0" expanded="true" />
-                <element signature="e#4678#4731#0" expanded="false" />
-                <element signature="e#4772#4889#0" expanded="false" />
-                <element signature="e#4892#4943#0" expanded="false" />
-                <element signature="e#4974#5058#0" expanded="false" />
-                <element signature="e#5061#5313#0" expanded="false" />
-                <element signature="e#5375#6208#0" expanded="false" />
-                <element signature="e#5695#6156#0" expanded="false" />
-                <element signature="e#5816#5953#0" expanded="false" />
-                <element signature="e#5833#5929#0" expanded="false" />
-                <element signature="e#6006#6150#0" expanded="false" />
-                <element signature="e#6097#6142#0" expanded="false" />
-                <element signature="e#6254#6370#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/gulp/config.js">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js/config.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
-              <folding>
-                <element signature="e#257#492#0" expanded="true" />
-                <element signature="e#269#338#0" expanded="true" />
-                <element signature="e#351#406#0" expanded="true" />
-                <element signature="e#421#488#0" expanded="true" />
-                <element signature="e#422#487#0" expanded="true" />
-                <element signature="e#552#724#0" expanded="true" />
-                <element signature="e#631#718#0" expanded="true" />
-                <element signature="e#788#2790#0" expanded="true" />
-                <element signature="e#820#897#0" expanded="true" />
-                <element signature="e#911#942#0" expanded="true" />
-                <element signature="e#957#994#0" expanded="true" />
-                <element signature="e#1006#1098#0" expanded="true" />
-                <element signature="e#1293#1852#0" expanded="false" />
-                <element signature="e#1995#2307#0" expanded="true" />
-              </folding>
+              <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="scripts.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/scripts.js">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.55899197">
-              <caret line="93" column="62" selection-start-line="93" selection-start-column="62" selection-end-line="93" selection-end-column="62" />
+            <state vertical-scroll-proportion="-0.123883925">
+              <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
               <folding>
-                <element signature="e#1510#1664#0" expanded="true" />
-                <element signature="e#1581#1660#0" expanded="true" />
-                <element signature="e#1746#1777#0" expanded="true" />
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="js.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/app/js.js">
+      <file leaf-file-name="functions.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js/helpers/functions.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+              <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dist/html/index.html">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.6538463">
-              <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="39" column="36" selection-start-line="38" selection-start-column="38" selection-end-line="39" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="handlebars.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="167" column="0" selection-start-line="167" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="libs.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/libs.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="37" selection-start-line="0" selection-start-column="37" selection-end-line="0" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="js.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/js.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -590,160 +130,25 @@
         <entry file="file://$PROJECT_DIR$/dist/js/js.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
               <folding>
-                <element signature="e#443#696685#0" expanded="true" />
-                <element signature="e#446#803#0" expanded="true" />
-                <element signature="e#806#285031#0" expanded="true" />
-                <element signature="e#3196#5147#0" expanded="true" />
-                <element signature="e#6734#14253#0" expanded="true" />
-                <element signature="e#18206#19029#0" expanded="true" />
-                <element signature="e#20395#20756#0" expanded="true" />
-                <element signature="e#42885#56761#0" expanded="true" />
-                <element signature="e#43030#43189#0" expanded="true" />
-                <element signature="e#43204#45318#0" expanded="true" />
-                <element signature="e#45330#50972#0" expanded="true" />
-                <element signature="e#50985#56759#0" expanded="true" />
-                <element signature="e#57908#58019#0" expanded="true" />
-                <element signature="e#58283#58348#0" expanded="true" />
-                <element signature="e#64546#64881#0" expanded="true" />
-                <element signature="e#75416#76617#0" expanded="true" />
-                <element signature="e#80368#80435#0" expanded="true" />
-                <element signature="e#80452#80926#0" expanded="true" />
-                <element signature="e#80947#82752#0" expanded="true" />
-                <element signature="e#82882#84040#0" expanded="true" />
-                <element signature="e#87252#90038#0" expanded="true" />
-                <element signature="e#90074#94367#0" expanded="true" />
-                <element signature="e#90122#90384#0" expanded="true" />
-                <element signature="e#90421#91631#0" expanded="true" />
-                <element signature="e#94547#95715#0" expanded="true" />
-                <element signature="e#106605#107513#0" expanded="true" />
-                <element signature="e#106784#106957#0" expanded="true" />
-                <element signature="e#107534#108882#0" expanded="true" />
-                <element signature="e#108901#110481#0" expanded="true" />
-                <element signature="e#110319#110474#0" expanded="true" />
-                <element signature="e#110502#111860#0" expanded="true" />
-                <element signature="e#116990#135626#0" expanded="true" />
-                <element signature="e#119199#119446#0" expanded="true" />
-                <element signature="e#132088#132356#0" expanded="true" />
-                <element signature="e#132372#133652#0" expanded="true" />
-                <element signature="e#133665#135050#0" expanded="true" />
-                <element signature="e#133675#133769#0" expanded="true" />
-                <element signature="e#133780#134183#0" expanded="true" />
-                <element signature="e#134193#134355#0" expanded="true" />
-                <element signature="e#134366#134764#0" expanded="true" />
-                <element signature="e#134783#135047#0" expanded="true" />
-                <element signature="e#135367#135434#0" expanded="true" />
-                <element signature="e#137334#138429#0" expanded="true" />
-                <element signature="e#138520#138632#0" expanded="true" />
-                <element signature="e#138690#139233#0" expanded="true" />
-                <element signature="e#139328#140728#0" expanded="true" />
-                <element signature="e#140844#142729#0" expanded="true" />
-                <element signature="e#143136#143680#0" expanded="true" />
-                <element signature="e#143707#146237#0" expanded="true" />
-                <element signature="e#147319#147960#0" expanded="true" />
-                <element signature="e#153047#159305#0" expanded="true" />
-                <element signature="e#159326#165880#0" expanded="true" />
-                <element signature="e#165896#166018#0" expanded="true" />
-                <element signature="e#173241#173846#0" expanded="true" />
-                <element signature="e#174956#175562#0" expanded="true" />
-                <element signature="e#179619#179665#0" expanded="true" />
-                <element signature="e#184582#188761#0" expanded="true" />
-                <element signature="e#184707#184932#0" expanded="true" />
-                <element signature="e#184720#184929#0" expanded="true" />
-                <element signature="e#185018#185260#0" expanded="true" />
-                <element signature="e#185364#185458#0" expanded="true" />
-                <element signature="e#188849#189643#0" expanded="true" />
-                <element signature="e#189703#191262#0" expanded="true" />
-                <element signature="e#191720#191767#0" expanded="true" />
-                <element signature="e#191836#192178#0" expanded="true" />
-                <element signature="e#192302#193171#0" expanded="true" />
-                <element signature="e#193342#194385#0" expanded="true" />
-                <element signature="e#194457#195643#0" expanded="true" />
-                <element signature="e#194470#195641#0" expanded="true" />
-                <element signature="e#195787#195920#0" expanded="true" />
-                <element signature="e#195939#196054#0" expanded="true" />
-                <element signature="e#196362#197991#0" expanded="true" />
-                <element signature="e#196371#197988#0" expanded="true" />
-                <element signature="e#204976#206093#0" expanded="true" />
-                <element signature="e#206539#206610#0" expanded="true" />
-                <element signature="e#206876#207423#0" expanded="true" />
-                <element signature="e#207551#207724#0" expanded="true" />
-                <element signature="e#208281#211528#0" expanded="true" />
-                <element signature="e#211908#212090#0" expanded="true" />
-                <element signature="e#213018#213078#0" expanded="true" />
-                <element signature="e#215455#216861#0" expanded="true" />
-                <element signature="e#216879#219102#0" expanded="true" />
-                <element signature="e#216892#219100#0" expanded="true" />
-                <element signature="e#216904#217148#0" expanded="true" />
-                <element signature="e#217160#219097#0" expanded="true" />
-                <element signature="e#219222#219384#0" expanded="true" />
-                <element signature="e#219829#220052#0" expanded="true" />
-                <element signature="e#220070#222687#0" expanded="true" />
-                <element signature="e#222234#222685#0" expanded="true" />
-                <element signature="e#222244#222682#0" expanded="true" />
-                <element signature="e#222733#223245#0" expanded="true" />
-                <element signature="e#224123#224449#0" expanded="true" />
-                <element signature="e#224651#225109#0" expanded="true" />
-                <element signature="e#225506#225671#0" expanded="true" />
-                <element signature="e#225827#225935#0" expanded="true" />
-                <element signature="e#226125#226260#0" expanded="true" />
-                <element signature="e#226320#226696#0" expanded="true" />
-                <element signature="e#226816#227212#0" expanded="true" />
-                <element signature="e#227230#228548#0" expanded="true" />
-                <element signature="e#227242#227289#0" expanded="true" />
-                <element signature="e#228020#228546#0" expanded="true" />
-                <element signature="e#228034#228543#0" expanded="true" />
-                <element signature="e#228857#228935#0" expanded="true" />
-                <element signature="e#229145#229417#0" expanded="true" />
-                <element signature="e#229434#229579#0" expanded="true" />
-                <element signature="e#229792#233722#0" expanded="true" />
-                <element signature="e#234231#234806#0" expanded="true" />
-                <element signature="e#244680#257867#0" expanded="true" />
-                <element signature="e#244843#246164#0" expanded="true" />
-                <element signature="e#245226#245376#0" expanded="true" />
-                <element signature="e#245391#245444#0" expanded="true" />
-                <element signature="e#245465#245542#0" expanded="true" />
-                <element signature="e#245666#245925#0" expanded="true" />
-                <element signature="e#246125#246161#0" expanded="true" />
-                <element signature="e#248039#249750#0" expanded="true" />
-                <element signature="e#258169#258259#0" expanded="true" />
-                <element signature="e#258328#258431#0" expanded="true" />
-                <element signature="e#258456#259775#0" expanded="true" />
-                <element signature="e#262298#263251#0" expanded="true" />
-                <element signature="e#264897#268762#0" expanded="true" />
-                <element signature="e#269061#269335#0" expanded="true" />
-                <element signature="e#269073#269179#0" expanded="true" />
-                <element signature="e#269192#269228#0" expanded="true" />
-                <element signature="e#269243#269333#0" expanded="true" />
-                <element signature="e#269814#270910#0" expanded="true" />
-                <element signature="e#271021#271201#0" expanded="true" />
-                <element signature="e#274899#275040#0" expanded="true" />
-                <element signature="e#276288#277650#0" expanded="true" />
-                <element signature="e#277670#280196#0" expanded="true" />
-                <element signature="e#278399#278588#0" expanded="true" />
-                <element signature="e#279683#279850#0" expanded="true" />
-                <element signature="e#285034#696684#0" expanded="true" />
-                <element signature="e#285509#696528#0" expanded="false" />
+                <element signature="e#728#1236#0" expanded="false" />
+                <element signature="e#1307#1313#0" expanded="false" />
+                <element signature="e#1360#485600#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="handlebars.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/handlebars.js">
+      <file leaf-file-name="advanced.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/advanced.txt">
+          <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="129" column="40" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
-              <folding>
-                <element signature="e#4422#4490#0" expanded="false" />
-                <element signature="e#4532#4975#0" expanded="false" />
-                <element signature="e#5020#7894#0" expanded="false" />
-                <element signature="e#7947#8018#0" expanded="false" />
-                <element signature="e#8067#8134#0" expanded="false" />
-                <element signature="e#8173#8967#0" expanded="false" />
-                <element signature="e#9013#9079#0" expanded="false" />
-              </folding>
+              <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -756,270 +161,63 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/app/jade/tpl/childtpl-data.js" />
+        <option value="$PROJECT_DIR$/app/jade/index-data.js" />
         <option value="$PROJECT_DIR$/app/jade/index.jade" />
         <option value="$PROJECT_DIR$/app/jade/tpl/childtpl.jade" />
         <option value="$PROJECT_DIR$/app/js/test.js" />
         <option value="$PROJECT_DIR$/app/js/include.js" />
         <option value="$PROJECT_DIR$/app/js/bundle.js" />
+        <option value="$PROJECT_DIR$/.bowerrc" />
+        <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/Gemfile.lock" />
+        <option value="$PROJECT_DIR$/config.rb" />
+        <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/dist/js/scripts.js" />
         <option value="$PROJECT_DIR$/test.js" />
         <option value="$PROJECT_DIR$/app/jade/config.js" />
+        <option value="$PROJECT_DIR$/lib/gulp/tasks/scripts.js" />
         <option value="$PROJECT_DIR$/lib/gulp/tasks/jade.js" />
         <option value="$PROJECT_DIR$/dist/js/tpl/tpl/childtpl.js" />
         <option value="$PROJECT_DIR$/lib/helpers/tpl.data.js" />
         <option value="$PROJECT_DIR$/app/hbs/config.js" />
         <option value="$PROJECT_DIR$/app/hbs/chunks/part-data.js" />
         <option value="$PROJECT_DIR$/app/hbs/index-data.js" />
-        <option value="$PROJECT_DIR$/app/hbs/layout.hbs" />
         <option value="$PROJECT_DIR$/app/hbs/index.hbs" />
         <option value="$PROJECT_DIR$/node_modules/gulp-compile-handlebars/index.js" />
+        <option value="$PROJECT_DIR$/dist/html/index.html" />
         <option value="$PROJECT_DIR$/dist/html/chunks/part.html" />
         <option value="$PROJECT_DIR$/lib/gulp/unused-tasks/jade.js" />
         <option value="$PROJECT_DIR$/app/hbs/globalVars.js" />
         <option value="$PROJECT_DIR$/dist/js/tpl/index.min.js" />
         <option value="$PROJECT_DIR$/dist/js/tpl/index.js" />
         <option value="$PROJECT_DIR$/app/scripts/tpl/chunks/part.js" />
-        <option value="$PROJECT_DIR$/app/hbs/chunks/part.hbs" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/lib/gulp/tasks/watchers.js" />
-        <option value="$PROJECT_DIR$/lib/gulp/tasks/handlebars.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/Gemfile" />
-        <option value="$PROJECT_DIR$/config.rb" />
-        <option value="$PROJECT_DIR$/bower.json" />
-        <option value="$PROJECT_DIR$/.npmignore" />
-        <option value="$PROJECT_DIR$/.bowerrc" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/tmp.bat" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv/node.bat" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv/node-gyp.bat" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv/node-gyp.cmd" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/_FrontendEnv.bat" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv/nodegyp.cmd" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv/CheckNodeGyp.cmd" />
-        <option value="G:/scaffront/conemu/FrontendEnv.cmd" />
-        <option value="D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv.cmd" />
-        <option value="$PROJECT_DIR$/lib/helpers/functions.js" />
-        <option value="$PROJECT_DIR$/dist/html/index.html" />
         <option value="$PROJECT_DIR$/lib/gulp/config.js" />
-        <option value="$PROJECT_DIR$/dist/js/js.min.js" />
+        <option value="$PROJECT_DIR$/lib/gulp/tasks/handlebars.js" />
+        <option value="$PROJECT_DIR$/lib/helpers/functions.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/fonts.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/watchers.js" />
+        <option value="$PROJECT_DIR$/app/scripts/app/global/node_modules/aaa/index.js" />
+        <option value="$PROJECT_DIR$/app/scripts/app/bundler.js" />
+        <option value="$PROJECT_DIR$/app/hbs/chunks/part.hbs" />
+        <option value="$PROJECT_DIR$/app/hbs/layout.hbs" />
         <option value="$PROJECT_DIR$/app/scripts/app/js.js" />
+        <option value="$PROJECT_DIR$/app/scripts/libs.js" />
+        <option value="$PROJECT_DIR$/app/scripts/js.js" />
         <option value="$PROJECT_DIR$/dist/js/js.js" />
-        <option value="$PROJECT_DIR$/lib/gulp/tasks/scripts.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/index.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/config.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/scripts.js" />
       </list>
     </option>
-  </component>
-  <component name="JsBowerSettings">
-    <exe-path>C:\Users\Алексей\AppData\Roaming\npm\bower.cmd</exe-path>
-    <config-path>E:\WebDev\YaCloud\repo\gulp-boilerplate\bower.json</config-path>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
-    <gulpfiles>
-      <GulpfileState>
-        <gulpfile-path>$PROJECT_DIR$/gulpfile.js</gulpfile-path>
-        <tasks>
-          <GulpTaskState>
-            <task-name>fonts:test</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>fonts:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>fonts:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:tpl:render</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:tpl:render:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:tpl:copy</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:tpl:copy:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:tpl:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:render</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:render:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:copy:data</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:copy:templates</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:copy:data:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:copy:templates:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>jade:copy:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>browserify</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <dependencies>
-              <dependency value="server:start" />
-            </dependencies>
-            <task-name>watch</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:compile</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy:templates</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy:root</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy:templates:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy:root:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:copy:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:compile:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <dependencies>
-              <dependency value="twig:copy:cleanup" />
-              <dependency value="twig:compile:cleanup" />
-            </dependencies>
-            <task-name>twig:cleanup</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>twig:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>watching</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>removeDist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>copyroot</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:test</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:app</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:vendors</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:polyfilly</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:min</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>js:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>sass:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>css:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:critical:clean</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:critical:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:critical</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:min</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>styles:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:content:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:inline:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:inline:min</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:content:min</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:min</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:inline:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:content:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>images:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>html:dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>build</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>dist</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>server:start</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>server:stop</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>default</task-name>
-          </GulpTaskState>
-        </tasks>
-      </GulpfileState>
-    </gulpfiles>
   </component>
   <component name="NamedScopeManager">
     <order />
@@ -1029,10 +227,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1050" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1080,7 +278,7 @@
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1090,61 +288,39 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="gulpfile.js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
               <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp" />
+              <option name="myItemId" value="gulpfile.js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1154,11 +330,11 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1172,29 +348,25 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="html" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1204,11 +376,11 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
+              <option name="myItemId" value="gulp-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
+              <option name="myItemId" value="scaffront" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1217,89 +389,19 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tpl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="plugins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gulp-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../bs-recipes" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../browserify-handbook" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="FullScreen" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
@@ -1315,18 +417,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\vendor" />
-      <recent name="E:\WebDev\YaCloud\repo\gulp-boilerplate\app\scripts\plugins" />
+      <recent name="D:\Repos\scaffront\dist\js" />
+      <recent name="D:\Repos\scaffront\app\scripts\app" />
       <recent name="D:\Repos\gulp boilerplate\app\hbs" />
       <recent name="D:\Repos\gulp boilerplate\lib\gulp\tasks" />
       <recent name="D:\Repos\gulp boilerplate\app\test-html" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Repos\scaffront\app\scripts" />
       <recent name="D:\Repos\gulp boilerplate\lib\gulp\unused-tasks" />
       <recent name="D:\Repos\gulp boilerplate\lib\helpers" />
       <recent name="D:\Repos\gulp boilerplate\idea\textmate_bundles\ruby" />
       <recent name="D:\Repos\gulp boilerplate\lib\gulp" />
-      <recent name="D:\Repos\gulp boilerplate\lib\gulp\tasks" />
     </key>
   </component>
   <component name="RunManager">
@@ -1402,20 +504,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21917808" sideWeight="0.51406926" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23352662" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23639274" sideWeight="0.48593074" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2260274" sideWeight="0.48593074" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3314917" sideWeight="0.5085379" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28787878" sideWeight="0.50632244" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Copy/Paste" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3314917" sideWeight="0.4914621" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4664502" sideWeight="0.49367756" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1423,8 +524,8 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21546961" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46536797" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21917808" sideWeight="0.51406926" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1445,340 +546,339 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="10" />
+      <option name="time" value="11" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/handlebars.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/lib/builtins.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="261" column="0" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
+          <caret line="18" column="48" selection-start-line="18" selection-start-column="48" selection-end-line="18" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/advanced.txt">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#4422#4490#0" expanded="false" />
-            <element signature="e#4532#4975#0" expanded="false" />
-            <element signature="e#5020#7894#0" expanded="false" />
-            <element signature="e#7947#8018#0" expanded="false" />
-            <element signature="e#8067#8134#0" expanded="false" />
-            <element signature="e#8173#8967#0" expanded="false" />
-            <element signature="e#9013#9079#0" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/_tasks/jade.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7853736">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/_tasks/twig.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.9062003">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17555939">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24821684">
-          <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gemfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19400856">
-          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/griddle/.bower.json">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/griddle/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3525926">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32740742">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6296296">
-          <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.bowerrc">
+    <entry file="file://$PROJECT_DIR$/app/hbs/chunks/part.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="2" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.npmignore">
+    <entry file="file://$PROJECT_DIR$/app/jade/tpl/childtpl-data.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08279221">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.10233393">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Program Files/Microsoft SDKs/Windows/v7.1/Bin/SetEnv.Cmd">
+    <entry file="file://$PROJECT_DIR$/app/jade/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20466787">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/jade/index-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34111312">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/hbs/chunks/part-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27289048">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/hbs/index-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10233393">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="111" column="5" selection-start-line="111" selection-start-column="5" selection-end-line="111" selection-end-column="5" />
+          <caret line="952" column="87" selection-start-line="952" selection-start-column="87" selection-end-line="952" selection-end-column="87" />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Ruby22/bin/setrbvars.bat">
+    <entry file="file://$PROJECT_DIR$/app/hbs/globalVars.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2544643">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/fonts.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="9" />
+          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://G:/scaffront/conemu/FrontendEnv.cmd">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/watchers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="10" selection-start-line="0" selection-start-column="0" selection-end-line="89" selection-end-column="16" />
+          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Drivers/ConEmuPack.150513/ConEmu/Addons/FrontendEnv.cmd">
+    <entry file="file://$PROJECT_DIR$/node_modules/timers-browserify/example/enroll/js/browserify.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24054983">
-          <caret line="56" column="10" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
+        <state vertical-scroll-proportion="-6.9619045">
+          <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/plugins/plugin1.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38169643">
+          <caret line="21" column="42" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/burrito/example/web/bs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0959822">
+          <caret line="4013" column="0" selection-start-line="4013" selection-start-column="0" selection-end-line="4013" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.WebIde90/system/extLibs/nodejs-v5.0.0-src/core-modules-sources/lib/vm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6395089">
+          <caret line="46" column="15" selection-start-line="46" selection-start-column="15" selection-end-line="46" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.WebIde90/system/extLibs/nodejs-v5.0.0-src/core-modules-sources/lib/assert.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3325893">
+          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5760368">
+          <caret line="177" column="27" selection-start-line="177" selection-start-column="27" selection-end-line="177" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.571428">
+          <caret line="38" column="23" selection-start-line="38" selection-start-column="23" selection-end-line="38" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/js.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/lib/_empty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/args.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.767857">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/.bin/browserify.cmd">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13118526">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/.bin/browserify">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31808037">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/cmd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12723215">
+          <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/usage.txt">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/hbs/chunks/part.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.021889402">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/html/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/hbs/index.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.285715">
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/vendor/vendor1.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="22" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/vendor/jquery-1.11.2.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/vendor/modernizr-2.8.3.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74684995">
-          <caret line="3" column="6866" selection-start-line="3" selection-start-column="6866" selection-end-line="3" selection-end-column="6866" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/big.brother.counters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1603665">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/cbh.events.js">
+    <entry file="file://$PROJECT_DIR$/app/hbs/layout.hbs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33104238">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.656682">
+          <caret line="30" column="59" selection-start-line="30" selection-start-column="59" selection-end-line="30" selection-end-column="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.ba-throttle-debounce.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38946164">
-          <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/bin/advanced.txt">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.bootstrap.modal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="315" column="0" selection-start-line="315" selection-start-column="0" selection-end-line="315" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.easing.1.3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79839635">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#1959#6456#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.fit-to-parent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46735394">
-          <caret line="162" column="41" selection-start-line="162" selection-start-column="41" selection-end-line="162" selection-end-column="41" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.fitvids.custom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.leaks.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5063001">
-          <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.ready.safe.bottom.js">
+    <entry file="file://$USER_HOME$/.WebIde90/system/extLibs/nodejs-v5.0.0-src/core-modules-sources/lib/module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.078125">
+          <caret line="321" column="46" selection-start-line="321" selection-start-column="46" selection-end-line="321" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/test/global_noparse.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.slicer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58419245">
-          <caret line="76" column="27" selection-start-line="76" selection-start-column="27" selection-end-line="76" selection-end-column="27" />
+          <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/slick.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/browserify/lib/builtins.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38169643">
+          <caret line="18" column="48" selection-start-line="18" selection-start-column="48" selection-end-line="18" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/js/js.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#728#1236#0" expanded="false" />
+            <element signature="e#1307#1313#0" expanded="false" />
+            <element signature="e#1360#485600#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/unslider.custom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5647194">
-          <caret line="53" column="50" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/Url.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.58419245">
-          <caret line="30" column="15" selection-start-line="30" selection-start-column="15" selection-end-line="30" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/waiter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0515463">
-          <caret line="54" column="15" selection-start-line="54" selection-start-column="15" selection-end-line="54" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/ytiframe.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5647194">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/requiredInput.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.058419243">
-          <caret line="3" column="56" selection-start-line="3" selection-start-column="56" selection-end-line="3" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/normalizeconsole.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36998853">
-          <caret line="53" column="107" selection-start-line="53" selection-start-column="107" selection-end-line="53" selection-end-column="107" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.fitvids.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.116838485">
-          <caret line="6" column="62" selection-start-line="6" selection-start-column="62" selection-end-line="6" selection-end-column="62" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.actual.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38946164">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.bootstrap.tabs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4089347">
-          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/jquery.ajax.form.loader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2142039">
-          <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/plugins/textarea.resize.event.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38946164">
-          <caret line="20" column="29" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/watchers.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/js.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
@@ -1786,283 +886,79 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/handlebars.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/lodash/lang.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="129" column="40" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
-          <folding>
-            <element signature="e#4422#4490#0" expanded="false" />
-            <element signature="e#4532#4975#0" expanded="false" />
-            <element signature="e#5020#7894#0" expanded="false" />
-            <element signature="e#7947#8018#0" expanded="false" />
-            <element signature="e#8067#8134#0" expanded="false" />
-            <element signature="e#8173#8967#0" expanded="false" />
-            <element signature="e#9013#9079#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="27" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.46651787">
+          <caret line="22" column="2" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/js/js.min.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/watchify/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4284078">
-          <caret line="0" column="4329" selection-start-line="0" selection-start-column="4329" selection-end-line="0" selection-end-column="4329" />
+        <state vertical-scroll-proportion="0.1484375">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/html/index.html">
+    <entry file="file://$PROJECT_DIR$/app/scripts/libs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.6538463">
-          <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="37" selection-start-line="0" selection-start-column="37" selection-end-line="0" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/app/js.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/lazypipe/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#115#465#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="167" column="0" selection-start-line="167" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/helpers/functions.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="297" column="20" selection-start-line="297" selection-start-column="20" selection-end-line="297" selection-end-column="20" />
-          <folding>
-            <element signature="e#206#216#0" expanded="false" />
-            <element signature="e#243#319#0" expanded="false" />
-            <element signature="e#360#627#0" expanded="false" />
-            <element signature="e#467#510#0" expanded="false" />
-            <element signature="e#543#577#0" expanded="false" />
-            <element signature="e#583#607#0" expanded="false" />
-            <element signature="e#630#683#0" expanded="false" />
-            <element signature="e#721#882#0" expanded="false" />
-            <element signature="e#885#938#0" expanded="false" />
-            <element signature="e#966#1095#0" expanded="false" />
-            <element signature="e#1098#1226#0" expanded="false" />
-            <element signature="e#1275#2315#0" expanded="false" />
-            <element signature="e#1355#1430#0" expanded="false" />
-            <element signature="e#1466#1536#0" expanded="false" />
-            <element signature="e#1542#1598#0" expanded="false" />
-            <element signature="e#1732#1935#0" expanded="false" />
-            <element signature="e#1788#1830#0" expanded="false" />
-            <element signature="e#1884#1930#0" expanded="false" />
-            <element signature="e#2039#2065#0" expanded="false" />
-            <element signature="e#2097#2260#0" expanded="false" />
-            <element signature="e#2197#2254#0" expanded="false" />
-            <element signature="e#2318#2684#0" expanded="false" />
-            <element signature="e#2765#3126#0" expanded="false" />
-            <element signature="e#3129#3175#0" expanded="false" />
-            <element signature="e#3203#3271#0" expanded="false" />
-            <element signature="e#3274#3434#0" expanded="false" />
-            <element signature="e#3563#3762#0" expanded="true" />
-            <element signature="e#3862#3921#0" expanded="false" />
-            <element signature="e#3987#4354#0" expanded="false" />
-            <element signature="e#4078#4117#0" expanded="false" />
-            <element signature="e#4153#4186#0" expanded="false" />
-            <element signature="e#4233#4332#0" expanded="false" />
-            <element signature="e#4360#4403#0" expanded="false" />
-            <element signature="e#4428#4675#0" expanded="true" />
-            <element signature="e#4518#4644#0" expanded="true" />
-            <element signature="e#4678#4731#0" expanded="false" />
-            <element signature="e#4772#4889#0" expanded="false" />
-            <element signature="e#4892#4943#0" expanded="false" />
-            <element signature="e#4974#5058#0" expanded="false" />
-            <element signature="e#5061#5313#0" expanded="false" />
-            <element signature="e#5375#6208#0" expanded="false" />
-            <element signature="e#5695#6156#0" expanded="false" />
-            <element signature="e#5816#5953#0" expanded="false" />
-            <element signature="e#5833#5929#0" expanded="false" />
-            <element signature="e#6006#6150#0" expanded="false" />
-            <element signature="e#6097#6142#0" expanded="false" />
-            <element signature="e#6254#6370#0" expanded="false" />
-          </folding>
+          <caret line="39" column="36" selection-start-line="38" selection-start-column="38" selection-end-line="39" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/config.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/helpers/functions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
-          <folding>
-            <element signature="e#257#492#0" expanded="true" />
-            <element signature="e#269#338#0" expanded="true" />
-            <element signature="e#351#406#0" expanded="true" />
-            <element signature="e#421#488#0" expanded="true" />
-            <element signature="e#422#487#0" expanded="true" />
-            <element signature="e#552#724#0" expanded="true" />
-            <element signature="e#631#718#0" expanded="true" />
-            <element signature="e#788#2790#0" expanded="true" />
-            <element signature="e#820#897#0" expanded="true" />
-            <element signature="e#911#942#0" expanded="true" />
-            <element signature="e#957#994#0" expanded="true" />
-            <element signature="e#1006#1098#0" expanded="true" />
-            <element signature="e#1293#1852#0" expanded="false" />
-            <element signature="e#1995#2307#0" expanded="true" />
-          </folding>
+          <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/js/js.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#443#696685#0" expanded="true" />
-            <element signature="e#446#803#0" expanded="true" />
-            <element signature="e#806#285031#0" expanded="true" />
-            <element signature="e#3196#5147#0" expanded="true" />
-            <element signature="e#6734#14253#0" expanded="true" />
-            <element signature="e#18206#19029#0" expanded="true" />
-            <element signature="e#20395#20756#0" expanded="true" />
-            <element signature="e#42885#56761#0" expanded="true" />
-            <element signature="e#43030#43189#0" expanded="true" />
-            <element signature="e#43204#45318#0" expanded="true" />
-            <element signature="e#45330#50972#0" expanded="true" />
-            <element signature="e#50985#56759#0" expanded="true" />
-            <element signature="e#57908#58019#0" expanded="true" />
-            <element signature="e#58283#58348#0" expanded="true" />
-            <element signature="e#64546#64881#0" expanded="true" />
-            <element signature="e#75416#76617#0" expanded="true" />
-            <element signature="e#80368#80435#0" expanded="true" />
-            <element signature="e#80452#80926#0" expanded="true" />
-            <element signature="e#80947#82752#0" expanded="true" />
-            <element signature="e#82882#84040#0" expanded="true" />
-            <element signature="e#87252#90038#0" expanded="true" />
-            <element signature="e#90074#94367#0" expanded="true" />
-            <element signature="e#90122#90384#0" expanded="true" />
-            <element signature="e#90421#91631#0" expanded="true" />
-            <element signature="e#94547#95715#0" expanded="true" />
-            <element signature="e#106605#107513#0" expanded="true" />
-            <element signature="e#106784#106957#0" expanded="true" />
-            <element signature="e#107534#108882#0" expanded="true" />
-            <element signature="e#108901#110481#0" expanded="true" />
-            <element signature="e#110319#110474#0" expanded="true" />
-            <element signature="e#110502#111860#0" expanded="true" />
-            <element signature="e#116990#135626#0" expanded="true" />
-            <element signature="e#119199#119446#0" expanded="true" />
-            <element signature="e#132088#132356#0" expanded="true" />
-            <element signature="e#132372#133652#0" expanded="true" />
-            <element signature="e#133665#135050#0" expanded="true" />
-            <element signature="e#133675#133769#0" expanded="true" />
-            <element signature="e#133780#134183#0" expanded="true" />
-            <element signature="e#134193#134355#0" expanded="true" />
-            <element signature="e#134366#134764#0" expanded="true" />
-            <element signature="e#134783#135047#0" expanded="true" />
-            <element signature="e#135367#135434#0" expanded="true" />
-            <element signature="e#137334#138429#0" expanded="true" />
-            <element signature="e#138520#138632#0" expanded="true" />
-            <element signature="e#138690#139233#0" expanded="true" />
-            <element signature="e#139328#140728#0" expanded="true" />
-            <element signature="e#140844#142729#0" expanded="true" />
-            <element signature="e#143136#143680#0" expanded="true" />
-            <element signature="e#143707#146237#0" expanded="true" />
-            <element signature="e#147319#147960#0" expanded="true" />
-            <element signature="e#153047#159305#0" expanded="true" />
-            <element signature="e#159326#165880#0" expanded="true" />
-            <element signature="e#165896#166018#0" expanded="true" />
-            <element signature="e#173241#173846#0" expanded="true" />
-            <element signature="e#174956#175562#0" expanded="true" />
-            <element signature="e#179619#179665#0" expanded="true" />
-            <element signature="e#184582#188761#0" expanded="true" />
-            <element signature="e#184707#184932#0" expanded="true" />
-            <element signature="e#184720#184929#0" expanded="true" />
-            <element signature="e#185018#185260#0" expanded="true" />
-            <element signature="e#185364#185458#0" expanded="true" />
-            <element signature="e#188849#189643#0" expanded="true" />
-            <element signature="e#189703#191262#0" expanded="true" />
-            <element signature="e#191720#191767#0" expanded="true" />
-            <element signature="e#191836#192178#0" expanded="true" />
-            <element signature="e#192302#193171#0" expanded="true" />
-            <element signature="e#193342#194385#0" expanded="true" />
-            <element signature="e#194457#195643#0" expanded="true" />
-            <element signature="e#194470#195641#0" expanded="true" />
-            <element signature="e#195787#195920#0" expanded="true" />
-            <element signature="e#195939#196054#0" expanded="true" />
-            <element signature="e#196362#197991#0" expanded="true" />
-            <element signature="e#196371#197988#0" expanded="true" />
-            <element signature="e#204976#206093#0" expanded="true" />
-            <element signature="e#206539#206610#0" expanded="true" />
-            <element signature="e#206876#207423#0" expanded="true" />
-            <element signature="e#207551#207724#0" expanded="true" />
-            <element signature="e#208281#211528#0" expanded="true" />
-            <element signature="e#211908#212090#0" expanded="true" />
-            <element signature="e#213018#213078#0" expanded="true" />
-            <element signature="e#215455#216861#0" expanded="true" />
-            <element signature="e#216879#219102#0" expanded="true" />
-            <element signature="e#216892#219100#0" expanded="true" />
-            <element signature="e#216904#217148#0" expanded="true" />
-            <element signature="e#217160#219097#0" expanded="true" />
-            <element signature="e#219222#219384#0" expanded="true" />
-            <element signature="e#219829#220052#0" expanded="true" />
-            <element signature="e#220070#222687#0" expanded="true" />
-            <element signature="e#222234#222685#0" expanded="true" />
-            <element signature="e#222244#222682#0" expanded="true" />
-            <element signature="e#222733#223245#0" expanded="true" />
-            <element signature="e#224123#224449#0" expanded="true" />
-            <element signature="e#224651#225109#0" expanded="true" />
-            <element signature="e#225506#225671#0" expanded="true" />
-            <element signature="e#225827#225935#0" expanded="true" />
-            <element signature="e#226125#226260#0" expanded="true" />
-            <element signature="e#226320#226696#0" expanded="true" />
-            <element signature="e#226816#227212#0" expanded="true" />
-            <element signature="e#227230#228548#0" expanded="true" />
-            <element signature="e#227242#227289#0" expanded="true" />
-            <element signature="e#228020#228546#0" expanded="true" />
-            <element signature="e#228034#228543#0" expanded="true" />
-            <element signature="e#228857#228935#0" expanded="true" />
-            <element signature="e#229145#229417#0" expanded="true" />
-            <element signature="e#229434#229579#0" expanded="true" />
-            <element signature="e#229792#233722#0" expanded="true" />
-            <element signature="e#234231#234806#0" expanded="true" />
-            <element signature="e#244680#257867#0" expanded="true" />
-            <element signature="e#244843#246164#0" expanded="true" />
-            <element signature="e#245226#245376#0" expanded="true" />
-            <element signature="e#245391#245444#0" expanded="true" />
-            <element signature="e#245465#245542#0" expanded="true" />
-            <element signature="e#245666#245925#0" expanded="true" />
-            <element signature="e#246125#246161#0" expanded="true" />
-            <element signature="e#248039#249750#0" expanded="true" />
-            <element signature="e#258169#258259#0" expanded="true" />
-            <element signature="e#258328#258431#0" expanded="true" />
-            <element signature="e#258456#259775#0" expanded="true" />
-            <element signature="e#262298#263251#0" expanded="true" />
-            <element signature="e#264897#268762#0" expanded="true" />
-            <element signature="e#269061#269335#0" expanded="true" />
-            <element signature="e#269073#269179#0" expanded="true" />
-            <element signature="e#269192#269228#0" expanded="true" />
-            <element signature="e#269243#269333#0" expanded="true" />
-            <element signature="e#269814#270910#0" expanded="true" />
-            <element signature="e#271021#271201#0" expanded="true" />
-            <element signature="e#274899#275040#0" expanded="true" />
-            <element signature="e#276288#277650#0" expanded="true" />
-            <element signature="e#277670#280196#0" expanded="true" />
-            <element signature="e#278399#278588#0" expanded="true" />
-            <element signature="e#279683#279850#0" expanded="true" />
-            <element signature="e#285034#696684#0" expanded="true" />
-            <element signature="e#285509#696528#0" expanded="false" />
-          </folding>
+          <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/gulp/tasks/scripts.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55899197">
-          <caret line="93" column="62" selection-start-line="93" selection-start-column="62" selection-end-line="93" selection-end-column="62" />
+        <state vertical-scroll-proportion="-0.123883925">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
           <folding>
-            <element signature="e#1510#1664#0" expanded="true" />
-            <element signature="e#1581#1660#0" expanded="true" />
-            <element signature="e#1746#1777#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

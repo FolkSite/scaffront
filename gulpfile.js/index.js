@@ -439,7 +439,7 @@ Gulp.task('js:polyfilly', function(cb) {
       var filename = Path.basename(filePath);
       var basename = Path.basename(filePath, extname);
       var path = filePath.replace(new RegExp(basename + extname +'$'), '');
-      var polyfillsFileName = basename + '.polyfills' + extname;
+      var polyfillsFileName = basename + '.polyfilled' + extname;
 
       var FileStream = Gulp.src(file.path);
       var polyfillsStream = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));

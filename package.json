@@ -85,6 +85,7 @@
     "resolve-bower": "0.0.1",
     "rimraf": "*",
     "run-sequence": "*",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^2.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.0"

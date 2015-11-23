@@ -3,30 +3,34 @@
 // http://frontender.info/gulp-browserify-starter-faq/
 
 
-var Helpers = require('../../helpers/functions.js');
-var config = require('../config.js').scripts;
+var Helpers           = require('../helpers/functions.js'),
+    config            = require('../config.js').scripts.build,
 
-var _ = require('lodash');
-var Path = require('path');
-var Gulp = require('gulp');
-var Changed = require('gulp-changed');
-var RunSequence = require('run-sequence').use(Gulp);
-var Plumber = require('gulp-plumber');
-var Uglify = require('gulp-uglify');
-var Del = require('del');
-var Extend = require('extend');
-var Rename = require('gulp-rename');
-var Tap = require('gulp-tap');
-var Gutil = require('gulp-util');
+    _                 = require('lodash'),
+    Path              = require('path'),
+    Gulp              = require('gulp'),
+    Changed           = require('gulp-changed'),
+    RunSequence       = require('run-sequence').use(Gulp),
+    Plumber           = require('gulp-plumber'),
+    Uglify            = require('gulp-uglify'),
+    Del               = require('del'),
+    Extend            = require('extend'),
+    Rename            = require('gulp-rename'),
+    Tap               = require('gulp-tap'),
+    Gutil             = require('gulp-util'),
 
-var Lazypipe = require('lazypipe');
-var Browserify = require('browserify');
-var Watchify = require('watchify');
-var isStream = require('isstream');
-var VinylSourceStream = require('vinyl-source-stream');
-var VinylBuffer = require('vinyl-buffer');
+    Merge             = require('event-stream').merge,
+    Concat            = require('gulp-concat'),
+    AutoPolyfiller    = require('gulp-autopolyfiller'),
+    Order             = require('gulp-order'),
+    Lazypipe          = require('lazypipe'),
+    Browserify        = require('browserify'),
+    Watchify          = require('watchify'),
+    isStream          = require('isstream'),
+    VinylSourceStream = require('vinyl-source-stream'),
+    VinylBuffer       = require('vinyl-buffer'),
 
-var bowerConfig = require('../config.js').bower;
+    bowerConfig       = require('../config.js').bower;
 
 
 var defaults = {
@@ -42,20 +46,164 @@ var defaults = {
 
 config = Extend(true, defaults, config);
 
+config.dest = Helpers.preparePath({trailingSlash: true}, config.dest);
+
+
+
 
 //var resolve = require('resolve-bower');
 //var res = resolve.sync('jquery', { basedir: Path.join(__dirname, 'app/scripts/bower_components') });
 
-_.each(config.bundles, function (item) {
-  console.log(Path.resolve(__dirname, item.src));
-  //item
+
+var makeBundlers = function (bundles) {
+  bundles = (!_.isArray(bundles)) ? [bundles] : bundles;
+
+  var bundlers = [];
+  var bundleConfigDefault = {
+    entry: '',
+    dest: '',
+    outfile: '',
+    options: {
+      debug: !global.isProduction
+    },
+    setup: function (bundler) { return bundler; },
+    callback: function (err, buf) {}
+  };
+
+  return _.map(bundles, function (bundle) {
+    var _entry;
+    if (_.isString(bundle) || _.isArray(bundle)) {
+      _entry = bundle;
+      bundle = { entry: _entry };
+    }
+
+    if (!_.isPlainObject(bundle)) { return; }
+
+    bundle = Extend(true, bundleConfigDefault, bundle);
+
+    if (!_.isPlainObject(bundle.options)) {
+      bundle.options = bundleConfigDefault.options;
+    } else {
+      bundle.options = Extend(true, bundleConfigDefault.options, bundle.options);
+    }
+
+    if (!bundle.entry && bundle.options.entries) {
+      bundle.entry = bundle.options.entries;
+      delete bundle.options.entries;
+    }
+
+    if (bundle.entry) {
+      if (!_.isArray(bundle.entry)) {
+        bundle.entry = [bundle.entry];
+      }
+    } else {
+      throw new Error('You must specify entry file for bundle');
+    }
+
+    bundle.outfile = bundle.outfile || null;
+    if (!outfile && _.isArray(bundle.entry) && bundle.entry.length == 1) {
+      // todo: вычленить название output-файла из исходного пути
+
+    } else {
+      throw new Error('You must specify output filename for bundle');
+    }
+
+    bundle.dest = bundle.dest || config.dest;
+    bundle.dest = Helpers.preparePath({trailingSlash: true}, bundle.dest);
+
+    if (!_.isFunction(bundle.setup)) {
+      bundle.setup = bundleConfigDefault.setup;
+    }
+
+    if (!_.isFunction(bundle.callback)) {
+      bundle.callback = bundleConfigDefault.callback;
+    }
+
+    if (bundle.entry) {
+      bundle.bundler = Browserify(bundle.entry, Extend(true, Watchify.args, bundle.options));
+    } else {
+      bundle.bundler = Browserify(Extend(true, Watchify.args, bundle.options));
+    }
+
+    bundle.setup(bundle.bundler);
+
+    return bundle;
+  });
+};
+
+var getBundlers = (function () {
+  var bundlers = null;
+
+  return function () {
+    if (bundlers) { return bundlers; }
+
+    return bundlers = makeBundlers(config.bundles);
+  };
+})();
+
+
+_.each(getBundlers(), function (_bundler, index) {
+  var bundler = _bundler.bundler;
+  var callback = _bundler.callback;
+
+
 });
 
+
+var MinifyPipe = Lazypipe()
+  .pipe(Uglify())
+  .pipe(Rename({suffix: '.min'}));
+
+var PolyfillyPipe = Lazypipe()
+  .pipe(Tap(function (file) {
+    var filePath          = file.path,
+        extname           = Path.extname(filePath),
+        filename          = Path.basename(filePath),
+        basename          = Path.basename(filePath, extname),
+        path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
+        polyfillsFileName = basename + '.polyfills' + extname,
+
+        FileStream        = Gulp.src(file.path),
+        polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));
+
+    return Merge(FileStream, polyfillsStream)
+      .pipe(Order([
+        polyfillsFileName,
+        filename
+      ]))
+      .pipe(Concat(filename))
+      .pipe(Gulp.dest(path));
+  }));
+
+
+
+function rebundle (bundler, callback) {
+  return bundler.bundle(callback)
+    .on('error', Helpers.plumberErrorHandler.errorHandler)
+    .pipe(VinylSourceStream('js.js'))
+    .pipe(Gulp.dest('dist/js/'))
+    .pipe(VinylBuffer())
+    .pipe(Uglify())
+    .pipe(Rename({suffix: '.min'}))
+    .pipe(Gulp.dest('dist/js/'));
+}
 
 
 var browserSync = require('browser-sync');
 
 Gulp.task('browser-sync', function () {
+  var bundlerW = Watchify(bundler);
+  bundlerW.on('update', function () {
+    Gutil.log('Rebundling...');
+  });
+  bundlerW.on('time', function (time) {
+    Gutil.log('Rebundled in:', Gutil.colors.cyan(time + 'ms'));
+  });
+
+  bundlerW.on('update', function () {
+    rebundle(bundler).pipe(browserSync.stream({once: true}));
+  });
+
   browserSync({
     port: 666,
     open: false,
@@ -70,41 +218,44 @@ Gulp.task('browser-sync', function () {
 
 
 
-Gulp.task('scripts:watch', function () {
+Gulp.task('scripts:bundle', function () {
 
-  var bundler = new Browserify({
-    //noParse: ['jquery']
-  });
-  bundler.add('app/scripts/app/js.js');
-  bundler.ignore('jquery');
-
-  //bundler = Watchify(bundler);
-  //bundler.on('update', function () {
-  //  Gutil.log('Rebundling...');
-  //});
-  //bundler.on('time', function (time) {
-  //  Gutil.log('Rebundled in:', Gutil.colors.cyan(time + 'ms'));
-  //});
-
-  //bundler.transform(reactify);
-  //bundler.on('update', rebundle);
-
-  function rebundle() {
-    return bundler.bundle({debug:true})
-        .on('error', Helpers.plumberErrorHandler.errorHandler)
-        .pipe(VinylSourceStream('js.js'))
-        .pipe(Gulp.dest('dist/js/'))
-        .pipe(VinylBuffer())
-        .pipe(Uglify())
-        .pipe(Rename({suffix: '.min'}))
-        .pipe(Gulp.dest('dist/js/'))
-        //.pipe(browserSync.stream({once: true}));
-  }
-
-  return rebundle();
+  return rebundle(bundler);
 });
 
-Gulp.task('scripts:test', ['scripts:watch', 'browser-sync']);
+Gulp.task('scripts:test', ['scripts:bundle', 'browser-sync']);
+
+
+
+Gulp.task('js:polyfilly', function(cb) {
+  var src = Helpers.getGlobPaths(config.src, '.js', false)
+    .concat(Helpers.getGlobPaths(config.src, '.min.js', false, true))
+    .concat(Helpers.getGlobPaths(config.src, '.polyfilled.js', false, true));
+
+  return Gulp.src(src)
+    .pipe(Plumber(Helpers.plumberErrorHandler))
+    .pipe(Tap(function (file) {
+      var filePath          = file.path,
+          extname           = Path.extname(filePath),
+          filename          = Path.basename(filePath),
+          basename          = Path.basename(filePath, extname),
+          path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
+          polyfillsFileName = basename + '.polyfilled' + extname,
+
+          FileStream        = Gulp.src(file.path),
+          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));
+
+      return Merge(FileStream, polyfillsStream)
+        .pipe(Order([
+          polyfillsFileName,
+          filename
+        ]))
+        .pipe(Concat(filename))
+        .pipe(Gulp.dest(path));
+    }));
+});
+
+
 
 
 return;
