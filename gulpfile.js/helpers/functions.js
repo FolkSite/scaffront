@@ -3,6 +3,7 @@ var Path = require('path');
 var Crypto = require('crypto');
 var lodash = require('lodash');
 var Gutil = require('gulp-util');
+var Notifier = require('node-notifier');
 
 
 var _ = {};
@@ -197,8 +198,17 @@ _.getDataForTpl = function (getFile) {
  * @type {{errorHandler: Function}}
  */
 _.plumberErrorHandler = {
-  errorHandler: function errorHandler$ (e) {
-    console.log(e.toString());
+  errorHandler: function errorHandler$ (err) {
+    Gutil.log(err);
+
+    Notifier.notify({
+      title: 'Scaffront error!',
+      message: err.toString(),
+      sound: true,
+      time: 5000,
+      wait: false
+    });
+
     this.emit('end');
   }
 };

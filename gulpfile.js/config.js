@@ -1,6 +1,8 @@
 var _    = require('lodash'),
     Path = require('path'),
-    FS = require('fs');
+    Extend = require('extend'),
+    FS = require('fs'),
+    ConnectGzipStatic = require('connect-gzip-static');
 
 
 var config = {
@@ -15,16 +17,27 @@ var config = {
     build: {
       src: 'app/scripts',
       dest: 'dist/js'
-    }
+    },
+    bundles: [{
+      src: 'app/scripts/app/js.js',
+      dest: 'dist/js'
+    }]
   },
 
   BrowserSync: {
     instanceName: 'server',
     config: {
+      open: false,
+      startPath: '/html/',
       port: 666,
       server: {
+        index: "index.html",
+        directory: true,
         baseDir: 'dist'
       }
+    },
+    callback: function (err, bs) {
+
     }
   },
 
@@ -80,7 +93,7 @@ var config = {
      * @param {*} Handlebars
      */
     setupHandlebars: function (Handlebars) {
-      var helpers = {
+      var helpers = Extend(require('hbs-helpers'), {
         moment: require('helper-moment'),
         raw: function (options) {
           /**
@@ -93,7 +106,7 @@ var config = {
         upcase: function(s) {
           return s.toUpperCase();
         }
-      };
+      });
 
       var partials = {};
 

@@ -7,6 +7,7 @@ var Helpers = require('../../helpers/functions.js');
 var config = require('../config.js').scripts;
 
 var _ = require('lodash');
+var Path = require('path');
 var Gulp = require('gulp');
 var Changed = require('gulp-changed');
 var RunSequence = require('run-sequence').use(Gulp);
@@ -16,12 +17,15 @@ var Del = require('del');
 var Extend = require('extend');
 var Rename = require('gulp-rename');
 var Tap = require('gulp-tap');
+var Gutil = require('gulp-util');
 
 var Lazypipe = require('lazypipe');
 var Browserify = require('browserify');
 var Watchify = require('watchify');
 var isStream = require('isstream');
 var VinylSourceStream = require('vinyl-source-stream');
+var VinylBuffer = require('vinyl-buffer');
+
 var bowerConfig = require('../config.js').bower;
 
 
@@ -39,9 +43,69 @@ var defaults = {
 config = Extend(true, defaults, config);
 
 
-
 //var resolve = require('resolve-bower');
 //var res = resolve.sync('jquery', { basedir: Path.join(__dirname, 'app/scripts/bower_components') });
+
+_.each(config.bundles, function (item) {
+  console.log(Path.resolve(__dirname, item.src));
+  //item
+});
+
+
+
+var browserSync = require('browser-sync');
+
+Gulp.task('browser-sync', function () {
+  browserSync({
+    port: 666,
+    open: false,
+    startPath: '/html/',
+    server: {
+      index: "index.html",
+      directory: true,
+      baseDir: 'dist'
+    }
+  })
+});
+
+
+
+Gulp.task('scripts:watch', function () {
+
+  var bundler = new Browserify({
+    //noParse: ['jquery']
+  });
+  bundler.add('app/scripts/app/js.js');
+  bundler.ignore('jquery');
+
+  //bundler = Watchify(bundler);
+  //bundler.on('update', function () {
+  //  Gutil.log('Rebundling...');
+  //});
+  //bundler.on('time', function (time) {
+  //  Gutil.log('Rebundled in:', Gutil.colors.cyan(time + 'ms'));
+  //});
+
+  //bundler.transform(reactify);
+  //bundler.on('update', rebundle);
+
+  function rebundle() {
+    return bundler.bundle({debug:true})
+        .on('error', Helpers.plumberErrorHandler.errorHandler)
+        .pipe(VinylSourceStream('js.js'))
+        .pipe(Gulp.dest('dist/js/'))
+        .pipe(VinylBuffer())
+        .pipe(Uglify())
+        .pipe(Rename({suffix: '.min'}))
+        .pipe(Gulp.dest('dist/js/'))
+        //.pipe(browserSync.stream({once: true}));
+  }
+
+  return rebundle();
+});
+
+Gulp.task('scripts:test', ['scripts:watch', 'browser-sync']);
+
 
 return;
 
@@ -50,6 +114,8 @@ return;
  * @param {string} [standalone]
  * @returns {*}
  */
+
+/*
 var getPreBundle = function (file, standalone) {
   var args = _.toArray(arguments);
   var options = {};
@@ -206,3 +272,6 @@ gulp.task('watch', function() {
 
   return rebundle();
 });
+
+
+//*/

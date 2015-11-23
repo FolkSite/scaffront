@@ -2,15 +2,19 @@
   <dictionary name="Алексей">
     <words>
       <w>autoplay</w>
+      <w>bundler</w>
       <w>copyroot</w>
       <w>extname</w>
       <w>favicons</w>
       <w>habrahabr</w>
       <w>modernizr</w>
+      <w>nodejs</w>
+      <w>nodevarss</w>
       <w>phantomjs</w>
       <w>polyfills</w>
       <w>polyfilly</w>
       <w>quant</w>
+      <w>scaffront</w>
       <w>svgo</w>
       <w>unitless</w>
     </words>

@@ -17,13 +17,13 @@ global.environment = (global.isProduction) ? 'production' : 'development';
 
 global.isWatching = false;
 
-var config = require('./lib/gulp/config');
+var config = require('./config');
 var Gulp = require('gulp');
 var Path = require('path');
 
 config.BrowserSync.instanceName = config.BrowserSync.instanceName || 'server';
 
-var tasks = require('require-dir')('./lib/gulp/tasks', {
+var tasks = require('require-dir')('./tasks', {
   recurse: true
 });
 
@@ -65,7 +65,7 @@ var Gulp = require('gulp'),
     //Phantom = require('phantom'),
     _ = require('lodash'),
     del = require('del'),
-    Helpers = require('./lib/helpers/functions');
+    Helpers = require('./helpers/functions');
 
 //var Wrap = require('gulp-wrap');
 
