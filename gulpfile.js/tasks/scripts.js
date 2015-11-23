@@ -91,7 +91,6 @@ var makeBundlers = function (bundles) {
       bundle.entry = bundle.options.entries;
       delete bundle.options.entries;
     }
-
     if (bundle.entry) {
       if (!_.isArray(bundle.entry)) {
         bundle.entry = [bundle.entry];
@@ -104,7 +103,8 @@ var makeBundlers = function (bundles) {
     if (!outfile && _.isArray(bundle.entry) && bundle.entry.length == 1) {
       // todo: вычленить название output-файла из исходного пути
 
-    } else {
+    }
+    if (!outfile) {
       throw new Error('You must specify output filename for bundle');
     }
 
