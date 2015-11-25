@@ -1,24 +1,24 @@
 var FS = require('fs');
 var Path = require('path');
 var Crypto = require('crypto');
-var lodash = require('lodash');
+var _ = require('lodash');
 var Gutil = require('gulp-util');
 var Notifier = require('node-notifier');
 
 
-var _ = {};
+var __ = {};
 
 /**
  *
  */
-_.noop = function () {};
+__.noop = function () {};
 
 /**
  * @param {String} from
  * @param {String} [to]
  * @returns {string}
  */
-_.getRelativePath = function (from, to) {
+__.getRelativePath = function (from, to) {
   var result = '';
   from = from || null;
   to = to || null;
@@ -40,7 +40,7 @@ _.getRelativePath = function (from, to) {
  * @param {String} path
  * @returns {Boolean}
  */
-_.hasTrailingSlash = function (path) {
+__.hasTrailingSlash = function (path) {
   path = path.toString() || '';
   if (!path) { return false; }
 
@@ -52,11 +52,11 @@ _.hasTrailingSlash = function (path) {
  * @param {String} path
  * @returns {boolean}
  */
-_.isFile = function (path) {
+__.isFile = function (path) {
   path = path.toString() || '';
   if (!path) { return false; }
 
-  return (!!Path.extname(path) && !_.hasTrailingSlash(path));
+  return (!!Path.extname(path) && !__.hasTrailingSlash(path));
 };
 
 /**
@@ -65,14 +65,14 @@ _.isFile = function (path) {
  * @param {String} [path]
  * @param {...} [toJoin]
  */
-_.preparePath = function (config, path, toJoin) {
-  var args = lodash.toArray(arguments);
+__.preparePath = function (config, path, toJoin) {
+  var args = _.toArray(arguments);
 
-  if (lodash.isPlainObject(args[0])) {
+  if (_.isPlainObject(args[0])) {
     config = args[0];
     path = args[1];
     toJoin = args.slice(2);
-  } else if (lodash.isString(args[0])) {
+  } else if (_.isString(args[0])) {
     config = {};
     path = args[0];
     toJoin = args.slice(1);
@@ -99,7 +99,7 @@ _.preparePath = function (config, path, toJoin) {
 
   if (typeof config.trailingSlash != 'undefined') {
 
-    if (config.trailingSlash && !_.isFile(path)) {
+    if (config.trailingSlash && !__.isFile(path)) {
       path += '/';
     }
     if (!config.trailingSlash) {
@@ -117,43 +117,55 @@ _.preparePath = function (config, path, toJoin) {
 };
 
 /**
- *
- * @param {String} sourceDir For example: 'app/scripts/plugins'
- * @param {String} destDir For example: 'dist/js/plugins'
- * @param {String} src For example: '*.js'
- * @param {String} [watch] For example: '**\/*.js' (without backslash)
- * @param {String|[]} [srcFilter] For example: ['*', '!_*]
- * @param {String|[]} [watchFilter] For example: ['*', '!_*]
+ * @param {string} path
+ * @param {boolean} [format=false]
+ * @returns {{root: string, dir: string, base: string, ext: string, name: string, isOnlyFile: boolean, isOnlyPath: boolean, isPathToFile: boolean}|string}
  */
-_.getConfig = function (sourceDir, destDir, src, watch, srcFilter, watchFilter) {
-  sourceDir = _.preparePath({startSlash: false, trailingSlash: false}, sourceDir);
-  destDir = _.preparePath({startSlash: false, trailingSlash: true}, destDir);
+__.parsePath = function (path, format) {
+  format = !!format;
+  var isFile = Helpers.isFile(path);
+  var parsed = Path.parse(path);
 
-  return {
-    src: Path.join(sourceDir, src),
-    dest: destDir,
-    watch: (watch) ? Path.join(sourceDir, watch) : false,
-    srcFilter: srcFilter || [],
-    watchFilter: watchFilter || []
-  };
+  if (!isFile) {
+    parsed.base = '';
+    parsed.name = '';
+    parsed.dir = path;
+  } else {
+    parsed.dir = parsed.dir.split(Path.sep).join('/');
+  }
+
+  parsed.isPathToFile = isFile && !!parsed.dir;
+  parsed.isOnlyFile   = isFile && !parsed.isPathToFile;
+  parsed.isOnlyPath   = !isFile;
+
+  return (format)
+    ? Path.normalize(Path.format(parsed))
+    : parsed;
 };
 
 /**
  * @param content
  * @returns {String}
  */
-_.md5 = function (content) {
+__.md5 = function (content) {
   return Crypto.createHash('md5').update(content).digest('hex');
 };
 
 /**
- * @param {String} file
+ * @param {String|{path: string}} file
  * @returns {{css: boolean, scss: boolean, sass: boolean, js: boolean, minified: boolean, underscored: boolean}}
  * @constructor
  */
-_.Is = function (file) {
-  var extname = Path.extname(file.path);
-  var basename = Path.basename(file.path, extname);
+__.Is = function (file) {
+  var path = '';
+  if (_.isString(file)) {
+    path = file;
+  } else if (_.isString(file.path)) {
+    path = file.path;
+  }
+
+  var extname = Path.extname(path);
+  var basename = Path.basename(path, extname);
 
   return {
     css: extname === '.css',
@@ -165,7 +177,7 @@ _.Is = function (file) {
   };
 };
 
-_.filePathWithoutExt = function (path) {
+__.filePathWithoutExt = function (path) {
   return Path.basename(path, Path.extname(path))
 };
 
@@ -173,21 +185,21 @@ _.filePathWithoutExt = function (path) {
  * @param {Function} getFile
  * @returns {Function}
  */
-_.getDataForTpl = function (getFile) {
+__.getDataForTpl = function (getFile) {
 
   return function (file) {
     var dataFile = false;
     var data = {}, _data;
 
-    if (lodash.isFunction(getFile)) {
+    if (_.isFunction(getFile)) {
       dataFile = getFile(file);
-    } else if (lodash.isString(getFile)) {
+    } else if (_.isString(getFile)) {
       dataFile = getFile;
     }
 
     if (dataFile && FS.existsSync(dataFile)) {
       _data = require(dataFile);
-      data = (lodash.isPlainObject(_data)) ? _data : data;
+      data = (_.isPlainObject(_data)) ? _data : data;
     }
 
     return data;
@@ -197,7 +209,7 @@ _.getDataForTpl = function (getFile) {
 /**
  * @type {{errorHandler: Function}}
  */
-_.plumberErrorHandler = {
+__.plumberErrorHandler = {
   errorHandler: function errorHandler$ (err) {
     Gutil.log(err);
 
@@ -218,7 +230,7 @@ _.plumberErrorHandler = {
  * @param msg
  * @param isFail
  */
-_.notify = function (file, msg, isFail) {
+__.notify = function (file, msg, isFail) {
   var color = isFail ? 'red' : 'green';
 
   msg = msg || 'Bundled!';
@@ -230,7 +242,7 @@ _.notify = function (file, msg, isFail) {
  * @param {string} str
  * @returns {string}
  */
-_.capitalize = function (str) {
+__.capitalize = function (str) {
   str = str.toString();
   return str.charAt(0).toUpperCase() + str.substring(1);
 };
@@ -243,18 +255,18 @@ _.capitalize = function (str) {
  * @param {boolean} [exclude] Default true.
  * @returns {[]}
  */
-_.getGlobPaths = function (sources, extnames, deep, exclude) {
+__.getGlobPaths = function (sources, extnames, deep, exclude) {
   deep    = (typeof deep != 'undefined') ? !!deep : true;
   exclude = (typeof exclude != 'undefined') ? !!exclude : false;
   extnames = (typeof extnames != 'undefined') ? extnames : '.*';
 
   var inners = (deep) ? '**/*' : '*';
 
-  sources  = (!lodash.isArray(sources)) ? [sources] : sources;
+  sources  = (!_.isArray(sources)) ? [sources] : sources;
 
   if (extnames !== false) {
-    extnames = (!lodash.isArray(extnames)) ? [extnames] : extnames;
-    extnames = lodash.map(extnames, function (ext) {
+    extnames = (!_.isArray(extnames)) ? [extnames] : extnames;
+    extnames = _.map(extnames, function (ext) {
       if (ext) {
         ext = ((ext.indexOf('.') !== 0) ? '.'+ ext : ext);
         ext = inners + ext;
@@ -262,48 +274,82 @@ _.getGlobPaths = function (sources, extnames, deep, exclude) {
       return ext;
     });
 
-    sources = lodash.map(sources, function (src) {
+    sources = _.map(sources, function (src) {
       src = (exclude) ? '!'+ src : src;
-      return lodash.map(extnames, function (ext) {
+      return _.map(extnames, function (ext) {
         return Path.join(src, ext);
       });
     });
   }
 
-  return lodash.unique(lodash.flatten(sources));
+  return _.unique(_.flatten(sources));
 };
 
-var BrowserSync = require('browser-sync');
 /**
- * @param {String} instanceName
- * @param {boolean} [init]
- * @param {{}} [config]
- * @param {Function} [cb]
+ * @param {*} anything
+ * @returns {string}
  */
-_.getBrowserSyncInstance = function (instanceName, init, config, cb) {
-  init = (typeof init != 'undefined') ? !!init : false;
-  config = (typeof config != 'undefined' && lodash.isPlainObject(config)) ? config : {};
-  cb = (lodash.isFunction(cb)) ? cb : _.noop;
-
-  if (!instanceName) { return null; }
-
-  var bs;
-  try {
-    bs = BrowserSync.get(instanceName);
-  } catch (e) {
-    bs = BrowserSync.create(instanceName);
+__.getConstructorName = function (anything) {
+  if (anything) {
+    return test.constructor.toString().trim().match(/^function (\w*)/)[1] || '';
   }
 
-  if (init) {
-    if (bs.paused) {
-      bs.resume();
-    } else
-    if (!bs.active) {
-      bs.init(config, cb);
-    }
-  }
-
-  return bs;
+  return '';
 };
 
-module.exports = _;
+/**
+ * @param {*} anything
+ * @returns {boolean}
+ */
+__.isGulpSrc = function (anything) {
+  if (anything) {
+    // fuck this
+    return __.getConstructorName(anything) == 'DestroyableTransform';
+  }
+
+  return false;
+};
+
+/**
+ * @param {*} obj
+ * @returns {string}
+ */
+__.stringify = function (obj) {
+  var prop, string = [];
+
+  if (typeof obj == 'undefined') {
+    return String(obj);
+  } else
+  // is object
+  if (_.isPlainObject(obj)) {
+    for (prop in obj) {
+      if (obj.hasOwnProperty(prop))
+        string.push(prop + ': ' + __.stringify(obj[prop]));
+    }
+
+    return '{' + string.join(', ') + '}';
+  } else
+
+  // is array
+  if (_.isArray(obj)) {
+    for (var index = 0, length = obj.length; index < length; index++) {
+      string.push(__.stringify(obj[index]));
+    }
+
+    return '[' + string.join(', ') + ']';
+  } else
+
+  // is function
+  if (_.isFunction(obj)) {
+    string.push(obj.toString());
+
+  // all other values can be done with JSON.stringify
+  } else {
+    string.push(JSON.stringify(obj))
+  }
+
+  return string.join(',');
+};
+
+
+module.exports = __;

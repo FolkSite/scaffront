@@ -1,4 +1,4 @@
-var Helpers = require('../../helpers/functions.js');
+var Helpers = require('../../helpers/index.js');
 var config = require('../config.js');
 
 var Gulp = require('gulp');

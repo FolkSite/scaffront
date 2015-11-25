@@ -65,7 +65,7 @@ var Gulp = require('gulp'),
     //Phantom = require('phantom'),
     _ = require('lodash'),
     del = require('del'),
-    Helpers = require('./helpers/functions');
+    Helpers = require('./helpers/index');
 
 //var Wrap = require('gulp-wrap');
 
@@ -591,7 +591,7 @@ Gulp.task('styles:critical:build', function (cb) {
     timeout: 10000,
     weak: false,
     loadImages: true,
-    phantomPath: config.phantomJsPath,
+    phantomPath: Config.phantomJsPath,
     ignoreSslErrors: true,
     webSecurity: false
   });
@@ -602,7 +602,7 @@ Gulp.task('styles:critical:build', function (cb) {
   });
 
   var localServer = BrowserSync.create('CriticalCSS-'+ (new Date()).getTime());
-  localServer.init(config.BrowserSyncDist, function () {
+  localServer.init(Config.BrowserSyncDist, function () {
     nm.goto('http://localhost:1313/index.tpl');
     //nm.goto('http://localhost:1313/index.tpl');
     //nm.goto('http://yandex.ru');
@@ -616,12 +616,12 @@ Gulp.task('styles:critical:build', function (cb) {
         return NMUrl;
       }, function (NMUrl) {
         console.log('NMUrl', NMUrl);
-        if (Array.isArray(config.criticalCss.injectFiles)) {
-          config.criticalCss.injectFiles.forEach(function (file) {
+        if (Array.isArray(Config.criticalCss.injectFiles)) {
+          Config.criticalCss.injectFiles.forEach(function (file) {
             nm.inject('js', file);
           });
-        } else if (typeof config.criticalCss.injectFiles == 'string') {
-          nm.inject('js', config.criticalCss.injectFiles);
+        } else if (typeof Config.criticalCss.injectFiles == 'string') {
+          nm.inject('js', Config.criticalCss.injectFiles);
         }
         nm.evaluate(function () {
           if (typeof window.criticalCss != 'undefined') {

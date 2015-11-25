@@ -5,7 +5,7 @@ window.YtIframe = YtIframe = (function() {
         config.width  = config.width  || 560;
         config.height = config.height || 315;
         config.cookie = (config.cookie === false) ? false : true;
-        // build src attribute for iframe, create iframe element and populate it with attributes regarding the config options
+        // build src attribute for iframe, create iframe element and populate it with attributes regarding the Config options
         var videoSource = (false === config.https) ? 'http://' : 'https://';
         videoSource    += (false === config.cookie) ? 'www.youtube-nocookie.com/embed/' : 'www.youtube.com/embed/';
         videoSource    += (-1 === config.videoHash.indexOf('youtube')) ? config.videoHash : config.videoHash.split('v=')[1].split('&')[0];

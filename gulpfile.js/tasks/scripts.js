@@ -3,8 +3,8 @@
 // http://frontender.info/gulp-browserify-starter-faq/
 
 
-var Helpers           = require('../helpers/functions.js'),
-    config            = require('../config.js').scripts.build,
+var Helpers           = require('../helpers/index.js'),
+    Config            = require('../config.js').scripts,
 
     _                 = require('lodash'),
     Path              = require('path'),
@@ -44,103 +44,212 @@ var defaults = {
   },
 };
 
-config = Extend(true, defaults, config);
+Config = Extend(true, defaults, Config);
 
-config.dest = Helpers.preparePath({trailingSlash: true}, config.dest);
+Config.dest = Helpers.preparePath({trailingSlash: true}, Config.dest);
 
-
+if (!_.isPlainObject(Config.bundleDefaults)) {
+  throw new Error('Invalid defaults settings for bundles!');
+}
 
 
 //var resolve = require('resolve-bower');
 //var res = resolve.sync('jquery', { basedir: Path.join(__dirname, 'app/scripts/bower_components') });
 
 
-var makeBundlers = function (bundles) {
+
+/**
+ * @param {String|BundleConfig} bundle
+ * @returns {BundleConfig}
+ */
+var _validateBundle = function _validateBundle (bundle) {
+  var tmp;
+
+  if (bundle.validated) { return bundle; }
+
+  // бандл может быть строкой или строковым массивом.
+  // надо преобразовать к общему виду (как Config.defaults)
+  if (_.isString(bundle)) {
+    tmp = bundle;
+    bundle = { entry: tmp };
+  }
+
+  // если вместо конфига бандла пришла какая-то хрень, то нахер
+  if (!_.isPlainObject(bundle)) {
+    throw new Error([
+      'Invalid bundle.',
+      Helpers.stringify(bundle),
+      ''
+    ].join('\n'));
+  }
+
+  bundle = Extend(true, Config.bundleDefaults, bundle);
+
+  // валидация опций бандлера
+  if (!_.isPlainObject(bundle.options)) {
+    bundle.options = Config.bundleDefaults.options;
+  } else {
+    bundle.options = Extend(true, Config.bundleDefaults.options, bundle.options);
+  }
+
+  // сделаем массивом входной файл, если ещё не.
+  if (!_.isArray(bundle.entry)) {
+    bundle.entry = [bundle.entry || null];
+  }
+  // сделаем массивом входной файл из опций, если ещё не.
+  if (!_.isArray(bundle.options.entries)) {
+    bundle.options.entries = [bundle.options.entries || null];
+  }
+
+  // перенесём входные файлы из опций в entry, для консистентности
+  bundle.entry = _.compact(_.union(bundle.entry, bundle.options.entries));
+  delete bundle.options.entries;
+
+  // теперь сформируем нормальные пути для каждого файла
+  bundle.entry = _.map(bundle.entry, function (entry, index) {
+    var _entry, result = null;
+
+    if (entry) {
+      _entry = Helpers.parsePath(entry);
+
+      if (_entry.isOnlyFile) {
+        result = Path.join(Config.src, _entry.base);
+      } else if (_entry.isPathToFile) {
+        result = Path.format(_entry);
+      }
+
+      result = Path.normalize(result);
+    }
+
+    return result;
+  });
+
+  bundle.entry = _.uniq(_.compact(bundle.entry));
+
+  // если, после всех преобразований, нет ни одной входной точки, то нахер это всё
+  if (!bundle.entry.length) {
+    throw new Error([
+      'Bundle\'s entry file is required.',
+      Helpers.stringify(bundle),
+      ''
+    ].join('\n'));
+  }
+
+  // если выходной файл не установлен и всего одна входная точка,
+  // заберём из неё название файла
+  if (!bundle.outfile && bundle.entry.length == 1) {
+    bundle.outfile = Path.parse(bundle.entry[0]).base;
+  }
+
+  // если outfile установлен - нужно отделить мух от котлет (имя файла от пути)
+  if (bundle.outfile) {
+    var _outfile = Helpers.parsePath(entry);
+
+    if (_outfile.isOnlyPath) {
+      bundle.outfile = null;
+      bundle.dest    = null;
+    } else {
+      if (_outfile.isOnlyFile) {
+        bundle.outfile = _outfile.base;
+        bundle.dest    = Config.dest;
+      } else if (_outfile.isPathToFile) {
+        bundle.outfile = _outfile.base;
+        bundle.dest    = _outfile.dir;
+      }
+
+      bundle.dest = Helpers.preparePath({trailingSlash: true}, bundle.dest);
+    }
+  }
+
+  // если и выходного файла нет, то тем более нахер это всё
+  if (!bundle.outfile) {
+    throw new Error([
+      'Bundle\'s output filename is required.',
+      Helpers.stringify(bundle)
+    ].join('\n'));
+  }
+
+  // функция настройки бандлера
+  if (!_.isFunction(bundle.setup)) {
+    bundle.setup = Config.bundleDefaults.setup;
+  }
+
+  // коллбек для бандлера
+  if (!_.isFunction(bundle.callback)) {
+    bundle.callback = Config.bundleDefaults.callback;
+  }
+
+  if (typeof bundle.AutoPolyfiller != 'undefined') {
+    if (!bundle.AutoPolyfiller) {
+      bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
+    }
+    if (!_.isPlainObject(bundle.AutoPolyfiller)) {
+      bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
+    }
+  } else {
+    bundle.AutoPolyfiller = false;
+  }
+
+  if (typeof bundle.AutoPolyfiller != 'undefined' && !_.isPlainObject(bundle.AutoPolyfiller)) {
+    bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
+  } else {
+    bundle.AutoPolyfiller = false;
+  }
+
+  if (typeof bundle.Uglify != 'undefined' && !_.isPlainObject(bundle.Uglify)) {
+    bundle.Uglify = Config.bundleDefaults.Uglify;
+  } else {
+    bundle.Uglify = false;
+  }
+
+  bundle.validated = true;
+  bundle.bundler = null;
+
+  return bundle;
+};
+
+/**
+ * @param {BundleConfig[]} bundles
+ * @returns {[]}
+ */
+var _validateBundles = function _validateBundles (bundles) {
   bundles = (!_.isArray(bundles)) ? [bundles] : bundles;
 
-  var bundlers = [];
-  var bundleConfigDefault = {
-    entry: '',
-    dest: '',
-    outfile: '',
-    options: {
-      debug: !global.isProduction
-    },
-    setup: function (bundler) { return bundler; },
-    callback: function (err, buf) {}
-  };
-
   return _.map(bundles, function (bundle) {
-    var _entry;
-    if (_.isString(bundle) || _.isArray(bundle)) {
-      _entry = bundle;
-      bundle = { entry: _entry };
-    }
+    return _validateBundle(bundle);
+  });
+};
 
-    if (!_.isPlainObject(bundle)) { return; }
+/**
+ * @param {BundleConfig[]} bundles
+ * @returns {[]}
+ */
+var _makeBundlers = function _makeBundlers (bundles) {
+  return _.map(_validateBundles(bundles), function (bundle) {
+    if (bundle.bundler) { return bundle; }
 
-    bundle = Extend(true, bundleConfigDefault, bundle);
-
-    if (!_.isPlainObject(bundle.options)) {
-      bundle.options = bundleConfigDefault.options;
-    } else {
-      bundle.options = Extend(true, bundleConfigDefault.options, bundle.options);
-    }
-
-    if (!bundle.entry && bundle.options.entries) {
-      bundle.entry = bundle.options.entries;
-      delete bundle.options.entries;
-    }
-    if (bundle.entry) {
-      if (!_.isArray(bundle.entry)) {
-        bundle.entry = [bundle.entry];
-      }
-    } else {
-      throw new Error('You must specify entry file for bundle');
-    }
-
-    bundle.outfile = bundle.outfile || null;
-    if (!outfile && _.isArray(bundle.entry) && bundle.entry.length == 1) {
-      // todo: вычленить название output-файла из исходного пути
-
-    }
-    if (!outfile) {
-      throw new Error('You must specify output filename for bundle');
-    }
-
-    bundle.dest = bundle.dest || config.dest;
-    bundle.dest = Helpers.preparePath({trailingSlash: true}, bundle.dest);
-
-    if (!_.isFunction(bundle.setup)) {
-      bundle.setup = bundleConfigDefault.setup;
-    }
-
-    if (!_.isFunction(bundle.callback)) {
-      bundle.callback = bundleConfigDefault.callback;
-    }
-
-    if (bundle.entry) {
-      bundle.bundler = Browserify(bundle.entry, Extend(true, Watchify.args, bundle.options));
-    } else {
-      bundle.bundler = Browserify(Extend(true, Watchify.args, bundle.options));
-    }
-
+    bundle.bundler = Browserify(bundle.entry, Extend(true, Watchify.args, bundle.options));
     bundle.setup(bundle.bundler);
 
     return bundle;
   });
 };
 
+/**
+ * @returns {Function}
+ */
 var getBundlers = (function () {
   var bundlers = null;
 
-  return function () {
+  /**
+   * @returns {BundleConfig[]}
+   */
+  return function getBundlers () {
     if (bundlers) { return bundlers; }
 
-    return bundlers = makeBundlers(config.bundles);
+    return bundlers = _makeBundlers(Config.bundles);
   };
 })();
-
 
 _.each(getBundlers(), function (_bundler, index) {
   var bundler = _bundler.bundler;
@@ -150,30 +259,46 @@ _.each(getBundlers(), function (_bundler, index) {
 });
 
 
-var MinifyPipe = Lazypipe()
-  .pipe(Uglify())
-  .pipe(Rename({suffix: '.min'}));
+/**
+ * @param {{}} [config]
+ * @returns {Stream}
+ */
+var Minify = function (config) {
+  config = (_.isPlainObject(config)) ? config : {};
 
-var PolyfillyPipe = Lazypipe()
-  .pipe(Tap(function (file) {
-    var filePath          = file.path,
-        extname           = Path.extname(filePath),
-        filename          = Path.basename(filePath),
-        basename          = Path.basename(filePath, extname),
-        path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
-        polyfillsFileName = basename + '.polyfills' + extname,
+  return Lazypipe()
+    .pipe(Uglify(config))
+    .pipe(Rename({suffix: '.min'}))
+};
 
-        FileStream        = Gulp.src(file.path),
-        polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));
+/**
+ * @param {{}} [config]
+ * @returns {Stream}
+ */
+var Polyfilly = function (config) {
+  config = (_.isPlainObject(config)) ? config : {};
 
-    return Merge(FileStream, polyfillsStream)
-      .pipe(Order([
-        polyfillsFileName,
-        filename
-      ]))
-      .pipe(Concat(filename))
-      .pipe(Gulp.dest(path));
-  }));
+  return Lazypipe()
+    .pipe(Tap(function (file) {
+      var filePath          = file.path,
+          extname           = Path.extname(filePath),
+          filename          = Path.basename(filePath),
+          basename          = Path.basename(filePath, extname),
+          path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
+          polyfillsFileName = basename + '.polyfills' + extname,
+
+          FileStream        = Gulp.src(file.path),
+          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config));
+
+      return Merge(FileStream, polyfillsStream)
+        .pipe(Order([
+          polyfillsFileName,
+          filename
+        ]))
+        .pipe(Concat(filename))
+        .pipe(Gulp.dest(path));
+    }));
+};
 
 
 
@@ -228,9 +353,9 @@ Gulp.task('scripts:test', ['scripts:bundle', 'browser-sync']);
 
 
 Gulp.task('js:polyfilly', function(cb) {
-  var src = Helpers.getGlobPaths(config.src, '.js', false)
-    .concat(Helpers.getGlobPaths(config.src, '.min.js', false, true))
-    .concat(Helpers.getGlobPaths(config.src, '.polyfilled.js', false, true));
+  var src = Helpers.getGlobPaths(Config.src, '.js', false)
+    .concat(Helpers.getGlobPaths(Config.src, '.min.js', false, true))
+    .concat(Helpers.getGlobPaths(Config.src, '.polyfilled.js', false, true));
 
   return Gulp.src(src)
     .pipe(Plumber(Helpers.plumberErrorHandler))
@@ -243,7 +368,7 @@ Gulp.task('js:polyfilly', function(cb) {
           polyfillsFileName = basename + '.polyfilled' + extname,
 
           FileStream        = Gulp.src(file.path),
-          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config.AutoPolyfiller));
+          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, Config.AutoPolyfiller));
 
       return Merge(FileStream, polyfillsStream)
         .pipe(Order([
@@ -286,7 +411,7 @@ var getPreBundle = function (file, standalone) {
     // browserify обернет всё в UMD-обертку
     // и при подключении объект будет доступен как bundle.global
     standalone: standalone,
-    //extensions: config.extensions || '.js',
+    //extensions: Config.extensions || '.js',
     debug: !global.isProduction
   };
 
@@ -301,7 +426,7 @@ var buildStreams = Lazypipe();
 gulp.task('scripts', function(cb) {
 
   // считаем кол-во бандлов
-  var queue = config.bundles.length;
+  var queue = Config.bundles.length;
 
   // поскольку бандлов может быть несколько, оборачиваем сборщик в функцию,
   // которая в качестве аргумента принимает bundle-объект с параметрами
@@ -322,7 +447,7 @@ gulp.task('scripts', function(cb) {
     //  // и при подключении объект будет доступен как preBundle.global
     //  standalone: preBundle.global,
     //  // дополнительные расширения
-    //  extensions: config.extensions,
+    //  extensions: Config.extensions,
     //  // пишем sourcemaps?
     //  debug: devBuild
     //});
@@ -350,7 +475,7 @@ gulp.task('scripts', function(cb) {
           // к минифицированной версии добавляем суффикс `.min`
           .pipe(gulpif(preBundle.compress, rename({suffix: '.min'})))
           // если собираем для production - добавляем баннер с названием и версией релиза
-          .pipe(gulpif(!devBuild, header(config.banner)))
+          .pipe(gulpif(!devBuild, header(Config.banner)))
           // пишем sourcemaps
           .pipe(gulpif(preBundle.compress && devBuild, sourcemaps.write('./')))
           // сохраняем минифицированную версию в `/dist`
@@ -387,7 +512,7 @@ gulp.task('scripts', function(cb) {
   };
 
   // запускаем массив бандлов в цикл
-  config.bundles.forEach(buildThis);
+  Config.bundles.forEach(buildThis);
 
 });
 

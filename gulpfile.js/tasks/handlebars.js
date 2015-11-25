@@ -1,6 +1,6 @@
-var Helpers            = require('../helpers/functions.js'),
+var Helpers            = require('../helpers/index.js'),
     config             = require('../config.js').handlebars,
-    //browserSync        = require('browser-sync').get(require('../config.js').BrowserSync.instanceName),
+    //browserSync        = require('browser-sync').get(require('../Config.js').BrowserSync.instanceName),
 
     Gulp               = require('gulp'),
     Changed            = require('gulp-changed'),
@@ -27,7 +27,7 @@ var Helpers            = require('../helpers/functions.js'),
     GulpDefineModule   = require('gulp-define-module');
 
 /**
- * Default config
+ * Default Config
  * @type {{src: string, dest: {render: string, data: string, compile: string}, extnames: string[], globalVars: {}, getTplData: Function, setupHandlebars: Function}}
  */
 var defaults = {
@@ -107,7 +107,7 @@ var defaults = {
 };
 
 /**
- * Prepare & validate config
+ * Prepare & validate Config
  */
 config = Extend(true, defaults, config);
 
@@ -130,7 +130,7 @@ Gulp.task('hbs:render', function () {
 
   return Gulp.src(Helpers.getGlobPaths(config.src, config.extnames))
     .pipe(Plumber(Helpers.plumberErrorHandler))
-    //.pipe(Changed(config.dest.render, {extension: '.html'}))
+    //.pipe(Changed(Config.dest.render, {extension: '.html'}))
 
     .pipe(Data(config.getTplData))
     .pipe(HandlebarsRenderer(config.globalVars, {

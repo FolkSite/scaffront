@@ -9,7 +9,7 @@ var defaults = {
 };
 
 
-var Helpers = require('../../helpers/functions.js');
+var Helpers = require('../../helpers/index.js');
 var config = require('../config.js').jade;
 
 var _ = require('lodash');

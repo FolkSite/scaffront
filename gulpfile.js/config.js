@@ -1,11 +1,27 @@
-var _    = require('lodash'),
-    Path = require('path'),
+var _      = require('lodash'),
+    Path   = require('path'),
     Extend = require('extend'),
-    FS = require('fs');
+    FS     = require('fs');
 
 
 /**
- * @property {String|string[]|{entry: String|string[], bundler: {options: {}, setup: Function, callback: Function}}|*[]} scripts.build.bundles May be a string, array of string, plain object or array of plain objects
+ * @typedef {{}}                  BundleConfig
+ * @property {String|string[]}    entry
+ * @property {String}             [src]
+ * @property {String}             [dest]
+ * @property {String}             [outfile]
+ * @property {{}}                 [options]
+ * @property {Function}           [setup]
+ * @property {Function}           [callback]
+ * @property {boolean|{}}         [AutoPolyfiller]
+ * @property {boolean|{}}         [Uglify]
+ * @property {boolean}            [validated]
+ * @property {null|*}             [bundler]
+ */
+
+/**
+ * @property {BundleConfig} scripts.bundleDefaults
+ * @property {String|String[]|BundleConfig|BundleConfig[]} scripts.bundles
  */
 var config = {
   bower: {
@@ -15,44 +31,7 @@ var config = {
     src: 'app/scripts/vendor',
     dest: 'dist/js/vendor'
   }],
-  scripts: {
-    AutoPolyfiller: {
-      browsers: ['last 3 version', 'ie 8', 'ie 9']
-    },
-    build: {
-      src: 'app/scripts',
-      dest: 'dist/js',
-      bundles: [{
-        entry: 'app/scripts/libs.js',
-        dest: 'dist/js',
-        outfile: 'libs.js',
-        // options will be passed to Browserify constructor
-        options: {
-
-        },
-        setup: function (bundler) {
-          // можно подключать напрямую в script (классический принцип scope'а пождключаемых файлов). ignore просто выпиливает этот модуль из бандла
-          bundler.ignore('jquery');
-          // должен быть доступен из require
-          //bundler.external('jquery');
-
-          //bundler.add('app/scripts/app/js.js');
-        },
-        // callback will be passed to .bundle(callback)
-        callback: function (err, buf) {}
-      }, {
-        entry: 'app/scripts/js.js',
-        options: {
-
-        },
-        setup: function (bundler) {
-          bundler.ignore('jquery');
-          //return bundler; // optional
-        },
-        callback: function (err, buf) {}
-      }]
-    }
-  },
+  scripts: require('./scripts'),
 
   BrowserSync: {
     instanceName: 'server',
@@ -73,20 +52,18 @@ var config = {
 
   handlebars: {
     src: 'app/hbs',
-    data: {
-      dest: 'dist/html',
-      globalVarsDistFilename: 'globals.json'
-    },
-    render: {
-      dest: 'dist/html'
-    },
-    compile: {
-      dest: 'app/scripts/tpl'
-    },
-    dest: {
-      render: 'dist/html',
-      compile: 'app/scripts/tpl',
-      data: 'dist/html'
+    dest: 'dist/html', // as a default for each task's type
+    tasks: {
+      data: {
+        dest: 'dist/html',
+        globalVarsDistFilename: 'globals.json'
+      },
+      render: {
+        dest: 'dist/html'
+      },
+      compile: {
+        dest: 'app/scripts/tpl'
+      }
     },
     extnames: ['hbs', 'handlebars', 'hb'],
     globalVars: require('../app/hbs/globalVars'),
@@ -125,12 +102,12 @@ var config = {
     setupHandlebars: function (Handlebars) {
       var helpers = Extend(require('hbs-helpers'), {
         moment: require('helper-moment'),
+        /**
+         * {{{{raw}}}}
+         *   {{its-raw-text}}
+         * {{{{/raw}}}}
+         */
         raw: function (options) {
-          /**
-           * {{{{raw}}}}
-           *   {{its-raw-text}}
-           * {{{{/raw}}}}
-           */
           return options.fn();
         },
         upcase: function(s) {

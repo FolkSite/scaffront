@@ -6,6 +6,7 @@
       <w>dest</w>
       <w>extnames</w>
       <w>lodash</w>
+      <w>minify</w>
       <w>noop</w>
       <w>nunjucks</w>
       <w>polyfiller</w>
