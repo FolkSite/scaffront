@@ -16,9 +16,11 @@ var _                 = require('lodash'),
     Merge             = require('event-stream').merge,
     Concat            = require('gulp-concat'),
     AutoPolyfiller    = require('gulp-autopolyfiller'),
+    Sourcemaps        = require('gulp-sourcemaps'),
     Order             = require('gulp-order'),
     Del               = require('del'),
     Gulpify           = require('gulpify'),
+    Derequire         = require('gulp-derequire'),
     Browserify        = require('browserify'),
     Watchify          = require('watchify'),
     VinylSourceStream = require('vinyl-source-stream'),
@@ -47,14 +49,20 @@ var getBundles = (function () {
   };
 })();
 
+var makeBundleSourceStream = function (bundle) {
+
+  return bundle.bundler.bundle(bundle.build.callback)
+    .on('error', bundle.build.errorHandler)
+    .pipe(VinylSourceStream(bundle.build.outfile))
+    ;
+};
+
 /**
  * @param {BundleConfig} bundle
  */
 var makeBundleVinylBuffer = function (bundle) {
 
-  return bundle.bundler.bundle(bundle.build.callback)
-    .on('error', bundle.build.errorHandler)
-    .pipe(VinylSourceStream(bundle.build.outfile))
+  return makeBundleSourceStream(bundle)
     .pipe(VinylBuffer())
   ;
 };
@@ -70,8 +78,15 @@ Gulp.task('scripts:build', function (cb) {
   GulpUtil.log('Build bundles. Total:', GulpUtil.colors.cyan(length));
 
   bundles.forEach(function (bundle) {
-
     makeBundleVinylBuffer(bundle)
+      .pipe(Gulp.dest(bundle.build.dest))
+      .pipe(Derequire())
+
+      .pipe(VinylBuffer())
+      .pipe(Sourcemaps.init({loadMaps: true}))
+      .pipe(Uglify())
+      .pipe(Rename({suffix: '.min'}))
+      .pipe(Sourcemaps.write('./'))
       .pipe(Gulp.dest(bundle.build.dest))
       .on('end', function () {
         queue -= 1;
@@ -81,6 +96,7 @@ Gulp.task('scripts:build', function (cb) {
         if (!queue) { cb(); }
       })
     ;
+
 
   });
 });

@@ -4,6 +4,7 @@
       <w>autopolyfiller</w>
       <w>browserify</w>
       <w>bundlers</w>
+      <w>derequire</w>
       <w>dest</w>
       <w>extnames</w>
       <w>gulpify</w>
@@ -16,6 +17,7 @@
       <w>nunjucks</w>
       <w>polyfiller</w>
       <w>preprocess</w>
+      <w>sourcemaps</w>
       <w>uglify</w>
       <w>watchify</w>
     </words>
