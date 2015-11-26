@@ -310,6 +310,15 @@ __.isGulpSrc = function (anything) {
   return false;
 };
 
+var Gulp = require('gulp');
+/**
+ * @param {*} anything
+ * @returns {*}
+ */
+__.getGulpSrc = function (anything) {
+  return (!__.isGulpSrc(anything)) ? Gulp.src(anything) : anything;
+};
+
 /**
  * @param {*} obj
  * @returns {string}

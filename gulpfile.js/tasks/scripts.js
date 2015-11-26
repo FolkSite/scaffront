@@ -59,7 +59,7 @@ if (!_.isPlainObject(Config.bundleDefaults)) {
 
 
 /**
- * @param {String|BundleConfig} bundle
+ * @param {BundleConfig} bundle
  * @returns {BundleConfig}
  */
 var _validateBundle = function _validateBundle (bundle) {
@@ -67,15 +67,8 @@ var _validateBundle = function _validateBundle (bundle) {
 
   if (bundle.validated) { return bundle; }
 
-  // бандл может быть строкой или строковым массивом.
-  // надо преобразовать к общему виду (как Config.defaults)
-  if (_.isString(bundle)) {
-    tmp = bundle;
-    bundle = { entry: tmp };
-  }
-
   // если вместо конфига бандла пришла какая-то хрень, то нахер
-  if (!_.isPlainObject(bundle)) {
+  if (!_.isPlainObject(bundle) || !_.isPlainObject(bundle.build)) {
     throw new Error([
       'Invalid bundle.',
       Helpers.stringify(bundle),
@@ -83,30 +76,31 @@ var _validateBundle = function _validateBundle (bundle) {
     ].join('\n'));
   }
 
-  bundle = Extend(true, Config.bundleDefaults, bundle);
+  bundle.build = Extend(Config.bundleDefaults.build, bundle.build);
+  bundle.dist = Extend(Config.bundleDefaults.dist, bundle.dist || {});
 
   // валидация опций бандлера
-  if (!_.isPlainObject(bundle.options)) {
-    bundle.options = Config.bundleDefaults.options;
+  if (!_.isPlainObject(bundle.build.options)) {
+    bundle.build.options = Config.bundleDefaults.build.options;
   } else {
-    bundle.options = Extend(true, Config.bundleDefaults.options, bundle.options);
+    bundle.build.options = Extend(true, Config.bundleDefaults.build.options, bundle.build.options);
   }
 
   // сделаем массивом входной файл, если ещё не.
-  if (!_.isArray(bundle.entry)) {
-    bundle.entry = [bundle.entry || null];
+  if (!_.isArray(bundle.build.entry)) {
+    bundle.build.entry = [bundle.build.entry || null];
   }
   // сделаем массивом входной файл из опций, если ещё не.
-  if (!_.isArray(bundle.options.entries)) {
-    bundle.options.entries = [bundle.options.entries || null];
+  if (!_.isArray(bundle.build.options.entries)) {
+    bundle.build.options.entries = [bundle.build.options.entries || null];
   }
 
   // перенесём входные файлы из опций в entry, для консистентности
-  bundle.entry = _.compact(_.union(bundle.entry, bundle.options.entries));
-  delete bundle.options.entries;
+  bundle.build.entry = _.compact(_.union(bundle.build.entry, bundle.build.options.entries));
+  delete bundle.build.options.entries;
 
   // теперь сформируем нормальные пути для каждого файла
-  bundle.entry = _.map(bundle.entry, function (entry, index) {
+  bundle.build.entry = _.map(bundle.build.entry, function (entry, index) {
     var _entry, result = null;
 
     if (entry) {
@@ -124,10 +118,10 @@ var _validateBundle = function _validateBundle (bundle) {
     return result;
   });
 
-  bundle.entry = _.uniq(_.compact(bundle.entry));
+  bundle.build.entry = _.uniq(_.compact(bundle.build.entry));
 
   // если, после всех преобразований, нет ни одной входной точки, то нахер это всё
-  if (!bundle.entry.length) {
+  if (!bundle.build.entry.length) {
     throw new Error([
       'Bundle\'s entry file is required.',
       Helpers.stringify(bundle),
@@ -137,32 +131,32 @@ var _validateBundle = function _validateBundle (bundle) {
 
   // если выходной файл не установлен и всего одна входная точка,
   // заберём из неё название файла
-  if (!bundle.outfile && bundle.entry.length == 1) {
-    bundle.outfile = Path.parse(bundle.entry[0]).base;
+  if (!bundle.build.outfile && bundle.build.entry.length == 1) {
+    bundle.build.outfile = Path.parse(bundle.build.entry[0]).base;
   }
 
   // если outfile установлен - нужно отделить мух от котлет (имя файла от пути)
-  if (bundle.outfile) {
+  if (bundle.build.outfile) {
     var _outfile = Helpers.parsePath(entry);
 
     if (_outfile.isOnlyPath) {
-      bundle.outfile = null;
-      bundle.dest    = null;
+      bundle.build.outfile = null;
+      bundle.build.dest    = null;
     } else {
       if (_outfile.isOnlyFile) {
-        bundle.outfile = _outfile.base;
-        bundle.dest    = Config.dest;
+        bundle.build.outfile = _outfile.base;
+        bundle.build.dest    = Config.bundleDefaults.build.dest;
       } else if (_outfile.isPathToFile) {
-        bundle.outfile = _outfile.base;
-        bundle.dest    = _outfile.dir;
+        bundle.build.outfile = _outfile.base;
+        bundle.build.dest    = _outfile.dir;
       }
 
-      bundle.dest = Helpers.preparePath({trailingSlash: true}, bundle.dest);
+      bundle.build.dest = Helpers.preparePath({trailingSlash: true}, bundle.build.dest);
     }
   }
 
   // если и выходного файла нет, то тем более нахер это всё
-  if (!bundle.outfile) {
+  if (!bundle.build.outfile) {
     throw new Error([
       'Bundle\'s output filename is required.',
       Helpers.stringify(bundle)
@@ -170,36 +164,23 @@ var _validateBundle = function _validateBundle (bundle) {
   }
 
   // функция настройки бандлера
-  if (!_.isFunction(bundle.setup)) {
-    bundle.setup = Config.bundleDefaults.setup;
+  if (!_.isFunction(bundle.build.setup)) {
+    bundle.build.setup = Config.bundleDefaults.build.setup;
   }
 
   // коллбек для бандлера
-  if (!_.isFunction(bundle.callback)) {
-    bundle.callback = Config.bundleDefaults.callback;
+  if (!_.isFunction(bundle.build.callback)) {
+    bundle.build.callback = Config.bundleDefaults.build.callback;
   }
 
-  if (typeof bundle.AutoPolyfiller != 'undefined') {
-    if (!bundle.AutoPolyfiller) {
-      bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
-    }
-    if (!_.isPlainObject(bundle.AutoPolyfiller)) {
-      bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
-    }
-  } else {
-    bundle.AutoPolyfiller = false;
+  bundle.dist.polyfilly = !!bundle.dist.polyfilly;
+  if (!_.isPlainObject(bundle.dist.autoPolyfillerConfig)) {
+    bundle.dist.autoPolyfillerConfig = {};
   }
 
-  if (typeof bundle.AutoPolyfiller != 'undefined' && !_.isPlainObject(bundle.AutoPolyfiller)) {
-    bundle.AutoPolyfiller = Config.bundleDefaults.AutoPolyfiller;
-  } else {
-    bundle.AutoPolyfiller = false;
-  }
-
-  if (typeof bundle.Uglify != 'undefined' && !_.isPlainObject(bundle.Uglify)) {
-    bundle.Uglify = Config.bundleDefaults.Uglify;
-  } else {
-    bundle.Uglify = false;
+  bundle.dist.minify = !!bundle.dist.minify;
+  if (!_.isPlainObject(bundle.dist.uglifyConfig)) {
+    bundle.dist.uglifyConfig = {};
   }
 
   bundle.validated = true;

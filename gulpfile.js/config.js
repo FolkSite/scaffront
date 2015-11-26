@@ -3,22 +3,6 @@ var _      = require('lodash'),
     Extend = require('extend'),
     FS     = require('fs');
 
-
-/**
- * @typedef {{}}                  BundleConfig
- * @property {String|string[]}    entry
- * @property {String}             [src]
- * @property {String}             [dest]
- * @property {String}             [outfile]
- * @property {{}}                 [options]
- * @property {Function}           [setup]
- * @property {Function}           [callback]
- * @property {boolean|{}}         [AutoPolyfiller]
- * @property {boolean|{}}         [Uglify]
- * @property {boolean}            [validated]
- * @property {null|*}             [bundler]
- */
-
 /**
  * @property {BundleConfig} scripts.bundleDefaults
  * @property {String|String[]|BundleConfig|BundleConfig[]} scripts.bundles
