@@ -65,6 +65,7 @@
     "gulp-uglify": "*",
     "gulp-umd": "^0.2.0",
     "gulp-util": "^3.0.7",
+    "gulpify": "^0.1.1",
     "handlebars-helpers": "^0.5.8",
     "handlebars-layouts": "^3.1.3",
     "hbs-helpers": "^1.0.3",

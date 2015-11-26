@@ -4,10 +4,12 @@
  * @property {String|string[]}    build.entry Maybe a file or full path to file (relative to project path)
  * @property {String}             [build.src]
  * @property {String}             [build.dest]
+ * @property {String}             [build.destFullPath] Generated
  * @property {String}             [build.outfile] Maybe a file or full path to file (relative to project path). If is undefined then outfile's name will be equal to entry filename
  * @property {{}}                 [build.options] Will be passed to Browserify constructor
  * @property {Function}           [build.setup] This function takes one argument "bundler" and here you can setup the bundler
- * @property {Function}           [build.callback] Will be passed to ".bundle()": .bundle(callback)
+ * @property {Function}           [build.callback] Will be passed to ".bundle(callback)"
+ * @property {Function}           [build.errorHandler] Will be passed to ".on('error', errorHandler)"
  * @property {{}}                 [dist]
  * @property {boolean}            [dist.polyfilly]
  * @property {string[]|string}    [dist.polyfillyType] Описание:
@@ -36,12 +38,14 @@
  * @property {null|*}             [bundler] Generated property
  */
 
-var     _                 = require('lodash'),
-        Browserify        = require('browserify'),
-        Watchify          = require('watchify'),
-        Extend            = require('extend'),
-        jsface            = require("jsface"),
-        Class             = jsface.Class;
+var _          = require('lodash'),
+    __         = require('../../helpers'),
+    Browserify = require('browserify'),
+    Watchify   = require('watchify'),
+    Extend     = require('extend'),
+    Path       = require('path'),
+    jsface     = require("jsface"),
+    Class      = jsface.Class;
 
 
 var BundleMaker = Class({
@@ -66,7 +70,8 @@ var BundleMaker = Class({
 
           //bundler.add('app/scripts/app/js.js');
         },
-        callback: function callback (err, buf) {}
+        callback: function callback (err, buf) {},
+        errorHandler: __.plumberErrorHandler.errorHandler
       },
       dist: {
         polyfilly: true,
@@ -112,6 +117,8 @@ var BundleMaker = Class({
 
     this.bundle = this._validate(bundle);
 
+    //console.log('this.bundle.build', this.bundle.build);
+
     return this;
   },
 
@@ -131,8 +138,11 @@ var BundleMaker = Class({
    */
   makeBundler: function makeBundler () {
     if (!this.bundle.bundler) {
-      this.bundle.bundler = Browserify(this.bundle.entry, Extend(true, Watchify.args || {}, this.bundle.options));
-      this.bundle.setup(this.bundle.bundler);
+      this.bundle.bundler = Browserify(
+        this.bundle.build.entry,
+        Extend(true, Watchify.args || {}, this.bundle.build.options)
+      );
+      this.bundle.build.setup(this.bundle.bundler);
     }
 
     return this;
@@ -145,6 +155,8 @@ var BundleMaker = Class({
   _validate: function _validate (bundle) {
     var self = this;
 
+    //console.log('bundle before validate', Extend({}, bundle));
+
     // если бандл уже проверен отвалидирован и унифицирован - пропускаем его
     if (bundle.validated) { return bundle; }
 
@@ -155,22 +167,22 @@ var BundleMaker = Class({
     if (!_.isPlainObject(bundle) || !_.isPlainObject(bundle.build)) {
       throw new Error([
         'Invalid bundle.',
-        Helpers.stringify(bundle),
+        __.stringify(bundle),
         ''
       ].join('\n'));
     }
 
     // расширяем build-настройки дефолтными (без глубокой замены!)
-    bundle.build = Extend(self.defaults.bundle.build, bundle.build);
+    bundle.build = Extend({}, self.defaults.bundle.build, bundle.build);
     // то же самое с dist-конфигом
-    bundle.dist = Extend(self.defaults.bundle.dist, bundle.dist || {});
+    bundle.dist = Extend({}, self.defaults.bundle.dist, bundle.dist || {});
 
     // валидация опций бандлера
     if (!_.isPlainObject(bundle.build.options)) {
       bundle.build.options = self.defaults.bundle.build.options;
     } else {
       // а вот опции уже можно расширить глубокой заменой
-      bundle.build.options = Extend(true, self.defaults.bundle.build.options, bundle.build.options);
+      bundle.build.options = Extend(true, {}, self.defaults.bundle.build.options, bundle.build.options);
     }
 
     // сделаем массивом входной файл, если ещё не.
@@ -191,7 +203,7 @@ var BundleMaker = Class({
       var _entry, result = null;
 
       if (entry) {
-        _entry = Helpers.parsePath(entry);
+        _entry = __.parsePath(entry);
 
         // если записано просто название файла
         if (_entry.isOnlyFile) {
@@ -204,7 +216,7 @@ var BundleMaker = Class({
           result = Path.format(_entry);
         }
 
-        result = Path.normalize(result);
+        result = Path.resolve(process.cwd(), Path.normalize(result));
       }
 
       return result;
@@ -216,20 +228,22 @@ var BundleMaker = Class({
     if (!bundle.build.entry.length) {
       throw new Error([
         'Bundle\'s entry file is required.',
-        Helpers.stringify(bundle),
+        __.stringify(bundle),
         ''
       ].join('\n'));
     }
 
     // если выходной файл не установлен и всего одна входная точка,
     // заберём из неё название файла
+    //console.log('bundle.build.outfile', bundle.build.outfile);
     if (!bundle.build.outfile && bundle.build.entry.length == 1) {
       bundle.build.outfile = Path.parse(bundle.build.entry[0]).base;
     }
+    //console.log('bundle.build.outfile', bundle.build.outfile);
 
     // если outfile установлен - нужно отделить мух от котлет (имя файла от пути)
     if (bundle.build.outfile) {
-      var _outfile = Helpers.parsePath(entry);
+      var _outfile = __.parsePath(bundle.build.outfile);
 
       // если установлен только путь, то плохо
       if (_outfile.isOnlyPath) {
@@ -239,14 +253,18 @@ var BundleMaker = Class({
         // если установлен только файл
         if (_outfile.isOnlyFile) {
           bundle.build.outfile = _outfile.base;
-
+          // папкой назначения установим папку по умолчанию
           bundle.build.dest    = self.defaults.dest;
-        } else if (_outfile.isPathToFile) {
+        } else
+        // а если указан полный путь
+        if (_outfile.isPathToFile) {
+          // то его и оставляем
           bundle.build.outfile = _outfile.base;
           bundle.build.dest    = _outfile.dir;
         }
 
-        bundle.build.dest = Helpers.preparePath({trailingSlash: true}, bundle.build.dest);
+        bundle.build.dest = __.preparePath({trailingSlash: true}, bundle.build.dest);
+        bundle.build.destFullPath = Path.join(bundle.build.dest, bundle.build.outfile);
       }
     }
 
@@ -254,7 +272,7 @@ var BundleMaker = Class({
     if (!bundle.build.outfile) {
       throw new Error([
         'Cann\'t resolve bundle\'s output filename.',
-        Helpers.stringify(bundle)
+        __.stringify(bundle)
       ].join('\n'));
     }
 
@@ -266,6 +284,11 @@ var BundleMaker = Class({
     // коллбек для бандлера
     if (!_.isFunction(bundle.build.callback)) {
       bundle.build.callback = self.defaults.bundle.build.callback;
+    }
+
+    // коллбек для бандлера
+    if (!_.isFunction(bundle.build.errorHandler)) {
+      bundle.build.errorHandler = self.defaults.bundle.build.errorHandler;
     }
 
     /**
@@ -304,6 +327,8 @@ var BundleMaker = Class({
     // заглушка для browserify-бандлера
     bundle.bundler = null;
 
+    //console.log('bundle after validate', Extend({}, bundle));
+
     return bundle;
   }
 });
@@ -336,11 +361,9 @@ var BundlesMaker = Class({
    * @returns {BundleConfig[]}
    */
   get: function get (makeBundlers) {
-    this.bundles = _.map(this.bundles, function (bundle) {
-      return bundle.get(makeBundlers);
+    return _.map(this.bundles, function (bundle) {
+      return bundle.get(!!makeBundlers);
     });
-
-    return this.bundles;
   },
 
   /**

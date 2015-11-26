@@ -2,7 +2,7 @@ var FS = require('fs');
 var Path = require('path');
 var Crypto = require('crypto');
 var _ = require('lodash');
-var Gutil = require('gulp-util');
+var GulpUtil = require('gulp-util');
 var Notifier = require('node-notifier');
 
 
@@ -123,7 +123,7 @@ __.preparePath = function (config, path, toJoin) {
  */
 __.parsePath = function (path, format) {
   format = !!format;
-  var isFile = Helpers.isFile(path);
+  var isFile = __.isFile(path);
   var parsed = Path.parse(path);
 
   if (!isFile) {
@@ -210,8 +210,8 @@ __.getDataForTpl = function (getFile) {
  * @type {{errorHandler: Function}}
  */
 __.plumberErrorHandler = {
-  errorHandler: function errorHandler$ (err) {
-    Gutil.log(err);
+  errorHandler: function errorHandler (err) {
+    GulpUtil.log(err);
 
     Notifier.notify({
       title: 'Scaffront error!',
@@ -221,7 +221,9 @@ __.plumberErrorHandler = {
       wait: false
     });
 
-    this.emit('end');
+    if ('emit' in this && _.isFunction(this.emit)) {
+      this.emit('end');
+    }
   }
 };
 
@@ -235,7 +237,7 @@ __.notify = function (file, msg, isFail) {
 
   msg = msg || 'Bundled!';
 
-  Gutil.log(msg, gutil.colors[color](file));
+  GulpUtil.log(msg, gutil.colors[color](file));
 };
 
 /**

@@ -17,9 +17,30 @@ module.exports = (function () {
   config.bundles = [
     {
       build: {
+        entry: 'js.js',
+        options: {
+          fullPaths: !global.isProduction,
+          debug: !global.isProduction
+        },
+        setup: function setup (bundler) {
+          // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
+          bundler.ignore('jquery');
+          // должен быть доступен из require (из другого бандла)
+          //bundler.external('jquery');
+
+          //bundler.add('app/scripts/app/js.js');
+        },
+        // callback will be passed to .bundle(callback)
+        callback: function callback (err, buf) {}
+      },
+      dist: {
+
+      }
+    },
+    {
+      build: {
         entry: 'libs.js',
-        outfile: 'libs.js',
-        //options: {},
+        //outfile: 'libs.js',
         setup: function setup (bundler) {
           // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
           bundler.ignore('jquery');
