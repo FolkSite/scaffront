@@ -1,243 +1,85 @@
-// http://habrahabr.ru/post/224825/
-// https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
-// http://frontender.info/gulp-browserify-starter-faq/
-
-
-var Helpers           = require('../helpers/index.js'),
-    Config            = require('../config.js').scripts,
-
-    _                 = require('lodash'),
+var _                 = require('lodash'),
+    __                = require('../../helpers'),
+    Extend            = require('extend'),
     Path              = require('path'),
     Gulp              = require('gulp'),
+    GulpUtil          = require('gulp-util'),
     Changed           = require('gulp-changed'),
     RunSequence       = require('run-sequence').use(Gulp),
     Plumber           = require('gulp-plumber'),
-    Uglify            = require('gulp-uglify'),
-    Del               = require('del'),
-    Extend            = require('extend'),
     Rename            = require('gulp-rename'),
     Tap               = require('gulp-tap'),
-    Gutil             = require('gulp-util'),
+    Lazypipe          = require('lazypipe'),
+    isStream          = require('isstream'),
 
+    Uglify            = require('gulp-uglify'),
     Merge             = require('event-stream').merge,
     Concat            = require('gulp-concat'),
     AutoPolyfiller    = require('gulp-autopolyfiller'),
     Order             = require('gulp-order'),
-    Lazypipe          = require('lazypipe'),
     Browserify        = require('browserify'),
     Watchify          = require('watchify'),
-    isStream          = require('isstream'),
     VinylSourceStream = require('vinyl-source-stream'),
-    VinylBuffer       = require('vinyl-buffer'),
+    VinylBuffer       = require('vinyl-buffer');
 
-    bowerConfig       = require('../config.js').bower;
+var Config            = require('../../_config/index').scripts,
+    BowerConfig       = require('../../_config/index').bower,
+    ScriptsClasses    = require('classes');
+
+
 
 
 var defaults = {
-  copy: {
-    src: 'app/scripts/vendor',
-    dest: 'dist/js/vendor'
-  },
-  build: {
-    src: 'app/scripts',
-    dest: 'dist/js'
-  },
+  scr: Config.src,
+  dest: Config.dest
 };
 
-Config = Extend(true, defaults, Config);
+var getBundles = (function () {
+  var bundles = null;
 
-Config.dest = Helpers.preparePath({trailingSlash: true}, Config.dest);
-
-if (!_.isPlainObject(Config.bundleDefaults)) {
-  throw new Error('Invalid defaults settings for bundles!');
-}
-
-
-//var resolve = require('resolve-bower');
-//var res = resolve.sync('jquery', { basedir: Path.join(__dirname, 'app/scripts/bower_components') });
-
-
-
-/**
- * @param {BundleConfig} bundle
- * @returns {BundleConfig}
- */
-var _validateBundle = function _validateBundle (bundle) {
-  var tmp;
-
-  if (bundle.validated) { return bundle; }
-
-  // если вместо конфига бандла пришла какая-то хрень, то нахер
-  if (!_.isPlainObject(bundle) || !_.isPlainObject(bundle.build)) {
-    throw new Error([
-      'Invalid bundle.',
-      Helpers.stringify(bundle),
-      ''
-    ].join('\n'));
-  }
-
-  bundle.build = Extend(Config.bundleDefaults.build, bundle.build);
-  bundle.dist = Extend(Config.bundleDefaults.dist, bundle.dist || {});
-
-  // валидация опций бандлера
-  if (!_.isPlainObject(bundle.build.options)) {
-    bundle.build.options = Config.bundleDefaults.build.options;
-  } else {
-    bundle.build.options = Extend(true, Config.bundleDefaults.build.options, bundle.build.options);
-  }
-
-  // сделаем массивом входной файл, если ещё не.
-  if (!_.isArray(bundle.build.entry)) {
-    bundle.build.entry = [bundle.build.entry || null];
-  }
-  // сделаем массивом входной файл из опций, если ещё не.
-  if (!_.isArray(bundle.build.options.entries)) {
-    bundle.build.options.entries = [bundle.build.options.entries || null];
-  }
-
-  // перенесём входные файлы из опций в entry, для консистентности
-  bundle.build.entry = _.compact(_.union(bundle.build.entry, bundle.build.options.entries));
-  delete bundle.build.options.entries;
-
-  // теперь сформируем нормальные пути для каждого файла
-  bundle.build.entry = _.map(bundle.build.entry, function (entry, index) {
-    var _entry, result = null;
-
-    if (entry) {
-      _entry = Helpers.parsePath(entry);
-
-      if (_entry.isOnlyFile) {
-        result = Path.join(Config.src, _entry.base);
-      } else if (_entry.isPathToFile) {
-        result = Path.format(_entry);
-      }
-
-      result = Path.normalize(result);
+  return function (makeBundlers) {
+    if (!bundles) {
+      bundles = new ScriptsClasses.BundlesMaker(Config.bundles, defaults);
     }
 
-    return result;
-  });
-
-  bundle.build.entry = _.uniq(_.compact(bundle.build.entry));
-
-  // если, после всех преобразований, нет ни одной входной точки, то нахер это всё
-  if (!bundle.build.entry.length) {
-    throw new Error([
-      'Bundle\'s entry file is required.',
-      Helpers.stringify(bundle),
-      ''
-    ].join('\n'));
-  }
-
-  // если выходной файл не установлен и всего одна входная точка,
-  // заберём из неё название файла
-  if (!bundle.build.outfile && bundle.build.entry.length == 1) {
-    bundle.build.outfile = Path.parse(bundle.build.entry[0]).base;
-  }
-
-  // если outfile установлен - нужно отделить мух от котлет (имя файла от пути)
-  if (bundle.build.outfile) {
-    var _outfile = Helpers.parsePath(entry);
-
-    if (_outfile.isOnlyPath) {
-      bundle.build.outfile = null;
-      bundle.build.dest    = null;
-    } else {
-      if (_outfile.isOnlyFile) {
-        bundle.build.outfile = _outfile.base;
-        bundle.build.dest    = Config.bundleDefaults.build.dest;
-      } else if (_outfile.isPathToFile) {
-        bundle.build.outfile = _outfile.base;
-        bundle.build.dest    = _outfile.dir;
-      }
-
-      bundle.build.dest = Helpers.preparePath({trailingSlash: true}, bundle.build.dest);
-    }
-  }
-
-  // если и выходного файла нет, то тем более нахер это всё
-  if (!bundle.build.outfile) {
-    throw new Error([
-      'Bundle\'s output filename is required.',
-      Helpers.stringify(bundle)
-    ].join('\n'));
-  }
-
-  // функция настройки бандлера
-  if (!_.isFunction(bundle.build.setup)) {
-    bundle.build.setup = Config.bundleDefaults.build.setup;
-  }
-
-  // коллбек для бандлера
-  if (!_.isFunction(bundle.build.callback)) {
-    bundle.build.callback = Config.bundleDefaults.build.callback;
-  }
-
-  bundle.dist.polyfilly = !!bundle.dist.polyfilly;
-  if (!_.isPlainObject(bundle.dist.autoPolyfillerConfig)) {
-    bundle.dist.autoPolyfillerConfig = {};
-  }
-
-  bundle.dist.minify = !!bundle.dist.minify;
-  if (!_.isPlainObject(bundle.dist.uglifyConfig)) {
-    bundle.dist.uglifyConfig = {};
-  }
-
-  bundle.validated = true;
-  bundle.bundler = null;
-
-  return bundle;
-};
-
-/**
- * @param {BundleConfig[]} bundles
- * @returns {[]}
- */
-var _validateBundles = function _validateBundles (bundles) {
-  bundles = (!_.isArray(bundles)) ? [bundles] : bundles;
-
-  return _.map(bundles, function (bundle) {
-    return _validateBundle(bundle);
-  });
-};
-
-/**
- * @param {BundleConfig[]} bundles
- * @returns {[]}
- */
-var _makeBundlers = function _makeBundlers (bundles) {
-  return _.map(_validateBundles(bundles), function (bundle) {
-    if (bundle.bundler) { return bundle; }
-
-    bundle.bundler = Browserify(bundle.entry, Extend(true, Watchify.args, bundle.options));
-    bundle.setup(bundle.bundler);
-
-    return bundle;
-  });
-};
-
-/**
- * @returns {Function}
- */
-var getBundlers = (function () {
-  var bundlers = null;
-
-  /**
-   * @returns {BundleConfig[]}
-   */
-  return function getBundlers () {
-    if (bundlers) { return bundlers; }
-
-    return bundlers = _makeBundlers(Config.bundles);
+    return bundles.get(!!makeBundlers);
   };
 })();
 
-_.each(getBundlers(), function (_bundler, index) {
-  var bundler = _bundler.bundler;
-  var callback = _bundler.callback;
 
+Gulp.task('scripts:build', function (cb) {
 
 });
+Gulp.task('scripts:build:cleanup', function (cb) {
+
+});
+
+Gulp.task('scripts:minify', function (cb) {
+
+});
+Gulp.task('scripts:minify:cleanup', function (cb) {
+
+});
+
+Gulp.task('scripts:polyfilly', function (cb) {
+
+});
+Gulp.task('scripts:polyfilly:cleanup', function (cb) {
+
+});
+
+Gulp.task('scripts:dist', function (cb) {
+
+});
+Gulp.task('scripts:dist:cleanup', function (cb) {
+
+});
+
+Gulp.task('scripts:watch', function (cb) {
+
+});
+
+
 
 
 /**
@@ -360,6 +202,7 @@ Gulp.task('js:polyfilly', function(cb) {
         .pipe(Gulp.dest(path));
     }));
 });
+
 
 
 

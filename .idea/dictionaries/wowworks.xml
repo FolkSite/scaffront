@@ -1,10 +1,14 @@
 <component name="ProjectDictionaryState">
   <dictionary name="wowworks">
     <words>
+      <w>autopolyfiller</w>
       <w>browserify</w>
       <w>bundlers</w>
       <w>dest</w>
       <w>extnames</w>
+      <w>isstream</w>
+      <w>jsface</w>
+      <w>lazypipe</w>
       <w>lodash</w>
       <w>minify</w>
       <w>noop</w>
