@@ -5,7 +5,7 @@ var _                  = require('lodash'),
     gulp               = require('gulp'),
     gulpUtil           = require('gulp-util'),
     gulpChanged        = require('gulp-changed'),
-    gulpRunSequence    = require('run-sequence').use(gulp),
+    runSequence    = require('run-sequence').use(gulp),
     gulpPlumber        = require('gulp-plumber'),
     gulpRename         = require('gulp-rename'),
     gulpTap            = require('gulp-tap'),
@@ -53,278 +53,70 @@ var getBundles = (function () {
   };
 })();
 
-var makeBundleStream = function (bundle, source) {
+/**
+ * @param {BundleConfig} bundle
+ * @param {boolean} [buffer=true] Return buffer
+ * @returns {Stream}
+ */
+var makeBundleStream = function (bundle, buffer) {
+  buffer = (typeof buffer != 'undefined') ? !!buffer : true;
 
-  return bundle.bundler.bundle(bundle.build.callback)
+  bundle.stream = bundle.bundler.bundle(bundle.build.callback)
     .on('error', bundle.build.errorHandler)
     .pipe(vinylSourceStream(bundle.build.outfile))
     .pipe(gulpIf(getObject.get(bundle, 'build.options.standalone'), gulpDerequire()))
-    // если нужно вернуть только vinyl-source, то не буферизируем.
-    // по умолчанию считаем, что всегда нужно вернуть буфер
-    .pipe(gulpIf(!source, vinylBuffer()))
-  ;
-};
-
-
-
-
-
-
-var StreamHandler = clazz({
-  constructor: function (bundle) {
-    this.bundle = bundle;
-    this.stream = this._getBundleSourceStream();
-  },
-
-  fromBundle: function (bundle) {
-    this.stream = this._getBundleSourceStream();
-  },
-
-  _getBundleSourceStream: function () {
-    var bundle = this.bundle;
-
-    return bundle.bundler.bundle(bundle.build.callback)
-      .on('error', bundle.build.errorHandler)
-      .pipe(vinylSourceStream(bundle.build.outfile))
-    ;
-  },
-
-  getStreamBuffer: function (stream) {
-    if (gulpUtil.isBuffer(stream)) {
-      return stream;
-    }
-
-    return stream.pipe(vinylBuffer());
-  },
-
-  uglify: function (stream) {
-    var bundle = this.bundle;
-
-
-    return stream;
-  },
-
-  sourcemapsInit: function (stream) {
-    var bundle = this.bundle;
-
-    if (_.isArray(getObject.get(bundle, 'dest.Sourcemaps.init'))) {
-      stream = this.getStreamBuffer(stream)
-        .pipe(gulpSourcemaps.init.apply(gulpSourcemaps.init, bundle.dest.Sourcemaps.init))
-      ;
-    }
-
-    return stream;
-  },
-
-  sourcemapsWrite: function (stream) {
-    var bundle = this.bundle;
-
-    if (_.isArray(getObject.get(bundle, 'dest.Sourcemaps.write'))) {
-      stream = this.getStreamBuffer(stream)
-        .pipe(gulpSourcemaps.init.apply(gulpSourcemaps.write, bundle.dest.Sourcemaps.write))
-      ;
-    }
-
-    return stream;
-  },
-
-
-  sendToDest: function (stream) {
-    var bundle = this.bundle;
-
-    stream.pipe(gulp.dest(bundle.build.des));
-
-    return stream;
-  },
-});
-
-var buildBundle = function (bundle) {
-  var stream = makeBundleSourceStream(bundle)
-    // если нужен standalone-модуль, то применим gulpDerequire
-    .pipe(gulpIf(getObject.get(bundle, 'build.options.standalone'), gulpDerequire()))
-    // отправим собранный бандл в конечную папку
-    .pipe(gulp.dest(bundle.build.des))
+    .pipe(gulpIf(buffer, vinylBuffer()))
   ;
 
-  // если его нужно сжать
-  if (_.isArray(getObject.get(bundle, 'dest.Uglify'))) {
-    stream
-      // превращаем в буфер, иначе gulpUglify не заведётся
-      .pipe(vinylBuffer())
-      // если нужны sourcemap'ы, то инициализируем их их
-      .pipe(gulpIf(
-        _.isArray(getObject.get(bundle, 'dest.Sourcemaps.init')),
-        gulpSourcemaps.init.apply(gulpSourcemaps.init, bundle.dest.Sourcemaps.init)
-      ))
-      // кукожим
-      .pipe(gulpUglify.apply(gulpUglify, bundle.dest.Uglify))
-      // переименовываем, если нужно (суффиксы/префикы)
-      .pipe(gulpIf(
-        _.isArray(getObject.get(bundle, 'dest.UglifyRename')),
-        gulpRename.apply(gulpRename, bundle.dest.UglifyRename)
-      ))
-      // если нужна шапка - добавляем
-      .pipe(gulpIf(
-        _.isArray(getObject.get(bundle, 'dest.GulpHeader')),
-        gulpHeader.apply(gulpHeader, bundle.dest.GulpHeader)
-      ))
-      // а теперь записываем sourcemap'ы
-      .pipe(gulpIf(
-        _.isArray(getObject.get(bundle, 'dest.Sourcemaps.write')),
-        gulpSourcemaps.init.apply(gulpSourcemaps.write, bundle.dest.Sourcemaps.write)
-      ))
-
-      // и всё туда же
-      .pipe(gulp.dest(bundle.build.des))
-    ;
-  }
-  //.pipe(gulpIf(true, ))
-
-  return stream;
+  return bundle.stream;
 };
+
 
 gulp.task('scripts:build', function (cb) {
   var bundles = getBundles(true);
-  var queue = length = bundles.length;
-
-  gulpUtil.log('Build bundles. Total:', gulpUtil.colors.cyan(length));
 
   return gulpMerge(_.map(bundles, function (bundle) {
-    return makeBundleStream(bundle)
-      .pipe(gulpRename({suffix: '.dest'}))
+    bundle.stream = makeBundleStream(bundle);
+
+    return bundle.stream
       .pipe(gulp.dest(bundle.build.dest))
+      .pipe(gulpTap(function () {
+        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.build.destFullPath));
+        gulpUtil.log('Bundle built:', gulpUtil.colors.cyan(bundlePath));
+      }))
     ;
   }))
-    .pipe(gulp.dest('dist/js'));
-
-    //.pipe(gulpTap(function (file, transform) {
-    //  console.log(file.path);
-    //}))
-    ////.pipe(gulpOrder([
-    ////  'lib.js',
-    ////  'js.js',
-    ////]))
-    ////.pipe(gulpConcat('qweqwe.js'))
-    //.pipe(gulpSourcemaps.init({loadMaps: true}))
-    //.pipe(gulpUglify())
-    //.pipe(gulpRename({suffix: '.min'}))
-    //.pipe(gulpSourcemaps.write('./'))
-    //.pipe(gulp.dest('dist/js'))
   ;
-
-  return stream;
-
-
-  bundles.forEach(function (bundle) {
-    makeBundleSourceStream(bundle)
-      .pipe(gulp.dest(bundle.build.dest))
-      .pipe(gulpDerequire())
-
-      .pipe(vinylBuffer())
-      .pipe(gulpSourcemaps.init({loadMaps: true}))
-      .pipe(gulpUglify())
-      .pipe(gulpRename({suffix: '.min'}))
-      .pipe(gulpSourcemaps.write('./'))
-      .pipe(gulp.dest(bundle.build.dest))
-      .on('end', function () {
-        queue -= 1;
-
-        gulpUtil.log('Bundle done:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
-
-        if (!queue) { cb(); }
-      })
-    ;
-
-
-  });
 });
 
 gulp.task('scripts:build:cleanup', function (cb) {
   var bundles = getBundles(true);
-  var queue = length = bundles.length;
 
-  gulpUtil.log('Remove bundles. Total:', gulpUtil.colors.cyan(length));
+  return gulpMerge(_.map(bundles, function (bundle) {
+    bundle.stream = makeBundleStream(bundle);
 
-  bundles.forEach(function (bundle) {
-
-    makeBundleVinylBuffer(bundle)
-      .pipe(gulpTap(function (file) {
-        del(bundle.build.destFullPath).then(function () {
-          queue -= 1;
-
-          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
-
-          if (!queue) { cb(); }
-        });
+    return bundle.stream
+      .pipe(gulpTap(function () {
+        del.sync(bundle.build.destFullPath);
+        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.build.destFullPath));
+        gulpUtil.log('Bundle removed:', gulpUtil.colors.cyan(bundlePath));
       }))
     ;
-
-  });
-});
-
-
-gulp.task('scripts:minify', function (cb) {
-  var bundles = getBundles(true);
-  var queue = length = bundles.length;
-
-  gulpUtil.log('Minifying bundles. Total:', gulpUtil.colors.cyan(length));
-
-  bundles.forEach(function (bundle) {
-
-    makeBundleVinylBuffer(bundle)
-      .pipe(gulpTap(function (file) {
-        del(bundle.build.destFullPath).then(function () {
-          queue -= 1;
-
-          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
-
-          if (!queue) { cb(); }
-        });
-      }))
-    ;
-
-  });
-});
-
-gulp.task('scripts:minify:cleanup', function (cb) {
-  var bundles = getBundles(true);
-  var queue = length = bundles.length;
-
-  gulpUtil.log('Remove bundles. Total:', gulpUtil.colors.cyan(length));
-
-  bundles.forEach(function (bundle) {
-
-    makeBundleVinylBuffer(bundle)
-      .pipe(gulpTap(function (file) {
-        del(bundle.build.destFullPath).then(function () {
-          queue -= 1;
-
-          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
-
-          if (!queue) { cb(); }
-        });
-      }))
-    ;
-
-  });
-});
-
-
-gulp.task('scripts:polyfilly', function (cb) {
-  var bundles = getBundles();
-});
-
-gulp.task('scripts:polyfilly:cleanup', function (cb) {
-  var bundles = getBundles();
+  }))
+  ;
 });
 
 
 gulp.task('scripts:dist', function (cb) {
-  var bundles = getBundles();
+  if (!_.isFunction(Config.bundlesDist)) { cb(); }
+
+  __.runSyncAsync([getBundles(true)], Config.bundlesDist, cb);
 });
 
 gulp.task('scripts:dist:cleanup', function (cb) {
-  var bundles = getBundles();
+  if (!_.isFunction(Config.bundlesDistCleanup)) { cb(); }
+
+  __.runSyncAsync([getBundles(true)], Config.bundlesDistCleanup, cb);
 });
 
 
