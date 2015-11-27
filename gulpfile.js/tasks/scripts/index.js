@@ -107,17 +107,36 @@ gulp.task('scripts:build:cleanup', function (cb) {
 });
 
 
-gulp.task('scripts:dist', function (cb) {
-  if (!_.isFunction(Config.bundlesDist)) { cb(); }
+gulp.task('scripts:dist', ['scripts:build'], function (cb) {
+  if (!_.isFunction(Config.bundlesDist)) {
+    cb();
+    return;
+  }
 
-  __.runSyncAsync([getBundles(true)], Config.bundlesDist, cb);
+  var bundles = getBundles(true);
+
+  _.each(bundles, function (bundle) {
+    bundle.stream = makeBundleStream(bundle);
+  });
+
+  __.runSyncAsync([bundles], Config.bundlesDist, cb);
 });
 
-gulp.task('scripts:dist:cleanup', function (cb) {
-  if (!_.isFunction(Config.bundlesDistCleanup)) { cb(); }
-
-  __.runSyncAsync([getBundles(true)], Config.bundlesDistCleanup, cb);
-});
+//gulp.task('scripts:dist:cleanup', function (cb) {
+//  if (!_.isFunction(Config.bundlesDistCleanup)) { cb(); }
+//
+//  var bundles = _.map(getBundles(true), function (bundle) {
+//    bundle.stream = makeBundleStream(bundle);
+//
+//    return bundle;
+//  });
+//
+//  __.runSyncAsync([bundles], Config.bundlesDistCleanup, function () {
+//    console.log('cb arguments', arguments);
+//
+//    cb();
+//  });
+//});
 
 
 gulp.task('scripts:watch', function (cb) {

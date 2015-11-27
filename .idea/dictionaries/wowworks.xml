@@ -15,6 +15,7 @@
       <w>minify</w>
       <w>noop</w>
       <w>nunjucks</w>
+      <w>polyfill</w>
       <w>polyfiller</w>
       <w>preprocess</w>
       <w>sourcemap</w>

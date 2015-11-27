@@ -374,8 +374,8 @@ __.runSyncAsync = function (funcContext, funcArgs, func, cb) {
 
   funcContext = null;
   funcArgs = [];
-  func = _.noop;
-  cb = _.noop;
+  func = __.noop;
+  cb = __.noop;
 
   switch (args.length) {
     case 4:
@@ -473,6 +473,7 @@ __.runSyncAsync = function (funcContext, funcArgs, func, cb) {
     delete cb.runSyncAsyncRunned;
   } else if (typeof result != 'undefined') {
     cb.runSyncAsyncRunned = true;
+    console.log('result', result);
     cb.apply(null, [result]);
   }
 };

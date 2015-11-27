@@ -65,68 +65,41 @@ module.exports = (function () {
   ];
 
   config.bundlesDist = function (bundles, cb) {
+    var bundlesMergeStream = gulpMerge(_.map(bundles, function (bundle) {
+      return bundle.stream;
+    }));
 
-    return gulpMerge(_.map(bundles, function (bundle) {
+    var streamPolyfill = bundlesMergeStream
+      .pipe(gulpConcat('all.js'))
+      .pipe(gulpAutoPolyfiller('polyfills.js', {
+        browsers: [
+          'last 3 version',
+          'ie 8',
+          'ie 9'
+        ],
+        exclude: [
+          'Promise'
+        ]
+      }))
+      .pipe(gulp.dest(config.dest))
+    ;
 
-      return bundle.stream
-        .pipe(gulp.dest(bundle.build.dest))
-        .pipe(gulpTap(function () {
-          var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.build.destFullPath));
-          gulpUtil.log('Bundle built:', gulpUtil.colors.cyan(bundlePath));
-        }))
-        ;
-    }))
-      ;
+    //return
+    gulpMerge(bundlesMergeStream, streamPolyfill)
+      .pipe(gulpSourcemaps.init({loadMaps: true}))
+      .pipe(gulpUglify())
+      .pipe(gulpRename({suffix: '.min'}))
+      .pipe(gulpSourcemaps.write('./'))
+      .pipe(gulp.dest(config.dest))
+      .on('end', function () {
+        cb();
+      })
+    ;
 
-
-    //.pipe(gulpTap(function (file, transform) {
-    //  console.log(file.path);
-    //}))
-    ////.pipe(gulpOrder([
-    ////  'lib.js',
-    ////  'js.js',
-    ////]))
-    ////.pipe(gulpConcat('qweqwe.js'))
-    //.pipe(gulpSourcemaps.init({loadMaps: true}))
-    //.pipe(gulpUglify())
-    //.pipe(gulpRename({suffix: '.min'}))
-    //.pipe(gulpSourcemaps.write('./'))
-    //.pipe(gulp.dest('dist/js'))
-
-    //// если его нужно сжать
-    //if (_.isArray(getObject.get(bundle, 'dest.Uglify'))) {
-    //  stream
-    //    // превращаем в буфер, иначе gulpUglify не заведётся
-    //    .pipe(vinylBuffer())
-    //    // если нужны sourcemap'ы, то инициализируем их их
-    //    .pipe(gulpIf(
-    //      _.isArray(getObject.get(bundle, 'dest.Sourcemaps.init')),
-    //      gulpSourcemaps.init.apply(gulpSourcemaps.init, bundle.dest.Sourcemaps.init)
-    //    ))
-    //    // кукожим
-    //    .pipe(gulpUglify.apply(gulpUglify, bundle.dest.Uglify))
-    //    // переименовываем, если нужно (суффиксы/префикы)
-    //    .pipe(gulpIf(
-    //      _.isArray(getObject.get(bundle, 'dest.UglifyRename')),
-    //      gulpRename.apply(gulpRename, bundle.dest.UglifyRename)
-    //    ))
-    //    // если нужна шапка - добавляем
-    //    .pipe(gulpIf(
-    //      _.isArray(getObject.get(bundle, 'dest.GulpHeader')),
-    //      gulpHeader.apply(gulpHeader, bundle.dest.GulpHeader)
-    //    ))
-    //    // а теперь записываем sourcemap'ы
-    //    .pipe(gulpIf(
-    //      _.isArray(getObject.get(bundle, 'dest.Sourcemaps.write')),
-    //      gulpSourcemaps.init.apply(gulpSourcemaps.write, bundle.dest.Sourcemaps.write)
-    //    ))
-    //
-    //    // и всё туда же
-    //    .pipe(gulp.dest(bundle.build.des))
-    //  ;
-    //}
-    //.pipe(gulpIf(true, ))
-
+//    .pipe(gulpIf(
+//      _.isArray(getObject.get(bundle, 'dest.GulpHeader')),
+//      gulpHeader.apply(gulpHeader, bundle.dest.GulpHeader)
+//    ))
   };
 
   config.bundlesDistCleanup = function (bundles, cb) {
