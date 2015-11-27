@@ -74,16 +74,25 @@ var BundleMaker = Class({
         errorHandler: __.plumberErrorHandler.errorHandler
       },
       dist: {
-        GulpHeader: false,
+        'gulp-header': false,
+        'gulp-uglify': {
+          arguments: [],
+          next: {
+            gulpRename: {
+              arguments: [{
+                suffix: '.min'
+              }],
+            },
+          },
+        },
+
         Uglify: [],
         UglifyRename: [{
           suffix: '.min'
         }],
 
         Sourcemaps: {
-          init: [{
-            loadMaps: true
-          }],
+          init: [{loadMaps: true}],
           write: []
         },
 

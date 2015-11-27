@@ -191,8 +191,8 @@ gulp.task('scripts:build', function (cb) {
 
   return gulpMerge(_.map(bundles, function (bundle) {
     return makeBundleStream(bundle)
-      .pipe(gulp.dest(bundle.build.dest))
       .pipe(gulpRename({suffix: '.dest'}))
+      .pipe(gulp.dest(bundle.build.dest))
     ;
   }))
     .pipe(gulp.dest('dist/js'));

@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9f4a1a41-c8d7-4d3e-aa34-e698c501363d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/handlebars.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/_tasks/html.js" afterPath="$PROJECT_DIR$/gulpfile.js/_tasks/html.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/_config/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/_config/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/_tasks/scripts.js" afterPath="$PROJECT_DIR$/gulpfile.js/_tasks/scripts.js" />
     </list>
     <ignored path="makeup.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -220,7 +214,7 @@
         <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="182" column="16" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+              <caret line="13" column="45" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="45" />
               <folding>
                 <element signature="e#2410#3857#0" expanded="false" />
                 <element signature="e#9373#10220#0" expanded="false" />
@@ -232,29 +226,29 @@
       <file leaf-file-name="classes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36049107">
-              <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.2544643">
+              <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
               <folding>
                 <element signature="e#2603#2658#0" expanded="false" />
-                <element signature="e#3968#4031#0" expanded="false" />
-                <element signature="e#4067#4148#0" expanded="false" />
-                <element signature="e#4153#4250#0" expanded="false" />
-                <element signature="e#4306#4476#0" expanded="false" />
-                <element signature="e#4481#4555#0" expanded="false" />
-                <element signature="e#4590#4676#0" expanded="false" />
-                <element signature="e#4681#4718#0" expanded="false" />
-                <element signature="e#4758#5022#0" expanded="false" />
-                <element signature="e#5027#5099#0" expanded="false" />
-                <element signature="e#11300#11364#0" expanded="false" />
-                <element signature="e#11400#11481#0" expanded="false" />
-                <element signature="e#11486#11600#0" expanded="false" />
-                <element signature="e#11657#11775#0" expanded="false" />
-                <element signature="e#11780#11857#0" expanded="false" />
-                <element signature="e#11893#11998#0" expanded="false" />
-                <element signature="e#12003#12041#0" expanded="false" />
-                <element signature="e#12083#12208#0" expanded="false" />
-                <element signature="e#12213#12278#0" expanded="false" />
-                <element signature="e#12321#12515#0" expanded="false" />
+                <element signature="e#4158#4221#0" expanded="false" />
+                <element signature="e#4257#4338#0" expanded="false" />
+                <element signature="e#4343#4440#0" expanded="false" />
+                <element signature="e#4496#4666#0" expanded="false" />
+                <element signature="e#4671#4745#0" expanded="false" />
+                <element signature="e#4780#4866#0" expanded="false" />
+                <element signature="e#4871#4908#0" expanded="false" />
+                <element signature="e#4948#5212#0" expanded="false" />
+                <element signature="e#5217#5289#0" expanded="false" />
+                <element signature="e#11490#11554#0" expanded="false" />
+                <element signature="e#11590#11671#0" expanded="false" />
+                <element signature="e#11676#11790#0" expanded="false" />
+                <element signature="e#11847#11965#0" expanded="false" />
+                <element signature="e#11970#12047#0" expanded="false" />
+                <element signature="e#12083#12188#0" expanded="false" />
+                <element signature="e#12193#12231#0" expanded="false" />
+                <element signature="e#12273#12398#0" expanded="false" />
+                <element signature="e#12403#12468#0" expanded="false" />
+                <element signature="e#12511#12705#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -318,8 +312,8 @@
         <option value="$PROJECT_DIR$/gulpfile.js/_config/scripts.js" />
         <option value="$PROJECT_DIR$/tmp.json" />
         <option value="$PROJECT_DIR$/tmp2.json" />
-        <option value="$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js" />
       </list>
     </option>
   </component>
@@ -1184,18 +1178,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/js/js.dest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19084822">
-          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="182" column="16" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+          <caret line="13" column="45" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="45" />
           <folding>
             <element signature="e#2410#3857#0" expanded="false" />
             <element signature="e#9373#10220#0" expanded="false" />
@@ -1205,29 +1191,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts/classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36049107">
-          <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.2544643">
+          <caret line="77" column="24" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
           <folding>
             <element signature="e#2603#2658#0" expanded="false" />
-            <element signature="e#3968#4031#0" expanded="false" />
-            <element signature="e#4067#4148#0" expanded="false" />
-            <element signature="e#4153#4250#0" expanded="false" />
-            <element signature="e#4306#4476#0" expanded="false" />
-            <element signature="e#4481#4555#0" expanded="false" />
-            <element signature="e#4590#4676#0" expanded="false" />
-            <element signature="e#4681#4718#0" expanded="false" />
-            <element signature="e#4758#5022#0" expanded="false" />
-            <element signature="e#5027#5099#0" expanded="false" />
-            <element signature="e#11300#11364#0" expanded="false" />
-            <element signature="e#11400#11481#0" expanded="false" />
-            <element signature="e#11486#11600#0" expanded="false" />
-            <element signature="e#11657#11775#0" expanded="false" />
-            <element signature="e#11780#11857#0" expanded="false" />
-            <element signature="e#11893#11998#0" expanded="false" />
-            <element signature="e#12003#12041#0" expanded="false" />
-            <element signature="e#12083#12208#0" expanded="false" />
-            <element signature="e#12213#12278#0" expanded="false" />
-            <element signature="e#12321#12515#0" expanded="false" />
+            <element signature="e#4158#4221#0" expanded="false" />
+            <element signature="e#4257#4338#0" expanded="false" />
+            <element signature="e#4343#4440#0" expanded="false" />
+            <element signature="e#4496#4666#0" expanded="false" />
+            <element signature="e#4671#4745#0" expanded="false" />
+            <element signature="e#4780#4866#0" expanded="false" />
+            <element signature="e#4871#4908#0" expanded="false" />
+            <element signature="e#4948#5212#0" expanded="false" />
+            <element signature="e#5217#5289#0" expanded="false" />
+            <element signature="e#11490#11554#0" expanded="false" />
+            <element signature="e#11590#11671#0" expanded="false" />
+            <element signature="e#11676#11790#0" expanded="false" />
+            <element signature="e#11847#11965#0" expanded="false" />
+            <element signature="e#11970#12047#0" expanded="false" />
+            <element signature="e#12083#12188#0" expanded="false" />
+            <element signature="e#12193#12231#0" expanded="false" />
+            <element signature="e#12273#12398#0" expanded="false" />
+            <element signature="e#12403#12468#0" expanded="false" />
+            <element signature="e#12511#12705#0" expanded="false" />
           </folding>
         </state>
       </provider>
