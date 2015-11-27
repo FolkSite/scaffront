@@ -74,9 +74,19 @@ var BundleMaker = Class({
         errorHandler: __.plumberErrorHandler.errorHandler
       },
       dist: {
-        polyfilly: true,
+        GulpHeader: false,
+        Uglify: [],
+        UglifyRename: [{
+          suffix: '.min'
+        }],
+
+        Sourcemaps: {
+          init: [{}],
+          write: []
+        },
+
         polyfillyType: 'internal concat',
-        autoPolyfillerConfig: {
+        AutoPolyfiller: [{
           browsers: [
             'last 3 version',
             'ie 8',
@@ -85,16 +95,10 @@ var BundleMaker = Class({
           exclude: [
             'Promise'
           ]
-        },
-        polyfillyRenameConfig: {
+        }],
+        AutoPolyfillerRename: [{
           suffix: '.polyfills'
-        },
-
-        minify: true,
-        uglifyConfig: {},
-        minifyRenameConfig: {
-          suffix: '.min'
-        }
+        }],
       }
     }
   },
@@ -107,6 +111,7 @@ var BundleMaker = Class({
     this.defaults = Extend(this.defaults, defaults || {});
     return this;
   },
+
   /**
    * @param {BundleConfig} bundle
    * @param {{}} defaults
@@ -294,33 +299,33 @@ var BundleMaker = Class({
     /**
      * Вылидация dist-настроек
      */
-      // надо ли генерировать полифиллы
-    bundle.dist.polyfilly = !!bundle.dist.polyfilly;
-    // стратегия полифиллирования
-    bundle.dist.polyfillyType = (_.isString(bundle.dist.polyfillyType))
-      ? bundle.dist.polyfillyType.split(' ').map(function (item) {
-      return item.trim();
-    })
-      : bundle.dist.polyfillyType;
-    // конфиг для autopolyfiller'a
-    if (!_.isPlainObject(bundle.dist.autoPolyfillerConfig)) {
-      bundle.dist.autoPolyfillerConfig = {};
-    }
-    // конфиг для rename'ра
-    if (!_.isPlainObject(bundle.dist.polyfillyRenameConfig)) {
-      bundle.dist.polyfillyRenameConfig = {};
-    }
-
-    // надо ли минимизировать
-    bundle.dist.minify = !!bundle.dist.minify;
-    // конфиг для uglify
-    if (!_.isPlainObject(bundle.dist.uglifyConfig)) {
-      bundle.dist.uglifyConfig = {};
-    }
-    // конфиг для rename'ра
-    if (!_.isPlainObject(bundle.dist.minifyRenameConfig)) {
-      bundle.dist.minifyRenameConfig = {};
-    }
+    //// надо ли генерировать полифиллы
+    //bundle.dist.polyfilly = !!bundle.dist.polyfilly;
+    //// стратегия полифиллирования
+    //bundle.dist.polyfillyType = (_.isString(bundle.dist.polyfillyType))
+    //  ? bundle.dist.polyfillyType.split(' ').map(function (item) {
+    //  return item.trim();
+    //})
+    //  : bundle.dist.polyfillyType;
+    //// конфиг для autopolyfiller'a
+    //if (!_.isPlainObject(bundle.dist.autoPolyfillerConfig)) {
+    //  bundle.dist.autoPolyfillerConfig = {};
+    //}
+    //// конфиг для rename'ра
+    //if (!_.isPlainObject(bundle.dist.polyfillyRenameConfig)) {
+    //  bundle.dist.polyfillyRenameConfig = {};
+    //}
+    //
+    //// надо ли минимизировать
+    //bundle.dist.minify = !!bundle.dist.minify;
+    //// конфиг для uglify
+    //if (!_.isPlainObject(bundle.dist.uglifyConfig)) {
+    //  bundle.dist.uglifyConfig = {};
+    //}
+    //// конфиг для rename'ра
+    //if (!_.isPlainObject(bundle.dist.minifyRenameConfig)) {
+    //  bundle.dist.minifyRenameConfig = {};
+    //}
 
     // ставим флаг, что этот бандл отвалидрован (чтобы в будущем, если что, повторно не прогонять его через эту функцию)
     bundle.validated = true;

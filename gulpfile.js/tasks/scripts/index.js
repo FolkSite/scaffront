@@ -20,11 +20,14 @@ var _                 = require('lodash'),
     Order             = require('gulp-order'),
     Del               = require('del'),
     Gulpify           = require('gulpify'),
-    Derequire         = require('gulp-derequire'),
+    GulpIf            = require('gulp-if'),
+    GulpDerequire     = require('gulp-derequire'),
+    GulpHeader        = require('gulp-header'),
     Browserify        = require('browserify'),
     Watchify          = require('watchify'),
     VinylSourceStream = require('vinyl-source-stream'),
-    VinylBuffer       = require('vinyl-buffer');
+    VinylBuffer       = require('vinyl-buffer'),
+    getobject         = require('getobject');
 
 var Config            = require('../../_config').scripts,
     BowerConfig       = require('../../_config').bower,
@@ -54,7 +57,7 @@ var makeBundleSourceStream = function (bundle) {
   return bundle.bundler.bundle(bundle.build.callback)
     .on('error', bundle.build.errorHandler)
     .pipe(VinylSourceStream(bundle.build.outfile))
-    ;
+  ;
 };
 
 /**
@@ -67,8 +70,50 @@ var makeBundleVinylBuffer = function (bundle) {
   ;
 };
 
+
 var buildBundle = function (bundle) {
-  makeBundleVinylBuffer(bundle);
+  var stream = makeBundleSourceStream(bundle)
+        // если нужен standalone-модуль, то применим GulpDerequire
+    .pipe(GulpIf(getobject.get(bundle, 'build.options.standalone'), GulpDerequire()))
+    // отправим собранный бандл в конечную папку
+    .pipe(Gulp.dest(bundle.build.des))
+  ;
+
+  // если его нужно сжать
+  if (_.isArray(getobject.get(bundle, 'dest.Uglify'))) {
+    stream
+      // превращаем в буфер, иначе Uglify не заведётся
+      .pipe(VinylBuffer())
+      // если нужны sourcemap'ы, то инициализируем их их
+      .pipe(GulpIf(
+        _.isArray(getobject.get(bundle, 'dest.Sourcemaps.init')),
+        Sourcemaps.init.apply(Sourcemaps.init, bundle.dest.Sourcemaps.init)
+      ))
+      // кукожим
+      .pipe(Uglify.apply(Uglify, bundle.dest.Uglify))
+      // переименовываем, если нужно (суффиксы/префикы)
+      .pipe(GulpIf(
+        _.isArray(getobject.get(bundle, 'dest.UglifyRename')),
+        Rename.apply(Rename, bundle.dest.UglifyRename)
+      ))
+      // если нужна шапка = добавляем
+      .pipe(GulpIf(
+        _.isArray(getobject.get(bundle, 'dest.GulpHeader')),
+        GulpHeader.apply(GulpHeader, bundle.dest.GulpHeader)
+      ))
+      // а теперь записываем sourcemap'ы
+      .pipe(GulpIf(
+        _.isArray(getobject.get(bundle, 'dest.Sourcemaps.write')),
+        Sourcemaps.init.apply(Sourcemaps.write, bundle.dest.Sourcemaps.write)
+      ))
+
+      // и всё туда же
+      .pipe(Gulp.dest(bundle.build.des))
+    ;
+  }
+  //.pipe(GulpIf(true, ))
+
+  return stream;
 };
 
 Gulp.task('scripts:build', function (cb) {
@@ -78,9 +123,9 @@ Gulp.task('scripts:build', function (cb) {
   GulpUtil.log('Build bundles. Total:', GulpUtil.colors.cyan(length));
 
   bundles.forEach(function (bundle) {
-    makeBundleVinylBuffer(bundle)
+    makeBundleSourceStream(bundle)
       .pipe(Gulp.dest(bundle.build.dest))
-      .pipe(Derequire())
+      .pipe(GulpDerequire())
 
       .pipe(VinylBuffer())
       .pipe(Sourcemaps.init({loadMaps: true}))
