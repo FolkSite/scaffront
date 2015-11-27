@@ -84,16 +84,13 @@ module.exports = (function () {
       .pipe(gulp.dest(config.dest))
     ;
 
-    //return
     gulpMerge(bundlesMergeStream, streamPolyfill)
       .pipe(gulpSourcemaps.init({loadMaps: true}))
       .pipe(gulpUglify())
       .pipe(gulpRename({suffix: '.min'}))
       .pipe(gulpSourcemaps.write('./'))
       .pipe(gulp.dest(config.dest))
-      .on('end', function () {
-        cb();
-      })
+      .on('end', cb)
     ;
 
 //    .pipe(gulpIf(
