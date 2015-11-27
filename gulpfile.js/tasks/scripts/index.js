@@ -27,7 +27,9 @@ var _                 = require('lodash'),
     Watchify          = require('watchify'),
     VinylSourceStream = require('vinyl-source-stream'),
     VinylBuffer       = require('vinyl-buffer'),
-    getobject         = require('getobject');
+    getobject         = require('getobject'),
+    jsface            = require("jsface"),
+    Class             = jsface.Class;
 
 var Config            = require('../../_config').scripts,
     BowerConfig       = require('../../_config').bower,
@@ -71,9 +73,77 @@ var makeBundleVinylBuffer = function (bundle) {
 };
 
 
+var StreamHandler = Class({
+  constructor: function (bundle) {
+    this.bundle = bundle;
+    this.stream = this._getBundleSourceStream();
+  },
+
+  fromBundle: function (bundle) {
+    this.stream = this._getBundleSourceStream();
+  },
+
+  _getBundleSourceStream: function () {
+    var bundle = this.bundle;
+
+    return bundle.bundler.bundle(bundle.build.callback)
+      .on('error', bundle.build.errorHandler)
+      .pipe(VinylSourceStream(bundle.build.outfile))
+    ;
+  },
+
+  getStreamBuffer: function (stream) {
+    if (GulpUtil.isBuffer(stream)) {
+      return stream;
+    }
+
+    return stream.pipe(VinylBuffer());
+  },
+
+  uglify: function (stream) {
+    var bundle = this.bundle;
+
+
+    return stream;
+  },
+
+  sourcemapsInit: function (stream) {
+    var bundle = this.bundle;
+
+    if (_.isArray(getobject.get(bundle, 'dest.Sourcemaps.init'))) {
+      stream = this.getStreamBuffer(stream)
+        .pipe(Sourcemaps.init.apply(Sourcemaps.init, bundle.dest.Sourcemaps.init))
+      ;
+    }
+
+    return stream;
+  },
+
+  sourcemapsWrite: function (stream) {
+    var bundle = this.bundle;
+
+    if (_.isArray(getobject.get(bundle, 'dest.Sourcemaps.write'))) {
+      stream = this.getStreamBuffer(stream)
+        .pipe(Sourcemaps.init.apply(Sourcemaps.write, bundle.dest.Sourcemaps.write))
+      ;
+    }
+
+    return stream;
+  },
+
+
+  sendToDest: function (stream) {
+    var bundle = this.bundle;
+
+    stream.pipe(Gulp.dest(bundle.build.des));
+
+    return stream;
+  },
+});
+
 var buildBundle = function (bundle) {
   var stream = makeBundleSourceStream(bundle)
-        // если нужен standalone-модуль, то применим GulpDerequire
+    // если нужен standalone-модуль, то применим GulpDerequire
     .pipe(GulpIf(getobject.get(bundle, 'build.options.standalone'), GulpDerequire()))
     // отправим собранный бандл в конечную папку
     .pipe(Gulp.dest(bundle.build.des))
@@ -96,7 +166,7 @@ var buildBundle = function (bundle) {
         _.isArray(getobject.get(bundle, 'dest.UglifyRename')),
         Rename.apply(Rename, bundle.dest.UglifyRename)
       ))
-      // если нужна шапка = добавляем
+      // если нужна шапка - добавляем
       .pipe(GulpIf(
         _.isArray(getobject.get(bundle, 'dest.GulpHeader')),
         GulpHeader.apply(GulpHeader, bundle.dest.GulpHeader)
@@ -121,6 +191,19 @@ Gulp.task('scripts:build', function (cb) {
   var queue = length = bundles.length;
 
   GulpUtil.log('Build bundles. Total:', GulpUtil.colors.cyan(length));
+
+  var stream = Merge(makeBundleSourceStream(bundles[0]), makeBundleSourceStream(bundles[1]))
+        .pipe(GulpDerequire())
+        .pipe(VinylBuffer())
+        .pipe(Sourcemaps.init({loadMaps: true}))
+        .pipe(Uglify())
+        .pipe(Rename({suffix: '.min'}))
+        .pipe(Sourcemaps.write('./'))
+        .pipe(Gulp.dest('dist/js'))
+  ;
+
+  return stream;
+
 
   bundles.forEach(function (bundle) {
     makeBundleSourceStream(bundle)

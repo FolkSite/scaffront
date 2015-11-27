@@ -17,6 +17,7 @@
       <w>nunjucks</w>
       <w>polyfiller</w>
       <w>preprocess</w>
+      <w>sourcemap</w>
       <w>sourcemaps</w>
       <w>uglify</w>
       <w>watchify</w>
