@@ -61,10 +61,10 @@ var getBundles = (function () {
 var makeBundleStream = function (bundle, buffer) {
   buffer = (typeof buffer != 'undefined') ? !!buffer : true;
 
-  bundle.stream = bundle.bundler.bundle(bundle.build.callback)
-    .on('error', bundle.build.errorHandler)
-    .pipe(vinylSourceStream(bundle.build.outfile))
-    .pipe(gulpIf(getObject.get(bundle, 'build.options.standalone'), gulpDerequire()))
+  bundle.stream = bundle.bundler.bundle(bundle.callback)
+    .on('error', bundle.errorHandler)
+    .pipe(vinylSourceStream(bundle.outfile))
+    .pipe(gulpIf(getObject.get(bundle, 'options.standalone'), gulpDerequire()))
     .pipe(gulpIf(buffer, vinylBuffer()))
   ;
 
@@ -79,9 +79,9 @@ gulp.task('scripts:build', function (cb) {
     bundle.stream = makeBundleStream(bundle);
 
     return bundle.stream
-      .pipe(gulp.dest(bundle.build.dest))
+      .pipe(gulp.dest(bundle.dest))
       .pipe(gulpTap(function () {
-        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.build.destFullPath));
+        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.destFullPath));
         gulpUtil.log('Bundle built:', gulpUtil.colors.cyan(bundlePath));
       }))
     ;
@@ -97,8 +97,8 @@ gulp.task('scripts:build:cleanup', function (cb) {
 
     return bundle.stream
       .pipe(gulpTap(function () {
-        del.sync(bundle.build.destFullPath);
-        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.build.destFullPath));
+        del.sync(bundle.destFullPath);
+        var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.destFullPath));
         gulpUtil.log('Bundle removed:', gulpUtil.colors.cyan(bundlePath));
       }))
     ;

@@ -1,39 +1,14 @@
 /**
  * @typedef {{}}                  BundleConfig
- * @property {{}}                 build
- * @property {String|string[]}    build.entry Maybe a file or full path to file (relative to project path)
- * @property {String}             [build.src]
- * @property {String}             [build.dest]
- * @property {String}             [build.destFullPath] Generated
- * @property {String}             [build.outfile] Maybe a file or full path to file (relative to project path). If is undefined then outfile's name will be equal to entry filename
- * @property {{}}                 [build.options] Will be passed to Browserify constructor
- * @property {Function}           [build.setup] This function takes one argument "bundler" and here you can setup the bundler
- * @property {Function}           [build.callback] Will be passed to ".bundle(callback)"
- * @property {Function}           [build.errorHandler] Will be passed to ".on('error', errorHandler)"
- * @property {{}}                 [dist]
- * @property {boolean}            [dist.polyfilly]
- * @property {string[]|string}    [dist.polyfillyType] Описание:
- * - 'internal'
- *    - 1 бандл: будет создан один файл с полифиллами
- *    - 1+ бандлов: для каждого бандла будет создан свой файл с полифиллами
- *
- * - 'inject'
- *    - 1 бандл: полифиллы будут добавлены в начало этого бандла
- *    - 1+ бандлов: в начало каждого бандла будут добавлены только его полифиллы
- *
- * - 'internal concat'
- *    - 1 бандл: равнозначно варианту 'internal'
- *    - 1+ бандлов: полифиллы всех бандлов будут объединены в один файл (без дублирования кода полифиллов)
- *
- //* - 'inject concat' (вариант отключен ибо бессмысленен)
- //*    - 1 бандл: равнозначно варианту 'inject'
- //*    - 1+ бандлов: полифиллы всех бандлов будут объединены в одну кучу (без дублирования кода полифиллов) и эта "куча" будет добавлена в каждый бандл
- *
- * @property {{}}                 [dist.polyfillyRenameConfig]
- * @property {{}}                 [dist.autoPolyfillerConfig]
- * @property {boolean}            [dist.minify]
- * @property {{}}                 [dist.uglifyConfig]
- * @property {{}}                 [dist.minifyRenameConfig]
+ * @property {String|string[]}    entry Maybe a file or full path to file (relative to project path)
+ * @property {String}             [src]
+ * @property {String}             [dest]
+ * @property {String}             [destFullPath] Generated
+ * @property {String}             [outfile] Maybe a file or full path to file (relative to project path). If is undefined then outfile's name will be equal to entry filename
+ * @property {{}}                 [options] Will be passed to Browserify constructor
+ * @property {Function}           [setup] This function takes one argument "bundler" and here you can setup the bundler
+ * @property {Function}           [callback] Will be passed to ".bundle(callback)"
+ * @property {Function}           [errorHandler] Will be passed to ".on('error', errorHandler)"
  * @property {boolean}            [validated] Generated property
  * @property {null|*}             [bundler] Generated property
  */
@@ -56,62 +31,21 @@ var BundleMaker = Class({
     src: '',
     dest: '',
     bundle: {
-      build: {
-        entry: '',
-        outfile: '',
-        options: {
-          debug: !global.isProduction
-        },
-        setup: function setup (bundler) {
-          // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
-          bundler.ignore('jquery');
-          // должен быть доступен из require (т.е. из другого бандла)
-          //bundler.external('jquery');
-
-          //bundler.add('app/scripts/app/js.js');
-        },
-        callback: function callback (err, buf) {},
-        errorHandler: __.plumberErrorHandler.errorHandler
+      entry: '',
+      outfile: '',
+      options: {
+        debug: !global.isProduction
       },
-      dist: {
-        'gulp-header': false,
-        'gulp-uglify': {
-          arguments: [],
-          next: {
-            gulpRename: {
-              arguments: [{
-                suffix: '.min'
-              }],
-            },
-          },
-        },
+      setup: function setup (bundler) {
+        // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
+        bundler.ignore('jquery');
+        // должен быть доступен из require (т.е. из другого бандла)
+        //bundler.external('jquery');
 
-        Uglify: [],
-        UglifyRename: [{
-          suffix: '.min'
-        }],
-
-        Sourcemaps: {
-          init: [{loadMaps: true}],
-          write: []
-        },
-
-        AutoPolyfiller: [{
-          browsers: [
-            'last 3 version',
-            'ie 8',
-            'ie 9'
-          ],
-          exclude: [
-            'Promise'
-          ]
-        }],
-        polyfillsInternal: true,
-        AutoPolyfillerConcat: 'concatenated.js',
-        AutoPolyfillerRename: [{
-          suffix: '.polyfills'
-        }],
-      }
+        //bundler.add('app/scripts/app/js.js');
+      },
+      callback: function callback (err, buf) {},
+      errorHandler: __.plumberErrorHandler.errorHandler
     }
   },
 
@@ -134,7 +68,7 @@ var BundleMaker = Class({
 
     this.bundle = this._validate(bundle);
 
-    //console.log('this.bundle.build', this.bundle.build);
+    //console.log('this.bundle', this.bundle);
 
     return this;
   },
@@ -156,10 +90,10 @@ var BundleMaker = Class({
   makeBundler: function makeBundler () {
     if (!this.bundle.bundler) {
       this.bundle.bundler = Browserify(
-        this.bundle.build.entry,
-        Extend(true, Watchify.args || {}, this.bundle.build.options)
+        this.bundle.entry,
+        Extend(true, Watchify.args || {}, this.bundle.options)
       );
-      this.bundle.build.setup(this.bundle.bundler);
+      this.bundle.setup(this.bundle.bundler);
     }
 
     return this;
@@ -181,7 +115,7 @@ var BundleMaker = Class({
      * Валидация настроек бандлера
      */
     // если вместо конфига бандла пришла какая-то хрень, то нахер
-    if (!_.isPlainObject(bundle) || !_.isPlainObject(bundle.build)) {
+    if (!_.isPlainObject(bundle) || !_.isPlainObject(bundle)) {
       throw new Error([
         'Invalid bundle.',
         __.stringify(bundle),
@@ -190,33 +124,31 @@ var BundleMaker = Class({
     }
 
     // расширяем build-настройки дефолтными (без глубокой замены!)
-    bundle.build = Extend({}, self.defaults.bundle.build, bundle.build);
-    // то же самое с dist-конфигом
-    bundle.dist = Extend({}, self.defaults.bundle.dist, bundle.dist || {});
+    bundle = Extend({}, self.defaults.bundle, bundle);
 
     // валидация опций бандлера
-    if (!_.isPlainObject(bundle.build.options)) {
-      bundle.build.options = self.defaults.bundle.build.options;
+    if (!_.isPlainObject(bundle.options)) {
+      bundle.options = self.defaults.bundle.options;
     } else {
       // а вот опции уже можно расширить глубокой заменой
-      bundle.build.options = Extend(true, {}, self.defaults.bundle.build.options, bundle.build.options);
+      bundle.options = Extend(true, {}, self.defaults.bundle.options, bundle.options);
     }
 
     // сделаем массивом входной файл, если ещё не.
-    if (!_.isArray(bundle.build.entry)) {
-      bundle.build.entry = [bundle.build.entry || null];
+    if (!_.isArray(bundle.entry)) {
+      bundle.entry = [bundle.entry || null];
     }
     // сделаем массивом входной файл из опций, если ещё не.
-    if (!_.isArray(bundle.build.options.entries)) {
-      bundle.build.options.entries = [bundle.build.options.entries || null];
+    if (!_.isArray(bundle.options.entries)) {
+      bundle.options.entries = [bundle.options.entries || null];
     }
 
     // перенесём входные файлы из опций в entry, для консистентности
-    bundle.build.entry = _.compact(_.union(bundle.build.entry, bundle.build.options.entries || []));
-    delete bundle.build.options.entries;
+    bundle.entry = _.compact(_.union(bundle.entry, bundle.options.entries || []));
+    delete bundle.options.entries;
 
     // теперь сформируем нормальные пути для каждого файла
-    bundle.build.entry = _.map(bundle.build.entry, function (entry) {
+    bundle.entry = _.map(bundle.entry, function (entry) {
       var _entry, result = null;
 
       if (entry) {
@@ -239,10 +171,10 @@ var BundleMaker = Class({
       return result;
     });
 
-    bundle.build.entry = _.uniq(_.compact(bundle.build.entry));
+    bundle.entry = _.uniq(_.compact(bundle.entry));
 
     // если, после всех преобразований, нет ни одной входной точки, то нахер это всё
-    if (!bundle.build.entry.length) {
+    if (!bundle.entry.length) {
       throw new Error([
         'Bundle\'s entry file is required.',
         __.stringify(bundle),
@@ -252,41 +184,41 @@ var BundleMaker = Class({
 
     // если выходной файл не установлен и всего одна входная точка,
     // заберём из неё название файла
-    //console.log('bundle.build.outfile', bundle.build.outfile);
-    if (!bundle.build.outfile && bundle.build.entry.length == 1) {
-      bundle.build.outfile = Path.parse(bundle.build.entry[0]).base;
+    //console.log('bundle.outfile', bundle.outfile);
+    if (!bundle.outfile && bundle.entry.length == 1) {
+      bundle.outfile = Path.parse(bundle.entry[0]).base;
     }
-    //console.log('bundle.build.outfile', bundle.build.outfile);
+    //console.log('bundle.outfile', bundle.outfile);
 
     // если outfile установлен - нужно отделить мух от котлет (имя файла от пути)
-    if (bundle.build.outfile) {
-      var _outfile = __.parsePath(bundle.build.outfile);
+    if (bundle.outfile) {
+      var _outfile = __.parsePath(bundle.outfile);
 
       // если установлен только путь, то плохо
       if (_outfile.isOnlyPath) {
-        bundle.build.outfile = null;
-        bundle.build.dest    = null;
+        bundle.outfile = null;
+        bundle.dest    = null;
       } else {
         // если установлен только файл
         if (_outfile.isOnlyFile) {
-          bundle.build.outfile = _outfile.base;
+          bundle.outfile = _outfile.base;
           // папкой назначения установим папку по умолчанию
-          bundle.build.dest    = self.defaults.dest;
+          bundle.dest    = self.defaults.dest;
         } else
         // а если указан полный путь
         if (_outfile.isPathToFile) {
           // то его и оставляем
-          bundle.build.outfile = _outfile.base;
-          bundle.build.dest    = _outfile.dir;
+          bundle.outfile = _outfile.base;
+          bundle.dest    = _outfile.dir;
         }
 
-        bundle.build.dest = __.preparePath({trailingSlash: true}, bundle.build.dest);
-        bundle.build.destFullPath = Path.join(bundle.build.dest, bundle.build.outfile);
+        bundle.dest = __.preparePath({trailingSlash: true}, bundle.dest);
+        bundle.destFullPath = Path.join(bundle.dest, bundle.outfile);
       }
     }
 
     // если и выходного файла нет, то тем более нахер это всё
-    if (!bundle.build.outfile) {
+    if (!bundle.outfile) {
       throw new Error([
         'Cann\'t resolve bundle\'s output filename.',
         __.stringify(bundle)
@@ -294,50 +226,19 @@ var BundleMaker = Class({
     }
 
     // функция настройки бандлера
-    if (!_.isFunction(bundle.build.setup)) {
-      bundle.build.setup = self.defaults.bundle.build.setup;
+    if (!_.isFunction(bundle.setup)) {
+      bundle.setup = self.defaults.bundle.setup;
     }
 
     // коллбек для бандлера
-    if (!_.isFunction(bundle.build.callback)) {
-      bundle.build.callback = self.defaults.bundle.build.callback;
+    if (!_.isFunction(bundle.callback)) {
+      bundle.callback = self.defaults.bundle.callback;
     }
 
     // коллбек для бандлера
-    if (!_.isFunction(bundle.build.errorHandler)) {
-      bundle.build.errorHandler = self.defaults.bundle.build.errorHandler;
+    if (!_.isFunction(bundle.errorHandler)) {
+      bundle.errorHandler = self.defaults.bundle.errorHandler;
     }
-
-    /**
-     * Вылидация dist-настроек
-     */
-    //// надо ли генерировать полифиллы
-    //bundle.dist.polyfilly = !!bundle.dist.polyfilly;
-    //// стратегия полифиллирования
-    //bundle.dist.polyfillyType = (_.isString(bundle.dist.polyfillyType))
-    //  ? bundle.dist.polyfillyType.split(' ').map(function (item) {
-    //  return item.trim();
-    //})
-    //  : bundle.dist.polyfillyType;
-    //// конфиг для autopolyfiller'a
-    //if (!_.isPlainObject(bundle.dist.autoPolyfillerConfig)) {
-    //  bundle.dist.autoPolyfillerConfig = {};
-    //}
-    //// конфиг для rename'ра
-    //if (!_.isPlainObject(bundle.dist.polyfillyRenameConfig)) {
-    //  bundle.dist.polyfillyRenameConfig = {};
-    //}
-    //
-    //// надо ли минимизировать
-    //bundle.dist.minify = !!bundle.dist.minify;
-    //// конфиг для uglify
-    //if (!_.isPlainObject(bundle.dist.uglifyConfig)) {
-    //  bundle.dist.uglifyConfig = {};
-    //}
-    //// конфиг для rename'ра
-    //if (!_.isPlainObject(bundle.dist.minifyRenameConfig)) {
-    //  bundle.dist.minifyRenameConfig = {};
-    //}
 
     // ставим флаг, что этот бандл отвалидрован (чтобы в будущем, если что, повторно не прогонять его через эту функцию)
     bundle.validated = true;
