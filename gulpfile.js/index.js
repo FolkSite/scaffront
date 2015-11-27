@@ -72,8 +72,8 @@ var Gulp = require('gulp'),
 //var Wrap = require('gulp-wrap');
 
 //var vinylPaths = require('vinyl-paths');
-//Gulp.task('log', function () {
-//  return Gulp.src('app/*')
+//gulp.task('log', function () {
+//  return gulp.src('app/*')
 //    .pipe(vinylPaths(function (paths) {
 //      console.log('Paths:', paths);
 //      return Promise.resolve();
@@ -380,9 +380,9 @@ Gulp.task('js:test', function () {
       console.log('after', filename);
     }))
 
-    //.pipe(Sourcemaps.init())
+    //.pipe(gulpSourcemaps.init())
     .pipe(FileInclude(config.FileInclude))
-    //.pipe(Sourcemaps.write('maps', {
+    //.pipe(gulpSourcemaps.write('maps', {
     //  includeContent: true,
     //  sourceRoot: paths.src.js
     //}))
@@ -415,9 +415,9 @@ Gulp.task('js:app', function () {
       console.log('after', filename);
     }))
 
-    //.pipe(Sourcemaps.init())
+    //.pipe(gulpSourcemaps.init())
     .pipe(FileInclude(config.FileInclude))
-    //.pipe(Sourcemaps.write('maps', {
+    //.pipe(gulpSourcemaps.write('maps', {
     //  includeContent: true,
     //  sourceRoot: paths.src.js
     //}))
@@ -656,11 +656,11 @@ Gulp.task('styles:critical:build', function (cb) {
 
   //
   //var parsePath = function (_path) {
-  //  var extname = Path.extname(_path);
+  //  var extname = path.extname(_path);
   //  return {
   //    path: _path,
-  //    dirname: Path.dirname(_path),
-  //    basename: Path.basename(_path, extname),
+  //    dirname: path.dirname(_path),
+  //    basename: path.basename(_path, extname),
   //    extname: extname
   //  };
   //};
@@ -669,8 +669,8 @@ Gulp.task('styles:critical:build', function (cb) {
   //var tmpDir = require('os').tmpdir();
   //// '+ (new Date).getTime() +'.
   //var tmpFilename = 'critical.'+ (new Date).getTime() +'.css';
-  //var tmpCriticalCssFile = Path.join(tmpDir, tmpFilename);
-  //var criticalCssFolder = Path.resolve(Path.join(__dirname, paths.dist.criticalCss));
+  //var tmpCriticalCssFile = path.join(tmpDir, tmpFilename);
+  //var criticalCssFolder = path.resolve(path.join(__dirname, paths.dist.criticalCss));
   //
   //var unlinkTmpFile = function (needException) {
   //  needException = (typeof needException != 'undefined') ? !!needException : false;
@@ -686,17 +686,17 @@ Gulp.task('styles:critical:build', function (cb) {
   //
   //var stylesConcatDeferred = Q.defer();
   //var notMinFilter = Filter(['*.css', '!*.min.css']);
-  //Gulp.src(paths.dist.css +'*.css')
-  //    .pipe(Plumber({errorHandler: function (e) {
+  //gulp.src(paths.dist.css +'*.css')
+  //    .pipe(gulpPlumber({errorHandler: function (e) {
   //      stylesConcatDeferred.reject(e);
   //    }}))
   //    .pipe(notMinFilter)
   //  //.pipe(tap(function (file,t) {
   //  //  console.log(path.basename(file.path));
   //  //}))
-  //    .pipe(Concat(tmpFilename, {stat: {mode: '0666'}}))
+  //    .pipe(gulpConcat(tmpFilename, {stat: {mode: '0666'}}))
   //    .pipe(Csso())
-  //    .pipe(Gulp.dest(tmpDir))
+  //    .pipe(gulp.dest(tmpDir))
   //    .pipe(Callback(function() {
   //      stylesConcatDeferred.resolve();
   //    }));
@@ -718,7 +718,7 @@ Gulp.task('styles:critical:build', function (cb) {
   //                deferred.reject(err);
   //              } else {
   //                var htmlFiles = files.map(function (file) {
-  //                  var filePath = Path.resolve(Path.join(__dirname, paths.dist.html, file));
+  //                  var filePath = path.resolve(path.join(__dirname, paths.dist.html, file));
   //                  return parsePath(filePath);
   //                }).filter(function (File) {
   //                  return (File.extname == '.html' || File.extname == '.htm');
@@ -740,7 +740,7 @@ Gulp.task('styles:critical:build', function (cb) {
   //                      if (err) {
   //                        deferred.reject(err);
   //                      } else {
-  //                        var criticalCssFilePath = Path.join(criticalCssFolder, File.basename + '.css');
+  //                        var criticalCssFilePath = path.join(criticalCssFolder, File.basename + '.css');
   //                        FS.writeFile(criticalCssFilePath, output, {flag: 'w+'}, function (err) {
   //                          if (err) {
   //                            deferred.reject(err);
@@ -766,19 +766,19 @@ Gulp.task('styles:critical:build', function (cb) {
   //    unlinkTmpFile(true);
   //
   //    var notMinFilter = Filter(['*.css', '!*.min.css']);
-  //    return Gulp.src(paths.dist.criticalCss +'*.css')
-  //        .pipe(Plumber(Helpers.plumberErrorHandler))
+  //    return gulp.src(paths.dist.criticalCss +'*.css')
+  //        .pipe(gulpPlumber(Helpers.plumberErrorHandler))
   //      //.pipe(Count('## before filter'))
   //        .pipe(notMinFilter)
   //      //.pipe(Count('## after filter'))
   //        .pipe(Csso())
-  //        .pipe(Tap(function (file,t) {
+  //        .pipe(gulpTap(function (file,t) {
   //          var File = parsePath(file.path);
   //          var filename = File.basename +'.html';
-  //          var htmlFilePath = Path.resolve(Path.join(__dirname, paths.dist.html, filename));
+  //          var htmlFilePath = path.resolve(path.join(__dirname, paths.dist.html, filename));
   //          FS.exists(htmlFilePath, function (exists) {
   //            if (!exists) {
-  //              console.log('HTML file "'+ Path.basename(file.path) +'" doesn\'t exists.');
+  //              console.log('HTML file "'+ path.basename(file.path) +'" doesn\'t exists.');
   //              return;
   //            }
   //            FS.readFile(htmlFilePath, {encoding: 'utf8'},
@@ -808,10 +808,10 @@ Gulp.task('styles:critical:build', function (cb) {
   //            );
   //          });
   //        }))
-  //        .pipe(Rename(function (path) {
+  //        .pipe(gulpRename(function (path) {
   //          path.basename += '.min';
   //        }))
-  //        .pipe(Gulp.dest(paths.dist.criticalCss));
+  //        .pipe(gulp.dest(paths.dist.criticalCss));
   //
   //  }, function (e) {
   //    unlinkTmpFile();

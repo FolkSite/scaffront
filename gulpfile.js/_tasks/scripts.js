@@ -21,12 +21,12 @@ var getPreBundle = function (file, standalone) {
     debug: !global.isProduction
   };
 
-  options = Extend(true, defaults, options);
+  options = extend(true, defaults, options);
 
   return browserify(options);
 };
 
-var buildStreams = Lazypipe();
+var buildStreams = gulpLazypipe();
 
 
 gulp.task('scripts', function (cb) {
@@ -65,7 +65,7 @@ gulp.task('scripts', function (cb) {
         // browserify-сборка
         preBundle.bundle().pipe(buildStreams())
           // превращаем browserify-сборку в vinyl
-          .pipe(VinylSourceStream())
+          .pipe(vinylSourceStream())
           // эта штука нужна, чтобы нормально работал `require` собранной библиотеки
           .pipe(derequire())
           // если dev-окружение, то сохрани неминифицированную версию в `public/` (зачем - не помню))

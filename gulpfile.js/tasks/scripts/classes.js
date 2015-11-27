@@ -81,11 +81,12 @@ var BundleMaker = Class({
         }],
 
         Sourcemaps: {
-          init: [{}],
+          init: [{
+            loadMaps: true
+          }],
           write: []
         },
 
-        polyfillyType: 'internal concat',
         AutoPolyfiller: [{
           browsers: [
             'last 3 version',
@@ -96,6 +97,8 @@ var BundleMaker = Class({
             'Promise'
           ]
         }],
+        polyfillsInternal: true,
+        AutoPolyfillerConcat: 'concatenated.js',
         AutoPolyfillerRename: [{
           suffix: '.polyfills'
         }],
@@ -160,7 +163,7 @@ var BundleMaker = Class({
   _validate: function _validate (bundle) {
     var self = this;
 
-    //console.log('bundle before validate', Extend({}, bundle));
+    //console.log('bundle before validate', extend({}, bundle));
 
     // если бандл уже проверен отвалидирован и унифицирован - пропускаем его
     if (bundle.validated) { return bundle; }
@@ -332,7 +335,7 @@ var BundleMaker = Class({
     // заглушка для browserify-бандлера
     bundle.bundler = null;
 
-    //console.log('bundle after validate', Extend({}, bundle));
+    //console.log('bundle after validate', extend({}, bundle));
 
     return bundle;
   }

@@ -120,7 +120,7 @@ config.globalVars = (_.isPlainObject(config.globalVars)) ? config.globalVars : {
 
 
 /**
- * Gulp tasks
+ * gulp tasks
  */
 
 Gulp.task('hbs:render', function () {

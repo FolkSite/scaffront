@@ -75,7 +75,6 @@
     "hbs-helpers": "^1.0.3",
     "helper-moment": "^0.1.0",
     "imagemin-pngquant": "*",
-    "isstream": "^0.1.2",
     "jade": "^1.11.0",
     "jquery": "^1.11.2",
     "jsface": "^2.4.9",

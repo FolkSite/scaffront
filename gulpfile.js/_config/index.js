@@ -1,6 +1,6 @@
 //var _       = require('lodash'),
-//    Path    = require('path'),
-//    Extend  = require('extend'),
+//    path    = require('path'),
+//    extend  = require('extend'),
 //    Helpers = require('../helpers'),
 //    FS      = require('fs');
 

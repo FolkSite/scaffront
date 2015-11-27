@@ -1,35 +1,34 @@
-var _                 = require('lodash'),
-    __                = require('../../helpers'),
-    Extend            = require('extend'),
-    Path              = require('path'),
-    Gulp              = require('gulp'),
-    GulpUtil          = require('gulp-util'),
-    Changed           = require('gulp-changed'),
-    RunSequence       = require('run-sequence').use(Gulp),
-    Plumber           = require('gulp-plumber'),
-    Rename            = require('gulp-rename'),
-    Tap               = require('gulp-tap'),
-    Lazypipe          = require('lazypipe'),
-    isStream          = require('isstream'),
+var _                  = require('lodash'),
+    __                 = require('../../helpers'),
+    extend             = require('extend'),
+    path               = require('path'),
+    gulp               = require('gulp'),
+    gulpUtil           = require('gulp-util'),
+    gulpChanged        = require('gulp-changed'),
+    gulpRunSequence    = require('run-sequence').use(gulp),
+    gulpPlumber        = require('gulp-plumber'),
+    gulpRename         = require('gulp-rename'),
+    gulpTap            = require('gulp-tap'),
+    gulpLazypipe       = require('lazypipe'),
 
-    Uglify            = require('gulp-uglify'),
-    Merge             = require('event-stream').merge,
-    Concat            = require('gulp-concat'),
-    AutoPolyfiller    = require('gulp-autopolyfiller'),
-    Sourcemaps        = require('gulp-sourcemaps'),
-    Order             = require('gulp-order'),
-    Del               = require('del'),
-    Gulpify           = require('gulpify'),
-    GulpIf            = require('gulp-if'),
-    GulpDerequire     = require('gulp-derequire'),
-    GulpHeader        = require('gulp-header'),
-    Browserify        = require('browserify'),
-    Watchify          = require('watchify'),
-    VinylSourceStream = require('vinyl-source-stream'),
-    VinylBuffer       = require('vinyl-buffer'),
-    getobject         = require('getobject'),
-    jsface            = require("jsface"),
-    Class             = jsface.Class;
+    gulpUglify         = require('gulp-uglify'),
+    gulpMerge          = require('event-stream').merge,
+    gulpConcat         = require('gulp-concat'),
+    gulpAutoPolyfiller = require('gulp-autopolyfiller'),
+    gulpSourcemaps     = require('gulp-sourcemaps'),
+    gulpOrder          = require('gulp-order'),
+    del                = require('del'),
+    gulpify            = require('gulpify'),
+    gulpIf             = require('gulp-if'),
+    gulpDerequire      = require('gulp-derequire'),
+    gulpHeader         = require('gulp-header'),
+    browserify         = require('browserify'),
+    watchify           = require('watchify'),
+    vinylSourceStream  = require('vinyl-source-stream'),
+    vinylBuffer        = require('vinyl-buffer'),
+    getObject          = require('getobject'),
+    jsFace             = require("jsface"),
+    clazz              = jsFace.Class;
 
 var Config            = require('../../_config').scripts,
     BowerConfig       = require('../../_config').bower,
@@ -54,26 +53,24 @@ var getBundles = (function () {
   };
 })();
 
-var makeBundleSourceStream = function (bundle) {
+var makeBundleStream = function (bundle, source) {
 
   return bundle.bundler.bundle(bundle.build.callback)
     .on('error', bundle.build.errorHandler)
-    .pipe(VinylSourceStream(bundle.build.outfile))
-  ;
-};
-
-/**
- * @param {BundleConfig} bundle
- */
-var makeBundleVinylBuffer = function (bundle) {
-
-  return makeBundleSourceStream(bundle)
-    .pipe(VinylBuffer())
+    .pipe(vinylSourceStream(bundle.build.outfile))
+    .pipe(gulpIf(getObject.get(bundle, 'build.options.standalone'), gulpDerequire()))
+    // если нужно вернуть только vinyl-source, то не буферизируем.
+    // по умолчанию считаем, что всегда нужно вернуть буфер
+    .pipe(gulpIf(!source, vinylBuffer()))
   ;
 };
 
 
-var StreamHandler = Class({
+
+
+
+
+var StreamHandler = clazz({
   constructor: function (bundle) {
     this.bundle = bundle;
     this.stream = this._getBundleSourceStream();
@@ -88,16 +85,16 @@ var StreamHandler = Class({
 
     return bundle.bundler.bundle(bundle.build.callback)
       .on('error', bundle.build.errorHandler)
-      .pipe(VinylSourceStream(bundle.build.outfile))
+      .pipe(vinylSourceStream(bundle.build.outfile))
     ;
   },
 
   getStreamBuffer: function (stream) {
-    if (GulpUtil.isBuffer(stream)) {
+    if (gulpUtil.isBuffer(stream)) {
       return stream;
     }
 
-    return stream.pipe(VinylBuffer());
+    return stream.pipe(vinylBuffer());
   },
 
   uglify: function (stream) {
@@ -110,9 +107,9 @@ var StreamHandler = Class({
   sourcemapsInit: function (stream) {
     var bundle = this.bundle;
 
-    if (_.isArray(getobject.get(bundle, 'dest.Sourcemaps.init'))) {
+    if (_.isArray(getObject.get(bundle, 'dest.Sourcemaps.init'))) {
       stream = this.getStreamBuffer(stream)
-        .pipe(Sourcemaps.init.apply(Sourcemaps.init, bundle.dest.Sourcemaps.init))
+        .pipe(gulpSourcemaps.init.apply(gulpSourcemaps.init, bundle.dest.Sourcemaps.init))
       ;
     }
 
@@ -122,9 +119,9 @@ var StreamHandler = Class({
   sourcemapsWrite: function (stream) {
     var bundle = this.bundle;
 
-    if (_.isArray(getobject.get(bundle, 'dest.Sourcemaps.write'))) {
+    if (_.isArray(getObject.get(bundle, 'dest.Sourcemaps.write'))) {
       stream = this.getStreamBuffer(stream)
-        .pipe(Sourcemaps.init.apply(Sourcemaps.write, bundle.dest.Sourcemaps.write))
+        .pipe(gulpSourcemaps.init.apply(gulpSourcemaps.write, bundle.dest.Sourcemaps.write))
       ;
     }
 
@@ -135,7 +132,7 @@ var StreamHandler = Class({
   sendToDest: function (stream) {
     var bundle = this.bundle;
 
-    stream.pipe(Gulp.dest(bundle.build.des));
+    stream.pipe(gulp.dest(bundle.build.des));
 
     return stream;
   },
@@ -143,63 +140,76 @@ var StreamHandler = Class({
 
 var buildBundle = function (bundle) {
   var stream = makeBundleSourceStream(bundle)
-    // если нужен standalone-модуль, то применим GulpDerequire
-    .pipe(GulpIf(getobject.get(bundle, 'build.options.standalone'), GulpDerequire()))
+    // если нужен standalone-модуль, то применим gulpDerequire
+    .pipe(gulpIf(getObject.get(bundle, 'build.options.standalone'), gulpDerequire()))
     // отправим собранный бандл в конечную папку
-    .pipe(Gulp.dest(bundle.build.des))
+    .pipe(gulp.dest(bundle.build.des))
   ;
 
   // если его нужно сжать
-  if (_.isArray(getobject.get(bundle, 'dest.Uglify'))) {
+  if (_.isArray(getObject.get(bundle, 'dest.Uglify'))) {
     stream
-      // превращаем в буфер, иначе Uglify не заведётся
-      .pipe(VinylBuffer())
+      // превращаем в буфер, иначе gulpUglify не заведётся
+      .pipe(vinylBuffer())
       // если нужны sourcemap'ы, то инициализируем их их
-      .pipe(GulpIf(
-        _.isArray(getobject.get(bundle, 'dest.Sourcemaps.init')),
-        Sourcemaps.init.apply(Sourcemaps.init, bundle.dest.Sourcemaps.init)
+      .pipe(gulpIf(
+        _.isArray(getObject.get(bundle, 'dest.Sourcemaps.init')),
+        gulpSourcemaps.init.apply(gulpSourcemaps.init, bundle.dest.Sourcemaps.init)
       ))
       // кукожим
-      .pipe(Uglify.apply(Uglify, bundle.dest.Uglify))
+      .pipe(gulpUglify.apply(gulpUglify, bundle.dest.Uglify))
       // переименовываем, если нужно (суффиксы/префикы)
-      .pipe(GulpIf(
-        _.isArray(getobject.get(bundle, 'dest.UglifyRename')),
-        Rename.apply(Rename, bundle.dest.UglifyRename)
+      .pipe(gulpIf(
+        _.isArray(getObject.get(bundle, 'dest.UglifyRename')),
+        gulpRename.apply(gulpRename, bundle.dest.UglifyRename)
       ))
       // если нужна шапка - добавляем
-      .pipe(GulpIf(
-        _.isArray(getobject.get(bundle, 'dest.GulpHeader')),
-        GulpHeader.apply(GulpHeader, bundle.dest.GulpHeader)
+      .pipe(gulpIf(
+        _.isArray(getObject.get(bundle, 'dest.GulpHeader')),
+        gulpHeader.apply(gulpHeader, bundle.dest.GulpHeader)
       ))
       // а теперь записываем sourcemap'ы
-      .pipe(GulpIf(
-        _.isArray(getobject.get(bundle, 'dest.Sourcemaps.write')),
-        Sourcemaps.init.apply(Sourcemaps.write, bundle.dest.Sourcemaps.write)
+      .pipe(gulpIf(
+        _.isArray(getObject.get(bundle, 'dest.Sourcemaps.write')),
+        gulpSourcemaps.init.apply(gulpSourcemaps.write, bundle.dest.Sourcemaps.write)
       ))
 
       // и всё туда же
-      .pipe(Gulp.dest(bundle.build.des))
+      .pipe(gulp.dest(bundle.build.des))
     ;
   }
-  //.pipe(GulpIf(true, ))
+  //.pipe(gulpIf(true, ))
 
   return stream;
 };
 
-Gulp.task('scripts:build', function (cb) {
+gulp.task('scripts:build', function (cb) {
   var bundles = getBundles(true);
   var queue = length = bundles.length;
 
-  GulpUtil.log('Build bundles. Total:', GulpUtil.colors.cyan(length));
+  gulpUtil.log('Build bundles. Total:', gulpUtil.colors.cyan(length));
 
-  var stream = Merge(makeBundleSourceStream(bundles[0]), makeBundleSourceStream(bundles[1]))
-        .pipe(GulpDerequire())
-        .pipe(VinylBuffer())
-        .pipe(Sourcemaps.init({loadMaps: true}))
-        .pipe(Uglify())
-        .pipe(Rename({suffix: '.min'}))
-        .pipe(Sourcemaps.write('./'))
-        .pipe(Gulp.dest('dist/js'))
+  return gulpMerge(_.map(bundles, function (bundle) {
+    return makeBundleStream(bundle)
+      .pipe(gulp.dest(bundle.build.dest))
+      .pipe(gulpRename({suffix: '.dest'}))
+    ;
+  }))
+    .pipe(gulp.dest('dist/js'));
+
+    //.pipe(gulpTap(function (file, transform) {
+    //  console.log(file.path);
+    //}))
+    ////.pipe(gulpOrder([
+    ////  'lib.js',
+    ////  'js.js',
+    ////]))
+    ////.pipe(gulpConcat('qweqwe.js'))
+    //.pipe(gulpSourcemaps.init({loadMaps: true}))
+    //.pipe(gulpUglify())
+    //.pipe(gulpRename({suffix: '.min'}))
+    //.pipe(gulpSourcemaps.write('./'))
+    //.pipe(gulp.dest('dist/js'))
   ;
 
   return stream;
@@ -207,19 +217,19 @@ Gulp.task('scripts:build', function (cb) {
 
   bundles.forEach(function (bundle) {
     makeBundleSourceStream(bundle)
-      .pipe(Gulp.dest(bundle.build.dest))
-      .pipe(GulpDerequire())
+      .pipe(gulp.dest(bundle.build.dest))
+      .pipe(gulpDerequire())
 
-      .pipe(VinylBuffer())
-      .pipe(Sourcemaps.init({loadMaps: true}))
-      .pipe(Uglify())
-      .pipe(Rename({suffix: '.min'}))
-      .pipe(Sourcemaps.write('./'))
-      .pipe(Gulp.dest(bundle.build.dest))
+      .pipe(vinylBuffer())
+      .pipe(gulpSourcemaps.init({loadMaps: true}))
+      .pipe(gulpUglify())
+      .pipe(gulpRename({suffix: '.min'}))
+      .pipe(gulpSourcemaps.write('./'))
+      .pipe(gulp.dest(bundle.build.dest))
       .on('end', function () {
         queue -= 1;
 
-        GulpUtil.log('Bundle done:', GulpUtil.colors.magenta(Path.resolve(process.cwd(), bundle.build.destFullPath)));
+        gulpUtil.log('Bundle done:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
 
         if (!queue) { cb(); }
       })
@@ -229,20 +239,20 @@ Gulp.task('scripts:build', function (cb) {
   });
 });
 
-Gulp.task('scripts:build:cleanup', function (cb) {
+gulp.task('scripts:build:cleanup', function (cb) {
   var bundles = getBundles(true);
   var queue = length = bundles.length;
 
-  GulpUtil.log('Remove bundles. Total:', GulpUtil.colors.cyan(length));
+  gulpUtil.log('Remove bundles. Total:', gulpUtil.colors.cyan(length));
 
   bundles.forEach(function (bundle) {
 
     makeBundleVinylBuffer(bundle)
-      .pipe(Tap(function (file) {
-        Del(bundle.build.destFullPath).then(function () {
+      .pipe(gulpTap(function (file) {
+        del(bundle.build.destFullPath).then(function () {
           queue -= 1;
 
-          GulpUtil.log('Bundle removed:', GulpUtil.colors.magenta(Path.resolve(process.cwd(), bundle.build.destFullPath)));
+          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
 
           if (!queue) { cb(); }
         });
@@ -253,20 +263,20 @@ Gulp.task('scripts:build:cleanup', function (cb) {
 });
 
 
-Gulp.task('scripts:minify', function (cb) {
+gulp.task('scripts:minify', function (cb) {
   var bundles = getBundles(true);
   var queue = length = bundles.length;
 
-  GulpUtil.log('Minifying bundles. Total:', GulpUtil.colors.cyan(length));
+  gulpUtil.log('Minifying bundles. Total:', gulpUtil.colors.cyan(length));
 
   bundles.forEach(function (bundle) {
 
     makeBundleVinylBuffer(bundle)
-      .pipe(Tap(function (file) {
-        Del(bundle.build.destFullPath).then(function () {
+      .pipe(gulpTap(function (file) {
+        del(bundle.build.destFullPath).then(function () {
           queue -= 1;
 
-          GulpUtil.log('Bundle removed:', GulpUtil.colors.magenta(Path.resolve(process.cwd(), bundle.build.destFullPath)));
+          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
 
           if (!queue) { cb(); }
         });
@@ -276,20 +286,20 @@ Gulp.task('scripts:minify', function (cb) {
   });
 });
 
-Gulp.task('scripts:minify:cleanup', function (cb) {
+gulp.task('scripts:minify:cleanup', function (cb) {
   var bundles = getBundles(true);
   var queue = length = bundles.length;
 
-  GulpUtil.log('Remove bundles. Total:', GulpUtil.colors.cyan(length));
+  gulpUtil.log('Remove bundles. Total:', gulpUtil.colors.cyan(length));
 
   bundles.forEach(function (bundle) {
 
     makeBundleVinylBuffer(bundle)
-      .pipe(Tap(function (file) {
-        Del(bundle.build.destFullPath).then(function () {
+      .pipe(gulpTap(function (file) {
+        del(bundle.build.destFullPath).then(function () {
           queue -= 1;
 
-          GulpUtil.log('Bundle removed:', GulpUtil.colors.magenta(Path.resolve(process.cwd(), bundle.build.destFullPath)));
+          gulpUtil.log('Bundle removed:', gulpUtil.colors.magenta(path.resolve(process.cwd(), bundle.build.destFullPath)));
 
           if (!queue) { cb(); }
         });
@@ -300,25 +310,25 @@ Gulp.task('scripts:minify:cleanup', function (cb) {
 });
 
 
-Gulp.task('scripts:polyfilly', function (cb) {
+gulp.task('scripts:polyfilly', function (cb) {
   var bundles = getBundles();
 });
 
-Gulp.task('scripts:polyfilly:cleanup', function (cb) {
-  var bundles = getBundles();
-});
-
-
-Gulp.task('scripts:dist', function (cb) {
-  var bundles = getBundles();
-});
-
-Gulp.task('scripts:dist:cleanup', function (cb) {
+gulp.task('scripts:polyfilly:cleanup', function (cb) {
   var bundles = getBundles();
 });
 
 
-Gulp.task('scripts:watch', function (cb) {
+gulp.task('scripts:dist', function (cb) {
+  var bundles = getBundles();
+});
+
+gulp.task('scripts:dist:cleanup', function (cb) {
+  var bundles = getBundles();
+});
+
+
+gulp.task('scripts:watch', function (cb) {
   var bundles = getBundles();
 });
 
@@ -332,9 +342,9 @@ return;
 var Minify = function (config) {
   config = (_.isPlainObject(config)) ? config : {};
 
-  return Lazypipe()
-    .pipe(Uglify(config))
-    .pipe(Rename({suffix: '.min'}))
+  return gulpLazypipe()
+    .pipe(gulpUglify(config))
+    .pipe(gulpRename({suffix: '.min'}))
 };
 
 /**
@@ -344,25 +354,25 @@ var Minify = function (config) {
 var Polyfilly = function (config) {
   config = (_.isPlainObject(config)) ? config : {};
 
-  return Lazypipe()
-    .pipe(Tap(function (file) {
+  return gulpLazypipe()
+    .pipe(gulpTap(function (file) {
       var filePath          = file.path,
-          extname           = Path.extname(filePath),
-          filename          = Path.basename(filePath),
-          basename          = Path.basename(filePath, extname),
+          extname           = path.extname(filePath),
+          filename          = path.basename(filePath),
+          basename          = path.basename(filePath, extname),
           path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
           polyfillsFileName = basename + '.polyfills' + extname,
 
-          FileStream        = Gulp.src(file.path),
-          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, config));
+          FileStream        = gulp.src(file.path),
+          polyfillsStream   = FileStream.pipe(gulpAutoPolyfiller(polyfillsFileName, config));
 
-      return Merge(FileStream, polyfillsStream)
-        .pipe(Order([
+      return gulpMerge(FileStream, polyfillsStream)
+        .pipe(gulpOrder([
           polyfillsFileName,
           filename
         ]))
-        .pipe(Concat(filename))
-        .pipe(Gulp.dest(path));
+        .pipe(gulpConcat(filename))
+        .pipe(gulp.dest(path));
     }));
 };
 
@@ -371,19 +381,19 @@ var Polyfilly = function (config) {
 function rebundle (bundler, callback) {
   return bundler.bundle(callback)
     .on('error', Helpers.plumberErrorHandler.errorHandler)
-    .pipe(VinylSourceStream('js.js'))
-    .pipe(Gulp.dest('dist/js/'))
-    .pipe(VinylBuffer())
-    .pipe(Uglify())
-    .pipe(Rename({suffix: '.min'}))
-    .pipe(Gulp.dest('dist/js/'));
+    .pipe(vinylSourceStream('js.js'))
+    .pipe(gulp.dest('dist/js/'))
+    .pipe(vinylBuffer())
+    .pipe(gulpUglify())
+    .pipe(gulpRename({suffix: '.min'}))
+    .pipe(gulp.dest('dist/js/'));
 }
 
 
 var browserSync = require('browser-sync');
 
-Gulp.task('browser-sync', function () {
-  var bundlerW = Watchify(bundler);
+gulp.task('browser-sync', function () {
+  var bundlerW = watchify(bundler);
   bundlerW.on('update', function () {
     Gutil.log('Rebundling...');
   });
@@ -409,40 +419,40 @@ Gulp.task('browser-sync', function () {
 
 
 
-Gulp.task('scripts:bundle', function () {
+gulp.task('scripts:bundle', function () {
 
   return rebundle(bundler);
 });
 
-Gulp.task('scripts:test', ['scripts:bundle', 'browser-sync']);
+gulp.task('scripts:test', ['scripts:bundle', 'browser-sync']);
 
 
 
-Gulp.task('js:polyfilly', function(cb) {
+gulp.task('js:polyfilly', function(cb) {
   var src = Helpers.getGlobPaths(Config.src, '.js', false)
     .concat(Helpers.getGlobPaths(Config.src, '.min.js', false, true))
     .concat(Helpers.getGlobPaths(Config.src, '.polyfilled.js', false, true));
 
-  return Gulp.src(src)
-    .pipe(Plumber(Helpers.plumberErrorHandler))
-    .pipe(Tap(function (file) {
+  return gulp.src(src)
+    .pipe(gulpPlumber(Helpers.plumberErrorHandler))
+    .pipe(gulpTap(function (file) {
       var filePath          = file.path,
-          extname           = Path.extname(filePath),
-          filename          = Path.basename(filePath),
-          basename          = Path.basename(filePath, extname),
+          extname           = path.extname(filePath),
+          filename          = path.basename(filePath),
+          basename          = path.basename(filePath, extname),
           path              = filePath.replace(new RegExp(basename + extname + '$'), ''),
           polyfillsFileName = basename + '.polyfilled' + extname,
 
-          FileStream        = Gulp.src(file.path),
-          polyfillsStream   = FileStream.pipe(AutoPolyfiller(polyfillsFileName, Config.AutoPolyfiller));
+          FileStream        = gulp.src(file.path),
+          polyfillsStream   = FileStream.pipe(gulpAutoPolyfiller(polyfillsFileName, Config.AutoPolyfiller));
 
-      return Merge(FileStream, polyfillsStream)
-        .pipe(Order([
+      return gulpMerge(FileStream, polyfillsStream)
+        .pipe(gulpOrder([
           polyfillsFileName,
           filename
         ]))
-        .pipe(Concat(filename))
-        .pipe(Gulp.dest(path));
+        .pipe(gulpConcat(filename))
+        .pipe(gulp.dest(path));
     }));
 });
 
