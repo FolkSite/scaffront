@@ -71,6 +71,9 @@ module.exports = (function () {
 
     var streamPolyfill = bundlesMergeStream
       .pipe(gulpConcat('all.js'))
+      .pipe(gulpTap(function () {
+        gulpUtil.log('Generating polyfills...');
+      }))
       .pipe(gulpAutoPolyfiller('polyfills.js', {
         browsers: [
           'last 3 version',
@@ -86,8 +89,14 @@ module.exports = (function () {
 
     gulpMerge(bundlesMergeStream, streamPolyfill)
       .pipe(gulpSourcemaps.init({loadMaps: true}))
+      .pipe(gulpTap(function (file) {
+        gulpUtil.log('Minifying', gulpUtil.colors.cyan(file.path));
+      }))
       .pipe(gulpUglify())
       .pipe(gulpRename({suffix: '.min'}))
+      .pipe(gulpTap(function (file) {
+        gulpUtil.log('Write sourcemaps for', gulpUtil.colors.cyan(file.path));
+      }))
       .pipe(gulpSourcemaps.write('./'))
       .pipe(gulp.dest(config.dest))
       .on('end', cb)
@@ -102,6 +111,8 @@ module.exports = (function () {
   config.bundlesDistCleanup = function (bundles, cb) {
 
   };
+
+
 
   return config;
 })();

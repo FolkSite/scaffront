@@ -1,17 +1,17 @@
 var _           = require('lodash'),
-    Path        = require('path'),
-    Extend      = require('extend'),
-    FS          = require('fs'),
-    BrowserSync = require('browser-sync'),
-    Helpers     = require('../helpers');
+    __          = require('../helpers'),
+    path        = require('path'),
+    extend      = require('extend'),
+    fs          = require('fs'),
+    browserSync = require('browser-sync'),
+    gulpUtil    = require('gulp-util');
 
 module.exports = (function () {
   var config = {};
 
-  config.BrowserSyncConfig = {
-    instanceName: 'server',
-    options: {
-      config: {
+  config.BrowserSync = {
+    develop: {
+      options: {
         open: false,
         startPath: '/html/',
         port: 666,
@@ -22,38 +22,34 @@ module.exports = (function () {
         }
       },
       callback: function (err, bs) {
+        if (err) { throw new Error(err); }
 
+        gulpUtil.log(gulpUtil.colors.cyan('Develop'), 'server is started');
       }
-    }
+    },
   };
 
   /**
    * @param {String} instanceName
-   * @param {{}} [config={}]
-   * @param {boolean} [init=true]
-   * @param {Function} [cb=function(){}]
    */
-  config.getBrowserSyncInstance = function (instanceName, config, init, cb) {
-    config = (typeof config != 'undefined' && _.isPlainObject(config)) ? config : {};
-    init = (typeof init != 'undefined') ? !!init : true;
-    cb = (_.isFunction(cb)) ? cb : Helpers.noop;
+  config.getBrowserSync = function (instanceName) {
+    if (!instanceName || typeof config.BrowserSync[instanceName] == 'undefined') { return null; }
 
-    if (!instanceName) { return null; }
+    var options = (_.isPlainObject(config.BrowserSync[instanceName].options)) ? config.BrowserSync[instanceName].options : {};
+    var cb = (_.isFunction(config.BrowserSync[instanceName].callback)) ? config.BrowserSync[instanceName].callback : __.noop;
 
     var bs;
     try {
-      bs = BrowserSync.get(instanceName);
+      bs = browserSync.get(instanceName);
     } catch (e) {
-      bs = BrowserSync.create(instanceName);
+      bs = browserSync.create(instanceName);
     }
 
-    if (init) {
-      if (bs.paused) {
-        bs.resume();
-      } else
-      if (!bs.active) {
-        bs.init(config, cb);
-      }
+    if (bs.paused) {
+      bs.resume();
+    } else
+    if (!bs.active) {
+      bs.init(options, cb);
     }
 
     return bs;

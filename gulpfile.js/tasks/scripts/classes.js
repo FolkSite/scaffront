@@ -244,6 +244,8 @@ var BundleMaker = Class({
     bundle.validated = true;
     // заглушка для browserify-бандлера
     bundle.bundler = null;
+    // заглушка для watchify
+    bundle.watchify = null;
 
     //console.log('bundle after validate', extend({}, bundle));
 

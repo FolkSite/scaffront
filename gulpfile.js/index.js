@@ -21,8 +21,6 @@ var config = require('./_config/index.js');
 var Gulp = require('gulp');
 var Path = require('path');
 
-config.server.BrowserSyncConfig.instanceName = config.server.BrowserSyncConfig.instanceName || 'server';
-
 //var tasks = require('require-dir')('./tasks', {
 //  recurse: true
 //});
