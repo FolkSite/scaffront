@@ -87,9 +87,9 @@
     "promised-handlebars": "^1.0.2",
     "remove": "^0.1.5",
     "require-dir": "^0.3.0",
-    "resolve-bower": "0.0.1",
     "rimraf": "*",
     "run-sequence": "*",
+    "swig": "^1.4.2",
     "swigify": "0.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^2.0.0",
@@ -97,6 +97,8 @@
     "watchify": "^3.6.0"
   },
   "devDependencies": {
-    "node-notifier": "^4.3.1"
+    "bower-resolve": "^2.2.1",
+    "node-notifier": "^4.3.1",
+    "resolve": "^1.1.6"
   }
 }

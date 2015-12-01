@@ -1,2 +1,2 @@
-swig = require('swig');
-_ = require('lodash');
+//global.swig = require('swig');
+//global._ = require('lodash');

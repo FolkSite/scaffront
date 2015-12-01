@@ -13,7 +13,10 @@ var _                  = require('lodash'),
     gulpConcat         = require('gulp-concat'),
     gulpAutoPolyfiller = require('gulp-autopolyfiller'),
     gulpSourcemaps     = require('gulp-sourcemaps'),
-    FS                 = require('fs'),
+    //FS                 = require('fs'),
+    //bowerDirectory     = require('bower-directory'),
+    bowerResolve       = require('bower-resolve'),
+    nodeResolve        = require('resolve'),
     swigify            = require('swigify');
 
 module.exports = (function () {
@@ -22,6 +25,15 @@ module.exports = (function () {
     src: 'app/scripts',
     dest: 'dist/js',
   };
+
+
+  var nodeLibs = [
+    'swig',
+    'lodash'
+  ];
+  var bowerLibs = [
+
+  ];
 
   /**
    * @property {BundleConfig|BundleConfig[]} config.bundles
@@ -35,36 +47,60 @@ module.exports = (function () {
         debug: !global.isProduction
       },
       setup: function setup (bundler) {
-        bundler.transform(swigify({
-          //compress: true,
-          //tagnames: ['import', 'include', 'extends'],
-          //newVarControls: ['<$', '$>'],
-          //newTagControls: ['<$', '$>'],
-          //oldTagControls: ['{%', '%}']
-        }));
-        // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
-        //bundler.external('lodash');
-        //bundler.ignore('libs');
-        bundler.ignore('jquery');
-        // должен быть доступен из require (из другого бандла)
-        //bundler.external('jquery');
+        getBowerPackageIds(bowerLibs).forEach(function (lib) {
+          bundler.external(lib);
+        });
 
-        //bundler.add('app/scripts/app/js.js');
+        getNPMPackageIds(nodeLibs).forEach(function (id) {
+          bundler.external(id);
+        });
+
+        //bundler.transform(swigify({
+        //  //compress: true,
+        //  //tagnames: ['import', 'include', 'extends'],
+        //  //newVarControls: ['<$', '$>'],
+        //  //newTagControls: ['<$', '$>'],
+        //  //oldTagControls: ['{%', '%}']
+        //}));
+
       },
       // callback will be passed to .bundle(callback)
       callback: function callback (err, buf) {}
     },
     {
       entry: 'libs.js',
-      setup: function setup (bundler) {
-        // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
-        bundler.ignore('jquery');
-        // должен быть доступен из require (из другого бандла)
-        //bundler.external('jquery');
-
-        //bundler.add('app/scripts/app/js.js');
+      options: {
+        debug: !global.isProduction
       },
-      // callback will be passed to .bundle(callback)
+      setup: function setup (bundler) {
+        getBowerPackageIds(bowerLibs).forEach(function (id) {
+          var resolvedPath = bowerResolve.fastReadSync(id);
+          console.log('resolvedPath', resolvedPath);
+          bundler.require(resolvedPath, {
+            expose: id
+          });
+        });
+
+        getNPMPackageIds(nodeLibs).forEach(function (id) {
+          bundler.require(nodeResolve.sync(id), {
+            expose: id
+          });
+        });
+
+      },
+      callback: function callback (err, buf) {}
+    },
+    {
+      entry: 'templates.js',
+      setup: function setup (bundler) {
+        getBowerPackageIds(bowerLibs).forEach(function (lib) {
+          bundler.external(lib);
+        });
+
+        getNPMPackageIds(nodeLibs).forEach(function (id) {
+          bundler.external(id);
+        });
+      },
       callback: function callback (err, buf) {}
     }
   ];
@@ -138,5 +174,33 @@ module.exports = (function () {
 
 
 
+  function getBowerPackageIds (libs) {
+    libs = (_.isArray(libs)) ? libs : [];
+
+    var bowerManifest = {};
+    try {
+      bowerManifest = require('../../bower.json');
+    } catch (e) {
+      // does not have a bower.json manifest
+    }
+
+    return _.intersection(_.keys(bowerManifest.dependencies) || [], libs);
+  }
+
+
+  function getNPMPackageIds (libs) {
+    libs = (_.isArray(libs)) ? libs : [];
+
+    var packageManifest = {};
+    try {
+      packageManifest = require('../../package.json');
+    } catch (e) {
+      // does not have a package.json manifest
+    }
+
+    return _.intersection(_.keys(packageManifest.dependencies) || [], libs);
+  }
+
   return config;
+
 })();
