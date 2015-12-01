@@ -81,7 +81,7 @@
     "jsface": "^2.4.9",
     "klass": "^1.4.1",
     "lazypipe": "^1.0.1",
-    "lodash": "*",
+    "lodash": "^3.10.1",
     "mkpath": "*",
     "nightmare": "*",
     "promised-handlebars": "^1.0.2",
@@ -97,8 +97,11 @@
     "watchify": "^3.6.0"
   },
   "devDependencies": {
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
     "bower-resolve": "^2.2.1",
     "node-notifier": "^4.3.1",
-    "resolve": "^1.1.6"
+    "resolve": "^1.1.6",
+    "webpack": "^1.12.9"
   }
 }

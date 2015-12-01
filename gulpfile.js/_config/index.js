@@ -7,7 +7,8 @@
 module.exports = (function () {
   var config = {};
 
-  config.bower = require('./bower');
+  //config.bower = require('./bower');
+  config.bower = {};
   config.scripts = require('./scripts');
   config.templates = require('./templates');
   config.server = require('./server');

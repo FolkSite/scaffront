@@ -25,7 +25,7 @@ _output += "</div>\n\n      <h1>Comments</h1>\n\n      ";
 (function () {
   var __l = (((typeof _ctx.comments !== "undefined" && _ctx.comments !== null) ? ((typeof _ctx.comments !== "undefined" && _ctx.comments !== null) ? _ctx.comments : "") : ((typeof comments !== "undefined" && comments !== null) ? comments : "")) !== null ? ((typeof _ctx.comments !== "undefined" && _ctx.comments !== null) ? ((typeof _ctx.comments !== "undefined" && _ctx.comments !== null) ? _ctx.comments : "") : ((typeof comments !== "undefined" && comments !== null) ? comments : "")) : "" ), __len = (_utils.isArray(__l) || typeof __l === "string") ? __l.length : _utils.keys(__l).length;
   if (!__l) { return; }
-    var _ctx__loopcache047971711796708405 = { loop: _ctx.loop, comment: _ctx.comment, __k: _ctx.__k };
+    var _ctx__loopcache0971646671416238 = { loop: _ctx.loop, comment: _ctx.comment, __k: _ctx.__k };
     _ctx.loop = { first: false, index: 1, index0: 0, revindex: __len, revindex0: __len - 1, length: __len, last: false };
   _utils.each(__l, function (comment, __k) {
     _ctx.comment = comment;
@@ -42,10 +42,10 @@ _output += _filters["e"]((((typeof _ctx.comment !== "undefined" && _ctx.comment 
 _output += "</div>\n      ";
     _ctx.loop.index += 1; _ctx.loop.index0 += 1; _ctx.loop.revindex -= 1; _ctx.loop.revindex0 -= 1;
   });
-  _ctx.loop = _ctx__loopcache047971711796708405.loop;
-  _ctx.comment = _ctx__loopcache047971711796708405.comment;
-  _ctx.__k = _ctx__loopcache047971711796708405.__k;
-  _ctx__loopcache047971711796708405 = undefined;
+  _ctx.loop = _ctx__loopcache0971646671416238.loop;
+  _ctx.comment = _ctx__loopcache0971646671416238.comment;
+  _ctx.__k = _ctx__loopcache0971646671416238.__k;
+  _ctx__loopcache0971646671416238 = undefined;
 })();
 _output += "\n\n      ";
 _output += _swig.compileFile('./chunks/part.html', {resolveFrom: "D:\\Repos\\scaffront\\app\\templates\\index.html"})(_ctx);

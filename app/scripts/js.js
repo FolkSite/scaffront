@@ -1,3 +1,18 @@
+var _ = require('lodash');
+
+var Pinkyfier = require("./test/Pinkyfier");
+var Fattyfier = require("./test/Fattyfier");
+
+var pinkyfier = new Pinkyfier("text"),
+    fattyfier = new Fattyfier("text");
+
+pinkyfier.pink();
+
+document.getElementById("fat").onclick = function () {
+  fattyfier.fat();
+};
+
+/*
 var itsApp = true;
 
 //var $ = require('jquery');
@@ -6,8 +21,8 @@ swig = require('swig');
 
 global.App = global.App || {};
 
-
-return;
+/**/
+//return;
 
 //App.templates = {};
 //
