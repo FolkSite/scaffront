@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/gulp-boilerplate.iml" filepath="$PROJECT_DIR$/.idea/gulp-boilerplate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gulp-boilerplate.iml" filepath="$PROJECT_DIR$/.idea/gulp-boilerplate.iml" />
     </modules>
   </component>
 </project>
