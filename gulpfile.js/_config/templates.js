@@ -1,33 +1,60 @@
 var _      = require('lodash'),
     __     = require('../helpers'),
-    Path   = require('path'),
-    Extend = require('extend'),
-    Gulp   = require('gulp'),
-    FS     = require('fs');
-
-var test;
-test = Gulp.src(__.getGlobPaths('app/hbs', ['hbs', 'handlebars', 'hb']));
+    path   = require('path'),
+    extend = require('extend'),
+    gulp   = require('gulp'),
+    fs     = require('fs');
 
 
 module.exports = (function () {
   var config = {};
-
-  config.globalVars = require('../../app/templates/globalData');
-
-  config.src = Gulp.src(__.getGlobPaths('app/hbs', ['hbs', 'handlebars', 'hb']));
-
-    // as a default for each task's type
-  config.dest = 'dist/html';
+  var src = 'app/templates';
 
   config.data = {
-    dest: 'dist/html',
-    globalVarsDistFilename: 'globals.json'
-  };
-  config.render = {
+    src: gulp.src(path.join(src, '**/*-data.js')),
     dest: 'dist/html'
   };
+
+  config.render = {
+    src: gulp.src(__.getGlobPaths(src, 'html')),
+    dest: 'dist/html',
+    swig: {
+      swigSetup: function (swigInstance) {},
+      swigOptions: {
+        //varControls: ['{{', '}}'],
+        //tagControls: ['{%', '%}'],
+        //cmtControls: ['{#', '#}'],
+        cache: false,
+        autoescape: true,
+        // global template's data
+        locals: {
+
+        }
+      },
+      data: require('../../app/templates/globals-data'),
+      mode: 'render'
+    }
+  };
+
   config.compile = {
-    dest: 'app/scripts/tpl'
+    src: gulp.src(__.getGlobPaths(src, 'html')),
+    dest: 'app/scripts/tpl',
+    swig: {
+      swigSetup: function (swigInstance) {},
+      swigOptions: {
+        varControls: ['{{', '}}'],
+        tagControls: ['{%', '%}'],
+        cmtControls: ['{#', '#}'],
+        cache: false,
+        autoescape: true,
+        // global template's data
+        locals: {
+
+        }
+      },
+      mode: 'compile', // or 'compile'
+      compileTemplate: 'module.exports = <%= template %>;'
+    }
   };
 
   /**
@@ -37,16 +64,16 @@ module.exports = (function () {
   config.getTplData = function (tplFile) {
     var dataFile,
         data = {},
-        parsed = Path.parse(tplFile.path),
+        parsed = path.parse(tplFile.path),
         ext = '.js';
 
     parsed.name = parsed.name +'-data';
     parsed.ext = ext;
     parsed.base = parsed.name + ext;
 
-    dataFile = Path.format(parsed);
+    dataFile = path.format(parsed);
 
-    if (dataFile && FS.existsSync(dataFile)) {
+    if (dataFile && fs.existsSync(dataFile)) {
       data = require(dataFile);
 
       if (!_.isPlainObject(data)) {
@@ -66,7 +93,7 @@ module.exports = (function () {
      * @param {*} Handlebars
      */
     setup: function (Handlebars) {
-      var helpers = Extend(require('hbs-helpers'), {
+      var helpers = extend(require('hbs-helpers'), {
         moment: require('helper-moment'),
         /**
          * {{{{raw}}}}

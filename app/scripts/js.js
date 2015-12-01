@@ -1,6 +1,20 @@
 var itsApp = true;
 
-var $ = require('jquery');
+//var $ = require('jquery');
+//var _ = require('lodash');
+//var swig = require('swig');
+
+global.App = App = {};
+
+App.templates = {};
+
+App.templates.part = swig.compile(require('../templates/chunks/part.html'));
+
+var templateData = require('../templates/chunks/part-data');
+
+console.log(App.templates.part(templateData));
+
+//document.querySelector('body').innerHTML = tpl(templateData);
 
 //var $list = $('#list');
 
@@ -16,7 +30,7 @@ console.log('typeof _', typeof _);
 //  console.log('patch!');
 //}, 2000);
 
-window.App = {};
+
 
 App.test = 'test!';
 

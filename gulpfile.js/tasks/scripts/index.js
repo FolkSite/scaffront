@@ -1,32 +1,30 @@
-var _                  = require('lodash'),
-    __                 = require('../../helpers'),
-    extend             = require('extend'),
-    path               = require('path'),
-    gulp               = require('gulp'),
-    gulpUtil           = require('gulp-util'),
-    gulpTap            = require('gulp-tap'),
+var _                 = require('lodash'),
+    __                = require('../../helpers'),
+    extend            = require('extend'),
+    path              = require('path'),
+    gulp              = require('gulp'),
+    gulpUtil          = require('gulp-util'),
+    gulpTap           = require('gulp-tap'),
+    mergeStreams      = require('event-stream').merge,
+    del               = require('del'),
+    gulpIf            = require('gulp-if'),
+    getObject         = require('getobject'),
+    gulpDerequire     = require('gulp-derequire'),
+    browserify        = require('browserify'),
+    watchify          = require('watchify'),
+    vinylSourceStream = require('vinyl-source-stream'),
+    vinylBuffer       = require('vinyl-buffer')
+  ;
 
-    gulpMerge          = require('event-stream').merge,
-    del                = require('del'),
-    gulpIf             = require('gulp-if'),
-    gulpDerequire      = require('gulp-derequire'),
-    browserify         = require('browserify'),
-    watchify           = require('watchify'),
-    vinylSourceStream  = require('vinyl-source-stream'),
-    vinylBuffer        = require('vinyl-buffer'),
-    getObject          = require('getobject')
-;
-
-var Config            = require('../../_config').scripts,
-    BowerConfig       = require('../../_config').bower,
-    ServerConfig       = require('../../_config').server,
-    ScriptsClasses    = require('./classes');
-
+var Config         = require('../../_config').scripts,
+    BowerConfig    = require('../../_config').bower,
+    ServerConfig   = require('../../_config').server,
+    ScriptsClasses = require('./classes');
 
 
 var defaults = {
-  src: Config.src,
-  dest: Config.dest
+  src: __.preparePath({trailingSlash: true}, Config.src),
+  dest: __.preparePath({trailingSlash: true}, Config.dest)
 };
 
 var getBundles = (function () {
@@ -84,7 +82,7 @@ var buildBundle = function (bundle) {
 var buildBundles = function (bundles) {
   bundles = (typeof bundles != 'undefined' && _.isArray(bundles)) ? bundles : getBundles();
 
-  return gulpMerge(_.map(bundles, function (bundle) {
+  return mergeStreams(_.map(bundles, function (bundle) {
     return buildBundle(bundle);
   }));
 };
@@ -102,7 +100,7 @@ gulp.task('scripts:build', function (cb) {
 gulp.task('scripts:build:cleanup', function (cb) {
   var bundles = getBundles();
 
-  return gulpMerge(_.map(bundles, function (bundle) {
+  return mergeStreams(_.map(bundles, function (bundle) {
     bundle.stream = makeBundleStream(bundle);
 
     return bundle.stream

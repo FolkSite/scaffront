@@ -1,1 +1,2 @@
-module.exports._ = require('lodash');
+swig = require('swig');
+_ = require('lodash');

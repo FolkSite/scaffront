@@ -26,6 +26,7 @@ var Path = require('path');
 //});
 
 require('./tasks/scripts');
+require('./tasks/swig');
 
 return;
 

@@ -1,0 +1,18 @@
+config.param1: {{config.param1}}
+
+<ul id="list">
+  {% for item in items %}
+    <li>I agree. I {{item.emotion}} {{item.name|upper}}</li>
+  {% endfor %}
+</ul>
+
+{% if conig.isProduction %}
+  is Production!!
+{% else %}
+  is Development!!
+{% endif %}
+
+{% raw %}
+  {{bar}}
+{% endraw %}
+

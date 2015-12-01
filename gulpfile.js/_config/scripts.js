@@ -1,13 +1,10 @@
 var _                  = require('lodash'),
     __                 = require('../helpers'),
-    Path               = require('path'),
-    Extend             = require('extend'),
+    path               = require('path'),
+    extend             = require('extend'),
     del                = require('del'),
     gulp               = require('gulp'),
     gulpUtil           = require('gulp-util'),
-    gulpIf             = require('gulp-if'),
-    gulpHeader         = require('gulp-header'),
-    runSequence        = require('run-sequence').use(gulp),
     gulpRename         = require('gulp-rename'),
     gulpTap            = require('gulp-tap'),
     gulpLazypipe       = require('lazypipe'),
@@ -16,9 +13,8 @@ var _                  = require('lodash'),
     gulpConcat         = require('gulp-concat'),
     gulpAutoPolyfiller = require('gulp-autopolyfiller'),
     gulpSourcemaps     = require('gulp-sourcemaps'),
-    gulpOrder          = require('gulp-order'),
-    getObject          = require('getobject'),
-    FS                 = require('fs');
+    FS                 = require('fs'),
+    swigify            = require('swigify');
 
 module.exports = (function () {
 
@@ -34,11 +30,21 @@ module.exports = (function () {
     {
       entry: 'js.js',
       options: {
-        fullPaths: !global.isProduction,
+        //fullPaths: !global.isProduction,
+        fullPaths: false,
         debug: !global.isProduction
       },
       setup: function setup (bundler) {
+        bundler.transform(swigify({
+          //compress: true,
+          //tagnames: ['import', 'include', 'extends'],
+          //newVarControls: ['<$', '$>'],
+          //newTagControls: ['<$', '$>'],
+          //oldTagControls: ['{%', '%}']
+        }));
         // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
+        //bundler.external('lodash');
+        //bundler.ignore('libs');
         bundler.ignore('jquery');
         // должен быть доступен из require (из другого бандла)
         //bundler.external('jquery');
@@ -50,7 +56,6 @@ module.exports = (function () {
     },
     {
       entry: 'libs.js',
-      //outfile: 'libs.js',
       setup: function setup (bundler) {
         // можно подключать напрямую в script (классический принцип scope'а подключаемых файлов). ignore просто выпиливает этот модуль из бандла
         bundler.ignore('jquery');
@@ -64,6 +69,13 @@ module.exports = (function () {
     }
   ];
 
+  /**
+   * Камстомный таск для scripts:dist.
+   * Вызов коллбека 'cb' обязателен.
+   *
+   * @param {BundleConfig[]} bundles
+   * @param {Function} cb
+   */
   config.bundlesDist = function (bundles, cb) {
     var bundlesMergeStream = gulpMerge(_.map(bundles, function (bundle) {
       return bundle.stream;
@@ -101,15 +113,27 @@ module.exports = (function () {
       .pipe(gulp.dest(config.dest))
       .on('end', cb)
     ;
-
-//    .pipe(gulpIf(
-//      _.isArray(getObject.get(bundle, 'dest.GulpHeader')),
-//      gulpHeader.apply(gulpHeader, bundle.dest.GulpHeader)
-//    ))
   };
 
+  /**
+   * Функция очистки за таском scripts:dist
+   * Вызов коллбека 'cb' обязателен.
+   *
+   * @param {BundleConfig[]} bundles
+   * @param {Function} cb
+   */
   config.bundlesDistCleanup = function (bundles, cb) {
-
+    gulp.src([
+      path.join(config.dest, 'polyfills.js'),
+      path.join(config.dest, '*.min.js'),
+      path.join(config.dest, '*.js.map')
+    ])
+      .pipe(gulpTap(function (file) {
+        del.sync(file.path);
+        gulpUtil.log('Removed:', gulpUtil.colors.cyan(file.path));
+      }))
+      .on('end', cb)
+    ;
   };
 
 

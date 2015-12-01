@@ -251,8 +251,8 @@ __.capitalize = function (str) {
 
 /**
  *
- * @param {String|[]} sources
- * @param {String|[]|boolean} [extnames] Default is '.*'. Pass false for return only paths without extensions
+ * @param {String|String[]} sources
+ * @param {String|String[]|boolean} [extnames] Default is '.*'. Pass false for return only paths without extensions
  * @param {boolean} [deep] Default true.
  * @param {boolean} [exclude] Default true.
  * @returns {[]}
@@ -293,7 +293,7 @@ __.getGlobPaths = function (sources, extnames, deep, exclude) {
  */
 __.getConstructorName = function (anything) {
   if (anything) {
-    return test.constructor.toString().trim().match(/^function (\w*)/)[1] || '';
+    return anything.constructor.toString().trim().match(/^function (\w*)/)[1] || '';
   }
 
   return '';
