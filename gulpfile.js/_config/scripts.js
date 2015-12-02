@@ -46,6 +46,7 @@ module.exports = (function () {
   config.bundles = [
     {
       entry: 'js.js',
+      noparse: ['jquery', 'lodash', 'swig'],
       options: extend(defaultsBrowserifyOptions, {
 
       }),
@@ -72,6 +73,7 @@ module.exports = (function () {
     },
     {
       entry: 'libs.js',
+      noparse: ['jquery', 'lodash', 'swig'],
       options: extend(defaultsBrowserifyOptions, {
 
       }),
@@ -95,6 +97,7 @@ module.exports = (function () {
     },
     {
       entry: 'templates.js',
+      noparse: ['swig'],
       options: extend(defaultsBrowserifyOptions, {
 
       }),
