@@ -1,12 +1,13 @@
 // https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
 
 // https://gist.github.com/HPieters/88dd18e99c8925b2cabb
+// https://github.com/vigetlabs/gulp-starter/
+
 // https://github.com/BrowserSync/browser-sync/issues/786
 // http://stackoverflow.com/questions/33012041/how-i-can-use-singularity-extras-in-a-libsass-workflow
 // http://alexfedoseev.com/post/54/frontend-project-build
 
 // http://ericlbarnes.com/setting-gulp-bower-bootstrap-sass-fontawesome/
-// https://github.com/mathisonian/gulp-sass-bulk-import
 
 // http://habrahabr.ru/post/250569/#comment_8281675
 
