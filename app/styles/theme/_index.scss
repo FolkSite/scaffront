@@ -3,18 +3,18 @@
 @import "singularitygs";
 @import "toolkit";
 
-@import '../framework/vars/_index';
-@import "../framework/mixins/_index";
-@import 'vars/_index';
-@import "../framework/scaffolding/_index";
-
-.layout-header,
-.layout-footer {
-  @extend %layout-width-min;
-  @include e(inner) {
-    @extend %layout-width-max;
-  }
-}
-
-@import 'blocks/_index';
+//@import '../framework/vars/_index';
+//@import "../framework/mixins/_index";
+//@import 'vars/_index';
+//@import "../framework/scaffolding/_index";
+//
+//.layout-header,
+//.layout-footer {
+//  @extend %layout-width-min;
+//  @include e(inner) {
+//    @extend %layout-width-max;
+//  }
+//}
+//
+//@import 'blocks/_index';
 

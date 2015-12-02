@@ -126,8 +126,8 @@ var paths = {
     css: 'app/styles/*.css',
     sass: 'app/styles/',
     images: {
-      inline: 'app/img/inline/**/*.*',
-      content: 'app/img/content/**/*.*'
+      inline: 'app/images/inline/**/*.*',
+      content: 'app/images/content/**/*.*'
     },
     fonts: 'app/fonts/**/*.*'
   },
@@ -139,8 +139,8 @@ var paths = {
     //sass: ['app/styles/*.scss', 'app/styles/.sass'],
     sass: 'app/styles/**/*.@(scss|sass)',
     images: {
-      inline: 'app/img/inline/**/*.*',
-      content: 'app/img/content/**/*.*'
+      inline: 'app/images/inline/**/*.*',
+      content: 'app/images/content/**/*.*'
     },
     fonts: 'app/fonts/**/*.*'
   },

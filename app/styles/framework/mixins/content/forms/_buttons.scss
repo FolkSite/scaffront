@@ -17,7 +17,7 @@
   position: relative;
   overflow: hidden;
   outline: 0 none;
-  @include user-select(none);
+  user-select: none;
 
   &::-moz-focus-inner {
     padding: 0 !important;

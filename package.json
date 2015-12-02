@@ -83,6 +83,8 @@
     "lodash": "^3.10.1",
     "mkpath": "*",
     "nightmare": "*",
+    "node-sass-asset-functions": "0.0.9",
+    "node-sass-css-importer": "0.0.3",
     "promised-handlebars": "^1.0.2",
     "remove": "^0.1.5",
     "require-dir": "^0.3.0",
@@ -102,6 +104,7 @@
     "gulp-minify-css": "^1.2.2",
     "gulp-sass": "^2.1.0",
     "gulp-sass-bulk-import": "^0.3.2",
+    "gulp-util": "^3.0.7",
     "node-notifier": "^4.3.1",
     "resolve": "^1.1.6",
     "webpack": "^1.12.9"
