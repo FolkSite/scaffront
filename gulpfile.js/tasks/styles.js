@@ -1,31 +1,30 @@
-var _             = require('lodash'),
-    __             = require('../helpers'),
-    extend         = require('extend'),
-    path           = require('path'),
-    gulp           = require('gulp'),
-    gulpUtil       = require('gulp-util'),
-    gulpTap        = require('gulp-tap'),
-    mergeStreams   = require('event-stream').merge,
-    del            = require('del'),
-    gulpIf         = require('gulp-if'),
-    getObject      = require('getobject'),
-    gulpChanged    = require('gulp-changed'),
-    runSequence    = require('run-sequence').use(gulp),
-    gulpPlumber    = require('gulp-plumber'),
-    gulpRename     = require('gulp-rename'),
-    gulpFile       = require('gulp-file'),
-    gulpData       = require('gulp-data'),
-    lazypipe       = require('lazypipe'),
-    gulpSwig       = require('gulp-swig-compiler-renderer'),
-    Autoprefixer   = require('gulp-autoprefixer'),
-    Sass           = require('gulp-ruby-sass'),
-    gulpSass       = require('gulp-sass'),
-    Sourcemaps     = require('gulp-sourcemaps'),
-    FileInclude    = require('gulp-file-include'),
-    gulpMinifyCss  = require('gulp-minify-css'),
-    bowerDirectory = require('bower-directory'),
-    assetFunctions = require('node-sass-asset-functions')
-  ;
+var _                = require('lodash'),
+    __               = require('../helpers'),
+    extend           = require('extend'),
+    path             = require('path'),
+    gulp             = require('gulp'),
+    gulpUtil         = require('gulp-util'),
+    gulpTap          = require('gulp-tap'),
+    mergeStreams     = require('event-stream').merge,
+    del              = require('del'),
+    gulpIf           = require('gulp-if'),
+    getObject        = require('getobject'),
+    gulpChanged      = require('gulp-changed'),
+    runSequence      = require('run-sequence').use(gulp),
+    gulpPlumber      = require('gulp-plumber'),
+    gulpRename       = require('gulp-rename'),
+    gulpFile         = require('gulp-file'),
+    gulpData         = require('gulp-data'),
+    lazypipe         = require('lazypipe'),
+    gulpSwig         = require('gulp-swig-compiler-renderer'),
+    gulpAutoprefixer = require('gulp-autoprefixer'),
+    gulpSass         = require('gulp-sass'),
+    gulpSourcemaps   = require('gulp-sourcemaps'),
+    FileInclude      = require('gulp-file-include'),
+    gulpMinifyCss    = require('gulp-minify-css'),
+    bowerDirectory   = require('bower-directory'),
+    assetFunctions   = require('node-sass-asset-functions')
+;
 
 var Config       = require('../_config').styles,
     ServerConfig = require('../_config').server;
@@ -39,9 +38,12 @@ gulp.task('sass:test', function (cb) {
   }
 
   return _Src
+    .pipe(gulpSourcemaps.init())
     .pipe(
-      gulpSass(Config.sass.nodeSass).on('error', __.plumberErrorHandler.errorHandler)
+      gulpSass(Config.sass.nodeSass)
+        .on('error', __.plumberErrorHandler.errorHandler)
     )
+    .pipe(gulpSourcemaps.write('./'))
     .pipe(gulp.dest('dist/css'))
 });
 

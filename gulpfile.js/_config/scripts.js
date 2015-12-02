@@ -35,17 +35,20 @@ module.exports = (function () {
 
   ];
 
+  var defaultsBrowserifyOptions = {
+    debug: !global.isProduction,
+    transform: ['deglobalify', 'deamdify'],
+  };
+
   /**
    * @property {BundleConfig|BundleConfig[]} config.bundles
    */
   config.bundles = [
     {
       entry: 'js.js',
-      options: {
-        //fullPaths: !global.isProduction,
-        fullPaths: false,
-        debug: !global.isProduction
-      },
+      options: extend(defaultsBrowserifyOptions, {
+
+      }),
       setup: function setup (bundler) {
         getBowerPackageIds(bowerLibs).forEach(function (lib) {
           bundler.external(lib);
@@ -69,9 +72,9 @@ module.exports = (function () {
     },
     {
       entry: 'libs.js',
-      options: {
-        debug: !global.isProduction
-      },
+      options: extend(defaultsBrowserifyOptions, {
+
+      }),
       setup: function setup (bundler) {
         getBowerPackageIds(bowerLibs).forEach(function (id) {
           var resolvedPath = bowerResolve.fastReadSync(id);
@@ -92,6 +95,9 @@ module.exports = (function () {
     },
     {
       entry: 'templates.js',
+      options: extend(defaultsBrowserifyOptions, {
+
+      }),
       setup: function setup (bundler) {
         getBowerPackageIds(bowerLibs).forEach(function (lib) {
           bundler.external(lib);

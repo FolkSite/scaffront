@@ -3,18 +3,28 @@
 @import "singularitygs";
 @import "toolkit";
 
-//@import '../framework/vars/_index';
-//@import "../framework/mixins/_index";
-//@import 'vars/_index';
-//@import "../framework/scaffolding/_index";
-//
-//.layout-header,
-//.layout-footer {
-//  @extend %layout-width-min;
-//  @include e(inner) {
-//    @extend %layout-width-max;
-//  }
-//}
-//
+.qwe {
+  $img: 'bg-header.jpg';
+
+  width: image-width($img);
+  height: image-height($img);
+  background-image: inline-image($img);
+}
+
+@import 'CSS:magnific-popup/dist/magnific-popup';
+
+@import '../framework/vars/_index';
+@import "../framework/mixins/_index";
+@import 'vars/_index';
+@import "../framework/scaffolding/_index";
+
+.layout-header,
+.layout-footer {
+  @extend %layout-width-min;
+  @include e(inner) {
+    @extend %layout-width-max;
+  }
+}
+
 //@import 'blocks/_index';
 

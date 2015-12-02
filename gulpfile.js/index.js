@@ -1,3 +1,5 @@
+// https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
+
 // https://gist.github.com/HPieters/88dd18e99c8925b2cabb
 // https://github.com/BrowserSync/browser-sync/issues/786
 // http://stackoverflow.com/questions/33012041/how-i-can-use-singularity-extras-in-a-libsass-workflow

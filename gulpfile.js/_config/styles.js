@@ -24,9 +24,7 @@ module.exports = (function () {
     return path.join(bowerConfig.dirRelative, directory || '');
   };
 
-  config.src = 'app/styles';
-
-  var importPathes = [
+  var importPaths = [
     getPackagePath(),
     getBowerPath(),
     getBowerPath('compass-mixins/lib'),
@@ -40,6 +38,9 @@ module.exports = (function () {
     getBowerPath('breakpoint-slicer/stylesheets'),
   ];
 
+
+  config.src = 'app/styles';
+
   config.sass = {
     src: config.src,
     nodeSass: {
@@ -50,10 +51,10 @@ module.exports = (function () {
         http_images_path: '/i',
         http_generated_images_path: '/i',
       }),
-      //importer: [sassCssImporter({
-      //  import_paths: importPathes
-      //})],
-      includePaths: importPathes
+      importer: sassCssImporter({
+        import_paths: importPaths
+      }),
+      includePaths: importPaths
     }
   };
 

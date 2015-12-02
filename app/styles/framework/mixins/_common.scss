@@ -184,3 +184,25 @@
 }
 
 
+//@include setComponent(table-cell) {
+//  padding:4px;
+//  margin:4px;
+//}
+//
+//td {
+//  @include getComponent(table-cell);
+//}
+//
+//th {
+//  @include getComponent(table-cell);
+//}
+
+@mixin setComponent($placeholder) {
+  %#{$placeholder} {
+    @content;
+  }
+}
+
+@mixin getComponent($placeholder) {
+  @extend %#{$placeholder};
+}
