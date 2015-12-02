@@ -1,13 +1,13 @@
-var _       = require('lodash'),
-    Path    = require('path'),
-    Extend  = require('extend'),
-    Helpers = require('../helpers'),
-    FS      = require('fs');
+var _              = require('lodash'),
+    __             = require('../helpers'),
+    path           = require('path'),
+    bowerDirectory = require('bower-directory');
 
-module.exports = (function () {
-  var config = {
-    src: require('bower-directory').sync()
-  };
+var dir = bowerDirectory.sync();
 
-  return config;
-})();
+var config = {
+  dir: dir,
+  dirRelative: path.relative(process.cwd(), dir)
+};
+
+module.exports = config;

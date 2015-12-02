@@ -25,8 +25,9 @@ var Path = require('path');
 //  recurse: true
 //});
 
-require('./tasks/scripts');
-require('./tasks/swig');
+require('./tasks/styles');
+//require('./tasks/scripts');
+//require('./tasks/swig');
 
 return;
 
