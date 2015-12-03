@@ -1,6 +1,4 @@
-var _              = require('lodash'),
-    __             = require('../helpers'),
-    path           = require('path'),
+var path           = require('path'),
     bowerDirectory = require('bower-directory');
 
 var dir = bowerDirectory.sync();
