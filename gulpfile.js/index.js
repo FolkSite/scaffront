@@ -114,10 +114,10 @@ var paths = {
       inline: 'dist/i/',
       content: 'dist/images/'
     },
-    fonts: 'dist/css/fonts/'
+    fonts: 'dist/css/fonts-tocss/'
   },
   src: {
-    html: 'app/html/**/*.html',
+    html: 'app/html-asis/**/*.html',
     root: 'app/root/**/*.*',
     js: [
       'app/js/**/*.js',
@@ -131,11 +131,11 @@ var paths = {
       inline: 'app/images/design/**/*.*',
       content: 'app/images/content/**/*.*'
     },
-    fonts: 'app/fonts/**/*.*'
+    fonts: 'app/fonts-tocss/**/*.*'
   },
   watch: {
     root: 'app/root/**/*.*',
-    html: 'app/html/**/*.html',
+    html: 'app/html-asis/**/*.html',
     js: 'app/js/**/*.js',
     css: 'app/styles/**/*.css',
     //sass: ['app/styles/*.scss', 'app/styles/.sass'],
@@ -144,7 +144,7 @@ var paths = {
       inline: 'app/images/design/**/*.*',
       content: 'app/images/content/**/*.*'
     },
-    fonts: 'app/fonts/**/*.*'
+    fonts: 'app/fonts-tocss/**/*.*'
   },
   clean: 'dist'
 };

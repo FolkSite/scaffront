@@ -11,7 +11,7 @@ var Base64Font = require('gulp-base64-webfont-css');
 
 
 Gulp.task('fonts:test', function () {
-  var SRC = 'app/fonts/**/*.*';
+  var SRC = 'app/fonts-tocss/**/*.*';
   var DEST = 'dist/styles/fonts';
 
   return Gulp.src(SRC)
