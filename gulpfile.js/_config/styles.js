@@ -36,6 +36,7 @@ module.exports = (function () {
     getBowerPath('singularity-quick-spanner/stylesheets'),
     getBowerPath('breakpoint-sass/stylesheets'),
     getBowerPath('breakpoint-slicer/stylesheets'),
+    getBowerPath('scaffront-styles/stylesheets'),
   ];
 
 

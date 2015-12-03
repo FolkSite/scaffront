@@ -7,12 +7,15 @@
       <w>derequire</w>
       <w>dest</w>
       <w>extnames</w>
+      <w>fancybox</w>
       <w>gulpify</w>
       <w>isstream</w>
       <w>jsface</w>
       <w>lazypipe</w>
       <w>lodash</w>
+      <w>magnific</w>
       <w>minify</w>
+      <w>mixins</w>
       <w>noop</w>
       <w>noparse</w>
       <w>nunjucks</w>

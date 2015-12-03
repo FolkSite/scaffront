@@ -3,20 +3,19 @@
   "description": "",
   "main": "gulpfile.js",
   "authors": [
-    "antixrist"
+    "http://github.com/antixrist"
   ],
   "license": "WTFPL",
   "keywords": [
     "starter"
   ],
   "moduleType": [],
-  "homepage": "http://github.com/antixrist/gulp-boilerplate",
+  "homepage": "http://github.com/antixrist/scaffront",
   "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "app/scripts/bower_components",
     "test",
     "tests",
     "Gemfile",
@@ -24,6 +23,21 @@
     "*.gemspec"
   ],
   "dependencies": {
-    "griddle": "~0.3.0"
+    "breakpoint-sass": "*",
+    "breakpoint-slicer": "*",
+    "compass-breakpoint": "*",
+    "compass-mixins": "*",
+    "fancybox": "*",
+    "griddle": "~0.3.0",
+    "jquery": "*",
+    "magnific-popup": "*",
+    "sass-toolkit": "*",
+    "sassy-buttons": "*",
+    "sassy-maps": "*",
+    "SassyLists": "*",
+    "scaffront-styles": "*",
+    "singularity": "*",
+    "singularity-quick-spanner": "*",
+    "slick-carousel": "*"
   }
 }
