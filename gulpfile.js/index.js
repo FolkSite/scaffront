@@ -128,7 +128,7 @@ var paths = {
     css: 'app/styles/*.css',
     sass: 'app/styles/',
     images: {
-      inline: 'app/images/inline/**/*.*',
+      inline: 'app/images/design/**/*.*',
       content: 'app/images/content/**/*.*'
     },
     fonts: 'app/fonts/**/*.*'
@@ -141,7 +141,7 @@ var paths = {
     //sass: ['app/styles/*.scss', 'app/styles/.sass'],
     sass: 'app/styles/**/*.@(scss|sass)',
     images: {
-      inline: 'app/images/inline/**/*.*',
+      inline: 'app/images/design/**/*.*',
       content: 'app/images/content/**/*.*'
     },
     fonts: 'app/fonts/**/*.*'
@@ -871,7 +871,7 @@ Gulp.task('images:content:build', function () {
     .pipe(Cache('images:content:build'))
     .pipe(Gulp.dest(paths.dist.images.content));
 });
-Gulp.task('images:inline:build', function () {
+Gulp.task('images:design:build', function () {
   return Gulp.src(paths.src.images.inline)
     .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(Cache('images:inline:build'))
@@ -880,7 +880,7 @@ Gulp.task('images:inline:build', function () {
 Gulp.task('images:build', function (cb) {
   return RunSequence(['images:content:build', 'images:inline:build'], cb);
 });
-Gulp.task('images:inline:min', function () {
+Gulp.task('images:design:min', function () {
   return Gulp.src(paths.dist.images.inline +'**/*.*')
     .pipe(Plumber(Helpers.plumberErrorHandler))
     .pipe(ImageMin(config.ImageMin))
@@ -898,10 +898,10 @@ Gulp.task('images:min', function (cb) {
     cb
   );
 });
-Gulp.task('images:inline:dist', function (cb) {
+Gulp.task('images:design:dist', function (cb) {
   return RunSequence(
-    'images:inline:build',
-    'images:inline:min',
+    'images:design:build',
+    'images:design:min',
     cb
   );
 });
@@ -914,7 +914,7 @@ Gulp.task('images:content:dist', function (cb) {
 });
 Gulp.task('images:dist', function (cb) {
   return RunSequence(
-    ['images:content:dist', 'images:inline:dist'],
+    ['images:content:dist', 'images:design:dist'],
     cb
   );
 });

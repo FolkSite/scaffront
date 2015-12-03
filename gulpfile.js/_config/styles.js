@@ -47,8 +47,8 @@ module.exports = (function () {
     nodeSass: {
       precision: 10,
       functions: assetFunctions({
-        images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
-        images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
+        images_path: (global.isProduction) ? 'dist/i' : 'app/images/design',
+        images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/design',
         http_images_path: '/i',
         http_generated_images_path: '/i',
       }),

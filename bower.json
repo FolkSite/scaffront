@@ -38,6 +38,8 @@
     "scaffront-styles": "*",
     "singularity": "*",
     "singularity-quick-spanner": "*",
-    "slick-carousel": "*"
+    "slick-carousel": "*",
+    "filament-sticky": "~0.1.6",
+    "filament-tablesaw": "~2.0.2"
   }
 }
