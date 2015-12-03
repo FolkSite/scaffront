@@ -4,7 +4,6 @@
 // https://github.com/vigetlabs/gulp-starter/
 
 // https://github.com/BrowserSync/browser-sync/issues/786
-// http://stackoverflow.com/questions/33012041/how-i-can-use-singularity-extras-in-a-libsass-workflow
 // http://alexfedoseev.com/post/54/frontend-project-build
 
 // http://ericlbarnes.com/setting-gulp-bower-bootstrap-sass-fontawesome/
@@ -107,7 +106,7 @@ var paths = {
   dist: {
     html: 'dist/',
     js: 'dist/js/',
-    jsPlugins: 'dist/js/plugins/',
+    jsPlugins: 'dist/js/libs/',
     jsVendors: 'dist/js/vendor/',
     css: 'dist/css/',
     criticalCss: 'dist/css/critical/',
@@ -354,7 +353,7 @@ var configTest = {
         watch: Path.join(sourceDir, '*.js'),
       };
     })(),
-    plugins: getConfig('app/scripts/plugins', 'dist/js/plugins', '*.js', '**/*.js'),
+    plugins: getConfig('app/scripts/libs', 'dist/js/libs', '*.js', '**/*.js'),
     app: getConfig('app/scripts/app', 'dist/js', '*.js', '**/*.js'),
   }
 };

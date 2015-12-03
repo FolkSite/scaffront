@@ -1,4 +1,5 @@
 // http://stackoverflow.com/questions/29222745/how-do-i-exclude-the-requirereact-from-my-browserified-bundle
+// https://toster.ru/q/176877
 
 var _                 = require('lodash'),
     __                = require('../../helpers'),

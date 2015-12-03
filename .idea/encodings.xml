@@ -27,7 +27,7 @@
     <file url="file://$PROJECT_DIR$/app/js/plugins/ytiframe.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/js/scripts.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/js/vendor/modernizr-2.8.3.min.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/styles/plugins/slick/_theme.scss" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/styles/libs/slick/_theme.scss" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/styles/roboto.regular.css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/styles/theme/blocks/_product.scss" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />

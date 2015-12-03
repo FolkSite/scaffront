@@ -13,8 +13,8 @@ var _                  = require('lodash'),
     gulpConcat         = require('gulp-concat'),
     gulpAutoPolyfiller = require('gulp-autopolyfiller'),
     gulpSourcemaps     = require('gulp-sourcemaps'),
+    remapify           = require('remapify'),
     //FS                 = require('fs'),
-    //bowerDirectory     = require('bower-directory'),
     bowerResolve       = require('bower-resolve'),
     nodeResolve        = require('resolve'),
     swigify            = require('swigify');
@@ -50,6 +50,9 @@ module.exports = (function () {
       options: extend(defaultsBrowserifyOptions, {
 
       }),
+      /**
+       * @param {Browserify} bundler
+       */
       setup: function setup (bundler) {
         getBowerPackageIds(bowerLibs).forEach(function (lib) {
           bundler.external(lib);
@@ -58,6 +61,19 @@ module.exports = (function () {
         getNPMPackageIds(nodeLibs).forEach(function (id) {
           bundler.external(id);
         });
+
+        //bundler.plugin(remapify, [{
+        //  // glob for the files to remap
+        //  src: './client/views/**/*.js',
+        //  // this will expose `__dirname + /client/views/home.js` as `views/home.js`
+        //  expose: 'views',
+        //  // defaults to process.cwd()
+        //  cwd: __dirname,
+        //  // customize file names
+        //  filter: function(alias, dirname, basename) {
+        //    return path.join(dirname, basename.replace('foo', 'bar'))
+        //  }
+        //}]);
 
         //bundler.transform(swigify({
         //  //compress: true,
@@ -80,7 +96,7 @@ module.exports = (function () {
       setup: function setup (bundler) {
         getBowerPackageIds(bowerLibs).forEach(function (id) {
           var resolvedPath = bowerResolve.fastReadSync(id);
-          console.log('resolvedPath', resolvedPath);
+          //console.log('resolvedPath', resolvedPath);
           bundler.require(resolvedPath, {
             expose: id
           });
