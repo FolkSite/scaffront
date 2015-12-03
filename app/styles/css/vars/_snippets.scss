@@ -1,23 +1,23 @@
-$opacity-states: ''; // selector
-$opacity-states-normal: .8;
-$opacity-states-hover: 1;
-$opacity-states-active: .5;
+$opacity-states: '' !default; // selector
+$opacity-states-normal: .8 !default;
+$opacity-states-hover: 1 !default;
+$opacity-states-active: .5 !default;
 
-$opacity-list: ''; // selector
+$opacity-list: '' !default; // selector
 $opacity-list-child-selector: '> *';
-$opacity-list-opacity: .5;
-$opacity-list-transition: opacity .2s ease-in;
+$opacity-list-opacity: .5 !default;
+$opacity-list-transition: opacity .2s ease-in !default;
 
-$preview: ''; // selector
-$preview-image: '';
-$preview-image-hidpi: '';
-$preview-bg-inline: 1;
-$preview-opacity-normal: 0.8;
-$preview-opacity-hover: 1;
-$preview-opacity-active: 0.7;
+$preview: '' !default; // selector
+$preview-image: '' !default;
+$preview-image-hidpi: '' !default;
+$preview-bg-inline: 1 !default;
+$preview-opacity-normal: 0.8 !default;
+$preview-opacity-hover: 1 !default;
+$preview-opacity-active: 0.7 !default;
 
-$arrow-block: ''; // selector
-$arrow-block-direction: right;
-$arrow-block-arrow-size: 80px;
-$arrow-block-bg-color: #FAEA26;
-$arrow-block-padding: 35px;
+$arrow-block: '' !default; // selector
+$arrow-block-direction: right !default;
+$arrow-block-arrow-size: 80px !default;
+$arrow-block-bg-color: #FAEA26 !default;
+$arrow-block-padding: 35px !default;

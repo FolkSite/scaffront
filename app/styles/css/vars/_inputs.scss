@@ -1,75 +1,49 @@
 //*********************************************
 //    Inputs
 //*********************************************
-$input: '.input';
-$input-block: '#{$input}.input--block';
-$input-required: '.required';
+$input: '.input' !default;
+$input-block: '#{$input}.input--block' !default;
+$input-required: '.required' !default;
 
-$input-height: auto;
-$input-font-size: $base-font-size;
-$input-line-height: 16px;
-$input-border-width: 1px;
-$input-padding-vertical: 5px;
-$input-padding-horizontal: 10px;
-$input-lines: 1;
-$input-min-width: 200px;
+$input-height: auto !default;
+$input-font-size: $base-font-size !default;
+$input-line-height: 16px !default;
+$input-border-width: 1px !default;
+$input-padding-vertical: 5px !default;
+$input-padding-horizontal: 10px !default;
+$input-lines: 1 !default;
+$input-min-width: 200px !default;
 
 $input-sizes: (
   default: (
     selector: '.input, %input',
     options: (
-      33px,
-      15px,
-      18px,
+      $input-height,
+      $input-font-size,
+      $input-line-height,
       $input-border-width,
       $input-padding-vertical,
       $input-padding-horizontal,
-      $input-lines,
-      $input-min-width
-    )
-  ),
-  small: (
-    selector: '.input--small, %input--small',
-    options: (
-      31px,
-      12px,
-      15px,
-      $input-border-width,
-      $input-padding-vertical,
-      $input-padding-horizontal,
-      $input-lines,
-      $input-min-width
-    )
-  ),
-  big: (
-    selector: '.input--big, %input--big',
-    options: (
-      40px,
-      $base-font-size,
-      $base-line-height,
-      $input-border-width,
-      10px,
-      18px,
       $input-lines,
       $input-min-width
     )
   )
-);
+) !default;
 
 
-$input-color-normal: $base-color;
-$input-color-hover: $input-color-normal;
-$input-color-focus: $input-color-normal;
-$input-color-active: $input-color-normal;
-$input-color-bg-normal: #fff;
-$input-color-bg-hover: $input-color-bg-normal;
-$input-color-bg-focus: $input-color-bg-normal;
-$input-color-bg-active: $input-color-bg-normal;
-$input-color-border-normal: $color-scheme-green;
-$input-color-border-hover: $color-scheme-green;
-$input-color-border-focus: $color-scheme-green;
-$input-color-border-active: $input-color-border-hover;
-$input-border-radius: 3px;
+$input-color-normal: $base-color !default;
+$input-color-hover: $input-color-normal !default;
+$input-color-focus: $input-color-normal !default;
+$input-color-active: $input-color-normal !default;
+$input-color-bg-normal: #fff !default;
+$input-color-bg-hover: $input-color-bg-normal !default;
+$input-color-bg-focus: $input-color-bg-normal !default;
+$input-color-bg-active: $input-color-bg-normal !default;
+$input-color-border-normal: #131313 !default;
+$input-color-border-hover: darken($input-color-border-normal, 3) !default;
+$input-color-border-focus: darken($input-color-border-normal, 3) !default;
+$input-color-border-active: darken($input-color-border-hover, 3) !default;
+$input-border-radius: 3px !default;
 
 $input-variants: (
   default: (
@@ -89,26 +63,8 @@ $input-variants: (
       $input-color-border-active,
       $input-border-radius
     )
-  ),
-  'no-border': (
-    selector: '.input--no-border, %input--no-border',
-    options: (
-      $input-color-normal,
-      $input-color-hover,
-      $input-color-focus,
-      $input-color-active,
-      $input-color-bg-normal,
-      $input-color-bg-hover,
-      $input-color-bg-focus,
-      $input-color-bg-active,
-      transparent,
-      transparent,
-      $input-color-border-focus,
-      $input-color-border-active,
-      $input-border-radius
-    )
   )
-);
+) !default;
 
 
 

@@ -1,103 +1,38 @@
-$link-color-normal: #0d44a0;
-$link-color-hover: $link-color-normal;
-$link-color-focus: $link-color-normal;
-$link-color-visited: $link-color-normal;
-$link-border-color-normal: rgba($link-color-normal, .5);
-$link-border-color-hover: $link-color-hover;
-$link-border-color-focus: $link-color-focus;
-$link-border-color-active: $link-color-active;
-$link-border-color-visited: $link-color-visited;
-$link-border-width-normal: 0 0 1px 0;
-$link-border-width-hover: $link-border-width-normal;
-$link-border-width-focus: $link-border-width-normal;
-$link-border-width-active: $link-border-width-normal;
-$link-border-width-visited: $link-border-width-normal;
+$link-color-normal: #0d44a0 !default;
+$link-color-hover: $link-color-normal !default;
+$link-color-focus: $link-color-normal !default;
+$link-color-active: #ff0000 !default;
+$link-color-visited: $link-color-normal !default;
+$link-border-color-normal: rgba($link-color-normal, .7) !default;
+$link-border-color-hover: $link-color-hover !default;
+$link-border-color-focus: $link-color-focus !default;
+$link-border-color-active: $link-color-active !default;
+$link-border-color-visited: $link-color-visited !default;
+$link-border-width-normal: 0 0 1px 0 !default;
+$link-border-width-hover: $link-border-width-normal !default;
+$link-border-width-focus: $link-border-width-normal !default;
+$link-border-width-active: $link-border-width-normal !default;
+$link-border-width-visited: $link-border-width-normal !default;
 
-
-$link-color-active: #ff0000;
-$link-gray-color: $color-scheme-gray;
-$link-white-color: $color-scheme-white;
-$link-green-color: $color-scheme-green;
-$link-border-width: 0 0 1px;
 $links: (
-  white: (
-    selector: '.link--white, %link--white',
+  default: (
+    selector: '.link, %link',
     options: (
-      $link-white-color,
-      $link-white-color,
-      $link-white-color,
+      $link-color-normal,
+      $link-color-hover,
+      $link-color-focus,
       $link-color-active,
-      $link-white-color,
-      rgba($link-white-color, .3),
-      $link-white-color,
-      $link-white-color,
-      $link-color-active,
-      $link-white-color,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width
+      $link-color-visited,
+      $link-border-color-normal,
+      $link-border-color-hover,
+      $link-border-color-focus,
+      $link-border-color-active,
+      $link-border-color-visited,
+      $link-border-width-normal,
+      $link-border-width-hover,
+      $link-border-width-focus,
+      $link-border-width-active,
+      $link-border-width-visited
     )
-  ),
-  green: (
-    selector: '.link--green, %link--green',
-    options: (
-      $link-green-color,
-      $link-green-color,
-      $link-green-color,
-      $link-color-active,
-      $link-green-color,
-      rgba($link-green-color, .3),
-      $link-green-color,
-      $link-green-color,
-      $link-color-active,
-      $link-green-color,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width
-    )
-  ),
-  gray: (
-    selector: '.link--gray, %link--gray',
-    options: (
-      $link-gray-color,
-      $link-gray-color,
-      $link-gray-color,
-      $link-color-active,
-      $link-gray-color,
-      rgba($link-gray-color, .3),
-      $link-gray-color,
-      $link-gray-color,
-      $link-color-active,
-      $link-gray-color,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width
-    )
-  ),
-  'green-gray': (
-    selector: '.link--green-gray, %link--green-gray',
-    options: (
-      $link-gray-color,
-      $link-green-color,
-      $link-gray-color,
-      $link-color-active,
-      $link-gray-color,
-      rgba($link-gray-color, .3),
-      $link-green-color,
-      $link-gray-color,
-      $link-color-active,
-      $link-gray-color,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width,
-      $link-border-width
-    )
-  ),
-);
+  )
+) !default;
