@@ -1,1 +1,18 @@
-@import 'theme/_index';
+@import 'compass';
+@import 'breakpoint';
+@import 'singularitygs';
+@import 'toolkit';
+
+@import 'css/vars';
+@import 'libs/myscss';
+@import 'css/theme';
+
+
+.layout-header,
+.layout-footer {
+  @extend %layout-width-min;
+  @include e(inner) {
+    @extend %layout-width-max;
+  }
+}
+
