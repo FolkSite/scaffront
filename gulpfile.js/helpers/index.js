@@ -1,9 +1,10 @@
-var FS = require('fs');
-var Path = require('path');
-var Crypto = require('crypto');
-var _ = require('lodash');
-var GulpUtil = require('gulp-util');
-var Notifier = require('node-notifier');
+var _        = require('lodash'),
+    FS       = require('fs'),
+    Path     = require('path'),
+    Crypto   = require('crypto'),
+    Gulp     = require('gulp'),
+    GulpUtil = require('gulp-util'),
+    Notifier = require('node-notifier');
 
 
 var __ = {};
@@ -260,13 +261,14 @@ __.capitalize = function (str) {
 __.getGlobPaths = function (sources, extnames, deep, exclude) {
   deep    = (typeof deep != 'undefined') ? !!deep : true;
   exclude = (typeof exclude != 'undefined') ? !!exclude : false;
-  extnames = (typeof extnames != 'undefined') ? extnames : '.*';
+
+  extnames = (!extnames || (_.isArray(extnames) && !extnames.length)) ? '.*' : extnames;
 
   var inners = (deep) ? '**/*' : '*';
 
   sources  = (!_.isArray(sources)) ? [sources] : sources;
 
-  if (extnames !== false) {
+  if (extnames) {
     extnames = (!_.isArray(extnames)) ? [extnames] : extnames;
     extnames = _.map(extnames, function (ext) {
       if (ext) {
@@ -312,7 +314,6 @@ __.isGulpSrc = function (anything) {
   return false;
 };
 
-var Gulp = require('gulp');
 /**
  * @param {*} anything
  * @returns {*}

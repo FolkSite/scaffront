@@ -1,19 +1,15 @@
-//var _       = require('lodash'),
-//    path    = require('path'),
-//    extend  = require('extend'),
-//    Helpers = require('../helpers'),
-//    FS      = require('fs');
+var config = {};
 
-module.exports = (function () {
-  var config = {};
+config.tmpPath = 'tmp';
 
-  config.bower = {};
-  config.styles = require('./styles');
-  config.scripts = require('./scripts');
-  //config.bower = require('./bower');
-  config.templates = require('./templates');
-  config.server = require('./server');
-  config.copy = require('./copy');
+config.fonts = require('./fonts');
 
-  return config;
-})();
+//config.styles = require('./styles');
+//config.scripts = require('./scripts');
+//config.bower = require('./bower');
+//config.templates = require('./templates');
+//config.server = require('./server');
+//config.copy = require('./copy');
+
+
+module.exports = config;

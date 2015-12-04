@@ -15,7 +15,7 @@ var config = {
     src: 'app/scripts/vendor',
     dest: 'dist/js/vendor'
   }],
-  scripts: require('./scripts'),
+  //scripts: require('./scripts'),
 
   BrowserSync: {
     instanceName: 'server',
