@@ -251,42 +251,69 @@ __.capitalize = function (str) {
 };
 
 /**
+ * @param {String|String[]|boolean} extnames Default is '.*'. Pass false for return only paths without extensions
+ */
+__.getGlobExtnames = function (extnames) {
+
+};
+
+/**
  *
- * @param {String|String[]} sources
- * @param {String|String[]|boolean} [extnames] Default is '.*'. Pass false for return only paths without extensions
- * @param {boolean} [deep] Default true.
- * @param {boolean} [exclude] Default true.
+ * @param {String|String[]} paths
+ * @param {String|String[]|boolean} [files] Default is '.*'. Pass false for return only paths without extensions
  * @returns {[]}
  */
-__.getGlobPaths = function (sources, extnames, deep, exclude) {
-  deep    = (typeof deep != 'undefined') ? !!deep : true;
-  exclude = (typeof exclude != 'undefined') ? !!exclude : false;
+__.getGlobPaths = function (paths, files) {
+  var result = [];
+  paths = __.getArray(paths || null);
+  files = __.getArray(files || null);
 
-  extnames = (!extnames || (_.isArray(extnames) && !extnames.length)) ? '.*' : extnames;
-
-  var inners = (deep) ? '**/*' : '*';
-
-  sources  = (!_.isArray(sources)) ? [sources] : sources;
-
-  if (extnames) {
-    extnames = (!_.isArray(extnames)) ? [extnames] : extnames;
-    extnames = _.map(extnames, function (ext) {
-      if (ext) {
-        ext = ((ext.indexOf('.') !== 0) ? '.'+ ext : ext);
-        ext = inners + ext;
-      }
-      return ext;
-    });
-
-    sources = _.map(sources, function (src) {
-      src = (exclude) ? '!'+ src : src;
-      return _.map(extnames, function (ext) {
-        return Path.join(src, ext);
-      });
-    });
+  if (!files.length || (files.length == 1 && !files[0])) {
+    files = ['.*'];
   }
 
-  return _.unique(_.flatten(sources));
+  paths = _.compact(paths);
+  files = _.compact(files);
+
+  files = _.map(files, function (ext) {
+    var itsExclude = (ext.indexOf('!') === 0);
+    if (itsExclude) {
+      ext = ext.slice(1);
+    }
+
+    if (ext.indexOf('.') >= 0 && ext.indexOf('*') >= 0 ) {
+      // it's filename mask
+    } else {
+      // dot unify
+      ext = ((ext.indexOf('.') !== 0) ? '.'+ ext : ext);
+      ext = '*'+ ext;
+    }
+
+    if (itsExclude) {
+      ext = '!'+ ext;
+    }
+
+    return ext;
+  });
+
+  _.each(paths, function (path) {
+    var isPathExcluded = (path.indexOf('!') === 0);
+
+    _.each(files, function (file) {
+      var isFileExcluded = (file.indexOf('!') === 0);
+      if (isFileExcluded) {
+        file = file.slice(1);
+      }
+
+      if ((isFileExcluded || isPathExcluded) && path.indexOf('!') !== 0) {
+        path = '!'+ path;
+      }
+
+      result.push(Path.join(path, file));
+    });
+  });
+
+  return _.unique(result);
 };
 
 /**
@@ -484,7 +511,30 @@ __.runSyncAsync = function (funcContext, funcArgs, func, cb) {
  * @param {*} anything
  */
 __.getArray = function (anything) {
-  return (_.isArray(anything)) ? anything : [anything];
+  if (!_.isUndefined(anything)) {
+    return (_.isArray(anything)) ? anything : [anything];
+  }
+
+  return [];
+};
+
+/**
+ * @param {string|string[]} pathes...
+ */
+__.pathResolver = function (pathes) {
+  var tmp = _.compact(_.flatten(_.toArray(arguments)));
+
+  tmp = _.map(tmp, function (path, index) {
+    // first item
+    if (!index) {
+      return path;
+    }
+    return (tmp[index - 1] != path) ? path : null;
+  });
+
+  return _.reduce(_.compact(tmp), function (result, path) {
+    return Path.resolve(result, path);
+  });
 };
 
 module.exports = __;

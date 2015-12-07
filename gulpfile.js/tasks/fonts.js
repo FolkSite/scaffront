@@ -7,6 +7,7 @@ var _                 = require('lodash'),
     gulpTap           = require('gulp-tap'),
     gulpFont2Base64   = require('gulp-font2base64'),
     mergeStreams      = require('event-stream').merge,
+    gulpPlumber       = require('gulp-plumber'),
     runSequence       = require('run-sequence'),
     del               = require('del'),
     gulpIf            = require('gulp-if'),
@@ -21,19 +22,26 @@ var Server = null;
 
 /**
  * @param [stream]
+ * @param {{}} [bsConfig]
  */
-var watcherHandler = function (stream) {
+var watcherHandler = function (stream, bsConfig) {
   if (!Server) { return; }
 
+  bsConfig = (_.isPlainObject(bsConfig)) ? bsConfig : {};
+
   if (gulpUtil.isStream(stream)) {
-    stream.pipe(Server.stream({once: true}));
+    stream.pipe(Server.stream(bsConfig));
   } else {
-    Server.reload({once: true});
+    Server.reload(bsConfig);
   }
 };
 
+
 gulp.task('fonts:asis', function (cb) {
-  var stream = __.getGulpSrc(__.getGlobPaths(Config.asis.src, Config.asis.extnames || []))
+  Config.asis.extnames = __.getArray(Config.asis.extnames || null);
+
+  var stream = __.getGulpSrc(__.getGlobPaths(Config.asis.src, Config.asis.extnames))
+    .pipe(gulpPlumber(__.plumberErrorHandler))
     .pipe(gulp.dest(Config.asis.dest));
 
   watcherHandler(stream);
@@ -52,10 +60,13 @@ gulp.task('fonts:asis:cleanup', function (cb) {
 
 gulp.task('fonts:tocss', function (cb) {
   var stream = __.getGulpSrc(__.getGlobPaths(Config.tocss.src, Config.tocss.extnames || []))
+    .pipe(gulpPlumber(__.plumberErrorHandler))
     .pipe(gulpFont2Base64())
     .pipe(gulp.dest(Config.asis.dest));
 
-  watcherHandler(stream);
+  watcherHandler(stream, {
+    match: '**/*.css'
+  });
 
   return stream;
 });
@@ -76,6 +87,7 @@ gulp.task('fonts:tocss:cleanup', function (cb) {
   cb();
 });
 
+
 gulp.task('fonts:build', ['fonts:asis', 'fonts:tocss']);
 
 gulp.task('fonts:build:cleanup', ['fonts:asis:cleanup', 'fonts:tocss:cleanup']);
@@ -91,7 +103,7 @@ gulp.task('fonts:watch', ['fonts:build'], function (cb) {
     Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
   }
 
-  gulp.watch(__.getGlobPaths(Config.asis.src, Config.asis.extnames || []), ['fonts:asis']);
-  gulp.watch(__.getGlobPaths(Config.tocss.src, Config.tocss.extnames || []), ['fonts:tocss']);
+  gulp.watch(__.getGlobPaths(Config.asis.src,   Config.asis.extnames  || []), ['fonts:asis']);
+  gulp.watch(__.getGlobPaths(Config.tocss.src,  Config.tocss.extnames || []), ['fonts:tocss']);
 });
 
