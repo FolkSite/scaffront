@@ -479,4 +479,12 @@ __.runSyncAsync = function (funcContext, funcArgs, func, cb) {
   }
 };
 
+
+/**
+ * @param {*} anything
+ */
+__.getArray = function (anything) {
+  return (_.isArray(anything)) ? anything : [anything];
+};
+
 module.exports = __;

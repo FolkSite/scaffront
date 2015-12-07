@@ -36,10 +36,8 @@
     "extend": "*",
     "getobject": "^0.1.0",
     "grunt": "^0.4.5",
-    "gulp": "*",
     "gulp-autopolyfiller": "*",
     "gulp-autoprefixer": "*",
-    "gulp-base64-webfont-css": "0.0.1",
     "gulp-cached": "*",
     "gulp-callback": "*",
     "gulp-changed": "^1.3.0",
@@ -106,14 +104,15 @@
     "deamdify": "^0.1.1",
     "deglobalify": "^0.2.0",
     "fontmin": "^0.8.1",
+    "gulp": "^3.9.0",
     "gulp-file-include": "^0.13.7",
+    "gulp-font2base64": "0.0.15",
     "gulp-minify-css": "^1.2.2",
     "gulp-sass": "^2.1.0",
     "gulp-sass-bulk-import": "^0.3.2",
     "gulp-util": "^3.0.7",
     "node-notifier": "^4.3.1",
     "remapify": "^2.1.0",
-    "resolve": "^1.1.6",
-    "webpack": "^1.12.9"
+    "resolve": "^1.1.6"
   }
 }

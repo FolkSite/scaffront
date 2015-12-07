@@ -9,6 +9,8 @@ var _           = require('lodash'),
 module.exports = (function () {
   var config = {};
 
+  config.devServerName = 'develop';
+
   config.BrowserSync = {
     develop: {
       options: {

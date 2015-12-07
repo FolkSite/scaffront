@@ -41,14 +41,14 @@ module.exports = (function () {
 
 
   config.src = 'app/styles';
+  config.dest = 'dist/css';
 
   config.sass = {
-    src: config.src,
     nodeSass: {
       precision: 10,
       functions: assetFunctions({
-        images_path: (global.isProduction) ? 'dist/i' : 'app/images/design',
-        images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/design',
+        images_path: (global.isProduction) ? 'dist/i' : 'app/images-inline',
+        images_dir:  (global.isProduction) ? 'dist/i' : 'app/images-inline',
         http_images_path: '/i',
         http_generated_images_path: '/i',
       }),

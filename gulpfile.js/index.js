@@ -19,7 +19,7 @@ global.environment = (global.isProduction) ? 'production' : 'development';
 
 global.isWatching = false;
 
-var config = require('./_config/index.js');
+var config = require('./_config/');
 //var Gulp = require('gulp');
 //var Path = require('path');
 
@@ -28,7 +28,7 @@ var config = require('./_config/index.js');
 //});
 
 require('./tasks/fonts');
-//require('./tasks/styles');
+require('./tasks/styles');
 //require('./tasks/scripts');
 //require('./tasks/swig');
 

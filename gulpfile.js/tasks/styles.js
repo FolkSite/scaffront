@@ -29,27 +29,66 @@ var _                = require('lodash'),
 var Config       = require('../_config').styles,
     ServerConfig = require('../_config').server;
 
+var Server = null;
 
+/**
+ * @param [stream]
+ */
+var watcherHandler = function (stream) {
+  if (!Server) { return; }
 
-gulp.task('sass:test', function (cb) {
-  var _Src = Config.sass.src;
-  if (!__.isGulpSrc(_Src)) {
-    _Src = gulp.src(__.getGlobPaths(Config.sass.src, ['sass', 'scss']));
+  if (gulpUtil.isStream(stream)) {
+    stream.pipe(Server.stream({once: true}));
+  } else {
+    Server.reload({once: true});
   }
+};
 
-  return _Src
+gulp.task('styles:sass', function (cb) {
+
+  var stream = gulp.src(__.getGlobPaths(Config.src, ['sass', 'scss']))
     .pipe(gulpSourcemaps.init())
-    .pipe(
-      gulpSass(Config.sass.nodeSass)
-        .on('error', __.plumberErrorHandler.errorHandler)
-    )
+    .pipe(gulpSass(Config.sass.nodeSass).on('error', __.plumberErrorHandler.errorHandler))
     .pipe(gulpSourcemaps.write('./'))
-    .pipe(gulp.dest('dist/css'))
+    .pipe(gulp.dest(Config.dest));
+
+  watcherHandler(stream);
+
+  return stream;
+});
+
+gulp.task('styles:sass:cleanup', function (cb) {
+  var css = __.getGlobPaths(Config.dest, ['css', 'css.map'], false, false);
+  var notMinCss = __.getGlobPaths(Config.dest, ['min.css', 'min.css.map'], false, true);
+
+  return del(css.concat(notMinCss));
 });
 
 
 
-//// Provide `once: true` to restrict reloading to once per stream
+gulp.task('styles:build', ['styles:sass']);
+
+gulp.task('styles:build:cleanup', ['styles:sass:cleanup']);
+
+
+gulp.task('styles:dist', ['styles:build']);
+
+gulp.task('styles:dist:cleanup', ['styles:build:cleanup']);
+
+
+
+gulp.task('styles:watch', ['styles:build'], function (cb) {
+  if (_.isFunction(ServerConfig.getBrowserSync)) {
+    Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
+  }
+
+  gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss']), ['styles:sass']);
+});
+
+
+
+
+// Provide `once: true` to restrict reloading to once per stream
 //gulp.task('templates', function () {
 //  return gulp.src('*.jade')
 //    .pipe(jade())

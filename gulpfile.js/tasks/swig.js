@@ -1,3 +1,6 @@
+// https://github.com/osscafe/gulp-cheatsheet/blob/master/examples/js/stream-array.js
+// https://www.npmjs.com/login?done=/package/gulp-consolidate
+
 var _                = require('lodash'),
     __               = require('../helpers'),
     extend           = require('extend'),

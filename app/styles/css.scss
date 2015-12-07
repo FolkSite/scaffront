@@ -3,6 +3,7 @@
 @import 'singularitygs';
 @import 'toolkit';
 
+
 @import 'css/vars';
 @import 'scaffront-styles';
 @import 'css/widgets';
@@ -16,3 +17,7 @@
   }
 }
 
+
+.qweqwe {
+  @include bg-size(100px 200px);
+}
