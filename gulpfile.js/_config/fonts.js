@@ -1,4 +1,4 @@
-var __              = require('../../helpers'),
+var __              = require('../helpers'),
     path            = require('path'),
     gulpUtil        = require('gulp-util'),
     gulpFont2Base64 = require('gulp-font2base64')

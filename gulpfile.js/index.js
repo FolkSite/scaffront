@@ -49,6 +49,7 @@ var config = require('./_config/');
 require('./tasks/fonts');
 require('./tasks/styles');
 require('./tasks/copier');
+require('./tasks/images');
 //require('./tasks/scripts');
 //require('./tasks/swig');
 
