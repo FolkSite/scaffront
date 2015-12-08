@@ -27,6 +27,24 @@ var Config       = require('../_config').templates,
     ServerConfig = require('../_config').server;
 
 
+
+var gulpConsolidate = require("gulp.consolidate");
+
+
+gulp.task('html:consolidate', function (cb) {
+  return gulp.src(Config.render.src)
+    .pipe(gulpPlumber(__.plumberErrorHandler))
+    .pipe(gulpData(Config.getTplData))
+    .pipe(gulpConsolidate("swig", Config.globalData || {}, {
+      setupEngine: function (engine, Engine) {
+        return Engine;
+      }
+      //useContents: true
+    }))
+    .pipe(gulpRename({extname: '.html'}))
+    .pipe(gulp.dest(Config.render.dest));
+});
+
 /**
  * gulp tasks
  */

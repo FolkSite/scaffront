@@ -8,10 +8,10 @@ config.server = require('./server');
 config.styles = require('./styles');
 config.fonts  = require('./fonts');
 config.copier = require('./copier');
+config.templates = require('./templates');
 //config.images = require('./images');
 
 //config.scripts = require('./scripts');
-//config.templates = require('./templates');
 
 
 module.exports = config;

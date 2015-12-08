@@ -15,8 +15,10 @@ module.exports = (function () {
     dest: 'dist/html'
   };
 
+  config.globalData = require('../../app/templates/globals-data');
+
   config.render = {
-    src: gulp.src(__.getGlobPaths(src, 'html')),
+    src: __.getGlobPaths(src, 'html', true),
     dest: 'dist/html',
     swig: {
       swigSetup: function (swigInstance) {},

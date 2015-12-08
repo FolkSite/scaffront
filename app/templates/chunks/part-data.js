@@ -6,6 +6,7 @@ module.exports = function () {
       {name: "Handlebars", emotion: "love"},
       {name: "Mustache", emotion: "enjoy"},
       {name: "SproutCore", emotion: "want to learn"}
-    ]
+    ],
+    simpleArr: ['foo', 'bar', 'foobar', 'bop']
   });
 }();

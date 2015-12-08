@@ -51,9 +51,9 @@ require('./tasks/fonts');
 //require('./tasks/_styles');
 require('./tasks/styles');
 require('./tasks/copier');
+require('./tasks/swig');
 //require('./tasks/images');
 //require('./tasks/scripts');
-//require('./tasks/swig');
 
 //return;
 //
