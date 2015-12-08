@@ -1,5 +1,6 @@
-var bowerConfig      = require('./bower'),
+var _                = require('lodash'),
     __               = require('../helpers'),
+    ImagesConfig     = require('./images'),
     gulp             = require('gulp'),
     gulpUtil         = require('gulp-util'),
     gulpFilter       = require('gulp-filter'),
@@ -17,37 +18,20 @@ var bowerConfig      = require('./bower'),
 
 var config = {};
 
-/**
- * @param {string} [directory]
- * @returns String
- */
-var getPackagePath = function (directory) {
-  return path.join('node_modules', directory || '');
+var importPaths = {
+  node_modules: __.getPackagePath(),
+  bower_components: __.getBowerPath(),
+  compass: __.getBowerPath('compass-mixins/lib'),
+  sassToolkit: __.getBowerPath('sass-toolkit/stylesheets'),
+  sassyButtons: __.getBowerPath('sassy-buttons'),
+  sassyMaps: __.getBowerPath('sassy-maps/sass'),
+  sassyLists: __.getBowerPath('SassyLists/dist'),
+  singularity: __.getBowerPath('singularity/stylesheets'),
+  singularityQuickSpanner: __.getBowerPath('singularity-quick-spanner/stylesheets'),
+  breakpointSass: __.getBowerPath('breakpoint-sass/stylesheets'),
+  breakpointSlicer: __.getBowerPath('breakpoint-slicer/stylesheets'),
+  scaffrontStyles: __.getBowerPath('scaffront-styles/stylesheets'),
 };
-
-/**
- * @param {string} [directory]
- * @returns String
- */
-var getBowerPath = function (directory) {
-  return path.join(bowerConfig.dirRelative, directory || '');
-};
-
-var importPaths = [
-  getPackagePath(),
-  getBowerPath(),
-  getBowerPath('compass-mixins/lib'),
-  getBowerPath('sass-toolkit/stylesheets'),
-  getBowerPath('sassy-buttons'),
-  getBowerPath('sassy-maps/sass'),
-  getBowerPath('SassyLists/dist'),
-  getBowerPath('singularity/stylesheets'),
-  getBowerPath('singularity-quick-spanner/stylesheets'),
-  getBowerPath('breakpoint-sass/stylesheets'),
-  getBowerPath('breakpoint-slicer/stylesheets'),
-  getBowerPath('scaffront-styles/stylesheets'),
-];
-
 
 config.src = 'app/styles';
 config.dest = 'dist/css';
@@ -58,22 +42,30 @@ config.transform = {
       if (!stream) { return; }
       if (!gulpUtil.isStream(stream)) { return stream; }
 
+      var _importPaths = _.values(importPaths);
+
       stream = stream
-        .pipe(gulpSourcemaps.init())
+        // здесь init не нужен, потому что gulpSass сам выставит нужные опции и сгенерирует все map'ы
+        //.pipe(gulpSourcemaps.init())
         .pipe(gulpSass({
           precision: 10,
           functions: assetFunctions({
-            images_path: (global.isProduction) ? 'dist/i' : 'app/images/design',
-            images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/design',
+            images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
+            images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
             http_images_path: '/i',
             http_generated_images_path: '/i',
           }),
           importer: sassCssImporter({
-            import_paths: importPaths
+            import_paths: _importPaths
           }),
-          includePaths: importPaths
+          includePaths: _importPaths,
+          sourceMap: './',
+          sourceMapContents: true,
+          omitSourceMapUrl: true
         }).on('error', __.plumberErrorHandler.errorHandler))
-        .pipe(gulpSourcemaps.write('./'))
+        .pipe(gulpSourcemaps.write('./', {
+          sourceRoot: './'
+        }))
       ;
 
       return stream;
@@ -83,20 +75,23 @@ config.transform = {
       if (!gulpUtil.isStream(stream)) { return stream; }
 
       stream = stream
-        .pipe(gulpSourcemaps.init())
-        //.pipe(gulpFilter(function (file) {
-        //  var is = __.Is(file);
-        //  return !is.underscored;
-        //}))
+        .pipe(gulpSourcemaps.init({
+          sourceRoot: './'
+        }))
         .pipe(gulpFileInclude({
           prefix: '//= ',
           basepath: '@file'
         }))
         //.pipe(base64({
-        //  extensions: ['jpg', 'png'],
-        //  maxImageSize: 32*1024 // размер указывается в байтах, тут он 32кб потому, что больше уже плохо для IE8
+        //  baseDir:      'public',
+        //  extensions:   ['jpg', 'png'],
+        //  exclude:      [/\.server\.(com|net)\/dynamic\//, '--live.jpg'],
+        //  maxImageSize: 32*1024, // размер указывается в байтах, тут он 32кб потому, что больше уже плохо для IE8
+        //  debug: true
         //}))
-        .pipe(gulpSourcemaps.write('./'))
+        .pipe(gulpSourcemaps.write('./', {
+          sourceRoot: './'
+        }))
       ;
 
       return stream;
@@ -106,12 +101,11 @@ config.transform = {
     if (!stream) { return; }
     if (!gulpUtil.isStream(stream)) { return stream; }
 
-    //console.log();
-
     stream = stream
-      //.pipe(gulpSourcemaps.init({
-      //  loadMaps: true
-      //}))
+      .pipe(gulpSourcemaps.init({
+        loadMaps: true,
+        sourceRoot: './'
+      }))
       .pipe(gulpAutoprefixer({
         browsers: [
           'last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'],
@@ -126,17 +120,34 @@ config.transform = {
           path.basename += '.min';
         }
       }))
-      //.pipe(gulpSourcemaps.write('./'))
+      .pipe(gulpSourcemaps.write('./', {
+        sourceRoot: './'
+      }))
     ;
 
     return stream;
   },
 };
 
-config.cleanupSrc = {
+config.cleanup = {
   build: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map']),
   dist:  __.getGlobPaths(config.dest, ['min.css', 'min.css.map'])
 };
 
+/**
+ * @type {Copier}
+ * @property {Copier} [sass]
+ * @property {Copier} [css]
+ */
+config.copier = {
+  sass: [{
+    from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg']),
+    to: path.join(ImagesConfig.src.libs, 'fancybox')
+  }, {
+    from: __.getGlobPaths(__.getBowerPath('magnific-popup/src/css'), ['scss']),
+    to: path.join(config.src, 'libs/magnific-popup')
+  }],
+  css: {}
+};
 
-module.exports = config;
+module.exports.config = config;

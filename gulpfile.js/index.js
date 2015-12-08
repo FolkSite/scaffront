@@ -1,3 +1,22 @@
+/**
+ * @typedef {string|string[]} Glob
+ */
+
+/**
+ * @callback StreamTransform
+ * @param {Stream} stream
+ * @returns {Stream} stream
+ */
+
+/**
+ * @typedef  {{}}                           Copier
+ * @property {Glob} from                    Source paths
+ * @property {Glob} to                      Destination paths
+ * @property {StreamTransform} [transform]  Stream transforms
+ * @property {string|string[]} [cleanups]   Glob for removing files
+ */
+
+
 // https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
 
 // https://gist.github.com/HPieters/88dd18e99c8925b2cabb
@@ -29,6 +48,7 @@ var config = require('./_config/');
 
 require('./tasks/fonts');
 require('./tasks/styles');
+require('./tasks/copier');
 //require('./tasks/scripts');
 //require('./tasks/swig');
 

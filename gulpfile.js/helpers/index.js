@@ -1,18 +1,38 @@
-var _        = require('lodash'),
-    FS       = require('fs'),
-    Path     = require('path'),
-    Crypto   = require('crypto'),
-    Gulp     = require('gulp'),
-    GulpUtil = require('gulp-util'),
-    Notifier = require('node-notifier');
+var _              = require('lodash'),
+    FS             = require('fs'),
+    Path           = require('path'),
+    Crypto         = require('crypto'),
+    Gulp           = require('gulp'),
+    GulpUtil       = require('gulp-util'),
+    Notifier       = require('node-notifier'),
+    bowerDirectory = require('bower-directory');
 
 
 var __ = {};
 
-/**
- *
- */
 __.noop = function () {};
+
+var bowerPath = (bowerDirectory) ? bowerDirectory.sync() : '';
+__.bower = {
+  path: bowerPath,
+  pathRelative: Path.relative(process.cwd(), bowerPath)
+};
+
+/**
+ * @param {string} [directory]
+ * @returns String
+ */
+__.getPackagePath = function (directory) {
+  return Path.join('node_modules', directory || '');
+};
+
+/**
+ * @param {string} [directory]
+ * @returns String
+ */
+__.getBowerPath = function (directory) {
+  return Path.join(__.bower.pathRelative, directory || '');
+};
 
 /**
  * @param {String} from
@@ -251,13 +271,6 @@ __.capitalize = function (str) {
 };
 
 /**
- * @param {String|String[]|boolean} extnames Default is '.*'. Pass false for return only paths without extensions
- */
-__.getGlobExtnames = function (extnames) {
-
-};
-
-/**
  *
  * @param {String|String[]} paths
  * @param {String|String[]|boolean} [files] Default is '.*'. Pass false for return only paths without extensions
@@ -270,7 +283,7 @@ __.getGlobPaths = function (paths, files, forceDeep) {
   files = __.getArray(files || null);
 
   if (!files.length || (files.length == 1 && !files[0])) {
-    files = ['.*'];
+    files = [];
   }
 
   paths = _.compact(paths);
@@ -300,7 +313,7 @@ __.getGlobPaths = function (paths, files, forceDeep) {
   _.each(paths, function (path) {
     var isPathExcluded = (path.indexOf('!') === 0);
 
-    if (typeof forceDeep != 'undefined') {
+    if (_.isBoolean(forceDeep)) {
       path = __.preparePath({trailingSlash: false}, path);
       var pathIsDeep = /\*\*$/.test(path);
 
@@ -311,18 +324,22 @@ __.getGlobPaths = function (paths, files, forceDeep) {
       }
     }
 
-    _.each(files, function (file) {
-      var isFileExcluded = (file.indexOf('!') === 0);
-      if (isFileExcluded) {
-        file = file.slice(1);
-      }
+    if (!files.length) {
+      result.push(path);
+    } else {
+      _.each(files, function (file) {
+        var isFileExcluded = (file.indexOf('!') === 0);
+        if (isFileExcluded) {
+          file = file.slice(1);
+        }
 
-      if ((isFileExcluded || isPathExcluded) && path.indexOf('!') !== 0) {
-        path = '!'+ path;
-      }
+        if ((isFileExcluded || isPathExcluded) && path.indexOf('!') !== 0) {
+          path = '!'+ path;
+        }
 
-      result.push(Path.join(path, file));
-    });
+        result.push(Path.join(path, file));
+      });
+    }
   });
 
   return _.unique(result);
@@ -548,5 +565,57 @@ __.pathResolver = function (pathes) {
     return Path.resolve(result, path);
   });
 };
+
+
+/**
+ * @param anything
+ * @returns boolean
+ */
+__.isCopier = function (anything) {
+
+  if (_.isPlainObject(anything) && anything.from && anything.to) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
+ * @param copiers
+ * @returns {Copier}
+ */
+__.getCopier = function (copiers) {
+  var defaults = {
+    from: '',
+    to: '',
+    transform: null,
+    cleanups: ''
+  };
+
+  copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+
+  copiers = _.map(copiers, function (copier) {
+    if (!__.isCopier(copier)) { return false; }
+
+    if (!copier.from) { copier.from = defaults.from; }
+    copier.from = (!_.isArray(copier.from)) ? [copier.from] : copier.from;
+
+    if (!copier.to) { copier.to = defaults.to; }
+    copier.to = (!_.isArray(copier.to)) ? [copier.to] : copier.to;
+
+    if (!copier.transform) { copier.transform = defaults.transform; }
+    copier.transform = (!_.isFunction(copier.transform)) ? null : copier.transform;
+
+    if (!copier.cleanups) { copier.cleanups = defaults.cleanups; }
+    copier.cleanups = (!_.isArray(copier.cleanups)) ? [copier.cleanups] : copier.cleanups;
+
+    return copier;
+  });
+
+  return _.compact(copiers);
+};
+
+
+
 
 module.exports = __;
