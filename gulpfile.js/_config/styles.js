@@ -1,6 +1,6 @@
 var _                = require('lodash'),
     __               = require('../helpers'),
-    ImagesConfig     = require('./images'),
+    ImagesConfig     = require('./images').config,
     gulp             = require('gulp'),
     gulpUtil         = require('gulp-util'),
     gulpFilter       = require('gulp-filter'),
