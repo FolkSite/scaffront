@@ -130,8 +130,8 @@ config.transform = {
 };
 
 config.cleanups = {
-  build: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map']),
-  dist:  __.getGlobPaths(config.dest, ['min.css', 'min.css.map'])
+  build: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map'], true),
+  dist:  __.getGlobPaths(config.dest, ['min.css', 'min.css.map'], true)
 };
 
 /**
@@ -139,15 +139,12 @@ config.cleanups = {
  * @property {Copier} [sass]
  * @property {Copier} [css]
  */
-config.copier = {
-  sass: [{
-    from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg']),
-    to: path.join(ImagesConfig.src.libs, 'fancybox')
-  }, {
-    from: __.getGlobPaths(__.getBowerPath('magnific-popup/src/css'), ['scss']),
-    to: path.join(config.src, 'libs/magnific-popup')
-  }],
-  css: {}
-};
+config.copier = [{
+  from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg']),
+  to: path.join(ImagesConfig.src.libs, 'fancybox')
+}, {
+  from: __.getGlobPaths(__.getBowerPath('magnific-popup/src/css'), ['scss']),
+  to: path.join(config.src, 'libs/magnific-popup')
+}];
 
 module.exports.config = config;

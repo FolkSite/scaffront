@@ -1,5 +1,6 @@
 var _            = require('lodash'),
     __           = require('../../helpers'),
+    del          = require('del'),
     gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
     mergeStreams = require('event-stream').merge
@@ -21,7 +22,7 @@ utils.copy = function (config, cb) {
     return null;
   }
 
-  return mergeStreams(_.map(config, function (item) {
+  return mergeStreams(_.map(copiers, function (item) {
     var stream = gulp.src(item.from);
 
     if (_.isFunction(item.transform)) {
@@ -52,7 +53,12 @@ utils.cleanup = function (config, cb) {
 
   config = __.getCopier(config);
 
-  return del(config.cleanups);
+  return del(config.cleanups)
+    .then(function () {
+      cb();
+    })
+    .catch(cb)
+  ;
 };
 
 

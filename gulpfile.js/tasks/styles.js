@@ -37,23 +37,7 @@ var watcherHandler = function (stream, bsConfig) {
   }
 };
 
-gulp.task('styles:sass:copier', function (cb) {
-  var result = CopierUtils.copy(getObject.get(Config, 'copier.sass'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
-});
-
-gulp.task('styles:sass:copier:cleanup', function (cb) {
-  var result = CopierUtils.cleanup(getObject.get(Config, 'copier.sass'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
-});
-
-gulp.task('styles:sass:compile', function (cb) {
+gulp.task('styles:sass', function (cb) {
   var stream = gulp.src(__.getGlobPaths(Config.src, ['sass', 'scss']))
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
@@ -74,36 +58,12 @@ gulp.task('styles:sass:compile', function (cb) {
   return stream;
 });
 
-gulp.task('styles:sass:compile:cleanup', function (cb) {
+gulp.task('styles:sass:cleanup', function (cb) {
   cb();
 });
 
-gulp.task('styles:sass', function (cb) {
-  runSequence('styles:sass:copier', 'styles:sass:compile', cb);
-});
 
-gulp.task('styles:sass:cleanup', function (cb) {
-  runSequence(['styles:sass:copier:cleanup', 'styles:sass:compile:cleanup'], cb);
-});
-
-
-gulp.task('styles:css:copier', function (cb) {
-  var result = CopierUtils.copy(getObject.get(Config, 'copier.css'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
-});
-
-gulp.task('styles:css:copier:cleanup', function (cb) {
-  var result = CopierUtils.cleanup(getObject.get(Config, 'copier.css'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
-});
-
-gulp.task('styles:css:builder', function () {
+gulp.task('styles:css', function () {
   var stream = gulp.src(__.getGlobPaths(Config.src, ['css', '!_*.css']))
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
@@ -124,25 +84,30 @@ gulp.task('styles:css:builder', function () {
   return stream;
 });
 
-gulp.task('styles:css:builder:cleanup', function (cb) {
+gulp.task('styles:css:cleanup', function (cb) {
   cb();
 });
 
-gulp.task('styles:css', function (cb) {
-  runSequence('styles:css:copier', 'styles:css:builder', cb);
+
+gulp.task('styles:copier', function (cb) {
+  var result = CopierUtils.copy(getObject.get(Config, 'copier'), cb);
+
+  if (gulpUtil.isStream(result)) {
+    return result;
+  }
 });
 
-gulp.task('styles:css:cleanup', function (cb) {
-  runSequence(['styles:css:copier:cleanup', 'styles:css:builder:cleanup'], cb);
+gulp.task('styles:copier:cleanup', function (cb) {
+  CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
 });
 
 
 gulp.task('styles:build', function (cb) {
-  runSequence(['styles:sass', 'styles:css'], cb);
+  runSequence('styles:copier', ['styles:sass', 'styles:css'], cb);
 });
 
 gulp.task('styles:build:cleanup', function (cb) {
-  runSequence(['styles:sass:cleanup', 'styles:css:cleanup'], function () {
+  runSequence(['styles:copier:cleanup', 'styles:sass:cleanup', 'styles:css:cleanup'], function () {
     if (!getObject.get(Config, 'cleanups.build') || !Config.cleanups.build) {
       cb();
       return;
@@ -158,7 +123,7 @@ gulp.task('styles:build:cleanup', function (cb) {
 
 
 gulp.task('styles:dist', function (cb) {
-  runSequence(['styles:build:cleanup', 'styles:dist:cleanup'], 'styles:build', function () {
+  runSequence('styles:dist:cleanup', 'styles:build', function () {
     var stream = gulp.src(__.getGlobPaths(Config.dest, ['css', '!min.css'], true))
       .pipe(gulpPlumber(__.plumberErrorHandler))
     ;
@@ -199,5 +164,14 @@ gulp.task('styles:watch', function (cb) {
 
   gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss'], true), ['styles:sass:compile']);
   gulp.watch(__.getGlobPaths(Config.src, ['css'], true),          ['styles:css:compile']);
+
+  var copiers, copyWatchers;
+
+  copiers = __.getCopier(getObject.get(Config, 'copier'));
+  copyWatchers = [];
+  _.each(copiers, function (copier) {
+    copyWatchers = copyWatchers.concat(copier.from);
+  });
+  copyWatchers.length && gulp.watch(copyWatchers, ['styles:copier']);
 });
 
