@@ -129,7 +129,7 @@ config.transform = {
   },
 };
 
-config.cleanup = {
+config.cleanups = {
   build: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map']),
   dist:  __.getGlobPaths(config.dest, ['min.css', 'min.css.map'])
 };

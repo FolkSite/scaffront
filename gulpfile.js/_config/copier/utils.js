@@ -1,13 +1,14 @@
 var _            = require('lodash'),
     __           = require('../../helpers'),
+    gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
     mergeStreams = require('event-stream').merge
-  ;
+;
 
 var utils = {};
 
 /**
- * @param {Copier} config
+ * @param {Copier|Copier[]} config
  * @param {Function} [cb]
  * @returns {Stream|null}
  */

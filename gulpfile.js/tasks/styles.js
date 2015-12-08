@@ -143,12 +143,12 @@ gulp.task('styles:build', function (cb) {
 
 gulp.task('styles:build:cleanup', function (cb) {
   runSequence(['styles:sass:cleanup', 'styles:css:cleanup'], function () {
-    if (!getObject.get(Config, 'cleanup.build') || !Config.cleanup.build) {
+    if (!getObject.get(Config, 'cleanups.build') || !Config.cleanups.build) {
       cb();
       return;
     }
 
-    del(Config.cleanup.build)
+    del(Config.cleanups.build)
       .then(function () {
         cb();
       })
@@ -178,12 +178,12 @@ gulp.task('styles:dist', function (cb) {
 
 gulp.task('styles:dist:cleanup', function (cb) {
   runSequence('styles:build:cleanup', function () {
-    if (!getObject.get(Config, 'cleanup.dist') || !Config.cleanup.dist) {
+    if (!getObject.get(Config, 'cleanups.dist') || !Config.cleanups.dist) {
       cb();
       return;
     }
 
-    del(Config.cleanup.dist)
+    del(Config.cleanups.dist)
       .then(function () {
         cb();
       })

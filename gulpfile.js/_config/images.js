@@ -1,9 +1,9 @@
 var _       = require('lodash'),
     __      = require('../helpers'),
-    Path    = require('path'),
-    Extend  = require('extend'),
-    Helpers = require('../helpers'),
-    FS      = require('fs');
+    path    = require('path'),
+    extend  = require('extend'),
+    FS      = require('fs')
+;
 
 
 var config = {};
