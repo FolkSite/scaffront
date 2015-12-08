@@ -62,15 +62,10 @@ gulp.task('styles:sass', function (cb) {
   return stream;
 });
 
-gulp.task('styles:sass:cleanup', function (cb) {
-  return del(__.getGlobPaths(Config.dest, ['css', 'css.map']));
-});
-
-
 gulp.task('styles:css', function () {
-  var stream = gulp.src(__.getGlobPaths(Config.src, ['css']))
-        .pipe(gulpPlumber(__.plumberErrorHandler))
-    ;
+  var stream = gulp.src(__.getGlobPaths(Config.src, ['css', '!_*.css']))
+    .pipe(gulpPlumber(__.plumberErrorHandler))
+  ;
 
   if (getObject.get(Config, 'transform.build.css') && _.isFunction(Config.transform.build.css)) {
     var tmp = Config.transform.build.css(stream);
@@ -86,51 +81,51 @@ gulp.task('styles:css', function () {
   });
 
   return stream;
-
-  var stream = gulp.src(__.getGlobPaths(options.build.css.src, options.build.css.extnames, false))
-    .pipe(gulpPlumber(__.plumberErrorHandler))
-  ;
-
-  if (getObject.get(Config, 'build.css.transform') && _.isFunction(Config.build.css.transform)) {
-    var tmp = Config.build.css.transform(stream);
-    stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
-  }
-
-  stream = stream
-    .pipe(gulp.dest(options.build.css.dest))
-  ;
-
-  watcherHandler(stream, options.build.css.browserSyncConfig);
-
-  return stream;
 });
 
-gulp.task('styles:css:cleanup', ['styles:sass:cleanup']);
 
+gulp.task('styles:build', function (cb) {
+  runSequence(
+    ['styles:sass', 'styles:css'],
+    cb
+  );
+});
 
-gulp.task('styles:build', ['styles:sass', 'styles:css']);
+gulp.task('styles:build:cleanup', function (cb) {
+  if (!getObject.get(Config, 'cleanupSrc.build') || !Config.cleanupSrc.build) {
+    cb();
+    return;
+  }
 
-gulp.task('styles:build:cleanup', function () {
-  return del(__.getGlobPaths(Config.dest, ['css', 'css.map']));
+  return del(Config.cleanupSrc.build);
 });
 
 
 gulp.task('styles:dist', ['styles:build'], function (cb) {
-  var stream = gulp.src(__.getGlobPaths(Config.dest, ['css'], false))
-    .pipe(gulpPlumber(__.plumberErrorHandler));
+  var stream = gulp.src(__.getGlobPaths(Config.dest, ['css']))
+    .pipe(gulpPlumber(__.plumberErrorHandler))
+  ;
 
-  if (getObject.get(Config, 'dist.transform') && _.isFunction(Config.build.css.transform)) {
-    var tmp = Config.build.css.transform(stream);
+  if (getObject.get(Config, 'transform.dist') && _.isFunction(Config.transform.dist)) {
+    var tmp = Config.transform.dist(stream);
     stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
   }
 
   stream = stream
-    .pipe(gulp.dest(options.build.css.dest));
+    .pipe(gulp.dest(Config.dest))
+  ;
 
   return stream;
 });
 
-gulp.task('styles:dist:cleanup', ['styles:build:cleanup']);
+gulp.task('styles:dist:cleanup', function (cb) {
+  if (!getObject.get(Config, 'cleanupSrc.dist') || !Config.cleanupSrc.dist) {
+    cb();
+    return;
+  }
+
+  return del(Config.cleanupSrc.build);
+});
 
 
 gulp.task('styles:watch', ['styles:build'], function (cb) {
@@ -138,7 +133,7 @@ gulp.task('styles:watch', ['styles:build'], function (cb) {
     Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
   }
 
-  gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss']), ['styles:sass']);
-  gulp.watch(__.getGlobPaths(Config.src, ['css']),          ['styles:css']);
+  gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss'], true), ['styles:sass']);
+  gulp.watch(__.getGlobPaths(Config.src, ['css'], true),          ['styles:css']);
 });
 

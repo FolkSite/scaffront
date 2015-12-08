@@ -18,19 +18,7 @@ var exts = [
   '!_*tmp.png',
 ];
 
-console.log(__.getGlobPaths(pathes, exts));
-
-var getLastFunc = function (arr) {
-  //console.log(_(__.getArray(arr || null)).reverse());
-  var func = null;
-  _(__.getArray(arr || null)).reverse().some(function (item) {
-    //console.log(item);
-    func = item;
-    return (_.isFunction(item));
-  });
-
-  return func;
-};
+console.log(__.getGlobPaths(pathes, exts, true));
 
 
 //console.log(getLastFunc(arr).toString());

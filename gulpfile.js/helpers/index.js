@@ -261,9 +261,10 @@ __.getGlobExtnames = function (extnames) {
  *
  * @param {String|String[]} paths
  * @param {String|String[]|boolean} [files] Default is '.*'. Pass false for return only paths without extensions
+ * @param {boolean} [forceDeep] If undefined then has no effect. But if it == true/false then to each path will be added/removed suffix '/**'
  * @returns {[]}
  */
-__.getGlobPaths = function (paths, files) {
+__.getGlobPaths = function (paths, files, forceDeep) {
   var result = [];
   paths = __.getArray(paths || null);
   files = __.getArray(files || null);
@@ -298,6 +299,17 @@ __.getGlobPaths = function (paths, files) {
 
   _.each(paths, function (path) {
     var isPathExcluded = (path.indexOf('!') === 0);
+
+    if (typeof forceDeep != 'undefined') {
+      path = __.preparePath({trailingSlash: false}, path);
+      var pathIsDeep = /\*\*$/.test(path);
+
+      if (forceDeep && !pathIsDeep) {
+        path = Path.join(path, '**');
+      } else if (!forceDeep && pathIsDeep) {
+        path = path.slice(0, path.length - 2);
+      }
+    }
 
     _.each(files, function (file) {
       var isFileExcluded = (file.indexOf('!') === 0);
@@ -519,7 +531,7 @@ __.getArray = function (anything) {
 };
 
 /**
- * @param {string|string[]} pathes...
+ * @param {(...string|...string[])} pathes
  */
 __.pathResolver = function (pathes) {
   var tmp = _.compact(_.flatten(_.toArray(arguments)));

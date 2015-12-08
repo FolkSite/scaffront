@@ -1,5 +1,6 @@
 var bowerConfig      = require('./bower'),
     __               = require('../helpers'),
+    gulp             = require('gulp'),
     gulpUtil         = require('gulp-util'),
     gulpFilter       = require('gulp-filter'),
     gulpFileInclude  = require('gulp-file-include'),
@@ -82,10 +83,11 @@ config.transform = {
       if (!gulpUtil.isStream(stream)) { return stream; }
 
       stream = stream
-        .pipe(gulpFilter(function (file) {
-          var is = __.Is(file);
-          return !is.underscored;
-        }))
+        .pipe(gulpSourcemaps.init())
+        //.pipe(gulpFilter(function (file) {
+        //  var is = __.Is(file);
+        //  return !is.underscored;
+        //}))
         .pipe(gulpFileInclude({
           prefix: '//= ',
           basepath: '@file'
@@ -94,6 +96,7 @@ config.transform = {
         //  extensions: ['jpg', 'png'],
         //  maxImageSize: 32*1024 // размер указывается в байтах, тут он 32кб потому, что больше уже плохо для IE8
         //}))
+        .pipe(gulpSourcemaps.write('./'))
       ;
 
       return stream;
@@ -103,8 +106,12 @@ config.transform = {
     if (!stream) { return; }
     if (!gulpUtil.isStream(stream)) { return stream; }
 
+    //console.log();
+
     stream = stream
-      .pipe(gulpSourcemaps.init())
+      //.pipe(gulpSourcemaps.init({
+      //  loadMaps: true
+      //}))
       .pipe(gulpAutoprefixer({
         browsers: [
           'last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'],
@@ -119,14 +126,17 @@ config.transform = {
           path.basename += '.min';
         }
       }))
-      .pipe(gulpSourcemaps.write('./'))
+      //.pipe(gulpSourcemaps.write('./'))
     ;
 
     return stream;
   },
 };
 
-config.dist = {
+config.cleanupSrc = {
+  build: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map']),
+  dist:  __.getGlobPaths(config.dest, ['min.css', 'min.css.map'])
 };
+
 
 module.exports = config;
