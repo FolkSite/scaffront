@@ -5,6 +5,7 @@
 /**
  * @callback StreamTransform
  * @param {Stream} stream
+ * @param {Function} cb
  * @returns {Stream} stream
  */
 
@@ -47,9 +48,10 @@ var config = require('./_config/');
 //});
 
 require('./tasks/fonts');
+//require('./tasks/_styles');
 require('./tasks/styles');
 require('./tasks/copier');
-require('./tasks/images');
+//require('./tasks/images');
 //require('./tasks/scripts');
 //require('./tasks/swig');
 

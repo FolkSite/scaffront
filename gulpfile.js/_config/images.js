@@ -104,7 +104,7 @@ config.transform = {
 
 config.cleanups = {
   build: {
-    inline: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map'], true),
+    inline: __.getGlobPaths(config.dest.inline, ['css', 'css.map', '!min.css', '!min.css.map'], true),
     inlineSprites: '',
     inlineSpritesSvg: '',
     libs: '',

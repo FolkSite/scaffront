@@ -36,12 +36,12 @@ var importPaths = {
 config.src = 'app/styles';
 config.dest = 'dist/css';
 
+/**
+ * @type {{build: {sass: StreamTransform, css: StreamTransform}, dist: StreamTransform}}
+ */
 config.transform = {
   build: {
     sass: function (stream) {
-      if (!stream) { return; }
-      if (!gulpUtil.isStream(stream)) { return stream; }
-
       var _importPaths = _.values(importPaths);
 
       stream = stream
@@ -71,9 +71,6 @@ config.transform = {
       return stream;
     },
     css: function (stream) {
-      if (!stream) { return; }
-      if (!gulpUtil.isStream(stream)) { return stream; }
-
       stream = stream
         .pipe(gulpSourcemaps.init({
           sourceRoot: './'
@@ -98,9 +95,6 @@ config.transform = {
     },
   },
   dist: function (stream) {
-    if (!stream) { return; }
-    if (!gulpUtil.isStream(stream)) { return stream; }
-
     stream = stream
       .pipe(gulpSourcemaps.init({
         loadMaps: true,
