@@ -24,14 +24,14 @@ config.transform = function (stream) {
 //config.cleanups = __.getGlobPaths(config.src, ['css']);
 
 
-config.copySrc = path.join(src, 'asis');
+var copySrc = path.join(src, 'asis');
 /**
  * @type {Copier}
  * @property {Copier} [sass]
  * @property {Copier} [css]
  */
 config.copier = {
-  from: __.getGlobPaths(config.copySrc, ['eot', 'svg', 'ttf', 'woff', 'woff2']),
+  from: __.getGlobPaths(copySrc, ['eot', 'svg', 'ttf', 'woff', 'woff2'], true),
   to: config.dest,
   cleanups: __.getGlobPaths(config.dest, ['eot', 'svg', 'ttf', 'woff', 'woff2'])
 };

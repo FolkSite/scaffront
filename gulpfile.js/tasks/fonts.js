@@ -40,23 +40,16 @@ var watcherHandler = function (stream, bsConfig) {
 
 
 gulp.task('fonts:copier', function (cb) {
-  var result = CopierUtils.copy(getObject.get(Config, 'copier'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
+  CopierUtils.copy(getObject.get(Config, 'copier'), cb);
 });
 
 gulp.task('fonts:copier:cleanup', function (cb) {
-  var result = CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
+  CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
 });
 
+
 gulp.task('fonts:builder', function () {
-  var stream = gulp.src(__.getGlobPaths(Config.src, ['css', '!_*.css']))
+  var stream = gulp.src(__.getGlobPaths(Config.src, Config.extnames || [], true))
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
 
@@ -98,89 +91,12 @@ gulp.task('fonts:build:cleanup', function (cb) {
 
 
 gulp.task('fonts:dist', function (cb) {
-  runSequence(['fonts:build'], cb);
+  runSequence('fonts:build', cb);
 });
 
 gulp.task('fonts:dist:cleanup', function (cb) {
-  runSequence(['fonts:dist:cleanup'], cb);
+  runSequence('fonts:dist:cleanup', cb);
 });
-
-
-
-//gulp.task('styles:css', function (cb) {
-//  runSequence('styles:css:copier', 'styles:css:builder', cb);
-//});
-//
-//gulp.task('styles:css:cleanup', function (cb) {
-//  runSequence(['styles:css:copier:cleanup', 'styles:css:builder:cleanup'], cb);
-//});
-//
-//
-//
-//
-//gulp.task('fonts:asis', function (cb) {
-//  Config.asis.extnames = __.getArray(Config.asis.extnames || null);
-//
-//  var stream = __.getGulpSrc(__.getGlobPaths(Config.asis.src, Config.asis.extnames))
-//    .pipe(gulpPlumber(__.plumberErrorHandler))
-//    .pipe(gulp.dest(Config.asis.dest));
-//
-//  watcherHandler(stream);
-//
-//  return stream;
-//});
-//
-//gulp.task('fonts:asis:cleanup', function (cb) {
-//  if (Config.asis.extnames && __.getArray(Config.asis.extnames).length) {
-//    return del(__.getGlobPaths(Config.asis.dest, Config.asis.extnames));
-//  }
-//
-//  cb();
-//});
-//
-//
-//gulp.task('fonts:tocss', function (cb) {
-//  var stream = __.getGulpSrc(__.getGlobPaths(Config.tocss.src, Config.tocss.extnames || []))
-//    .pipe(gulpPlumber(__.plumberErrorHandler))
-//    .pipe(gulpFont2Base64())
-//    .pipe(gulp.dest(Config.asis.dest));
-//
-//  watcherHandler(stream, {
-//    match: '**/*.css'
-//  });
-//
-//  return stream;
-//});
-//
-//gulp.task('fonts:tocss:cleanup', function (cb) {
-//  var extnames = [];
-//  if (Config.tocss.extnames && __.getArray(Config.tocss.extnames).length) {
-//    _.each(Config.tocss.extnames, function (extname) {
-//      extnames.push(
-//        extname +'.css',
-//        extname +'.min.css'
-//      );
-//    });
-//
-//    return del(__.getGlobPaths(Config.tocss.dest, extnames));
-//  }
-//
-//  cb();
-//});
-//
-//
-//gulp.task('fonts:build', function (cb) {
-//  runSequence(['fonts:asis', 'fonts:tocss'], cb);
-//});
-//
-//gulp.task('fonts:build:cleanup', function (cb) {
-//  runSequence(['fonts:asis:cleanup', 'fonts:tocss:cleanup'], cb);
-//});
-//
-//
-//gulp.task('fonts:dist', ['fonts:build']);
-//
-//gulp.task('fonts:dist:cleanup', ['fonts:build:cleanup']);
 
 
 gulp.task('fonts:watch', function (cb) {

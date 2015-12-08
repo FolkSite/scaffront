@@ -123,7 +123,7 @@ gulp.task('styles:build:cleanup', function (cb) {
 
 
 gulp.task('styles:dist', function (cb) {
-  runSequence('styles:dist:cleanup', 'styles:build', function () {
+  runSequence('styles:build', function () {
     var stream = gulp.src(__.getGlobPaths(Config.dest, ['css', '!min.css'], true))
       .pipe(gulpPlumber(__.plumberErrorHandler))
     ;
