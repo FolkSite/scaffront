@@ -11,11 +11,17 @@
       <w>gulpify</w>
       <w>isstream</w>
       <w>jsface</w>
+      <w>keydown</w>
+      <w>keypress</w>
+      <w>keyup</w>
       <w>lazypipe</w>
       <w>lodash</w>
       <w>magnific</w>
       <w>minify</w>
       <w>mixins</w>
+      <w>mousedown</w>
+      <w>mousemove</w>
+      <w>mouseup</w>
       <w>noop</w>
       <w>noparse</w>
       <w>nunjucks</w>

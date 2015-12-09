@@ -53,6 +53,12 @@
     "instantclick": "~3.1.0",
     "numeral": "~1.5.3",
     "Jcrop": "~2.0.4",
-    "jquery-mousewheel": "~3.1.13"
+    "jquery-mousewheel": "~3.1.13",
+    "pickmeup": "~2.8.0",
+    "At.js": "~1.4.1",
+    "overthrow": "~0.7.1",
+    "basket.js": "~0.5.2",
+    "textarea-autosize": "~0.4.1",
+    "nouislider": "~8.2.1"
   }
 }
