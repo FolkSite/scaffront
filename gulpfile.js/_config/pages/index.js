@@ -1,13 +1,14 @@
-var _               = require('lodash'),
-    __              = require('../../helpers'),
-    path            = require('path'),
-    extend          = require('extend'),
-    gulp            = require('gulp'),
-    fs              = require('fs'),
-    gulpTap         = require('gulp-tap'),
-    gulpData        = require('gulp-data'),
-    gulpConsolidate = require('gulp.consolidate'),
-    gulpRename      = require('gulp-rename')
+var _                = require('lodash'),
+    __               = require('../../helpers'),
+    path             = require('path'),
+    extend           = require('extend'),
+    gulp             = require('gulp'),
+    fs               = require('fs'),
+    gulpTap          = require('gulp-tap'),
+    gulpData         = require('gulp-data'),
+    gulpConsolidate  = require('gulp.consolidate'),
+    gulpRename       = require('gulp-rename'),
+    gulpJsBeautifier = require('gulp-jsbeautifier')
   ;
 
 
@@ -57,10 +58,46 @@ config.transform = function (stream) {
       //  return Engine;
       //}
     }))
-    .pipe(gulpTap(function (file) {
-      console.log('--file.path', file.path);
+    .pipe(gulpRename({extname: '.html'}))
+    .pipe(gulpJsBeautifier({
+      html: {
+        braceStyle: 'collapse',
+        endWithNewline: true,
+        indentInnerHtml: true,
+        indentChar: ' ',
+        indentScripts: 'normal',
+        indentSize: 2,
+        maxPreserveNewlines: 1,
+        preserveNewlines: false,
+        unformatted: ['a', 'sub', 'sup', 'b', 'i', 'strong', 'em', 'u'],
+        wrapLineLength: 0,
+        extra_liners: []
+      },
+      css: {
+        indentChar: ' ',
+        indentSize: 2
+      },
+      js: {
+        braceStyle: 'collapse',
+        breakChainedMethods: false,
+        e4x: false,
+        evalCode: false,
+        indentChar: ' ',
+        indentLevel: 0,
+        indentSize: 2,
+        indentWithTabs: false,
+        jslintHappy: false,
+        keepArrayIndentation: false,
+        keepFunctionIndentation: false,
+        maxPreserveNewlines: 10,
+        preserveNewlines: true,
+        spaceBeforeConditional: true,
+        spaceInParen: false,
+        unescapeStrings: false,
+        wrapLineLength: 0
+      }
     }))
-    .pipe(gulpRename({extname: '.html'}));
+  ;
 };
 
 config.cleanups = __.getGlobPaths(config.dest, ['html', 'tpl'], true);
