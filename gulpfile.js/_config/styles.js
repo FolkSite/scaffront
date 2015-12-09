@@ -10,6 +10,7 @@ var _                = require('lodash'),
     assetFunctions   = require('node-sass-asset-functions'),
     gulpRename       = require('gulp-rename'),
     gulpAutoprefixer = require('gulp-autoprefixer'),
+    gulpBase64       = require('gulp-base64'),
     gulpSass         = require('gulp-sass'),
     gulpSourcemaps   = require('gulp-sourcemaps'),
     gulpMinifyCss    = require('gulp-minify-css')
