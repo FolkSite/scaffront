@@ -37,13 +37,13 @@ gulp.task('fonts:copier:cleanup', function (cb) {
 });
 
 
-gulp.task('fonts:builder', function () {
+gulp.task('fonts:builder', function (cb) {
   var stream = gulp.src(fontsConfig.src)
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
 
   if (getObject.get(fontsConfig, 'transform') && _.isFunction(fontsConfig.transform)) {
-    var tmp = fontsConfig.transform(stream);
+    var tmp = fontsConfig.transform(stream, cb);
     stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
   }
 

@@ -12,7 +12,7 @@ var config = {};
 config = [{
   //from: '',
   //to: '',
-  //transform: function (stream) {
+  //transform: function (stream, cb) {
   //  return stream;
   //},
   //cleanups: _.flatten(cleanupGlobs)

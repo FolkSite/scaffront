@@ -581,10 +581,10 @@ __.isCopier = function (anything) {
 };
 
 /**
- * @param copiers
+ * @param {*} anything
  * @returns {Copier}
  */
-__.getCopier = function (copiers) {
+__.getCopier = function (anything) {
   var defaults = {
     from: '',
     to: '',
@@ -592,27 +592,23 @@ __.getCopier = function (copiers) {
     cleanups: ''
   };
 
-  copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+  if (!__.isCopier(anything)) {
+    return defaults;
+  }
 
-  copiers = _.map(copiers, function (copier) {
-    if (!__.isCopier(copier)) { return false; }
+  if (!anything.from) { anything.from = defaults.from; }
+  anything.from = (!_.isArray(anything.from)) ? [anything.from] : anything.from;
 
-    if (!copier.from) { copier.from = defaults.from; }
-    copier.from = (!_.isArray(copier.from)) ? [copier.from] : copier.from;
+  if (!anything.to) { anything.to = defaults.to; }
+  anything.to = (!_.isArray(anything.to)) ? [anything.to] : anything.to;
 
-    if (!copier.to) { copier.to = defaults.to; }
-    copier.to = (!_.isArray(copier.to)) ? [copier.to] : copier.to;
+  if (!anything.transform) { anything.transform = defaults.transform; }
+  anything.transform = (!_.isFunction(anything.transform)) ? null : anything.transform;
 
-    if (!copier.transform) { copier.transform = defaults.transform; }
-    copier.transform = (!_.isFunction(copier.transform)) ? null : copier.transform;
+  if (!anything.cleanups) { anything.cleanups = defaults.cleanups; }
+  anything.cleanups = (!_.isArray(anything.cleanups)) ? [anything.cleanups] : anything.cleanups;
 
-    if (!copier.cleanups) { copier.cleanups = defaults.cleanups; }
-    copier.cleanups = (!_.isArray(copier.cleanups)) ? [copier.cleanups] : copier.cleanups;
-
-    return copier;
-  });
-
-  return _.compact(copiers);
+  return anything;
 };
 
 

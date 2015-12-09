@@ -14,5 +14,5 @@ module.exports = function () {
       },
       body: "Me too!"
     }]
-  }, require('./chunks/part-data'));
+  }, {});
 }();

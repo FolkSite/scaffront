@@ -4,24 +4,29 @@ var _            = require('lodash'),
     gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
     gulpPlumber  = require('gulp-plumber'),
-    mergeStreams = require('event-stream').merge
+    mergeStreams = require('event-stream').merge,
+    Promise      = require('bluebird')
 ;
 
 var utils = {};
 
 /**
  * @param {Copier|Copier[]} config
- * @param {Function} [cb]
  * @returns {Stream|null}
  */
-utils.copy = function (config, cb) {
-  cb = (_.isFunction(cb)) ? cb : function () {};
-
-  var copiers = __.getCopier(config);
-  if (!copiers.length) {
-    cb();
-    return null;
+utils.copy = function (config) {
+  if (!config) {
+    return Promise.resolve();
   }
+  config = (!_.isArray(config)) ? [config] : config;
+
+  if (!config.length) {
+    return Promise.resolve();
+  }
+
+  var copiers = _.map(config, function (item) {
+    return __.getCopier(item);
+  });
 
   return mergeStreams(_.map(copiers, function (item) {
     var stream = gulp.src(item.from);
@@ -42,26 +47,30 @@ utils.copy = function (config, cb) {
 };
 
 /**
- * @param {Copier} config
- * @param {Function} [cb]
- * @returns {Stream|null}
+ * @param {Copier|Copier[]} config
+ * @returns {Promise|Stream}
  */
-utils.cleanup = function (config, cb) {
-  cb = (_.isFunction(cb)) ? cb : function () {};
+utils.cleanup = function (config) {
+  if (!config) {
+    return Promise.resolve();
+  }
+  config = (!_.isArray(config)) ? [config] : config;
 
-  if (!__.isCopier(config)) {
-    cb();
-    return null;
+  if (!config.length) {
+    return Promise.resolve();
   }
 
-  config = __.getCopier(config);
+  config = _.map(config, function (item) {
+    return __.getCopier(item);
+  });
 
-  return del(config.cleanups)
-    .then(function () {
-      cb();
-    })
-    .catch(cb)
-  ;
+  return Promise.all(_.map(config, function (item) {
+    if (!item.cleanups) {
+      return Promise.resolve();
+    }
+
+    return del(item.cleanups);
+  }));
 };
 
 

@@ -9,7 +9,7 @@ var config = {};
 config.src = __.getGlobPaths('app/fonts/2css', ['ttf', 'woff'] || [], true);
 config.dest = 'dist/css/fonts';
 
-config.transform = function (stream) {
+config.transform = function (stream, cb) {
   if (!stream) { return; }
   if (!gulpUtil.isStream(stream)) { return stream; }
 

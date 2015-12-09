@@ -1,111 +1,85 @@
-var _           = require('lodash'),
-    __          = require('../../helpers'),
-    path        = require('path'),
-    extend      = require('extend'),
-    gulp        = require('gulp'),
-    fs          = require('fs')
-;
+var _               = require('lodash'),
+    __              = require('../../helpers'),
+    path            = require('path'),
+    extend          = require('extend'),
+    gulp            = require('gulp'),
+    fs              = require('fs'),
+    gulpTap         = require('gulp-tap'),
+    gulpData        = require('gulp-data'),
+    gulpConsolidate = require('gulp.consolidate'),
+    gulpRename      = require('gulp-rename')
+  ;
 
 
-//var config = {};
-//
-//config.src = 'app/pages';
-//
-//config.dest = 'dist/pages';
-//
-//config.transform = {
-//  build: {
-//    inline: function (stream) {
-//      stream = stream
-//        //.pipe()
-//      ;
-//
-//      return stream;
-//    },
-//  },
-//  dist: {
-//    inline: function (stream) {
-//      stream = stream
-//        //.pipe()
-//      ;
-//
-//      return stream;
-//    },
-//  },
-//};
-//
-//config.cleanups = {
-//  build: {
-//    inline: __.getGlobPaths(config.dest, ['css', 'css.map', '!min.css', '!min.css.map'], true),
-//  },
-//  dist: {
-//    inline: '',
-//  }
-//};
-//
-///**
-// * @type {Copier|Copier[]}
-// */
-//config.copier = [{
-//  //from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg', 'svg']),
-//  //to: path.join(config.src.libs, 'fancybox'),
-//  //cleanups: __.getGlobPaths(path.join(config.src.libs, 'fancybox'), ['gif', 'png', 'jpg', 'svg'])
-//}];
+var utils = {};
 
+utils.getTplData = function (tplFile) {
+  var dataFile,
+      data = {},
+      parsed = path.parse(tplFile.path),
+      ext = '.js';
 
+  parsed.name = parsed.name +'-data';
+  parsed.ext = ext;
+  parsed.base = parsed.name + ext;
+
+  dataFile = path.format(parsed);
+
+  if (dataFile && fs.existsSync(dataFile)) {
+    data = require(dataFile);
+
+    if (!_.isPlainObject(data)) {
+      try {
+        data = JSON.parse(data);
+        data = data || {}; // prevent null
+      } catch (e) { data = {}; }
+    }
+  }
+
+  return data;
+};
+
+var src = 'app/pages';
 
 var config = {};
-var src = 'app/templates';
 
-config.data = {
-  src: gulp.src(path.join(src, '**/*-data.js')),
-  dest: 'dist/html'
-};
+config.src = __.getGlobPaths(src, ['html', 'tpl'], true);
+config.dest = 'dist/pages';
 
-config.globalData = require('../../../app/templates/globals-data');
+config.tplsData = require('../../../app/pages/globals-data');
 
-config.render = {
-  src: __.getGlobPaths(src, 'tpl', true),
-  dest: 'dist/html',
-  swig: {
-    swigSetup: function (swigInstance) {},
-    swigOptions: {
-      //varControls: ['{{', '}}'],
-      //tagControls: ['{%', '%}'],
-      //cmtControls: ['{#', '#}'],
-      cache: false,
-      autoescape: true,
-      // global template's data
-      locals: {
-
+config.transform = function (stream) {
+  stream
+    .pipe(gulpData(utils.getTplData))
+    .pipe(gulpConsolidate('swig', config.tplsData || {}, {
+      setupEngine: function (engine, Engine) {
+        return Engine;
       }
-    },
-    data: require('../../../app/templates/globals-data'),
-    mode: 'render'
-  }
+      //useContents: true
+    }))
+    .pipe(gulpRename({extname: '.html'}));
+
+  return stream;
 };
 
-config.compile = {
-  src: gulp.src(__.getGlobPaths(src, 'html')),
-  dest: 'app/scripts/tpl',
-  swig: {
-    swigSetup: function (swigInstance) {},
-    swigOptions: {
-      varControls: ['{{', '}}'],
-      tagControls: ['{%', '%}'],
-      cmtControls: ['{#', '#}'],
-      cache: false,
-      autoescape: true,
-      // global template's data
-      locals: {
+config.cleanups = __.getGlobPaths(config.dest, ['html'], true);
 
-      }
-    },
-    mode: 'compile', // or 'compile'
-    compileTemplate: 'module.exports = <%= template %>;'
-  }
-};
+config.copier = [{
+  from: __.getGlobPaths(src, ['*-data.js', '*-data.json'], true),
+  to: config.dest,
+  transform: function (stream) {
+    stream
+      .pipe(gulpTap(function (file) {
+        file.contents = new Buffer(JSON.stringify(require(file.path), null, 2));
+      }))
+      .pipe(gulpRename({extname: '.json'}));
+
+    return stream;
+  },
+  cleanups: __.getGlobPaths(config.dest, ['*-data.json'], true)
+}];
 
 
-module.exports.utils  = require('./utils');
+
+module.exports.utils  = utils;
 module.exports.config = config;
