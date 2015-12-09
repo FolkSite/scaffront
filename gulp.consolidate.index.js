@@ -1,4 +1,4 @@
-var map = require("map-stream"),
+var through = require('through2'),
     consolidate = require("consolidate"),
     extend = require('extend');
 
@@ -13,11 +13,7 @@ module.exports = function (engine, data, options) {
 
   var Engine;
   try {
-    if (engine === "hogan") {
-      Engine = require("hogan.js");
-    } else {
-      Engine = require(engine);
-    }
+    Engine = require(engine);
   } catch (e) {
     throw new Error("gulp-consolidate: The template engine \"" + engine + "\" was not found. " +
       "Did you forget to install it?\n\n    npm install --save-dev " + engine);
@@ -30,38 +26,41 @@ module.exports = function (engine, data, options) {
     }
   }
 
-  return map(function (file, callback) {
+  //return map(function (file, callback) {
+    return through.obj(function(file, enc, callback) {
     var fileData = data || {};
 
     if (file.data) {
       fileData = extend(true, {}, fileData, file.data);
     }
 
-    function render(err, html) {
-      if (err) {
-        callback(err);
-      } else {
-        file.contents = new Buffer(html);
-        callback(null, file);
-      }
-    }
+    callback(null, file);
 
-    if (typeof fileData === "function") {
-      fileData = fileData(file);
-    }
-
-    if (file.contents instanceof Buffer) {
-      try {
-        if (options.useContents) {
-          consolidate[engine].render(String(file.contents), fileData, render);
-        } else {
-          consolidate[engine](file.path, fileData, render);
-        }
-      } catch (err) {
-        callback(err);
-      }
-    } else {
-      callback(new Error("gulp-consolidate: streams not supported"), undefined);
-    }
+    //return;
+    //
+    //var render = (function (file) {
+    //  return function (err, html) {
+    //    if (err) {
+    //      callback(err);
+    //    } else {
+    //      file.contents = new Buffer(html);
+    //      callback(null, file);
+    //    }
+    //  };
+    //})(file);
+    //
+    //if (file.contents instanceof Buffer) {
+    //  try {
+    //    if (!!options.useContents) {
+    //      consolidate[engine].render(String(file.contents), fileData, render);
+    //    } else {
+    //      consolidate[engine](file.path, fileData, render);
+    //    }
+    //  } catch (err) {
+    //    callback(err);
+    //  }
+    //} else {
+    //  callback(new Error("gulp-consolidate: streams not supported"), undefined);
+    //}
   });
 };

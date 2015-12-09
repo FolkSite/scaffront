@@ -1,12 +1,9 @@
-module.exports = function () {
+var config = {
+  isProduction: global.isProduction,
+  Environment: global.environment,
 
-  return {
-    config: {
-      isProduction: global.isProduction,
-      Environment: global.environment,
+  param1: 'qweqweqweqwe',
+  param2: 123234345456
+};
 
-      param1: 'qweqweqweqwe',
-      param2: 123234345456
-    },
-  };
-}();
+module.exports.config = config;

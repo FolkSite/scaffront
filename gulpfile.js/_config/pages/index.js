@@ -4,6 +4,7 @@ var _               = require('lodash'),
     extend          = require('extend'),
     gulp            = require('gulp'),
     fs              = require('fs'),
+    lazypipe        = require('lazypipe'),
     gulpTap         = require('gulp-tap'),
     gulpData        = require('gulp-data'),
     gulpConsolidate = require('gulp.consolidate'),
@@ -49,20 +50,21 @@ config.dest = 'dist/pages';
 config.tplsData = require('../../../app/pages/globals-data');
 
 config.transform = function (stream) {
-  stream
+
+  return stream
     .pipe(gulpData(utils.getTplData))
     .pipe(gulpConsolidate('swig', config.tplsData || {}, {
-      setupEngine: function (engine, Engine) {
-        return Engine;
-      }
-      //useContents: true
+      //setupEngine: function (engine, Engine) {
+      //  return Engine;
+      //}
+    }))
+    .pipe(gulpTap(function (file) {
+      console.log('--file.path', file.path);
     }))
     .pipe(gulpRename({extname: '.html'}));
-
-  return stream;
 };
 
-config.cleanups = __.getGlobPaths(config.dest, ['html'], true);
+config.cleanups = __.getGlobPaths(config.dest, ['html', 'tpl'], true);
 
 config.copier = [{
   from: __.getGlobPaths(src, ['*-data.js', '*-data.json'], true),
@@ -70,7 +72,9 @@ config.copier = [{
   transform: function (stream) {
     stream
       .pipe(gulpTap(function (file) {
-        file.contents = new Buffer(JSON.stringify(require(file.path), null, 2));
+        if (fs.existsSync(file.path)) {
+          file.contents = new Buffer(JSON.stringify(require(file.path), null, 2));
+        }
       }))
       .pipe(gulpRename({extname: '.json'}));
 
