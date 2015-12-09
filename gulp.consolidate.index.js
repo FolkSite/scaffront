@@ -1,5 +1,6 @@
 var through = require('through2'),
     consolidate = require("consolidate"),
+    Promise = require("bluebird"),
     extend = require('extend');
 
 module.exports = function (engine, data, options) {
@@ -26,41 +27,32 @@ module.exports = function (engine, data, options) {
     }
   }
 
-  //return map(function (file, callback) {
-    return through.obj(function(file, enc, callback) {
-    var fileData = data || {};
+  var fileData = data || {};
 
-    if (file.data) {
-      fileData = extend(true, {}, fileData, file.data);
+  return through.obj(function(file, enc, callback) {
+    file.data = extend(true, {}, fileData, file.data || {});
+
+    if (file.contents instanceof Buffer) {
+      try {
+        Promise.using(file, function (file) {
+          var promise;
+          if (!!options.useContents) {
+            promise = consolidate[engine].render(String(file.contents), file.data);
+          } else {
+            promise = consolidate[engine](file.path, file.data);
+          }
+
+          promise.then(function (html) {
+            file.contents = new Buffer(html);
+            callback(null, file);
+          }).catch(callback);
+        });
+
+      } catch (err) {
+        callback(err);
+      }
+    } else {
+      callback(new Error("gulp-consolidate: streams not supported"), undefined);
     }
-
-    callback(null, file);
-
-    //return;
-    //
-    //var render = (function (file) {
-    //  return function (err, html) {
-    //    if (err) {
-    //      callback(err);
-    //    } else {
-    //      file.contents = new Buffer(html);
-    //      callback(null, file);
-    //    }
-    //  };
-    //})(file);
-    //
-    //if (file.contents instanceof Buffer) {
-    //  try {
-    //    if (!!options.useContents) {
-    //      consolidate[engine].render(String(file.contents), fileData, render);
-    //    } else {
-    //      consolidate[engine](file.path, fileData, render);
-    //    }
-    //  } catch (err) {
-    //    callback(err);
-    //  }
-    //} else {
-    //  callback(new Error("gulp-consolidate: streams not supported"), undefined);
-    //}
   });
 };
