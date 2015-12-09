@@ -23,8 +23,9 @@ var _                = require('lodash'),
     gulpSwig         = require('gulp-swig-compiler-renderer')
   ;
 
-var Config       = require('../_config').templates,
-    ServerConfig = require('../_config').server;
+var _config      = require('../_config'),
+    Config       = _config.pages,
+    ServerConfig = _config.server;
 
 
 

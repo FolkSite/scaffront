@@ -158,12 +158,12 @@ gulp.task('styles:dist:cleanup', function (cb) {
 
 
 gulp.task('styles:watch', function (cb) {
-  if (_.isFunction(ServerConfig.getBrowserSync)) {
-    Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
+  if (_.isFunction(ServerConfig.runServer)) {
+    Server = ServerConfig.runServer(ServerConfig.devServerName);
   }
 
-  gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss'], true), ['styles:sass:compile']);
-  gulp.watch(__.getGlobPaths(Config.src, ['css'], true),          ['styles:css:compile']);
+  gulp.watch(__.getGlobPaths(Config.src, ['sass', 'scss'], true), ['styles:sass']);
+  gulp.watch(__.getGlobPaths(Config.src, ['css'], true),          ['styles:css']);
 
   var copiers, copyWatchers;
 

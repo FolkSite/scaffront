@@ -154,8 +154,8 @@ gulp.task('scripts:dist:cleanup', function (cb) {
  */
 gulp.task('scripts:watch', function (cb) {
   var server = null;
-  if (_.isFunction(ServerConfig.getBrowserSync)) {
-    server = ServerConfig.getBrowserSync('develop');
+  if (_.isFunction(ServerConfig.runServer)) {
+    server = ServerConfig.runServer('develop');
   }
 
   var bundles = getBundles();

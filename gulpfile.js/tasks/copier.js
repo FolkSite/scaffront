@@ -1,38 +1,32 @@
 var _                 = require('lodash'),
     __                = require('../helpers'),
-    extend            = require('extend'),
-    path              = require('path'),
     gulp              = require('gulp'),
     gulpUtil          = require('gulp-util'),
-    gulpTap           = require('gulp-tap'),
-    gulpFont2Base64   = require('gulp-font2base64'),
-    mergeStreams      = require('event-stream').merge,
-    gulpPlumber       = require('gulp-plumber'),
     runSequence       = require('run-sequence').use(gulp),
     del               = require('del'),
-    gulpIf            = require('gulp-if'),
     getObject         = require('getobject')
   ;
 
-var _config      = require('../_config'),
-    Config       = _config.copier,
-    ServerConfig = _config.server;
+var server       = null,
+    config       = require('../_config'),
+    copierConfig = config.copier.config,
+    copierUtils  = config.copier.utils,
+    serverConfig = config.server.config,
+    serverUtils  = config.server.utils;
 
 
 gulp.task('copier:build', function (cb) {
-  var result = Config.copy(getObject.get(Config, 'build'), cb);
+  var stream = copierUtils.copy(getObject.get(copierConfig, 'copier'), cb);
 
-  if (gulpUtil.isStream(result)) {
-    return result;
+  if (stream && gulpUtil.isStream(stream)) {
+    server && serverUtils.reloadServer(serverConfig.devServerName, stream);
+
+    return stream;
   }
 });
 
 gulp.task('copier:build:cleanup', function (cb) {
-  var result = Config.cleanup(getObject.get(Config, 'build'), cb);
-
-  if (gulpUtil.isStream(result)) {
-    return result;
-  }
+  return copierUtils.cleanup(getObject.get(copierConfig, 'build'), cb);
 });
 
 

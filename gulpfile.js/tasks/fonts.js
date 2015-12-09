@@ -14,66 +14,55 @@ var _                 = require('lodash'),
     getObject         = require('getobject')
 ;
 
-var _config      = require('../_config'),
-    Config       = _config.fonts.config,
-    ServerConfig = _config.server,
-    CopierUtils  = _config.copier.utils;
-
-
-var Server = null;
-
-/**
- * @param [stream]
- * @param {{}} [bsConfig]
- */
-var watcherHandler = function (stream, bsConfig) {
-  if (!Server) { return; }
-
-  bsConfig = (_.isPlainObject(bsConfig)) ? bsConfig : {};
-
-  if (gulpUtil.isStream(stream)) {
-    stream.pipe(Server.stream(bsConfig));
-  } else {
-    Server.reload(bsConfig);
-  }
-};
+var server       = null,
+    config       = require('../_config'),
+    fontsConfig  = config.fonts.config,
+    serverConfig = config.server.config,
+    serverUtils  = config.server.utils,
+    copierUtils  = config.copier.utils;
 
 
 gulp.task('fonts:copier', function (cb) {
-  CopierUtils.copy(getObject.get(Config, 'copier'), cb);
+  var stream = copierUtils.copy(getObject.get(fontsConfig, 'copier'), cb);
+
+  if (stream && gulpUtil.isStream(stream)) {
+    server && serverUtils.reloadServer(serverConfig.devServerName, stream);
+
+    return stream;
+  }
 });
 
 gulp.task('fonts:copier:cleanup', function (cb) {
-  CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
+  return copierUtils.cleanup(getObject.get(fontsConfig, 'copier'), cb);
 });
 
 
 gulp.task('fonts:builder', function () {
-  var stream = gulp.src(__.getGlobPaths(Config.src, Config.extnames || [], true))
+  var stream = gulp.src(fontsConfig.src)
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
 
-  if (getObject.get(Config, 'transform') && _.isFunction(Config.transform)) {
-    var tmp = Config.transform(stream);
+  if (getObject.get(fontsConfig, 'transform') && _.isFunction(fontsConfig.transform)) {
+    var tmp = fontsConfig.transform(stream);
     stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
   }
 
   stream = stream
-    .pipe(gulp.dest(Config.dest))
+    .pipe(gulp.dest(fontsConfig.dest))
   ;
 
-  watcherHandler(stream);
+  server && serverUtils.reloadServer(serverConfig.devServerName, stream);
 
   return stream;
 });
 
 gulp.task('fonts:builder:cleanup', function (cb) {
-  if (!getObject.get(Config, 'cleanups') || !Config.cleanups) {
+  if (!getObject.get(fontsConfig, 'cleanups') || !fontsConfig.cleanups) {
     cb();
     return;
   }
 
-  del(Config.cleanups)
+  del(fontsConfig.cleanups)
     .then(function () {
       cb();
     })
@@ -99,14 +88,12 @@ gulp.task('fonts:dist:cleanup', function (cb) {
 });
 
 
-gulp.task('fonts:watch', function (cb) {
-  if (_.isFunction(ServerConfig.getBrowserSync)) {
-    Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
-  }
+gulp.task('fonts:watch', function () {
+  server = serverUtils.runServer(serverConfig.devServerName);
 
-  gulp.watch(__.getGlobPaths(Config.src, Config.extnames || []), ['fonts:builder']);
+  gulp.watch(fontsConfig.src, ['fonts:builder']);
 
-  var copiers = __.getCopier(getObject.get(Config, 'copier'));
+  var copiers = __.getCopier(getObject.get(fontsConfig, 'copier'));
   var copyWatchers = [];
   _.each(copiers, function (copier) {
     copyWatchers = copyWatchers.concat(copier.from);

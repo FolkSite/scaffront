@@ -5,8 +5,10 @@
 
 
 @import 'css/vars';
-@import 'scaffront-styles';
+@import 'scaffront-styles/vars';
+@import 'scaffront-styles/mixins';
 @import 'css/widgets';
+@import 'css/layouts';
 
 
 .layout-header,

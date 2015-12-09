@@ -8,9 +8,7 @@
 
   var pluginName = 'resize.event';
   var defaults = {
-    fireOnKeyDown: false,
-    fireOnKeyUp: false,
-    fireOnKeyPress: false
+    events: 'keydown keyup keypress'
   };
 
   var Plugin = function (element, options) {
@@ -61,21 +59,11 @@
     bindEvents: function bindEvents () {
       var self = this;
 
-      var triggeredEvents = [];
-
-      if (this.options.fireOnKeyDown) {
-        triggeredEvents.push('keydown');
-      }
-      if (this.options.fireOnKeyUp) {
-        triggeredEvents.push('keyup');
-      }
-      if (this.options.fireOnKeyPress) {
-        triggeredEvents.push('keypress');
-      }
+      var triggeredEvents = (!$.isArray(this.options.events)) ? this.options.events.join(' ') : this.options.events;
 
       this.$el
         .on(triggeredEvents.concat(['focus']).join(' '), function () {
-          self.storeSizes(this, self.getControlSizes());
+          self.storeSizes();
         });
 
       if (triggeredEvents.length) {

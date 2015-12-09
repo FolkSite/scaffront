@@ -3,6 +3,7 @@ var _            = require('lodash'),
     del          = require('del'),
     gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
+    gulpPlumber  = require('gulp-plumber'),
     mergeStreams = require('event-stream').merge
 ;
 
@@ -24,6 +25,8 @@ utils.copy = function (config, cb) {
 
   return mergeStreams(_.map(copiers, function (item) {
     var stream = gulp.src(item.from);
+
+    stream.pipe(gulpPlumber(__.plumberErrorHandler));
 
     if (_.isFunction(item.transform)) {
       var tmp = item.transform(stream);
@@ -60,8 +63,6 @@ utils.cleanup = function (config, cb) {
     .catch(cb)
   ;
 };
-
-
 
 
 module.exports = utils;

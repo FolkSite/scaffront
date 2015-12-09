@@ -100,8 +100,8 @@ gulp.task('images:dist:cleanup', function (cb) {
 
 
 gulp.task('images:watch', function (cb) {
-  if (_.isFunction(ServerConfig.getBrowserSync)) {
-    Server = ServerConfig.getBrowserSync(ServerConfig.devServerName);
+  if (_.isFunction(ServerConfig.runServer)) {
+    Server = ServerConfig.runServer(ServerConfig.devServerName);
   }
 
   gulp.watch(__.getGlobPaths(Config.src, Config.extnames || []), ['images:builder']);
