@@ -2,12 +2,12 @@ var _                = require('lodash'),
     __               = require('../../helpers'),
     path             = require('path'),
     extend           = require('extend'),
-    gulp             = require('gulp'),
     fs               = require('fs'),
+    gulp             = require('gulp'),
     gulpTap          = require('gulp-tap'),
     gulpData         = require('gulp-data'),
-    gulpConsolidate  = require('gulp.consolidate'),
     gulpRename       = require('gulp-rename'),
+    gulpConsolidate  = require('gulp.consolidate'),
     gulpJsBeautifier = require('gulp-jsbeautifier')
   ;
 
@@ -44,7 +44,7 @@ var src = 'app/pages';
 
 var config = {};
 
-config.src = __.getGlobPaths(src, ['html', 'tpl'], true);
+config.src = __.getGlobPaths(src, ['tpl'], true);
 config.dest = 'dist/pages';
 
 config.tplsData = require('../../../app/pages/globals-data');
@@ -100,7 +100,7 @@ config.transform = function (stream) {
   ;
 };
 
-config.cleanups = __.getGlobPaths(config.dest, ['html', 'tpl'], true);
+config.cleanups = __.getGlobPaths(config.dest, ['html'], true);
 
 config.copier = [{
   from: __.getGlobPaths(src, ['*-data.js', '*-data.json'], true),
@@ -118,7 +118,6 @@ config.copier = [{
   },
   cleanups: __.getGlobPaths(config.dest, ['*-data.json'], true)
 }];
-
 
 
 module.exports.utils  = utils;

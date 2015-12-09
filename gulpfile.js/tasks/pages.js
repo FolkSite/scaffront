@@ -70,11 +70,7 @@ gulp.task('pages:compile:cleanup', function (cb) {
     return;
   }
 
-  del(pagesConfig.cleanups)
-    .then(function () {
-      cb();
-    })
-    .catch(cb);
+  return del(pagesConfig.cleanups);
 });
 
 
@@ -92,7 +88,7 @@ gulp.task('pages:dist', function (cb) {
 });
 
 gulp.task('pages:dist:cleanup', function (cb) {
-  runSequence('pages:dist:cleanup', cb);
+  runSequence('pages:build:cleanup', cb);
 });
 
 
