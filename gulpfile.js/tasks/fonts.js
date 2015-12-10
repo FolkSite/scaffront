@@ -34,7 +34,7 @@ gulp.task('fonts:copier:cleanup', function () {
 });
 
 
-gulp.task('fonts:builder', function () {
+gulp.task('fonts:2css', function () {
   var stream = gulp.src(fontsConfig.src)
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
@@ -51,12 +51,14 @@ gulp.task('fonts:builder', function () {
     .pipe(gulp.dest(fontsConfig.dest))
   ;
 
-  server && serverUtils.reloadServer(serverConfig.devServerName, stream);
+  server && serverUtils.reloadServer(serverConfig.devServerName, stream, {
+    match: '**/*.css'
+  });
 
   return stream;
 });
 
-gulp.task('fonts:builder:cleanup', function (cb) {
+gulp.task('fonts:2css:cleanup', function (cb) {
   if (!getObject.get(fontsConfig, 'cleanups') || !fontsConfig.cleanups) {
     cb();
     return;
@@ -67,11 +69,11 @@ gulp.task('fonts:builder:cleanup', function (cb) {
 
 
 gulp.task('fonts:build', function (cb) {
-  runSequence(['fonts:copier', 'fonts:builder'], cb);
+  runSequence(['fonts:copier', 'fonts:2css'], cb);
 });
 
 gulp.task('fonts:build:cleanup', function (cb) {
-  runSequence(['fonts:copier:cleanup', 'fonts:builder:cleanup'], cb);
+  runSequence(['fonts:copier:cleanup', 'fonts:2css:cleanup'], cb);
 });
 
 
@@ -87,7 +89,7 @@ gulp.task('fonts:dist:cleanup', function (cb) {
 gulp.task('fonts:watch', function () {
   server = serverUtils.runServer(serverConfig.devServerName);
 
-  gulp.watch(fontsConfig.src, ['fonts:builder']);
+  gulp.watch(fontsConfig.src, ['fonts:2css']);
 
   var copiers = getObject.get(fontsConfig, 'copier');
   if (copiers) {

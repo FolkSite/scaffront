@@ -27,7 +27,7 @@ config.dest = 'dist/css';
 
 config.extnames = {
   sass: ['sass', 'scss'],
-  css: ['css', '!_*.css']
+  css:  ['css', '!_*.css']
 };
 
 config.cleanups = {

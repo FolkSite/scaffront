@@ -104,7 +104,7 @@ gulp.task('styles:copier', function () {
   return copierUtils.copy(getObject.get(stylesConfig, 'copier'));
 });
 
-gulp.task('styles:copier:cleanup', function (cb) {
+gulp.task('styles:copier:cleanup', function () {
   return copierUtils.cleanup(getObject.get(stylesConfig, 'copier'));
 });
 

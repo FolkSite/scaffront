@@ -28,7 +28,7 @@ config.cleanups = __.getGlobPaths(src, ['ttf.css', 'woff.css']);
 config.copier = {
   from: __.getGlobPaths('app/fonts/asis', ['eot', 'svg', 'ttf', 'woff', 'woff2'], true),
   to: config.dest,
-  cleanups: __.getGlobPaths(config.dest, ['eot', 'svg', 'ttf', 'woff', 'woff2'])
+  cleanups: __.getGlobPaths(config.dest, ['eot', 'svg', 'ttf', 'woff', 'woff2'], true)
 };
 
 
