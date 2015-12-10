@@ -1,5 +1,5 @@
 var _                = require('lodash'),
-    __               = require('../../helpers'),
+    __               = require('../helpers'),
     path             = require('path'),
     extend           = require('extend'),
     fs               = require('fs'),
@@ -47,7 +47,7 @@ var config = {};
 config.src = __.getGlobPaths(src, ['tpl'], true);
 config.dest = 'dist/pages';
 
-config.tplsData = require('../../../app/pages/globals-data');
+config.tplsData = require('../../app/pages/globals-data');
 
 config.transform = function (stream) {
 
