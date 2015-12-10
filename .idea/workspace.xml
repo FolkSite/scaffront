@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24b3cb0e-08c7-4be3-b17c-3d274cc60c07" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\Repos\scaffront\gulpfile.js\_config\_styles.js" afterPath="" />
-      <change type="DELETED" beforePath="D:\Repos\scaffront\gulpfile.js\tasks\_styles.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css.scss" afterPath="$PROJECT_DIR$/app/styles/css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout/head/favicons.tpl" afterPath="$PROJECT_DIR$/app/pages/layout/head/favicons.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/_include.css" afterPath="$PROJECT_DIR$/app/styles/_include.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/_config/index.js" afterPath="$PROJECT_DIR$/gulpfile.js/_config/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js/_config/styles.js" afterPath="$PROJECT_DIR$/gulpfile.js/_config/styles.js" />
@@ -58,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_tpl.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_tpl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80915177">
-              <caret line="102" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -72,75 +68,52 @@
         <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/styles.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="172" column="3" selection-start-line="172" selection-start-column="3" selection-end-line="172" selection-end-column="3" />
+              <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
               <folding>
-                <element signature="e#1316#2491#0" expanded="false" />
-                <element signature="e#1517#1610#0" expanded="false" />
-                <element signature="e#1669#2195#0" expanded="false" />
-                <element signature="e#1728#1975#0" expanded="false" />
-                <element signature="e#2012#2060#0" expanded="false" />
-                <element signature="e#2286#2320#0" expanded="false" />
-                <element signature="e#2442#2469#0" expanded="false" />
-                <element signature="e#2531#3389#0" expanded="false" />
-                <element signature="e#2699#2733#0" expanded="false" />
-                <element signature="e#2764#2823#0" expanded="false" />
-                <element signature="e#2832#2848#0" expanded="false" />
-                <element signature="e#3184#3218#0" expanded="false" />
-                <element signature="e#3340#3367#0" expanded="false" />
-                <element signature="e#3433#3502#0" expanded="false" />
-                <element signature="e#3555#3627#0" expanded="false" />
-                <element signature="e#3672#3742#0" expanded="false" />
-                <element signature="e#3794#4074#0" expanded="false" />
-                <element signature="e#3849#4070#0" expanded="false" />
-                <element signature="e#3939#3972#0" expanded="false" />
-                <element signature="e#4035#4054#0" expanded="false" />
-                <element signature="e#4118#5028#0" expanded="false" />
-                <element signature="e#4162#5024#0" expanded="false" />
-                <element signature="e#4337#4401#0" expanded="false" />
-                <element signature="e#4435#4615#0" expanded="false" />
-                <element signature="e#4457#4552#0" expanded="false" />
-                <element signature="e#4646#4688#0" expanded="false" />
-                <element signature="e#4732#4840#0" expanded="false" />
-                <element signature="e#4780#4830#0" expanded="false" />
-                <element signature="e#4884#4922#0" expanded="false" />
-                <element signature="e#5079#5274#0" expanded="false" />
-                <element signature="e#5131#5270#0" expanded="false" />
-                <element signature="e#5235#5254#0" expanded="false" />
-                <element signature="e#5317#5877#0" expanded="false" />
-                <element signature="e#5652#5875#0" expanded="false" />
-                <element signature="e#5760#5807#0" expanded="false" />
+                <element signature="e#1273#2448#0" expanded="false" />
+                <element signature="e#1474#1567#0" expanded="false" />
+                <element signature="e#1626#2152#0" expanded="false" />
+                <element signature="e#1685#1932#0" expanded="false" />
+                <element signature="e#1969#2017#0" expanded="false" />
+                <element signature="e#2243#2277#0" expanded="false" />
+                <element signature="e#2399#2426#0" expanded="false" />
+                <element signature="e#2488#3346#0" expanded="false" />
+                <element signature="e#2656#2690#0" expanded="false" />
+                <element signature="e#2721#2780#0" expanded="false" />
+                <element signature="e#2789#2805#0" expanded="false" />
+                <element signature="e#3141#3175#0" expanded="false" />
+                <element signature="e#3297#3324#0" expanded="false" />
+                <element signature="e#3390#3459#0" expanded="false" />
+                <element signature="e#3512#3584#0" expanded="false" />
+                <element signature="e#3629#3699#0" expanded="false" />
+                <element signature="e#3751#4031#0" expanded="false" />
+                <element signature="e#3806#4027#0" expanded="false" />
+                <element signature="e#3896#3929#0" expanded="false" />
+                <element signature="e#3992#4011#0" expanded="false" />
+                <element signature="e#4075#4985#0" expanded="false" />
+                <element signature="e#4119#4981#0" expanded="false" />
+                <element signature="e#4294#4358#0" expanded="false" />
+                <element signature="e#4392#4572#0" expanded="false" />
+                <element signature="e#4414#4509#0" expanded="false" />
+                <element signature="e#4603#4645#0" expanded="false" />
+                <element signature="e#4689#4797#0" expanded="false" />
+                <element signature="e#4737#4787#0" expanded="false" />
+                <element signature="e#4841#4879#0" expanded="false" />
+                <element signature="e#5036#5231#0" expanded="false" />
+                <element signature="e#5088#5227#0" expanded="false" />
+                <element signature="e#5192#5211#0" expanded="false" />
+                <element signature="e#5589#5812#0" expanded="false" />
+                <element signature="e#5697#5744#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="styles.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="styles.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/styles.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gulpfile.js/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.063616075">
+              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -163,11 +136,7 @@
         <option value="$PROJECT_DIR$/gulpfile.js/_config/fonts.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/fonts.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/styles.js" />
         <option value="$PROJECT_DIR$/app/pages/layout/head/favicons.tpl" />
-        <option value="$PROJECT_DIR$/gulpfile.js/tasks/styles.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/index.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/index.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/_config/_styles.js" />
         <option value="$PROJECT_DIR$/app/styles/libs.scss" />
         <option value="$PROJECT_DIR$/app/styles/css.scss" />
@@ -178,6 +147,11 @@
         <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_images.scss" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/_styles.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/_config/index.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/index.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js/tasks/styles.js" />
+        <option value="$PROJECT_DIR$/app/styles/_include.css" />
+        <option value="$PROJECT_DIR$/gulpfile.js/_config/styles.js" />
       </list>
     </option>
   </component>
@@ -296,6 +270,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -377,9 +383,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="2576" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.186407" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.186407" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -527,14 +533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/_include.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.042363435">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bower.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.428571">
@@ -559,58 +557,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80915177">
-          <caret line="102" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/styles.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="172" column="3" selection-start-line="172" selection-start-column="3" selection-end-line="172" selection-end-column="3" />
-          <folding>
-            <element signature="e#1316#2491#0" expanded="false" />
-            <element signature="e#1517#1610#0" expanded="false" />
-            <element signature="e#1669#2195#0" expanded="false" />
-            <element signature="e#1728#1975#0" expanded="false" />
-            <element signature="e#2012#2060#0" expanded="false" />
-            <element signature="e#2286#2320#0" expanded="false" />
-            <element signature="e#2442#2469#0" expanded="false" />
-            <element signature="e#2531#3389#0" expanded="false" />
-            <element signature="e#2699#2733#0" expanded="false" />
-            <element signature="e#2764#2823#0" expanded="false" />
-            <element signature="e#2832#2848#0" expanded="false" />
-            <element signature="e#3184#3218#0" expanded="false" />
-            <element signature="e#3340#3367#0" expanded="false" />
-            <element signature="e#3433#3502#0" expanded="false" />
-            <element signature="e#3555#3627#0" expanded="false" />
-            <element signature="e#3672#3742#0" expanded="false" />
-            <element signature="e#3794#4074#0" expanded="false" />
-            <element signature="e#3849#4070#0" expanded="false" />
-            <element signature="e#3939#3972#0" expanded="false" />
-            <element signature="e#4035#4054#0" expanded="false" />
-            <element signature="e#4118#5028#0" expanded="false" />
-            <element signature="e#4162#5024#0" expanded="false" />
-            <element signature="e#4337#4401#0" expanded="false" />
-            <element signature="e#4435#4615#0" expanded="false" />
-            <element signature="e#4457#4552#0" expanded="false" />
-            <element signature="e#4646#4688#0" expanded="false" />
-            <element signature="e#4732#4840#0" expanded="false" />
-            <element signature="e#4780#4830#0" expanded="false" />
-            <element signature="e#4884#4922#0" expanded="false" />
-            <element signature="e#5079#5274#0" expanded="false" />
-            <element signature="e#5131#5270#0" expanded="false" />
-            <element signature="e#5235#5254#0" expanded="false" />
-            <element signature="e#5317#5877#0" expanded="false" />
-            <element signature="e#5652#5875#0" expanded="false" />
-            <element signature="e#5760#5807#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/images.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -619,28 +565,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/styles.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
+          <caret line="86" column="46" selection-start-line="86" selection-start-column="46" selection-end-line="86" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1484375">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.2544643">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/index.js">
+    <entry file="file://$PROJECT_DIR$/app/styles/simple.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/css/simple.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21205357">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/_include.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.084821425">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/styles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
+          <folding>
+            <element signature="e#1273#2448#0" expanded="false" />
+            <element signature="e#1474#1567#0" expanded="false" />
+            <element signature="e#1626#2152#0" expanded="false" />
+            <element signature="e#1685#1932#0" expanded="false" />
+            <element signature="e#1969#2017#0" expanded="false" />
+            <element signature="e#2243#2277#0" expanded="false" />
+            <element signature="e#2399#2426#0" expanded="false" />
+            <element signature="e#2488#3346#0" expanded="false" />
+            <element signature="e#2656#2690#0" expanded="false" />
+            <element signature="e#2721#2780#0" expanded="false" />
+            <element signature="e#2789#2805#0" expanded="false" />
+            <element signature="e#3141#3175#0" expanded="false" />
+            <element signature="e#3297#3324#0" expanded="false" />
+            <element signature="e#3390#3459#0" expanded="false" />
+            <element signature="e#3512#3584#0" expanded="false" />
+            <element signature="e#3629#3699#0" expanded="false" />
+            <element signature="e#3751#4031#0" expanded="false" />
+            <element signature="e#3806#4027#0" expanded="false" />
+            <element signature="e#3896#3929#0" expanded="false" />
+            <element signature="e#3992#4011#0" expanded="false" />
+            <element signature="e#4075#4985#0" expanded="false" />
+            <element signature="e#4119#4981#0" expanded="false" />
+            <element signature="e#4294#4358#0" expanded="false" />
+            <element signature="e#4392#4572#0" expanded="false" />
+            <element signature="e#4414#4509#0" expanded="false" />
+            <element signature="e#4603#4645#0" expanded="false" />
+            <element signature="e#4689#4797#0" expanded="false" />
+            <element signature="e#4737#4787#0" expanded="false" />
+            <element signature="e#4841#4879#0" expanded="false" />
+            <element signature="e#5036#5231#0" expanded="false" />
+            <element signature="e#5088#5227#0" expanded="false" />
+            <element signature="e#5192#5211#0" expanded="false" />
+            <element signature="e#5589#5812#0" expanded="false" />
+            <element signature="e#5697#5744#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js/_config/styles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.063616075">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -48,8 +48,7 @@ var config = require('./_config/');
 //});
 
 require('./tasks/fonts');
-require('./tasks/_styles');
-//require('./tasks/styles');
+require('./tasks/styles');
 require('./tasks/copier');
 require('./tasks/pages');
 require('./tasks/scripts');

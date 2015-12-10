@@ -15,7 +15,6 @@ var _                = require('lodash'),
     gulpMinifyCss    = require('gulp-minify-css'),
     gulpTap          = require('gulp-tap'),
     del              = require('del'),
-    gulpIf           = require('gulp-if'),
     getObject        = require('getobject'),
     gulpChanged      = require('gulp-changed'),
     runSequence      = require('run-sequence').use(gulp),
@@ -176,8 +175,8 @@ gulp.task('styles:dist:cleanup', function (cb) {
 gulp.task('styles:watch', function () {
   server = serverUtils.runServer(serverConfig.devServerName);
 
-  gulp.watch(__.getGlobPaths(stylesConfig.src, stylesConfig.extnames.sass, true), ['styles:sass']);
-  gulp.watch(__.getGlobPaths(stylesConfig.src, stylesConfig.extnames.css, true),  ['styles:css']);
+  gulp.watch(__.getGlobPaths(stylesConfig.src, ['scss', 'sass'], true), ['styles:sass']);
+  gulp.watch(__.getGlobPaths(stylesConfig.src, ['css'], true),          ['styles:css']);
 
   var copiers = getObject.get(stylesConfig, 'copier');
   if (copiers) {
