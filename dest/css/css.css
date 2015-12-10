@@ -608,6 +608,19 @@ textarea {
 .layout.layout--default .layout__sidebar.layout__sidebar--right {
   display: none; }
 
+.layout .layout__width {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 1000px;
+  padding-left: 20px;
+  padding-right: 20px; }
+  .layout .layout__width > .layout__width-inner {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
+    padding-left: 0px;
+    padding-right: 0px; }
+
 html, body {
   height: 100%; }
 

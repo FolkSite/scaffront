@@ -1,5 +1,9 @@
 {% extends './layout.tpl' %}
 
+{% block Header-content %}
+  Контент шапки
+{% endblock %}
+
 {% block Content-content %}
   Контент регистрации
 {% endblock %}

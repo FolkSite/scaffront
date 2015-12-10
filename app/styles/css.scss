@@ -15,11 +15,4 @@
 @import 'css/widgets';
 
 
-.layout-header,
-.layout-footer {
-  @extend %layout-width-min;
-  @include e(inner) {
-    @extend %layout-width-max;
-  }
-}
 

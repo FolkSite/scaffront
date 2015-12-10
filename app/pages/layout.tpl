@@ -24,7 +24,11 @@
     <div class="layout layout--default">
       {% block Header %}
         <header class="layout__header">
-          {% block Header-content %}{% endblock %}
+          <div class="layout__width">
+            <div class="layout__width-inner">
+              {% block Header-content %}{% endblock %}
+            </div>
+          </div>
         </header>
       {% endblock %}
 
