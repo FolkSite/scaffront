@@ -1,7 +1,7 @@
 .layout {
 
   &,
-  .layout--default {
+  &.layout--default {
     @include sidebars (
       $selector-container: '.layout__middle',
       $selector-content-container: '.layout__content-container',

@@ -20,7 +20,7 @@ var _                = require('lodash'),
   ;
 
 var server       = null,
-    config       = require('../_config'),
+    config       = require('../config'),
     pagesConfig  = config.pages.config,
     pagesUtils   = config.pages.utils,
     copierUtils  = config.copier.utils,

@@ -8,7 +8,7 @@ var _                 = require('lodash'),
   ;
 
 var server       = null,
-    config       = require('../_config'),
+    config       = require('../config'),
     copierConfig = config.copier.config,
     copierUtils  = config.copier.utils,
     serverConfig = config.server.config,

@@ -34,6 +34,8 @@ config.servers = {
 
 var utils = {};
 
+
+
 /**
  * @param {string} instanceName
  * @returns {*}
@@ -47,8 +49,10 @@ utils.runServer = function (instanceName) {
   var bs;
   try {
     bs = browserSync.get(instanceName);
+    console.log('get bs', typeof bs);
   } catch (e) {
     bs = browserSync.create(instanceName);
+    console.log('create bs', typeof bs);
   }
 
   if (bs.paused) {

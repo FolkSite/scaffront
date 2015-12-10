@@ -1,0 +1,62 @@
+/*
+ * A partial implementation of the Ruby list functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/lists.rb
+ */
+/*
+ * A partial implementation of the Ruby constants functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/lib/compass/sass_extensions/functions/constants.rb
+ */
+/*
+ * A partial implementation of the Ruby display functions from Compass:
+ * https://github.com/Compass/compass/blob/stable/core/lib/compass/core/sass_extensions/functions/display.rb
+ */
+.btn:active, .btn.active {
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.4) inset; }
+
+.btn:active, .btn.active {
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.4) inset; }
+
+/** Helper. Convert string to list **/
+/** Helper. Remove unit from input number **/
+/** Helper. Make unit from input number. Replace $value unit to target unit **/
+/**
+ * Convert functions.
+ */
+/** PX to EM (based on $font-size) **/
+/** EM (based on $font-size) to PX **/
+/** PX to REM (based on $base-font-size) **/
+/** REM (based on $base-font-size) to PX **/
+/** EM (based on $font-size) to REM (based on $base-font-size) **/
+/** REM (based on $base-font-size) to EM (based on $font-size) **/
+/**
+ * http://jsfiddle.net/alexriz/d5SUg/
+ */
+.layout .layout__middle:after, .layout.layout--default .layout__middle:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+.layout .layout__sidebar.layout__sidebar--left,
+.layout .layout__sidebar.layout__sidebar--right, .layout.layout--default .layout__sidebar.layout__sidebar--left,
+.layout.layout--default .layout__sidebar.layout__sidebar--right {
+  display: none; }
+
+html, body {
+  height: 100%; }
+
+.layout.layout--default {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%; }
+
+.layout__middle {
+  padding-bottom: 100px; }
+
+.layout__footer {
+  margin-top: -100px;
+  height: 100px;
+  position: relative; }
+
+/*# sourceMappingURL=css.css.map */

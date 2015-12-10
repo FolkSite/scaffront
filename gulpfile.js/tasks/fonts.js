@@ -13,7 +13,7 @@ var _                 = require('lodash'),
 ;
 
 var server       = null,
-    config       = require('../_config'),
+    config       = require('../config'),
     fontsConfig  = config.fonts.config,
     serverConfig = config.server.config,
     serverUtils  = config.server.utils,

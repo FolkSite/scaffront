@@ -1,12 +1,13 @@
-@import '../../bower_components/compass-mixins/lib/compass';
-@import '../../bower_components/breakpoint-sass/stylesheets/breakpoint';
-@import '../../bower_components/singularity/stylesheets/singularitygs';
-@import '../../bower_components/sass-toolkit/stylesheets/toolkit';
+@import 'compass';
+@import 'breakpoint';
+@import 'singularitygs';
+@import 'toolkit';
 
 
 @import 'css/vars';
-@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/vars';
-@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins';
+@import 'scaffront-styles/vars';
+@import 'scaffront-styles/mixins';
+
 @import 'css/widgets';
 @import 'css/layouts';
 
@@ -17,9 +18,5 @@
   @include e(inner) {
     @extend %layout-width-max;
   }
-}
-
-.qweqwe {
-  @include bg-size(100px 300px);
 }
 
