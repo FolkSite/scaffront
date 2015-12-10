@@ -1,24 +1,16 @@
 var __              = require('../helpers'),
     path            = require('path'),
-    gulpUtil        = require('gulp-util'),
-    gulpFont2Base64 = require('gulp-font2base64')
+    gulpUtil        = require('gulp-util')
 ;
-
 
 var config = {};
 
-var src = 'app/fonts/2css';
-
-config.src = __.getGlobPaths(src, ['ttf', 'woff'] || [], true);
+config.src = 'app/fonts/2css';
+config.extnames = 'woff';
 config.dest = 'dist/css/fonts';
 
-config.transform = function (stream) {
-  return stream
-    .pipe(gulpFont2Base64())
-  ;
-};
 
-config.cleanups = __.getGlobPaths(src, ['ttf.css', 'woff.css']);
+config.cleanups = __.getGlobPaths(config.dest, 'woff.css', true);
 
 /**
  * @type {Copier}

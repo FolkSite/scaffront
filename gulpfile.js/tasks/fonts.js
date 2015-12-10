@@ -6,6 +6,7 @@ var _                 = require('lodash'),
     gulpUtil          = require('gulp-util'),
     gulpTap           = require('gulp-tap'),
     gulpPlumber       = require('gulp-plumber'),
+    gulpFont2Base64   = require('gulp-font2base64'),
     runSequence       = require('run-sequence').use(gulp),
     del               = require('del'),
     getObject         = require('getobject')
@@ -19,7 +20,7 @@ var server       = null,
     copierUtils  = config.copier.utils;
 
 
-gulp.task('fonts:copier', function (cb) {
+gulp.task('fonts:copier', function () {
   var stream = copierUtils.copy(getObject.get(fontsConfig, 'copier'));
 
   if (stream && gulpUtil.isStream(stream)) {
@@ -35,19 +36,11 @@ gulp.task('fonts:copier:cleanup', function () {
 
 
 gulp.task('fonts:2css', function () {
-  var stream = gulp.src(fontsConfig.src)
+  var stream = gulp.src(__.getGlobPaths(fontsConfig.src, fontsConfig.extnames, true))
     .pipe(gulpPlumber(__.plumberErrorHandler))
-  ;
 
-  if (getObject.get(fontsConfig, 'transform') && _.isFunction(fontsConfig.transform)) {
-    var transformStream = fontsConfig.transform(stream);
+      .pipe(gulpFont2Base64())
 
-    if (gulpUtil.isStream(transformStream)) {
-      stream = transformStream;
-    }
-  }
-
-  stream = stream
     .pipe(gulp.dest(fontsConfig.dest))
   ;
 
@@ -82,14 +75,14 @@ gulp.task('fonts:dist', function (cb) {
 });
 
 gulp.task('fonts:dist:cleanup', function (cb) {
-  runSequence('fonts:dist:cleanup', cb);
+  runSequence('fonts:build:cleanup', cb);
 });
 
 
 gulp.task('fonts:watch', function () {
   server = serverUtils.runServer(serverConfig.devServerName);
 
-  gulp.watch(fontsConfig.src, ['fonts:2css']);
+  gulp.watch(__.getGlobPaths(fontsConfig.src, fontsConfig.extnames, true), ['fonts:2css']);
 
   var copiers = getObject.get(fontsConfig, 'copier');
   if (copiers) {

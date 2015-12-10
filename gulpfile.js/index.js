@@ -39,7 +39,7 @@ global.environment = (global.isProduction) ? 'production' : 'development';
 
 global.isWatching = false;
 
-var config = require('./_config/');
+//var config = require('./_config/');
 //var Gulp = require('gulp');
 //var Path = require('path');
 
@@ -47,12 +47,98 @@ var config = require('./_config/');
 //  recurse: true
 //});
 
+
+var gulp            = require('gulp'),
+    gulpUtil        = require('gulp-util'),
+    runSequence     = require('run-sequence').use(gulp)
+;
+
 require('./tasks/fonts');
 require('./tasks/styles');
 require('./tasks/copier');
 require('./tasks/pages');
-require('./tasks/scripts');
+//require('./tasks/scripts');
 //require('./tasks/images');
+
+
+gulp.task('build', function (cb) {
+  runSequence(
+    [
+      'fonts:build',
+      //'images:build',
+      'copier:build'
+    ],
+    [
+      'styles:build',
+      //'scripts:build'
+    ],
+    cb
+  );
+});
+
+gulp.task('build:cleanup', function (cb) {
+  runSequence(
+    [
+      'fonts:build:cleanup',
+      //'images:build:cleanup',
+      'copier:build:cleanup'
+    ],
+    [
+      'styles:build:cleanup',
+      //'scripts:build:cleanup'
+    ],
+    cb
+  );
+});
+
+
+gulp.task('dist', function (cb) {
+  runSequence(
+    [
+      'fonts:dist',
+      //'images:dist',
+      'copier:dist'
+    ],
+    [
+      'styles:dist',
+      //'scripts:dist'
+    ],
+    cb
+  );
+});
+
+gulp.task('dist:cleanup', function (cb) {
+  runSequence(
+    [
+      'fonts:dist:cleanup',
+      //'images:dist:cleanup',
+      'copier:dist:cleanup'
+    ],
+    [
+      'styles:dist:cleanup',
+      //'scripts:dist:cleanup'
+    ],
+    cb
+  );
+});
+
+
+gulp.task('watch', function (cb) {
+  runSequence(
+    [
+      'fonts:watch',
+      //'images:watch',
+      'copier:watch'
+    ],
+    [
+      'styles:watch',
+      //'scripts:watch'
+    ],
+    cb
+  );
+});
+
+
 
 //return;
 //
