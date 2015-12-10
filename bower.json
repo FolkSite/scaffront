@@ -35,7 +35,6 @@
     "sassy-buttons": "*",
     "sassy-maps": "*",
     "SassyLists": "*",
-    "scaffront-styles": "*",
     "singularity": "*",
     "singularity-quick-spanner": "*",
     "slick-carousel": "*",
@@ -61,6 +60,7 @@
     "nouislider": "~8.2.1",
     "tap.js": "~2.1.2",
     "jquery-form": "~3.46.0",
-    "jquery.fileapi": "~0.4.11"
+    "jquery.fileapi": "~0.4.11",
+    "scaffront-styles": "*"
   }
 }
