@@ -73,6 +73,9 @@ gulp.task('build', function (cb) {
       'styles:build',
       //'scripts:build'
     ],
+    [
+      'pages:build',
+    ],
     cb
   );
 });
@@ -87,6 +90,9 @@ gulp.task('build:cleanup', function (cb) {
     [
       'styles:build:cleanup',
       //'scripts:build:cleanup'
+    ],
+    [
+      'pages:build:cleanup',
     ],
     cb
   );
@@ -104,6 +110,9 @@ gulp.task('dist', function (cb) {
       'styles:dist',
       //'scripts:dist'
     ],
+    [
+      'pages:dist',
+    ],
     cb
   );
 });
@@ -118,6 +127,9 @@ gulp.task('dist:cleanup', function (cb) {
     [
       'styles:dist:cleanup',
       //'scripts:dist:cleanup'
+    ],
+    [
+      'pages:dist:cleanup',
     ],
     cb
   );
@@ -134,6 +146,9 @@ gulp.task('watch', function (cb) {
     [
       'styles:watch',
       //'scripts:watch'
+    ],
+    [
+      'pages:watch',
     ],
     cb
   );

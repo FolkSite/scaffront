@@ -41,11 +41,11 @@ config.cleanups = {
  * @property {Copier} [css]
  */
 config.copier = [{
-  from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg']),
-  to: path.join(ImagesConfig.src.libs, 'fancybox')
-}, {
-  from: __.getGlobPaths(__.getBowerPath('magnific-popup/src/css'), ['scss']),
-  to: path.join(config.src, 'libs/magnific-popup')
+//  from: __.getGlobPaths(__.getBowerPath('fancybox/source'), ['gif', 'png', 'jpg']),
+//  to: path.join(ImagesConfig.src.libs, 'fancybox')
+//}, {
+//  from: __.getGlobPaths(__.getBowerPath('magnific-popup/src/css'), ['scss']),
+//  to: path.join(config.src, 'libs/magnific-popup')
 }];
 
 module.exports.config = config;

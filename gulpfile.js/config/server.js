@@ -22,11 +22,6 @@ config.servers = {
         directory: true,
         baseDir: path.join(global.Builder.dest)
       }
-    },
-    callback: function (err, bs) {
-      if (err) { throw new Error(err); }
-
-      gulpUtil.log(gulpUtil.colors.cyan('Develop'), 'server is started');
     }
   }
 };
@@ -35,6 +30,7 @@ config.servers = {
 var utils = {};
 
 
+var instances = {};
 
 /**
  * @param {string} instanceName
@@ -44,22 +40,36 @@ utils.runServer = function (instanceName) {
   if (!instanceName || typeof config.servers[instanceName] == 'undefined') { return null; }
 
   var options = (_.isPlainObject(config.servers[instanceName].options)) ? config.servers[instanceName].options : {};
-  var cb = (_.isFunction(config.servers[instanceName].callback)) ? config.servers[instanceName].callback : __.noop;
 
   var bs;
   try {
     bs = browserSync.get(instanceName);
-    console.log('get bs', typeof bs);
   } catch (e) {
     bs = browserSync.create(instanceName);
-    console.log('create bs', typeof bs);
+
+    instances[instanceName] = {
+      inited: false,
+      pending: false,
+      instance: bs
+    };
+
+    bs.emitter.on('init', (function (instanceName) {
+      return function () {
+        instances[instanceName].inited = true;
+        instances[instanceName].pending = false;
+
+        gulpUtil.log(gulpUtil.colors.cyan('Develop'), 'server is started');
+      }
+    })(instanceName));
   }
 
   if (bs.paused) {
     bs.resume();
   } else
-  if (!bs.active) {
-    bs.init(options, cb);
+  if (!bs.active && !instances[instanceName].pending) {
+
+    instances[instanceName].pending = true;
+    bs.init(options);
   }
 
   return bs;
