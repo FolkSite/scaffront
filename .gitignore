@@ -1,5 +1,7 @@
 dist
 dist/
+dest
+dest/
 node_modules
 node_modules/
 bower_components

@@ -2,16 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24b3cb0e-08c7-4be3-b17c-3d274cc60c07" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" afterPath="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/css/css.css.map" afterPath="$PROJECT_DIR$/dest/css/css.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/css/css.css" afterPath="$PROJECT_DIR$/dest/css/css.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css.scss" afterPath="$PROJECT_DIR$/app/styles/css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/pages/layout.html" afterPath="$PROJECT_DIR$/dest/pages/layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout.tpl" afterPath="$PROJECT_DIR$/app/pages/layout.tpl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/css/libs.css.map" afterPath="$PROJECT_DIR$/dest/css/libs.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/css/libs.css" afterPath="$PROJECT_DIR$/dest/css/libs.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dest/pages/registration.html" afterPath="$PROJECT_DIR$/dest/pages/registration.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/registration.tpl" afterPath="$PROJECT_DIR$/app/pages/registration.tpl" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\css.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\css.css.map" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\PTSans.woff.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\PTSansBold.woff.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\PTSansBoldItalic.woff.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\PTSansItalic.woff.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\slick\slick.eot" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\slick\slick.svg" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\slick\slick.ttf" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\fonts\slick\slick.woff" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\libs.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\libs.css.map" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\simple.css" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\css\simple.css.map" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\globals-data.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\index-data.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout-data.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout\footer.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout\head.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout\head\favicons.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout\scripts.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\layout\styles.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\registration-data.json" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\dest\pages\registration.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="scaffront.iws" />
@@ -84,21 +100,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="css.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dest/css/css.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="642" column="0" selection-start-line="642" selection-start-column="0" selection-end-line="642" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="_carcass.scss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/layout/_carcass.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.22118743">
               <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.9259257">
+              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -132,7 +148,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/pages/index-data.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/_config/_tpl.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js" />
@@ -176,6 +191,7 @@
         <option value="$PROJECT_DIR$/app/pages/layout.tpl" />
         <option value="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" />
         <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/layout/_carcass.scss" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -302,38 +318,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scaffront" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -549,9 +533,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3074" y="0" width="1413" height="1047" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35846266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35846266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -581,13 +565,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/pages/layout/head/favicons.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45914844">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js/config/_tpl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -929,14 +906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dest/css/css.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="642" column="0" selection-start-line="642" selection-start-column="0" selection-end-line="642" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/styles/css/layouts/_default.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-16.428572">
@@ -949,6 +918,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3571428">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.9259257">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
           <folding />
         </state>
       </provider>
