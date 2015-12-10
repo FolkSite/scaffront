@@ -1,92 +1,82 @@
-var _                 = require('lodash'),
-    __                = require('../helpers'),
-    extend            = require('extend'),
-    path              = require('path'),
-    gulp              = require('gulp'),
-    gulpUtil          = require('gulp-util'),
-    gulpTap           = require('gulp-tap'),
-    gulpFont2Base64   = require('gulp-font2base64'),
-    mergeStreams      = require('event-stream').merge,
-    gulpPlumber       = require('gulp-plumber'),
-    runSequence       = require('run-sequence').use(gulp),
-    del               = require('del'),
-    gulpIf            = require('gulp-if'),
-    getObject         = require('getobject')
+// https://github.com/osscafe/gulp-cheatsheet/blob/master/examples/js/stream-array.js
+
+var _                = require('lodash'),
+    __               = require('../helpers'),
+    extend           = require('extend'),
+    path             = require('path'),
+    gulp             = require('gulp'),
+    gulpUtil         = require('gulp-util'),
+    gulpTap          = require('gulp-tap'),
+    del              = require('del'),
+    getObject        = require('getobject'),
+    gulpChanged      = require('gulp-changed'),
+    runSequence      = require('run-sequence').use(gulp),
+    gulpPlumber      = require('gulp-plumber')
+    //gulpUmd          = require('gulp-umd')
   ;
 
-var _config      = require('../_config'),
-    Config       = _config._tpl.config,
-    ServerConfig = _config.server,
-    CopierUtils  = _config.copier.utils;
+var server       = null,
+    config       = require('../_config'),
+    _tplConfig  = config._tpl.config,
+    copierUtils  = config.copier.utils,
+    serverConfig = config.server.config,
+    serverUtils  = config.server.utils;
 
 
-var Server = null;
+gulp.task('_tpl:copier', function () {
+  var result = copierUtils.copy(getObject.get(_tplConfig, 'copier'));
 
-/**
- * @param [stream]
- * @param {{}} [bsConfig]
- */
-var watcherHandler = function (stream, bsConfig) {
-  if (!Server) { return; }
+  if (typeof result != 'undefined') {
+    server && serverUtils.reloadServer(serverConfig.devServerName);
 
-  bsConfig = (_.isPlainObject(bsConfig)) ? bsConfig : {};
-
-  if (gulpUtil.isStream(stream)) {
-    stream.pipe(Server.stream(bsConfig));
-  } else {
-    Server.reload(bsConfig);
+    return result;
   }
-};
-
-
-gulp.task('_tpl:copier', function (cb) {
-  CopierUtils.copy(getObject.get(Config, 'copier'), cb);
 });
 
-gulp.task('_tpl:copier:cleanup', function (cb) {
-  CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
+gulp.task('_tpl:copier:cleanup', function () {
+  return copierUtils.cleanup(getObject.get(_tplConfig, 'copier'));
 });
 
 
-gulp.task('_tpl:builder', function () {
-  var stream = gulp.src(__.getGlobPaths(Config.src, Config.extnames || [], true))
-        .pipe(gulpPlumber(__.plumberErrorHandler))
-    ;
+gulp.task('_tpl:compile', function () {
+  var stream = gulp.src(_tplConfig.src)
+    .pipe(gulpPlumber(__.plumberErrorHandler))
+  ;
 
-  if (getObject.get(Config, 'transform') && _.isFunction(Config.transform)) {
-    var tmp = Config.transform(stream);
-    stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
+
+  if (getObject.get(_tplConfig, 'transform') && _.isFunction(_tplConfig.transform)) {
+    var transformStream = _tplConfig.transform(stream);
+
+    if (gulpUtil.isStream(transformStream)) {
+      stream = transformStream;
+    }
   }
 
   stream = stream
-    .pipe(gulp.dest(Config.dest))
+    .pipe(gulp.dest(_tplConfig.dest))
   ;
 
-  watcherHandler(stream);
+  server && serverUtils.reloadServer(serverConfig.devServerName, stream);
 
   return stream;
 });
 
-gulp.task('_tpl:builder:cleanup', function (cb) {
-  if (!getObject.get(Config, 'cleanups') || !Config.cleanups) {
+gulp.task('_tpl:compile:cleanup', function (cb) {
+  if (!getObject.get(_tplConfig, 'cleanups') || !_tplConfig.cleanups) {
     cb();
     return;
   }
 
-  del(Config.cleanups)
-    .then(function () {
-      cb();
-    })
-    .catch(cb);
+  return del(_tplConfig.cleanups);
 });
 
 
 gulp.task('_tpl:build', function (cb) {
-  runSequence(['_tpl:copier', '_tpl:builder'], cb);
+  runSequence(['_tpl:copier', '_tpl:compile'], cb);
 });
 
 gulp.task('_tpl:build:cleanup', function (cb) {
-  runSequence(['_tpl:copier:cleanup', '_tpl:builder:cleanup'], cb);
+  runSequence(['_tpl:copier:cleanup', '_tpl:compile:cleanup'], cb);
 });
 
 
@@ -95,22 +85,21 @@ gulp.task('_tpl:dist', function (cb) {
 });
 
 gulp.task('_tpl:dist:cleanup', function (cb) {
-  runSequence('_tpl:dist:cleanup', cb);
+  runSequence('_tpl:build:cleanup', cb);
 });
 
 
-gulp.task('_tpl:watch', function (cb) {
-  if (_.isFunction(ServerConfig.runServer)) {
-    Server = ServerConfig.runServer(ServerConfig.devServerName);
+gulp.task('_tpl:watch', function () {
+  server = serverUtils.runServer(serverConfig.devServerName);
+
+  gulp.watch(_tplConfig.src, ['_tpl:compile']);
+
+  var copiers = getObject.get(_tplConfig, 'copier');
+  if (copiers) {
+    copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+    copiers = _.map(copiers, function (copier) {
+      return __.getCopier(copier).from;
+    });
+    copiers.length && gulp.watch(copiers, ['_tpl:copier']);
   }
-
-  gulp.watch(__.getGlobPaths(Config.src, Config.extnames || []), ['_tpl:builder']);
-
-  var copiers = __.getCopier(getObject.get(Config, 'copier'));
-  var copyWatchers = [];
-  _.each(copiers, function (copier) {
-    copyWatchers = copyWatchers.concat(copier.from);
-  });
-  copyWatchers.length && gulp.watch(copyWatchers, ['_tpl:copier']);
 });
-

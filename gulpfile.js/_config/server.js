@@ -1,5 +1,5 @@
 var _           = require('lodash'),
-    __          = require('../../helpers'),
+    __          = require('../helpers'),
     path        = require('path'),
     extend      = require('extend'),
     fs          = require('fs'),

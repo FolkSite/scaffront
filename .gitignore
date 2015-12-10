@@ -8,7 +8,6 @@ bower_components/
 .sass-cache/
 .idea
 .idea/
-.idea
 npm-debug.log
 
 *.iml

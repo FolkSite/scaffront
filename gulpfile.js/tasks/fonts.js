@@ -5,12 +5,9 @@ var _                 = require('lodash'),
     gulp              = require('gulp'),
     gulpUtil          = require('gulp-util'),
     gulpTap           = require('gulp-tap'),
-    gulpFont2Base64   = require('gulp-font2base64'),
-    mergeStreams      = require('event-stream').merge,
     gulpPlumber       = require('gulp-plumber'),
     runSequence       = require('run-sequence').use(gulp),
     del               = require('del'),
-    gulpIf            = require('gulp-if'),
     getObject         = require('getobject')
 ;
 
@@ -23,7 +20,7 @@ var server       = null,
 
 
 gulp.task('fonts:copier', function (cb) {
-  var stream = copierUtils.copy(getObject.get(fontsConfig, 'copier'), cb);
+  var stream = copierUtils.copy(getObject.get(fontsConfig, 'copier'));
 
   if (stream && gulpUtil.isStream(stream)) {
     server && serverUtils.reloadServer(serverConfig.devServerName, stream);
@@ -32,19 +29,22 @@ gulp.task('fonts:copier', function (cb) {
   }
 });
 
-gulp.task('fonts:copier:cleanup', function (cb) {
-  return copierUtils.cleanup(getObject.get(fontsConfig, 'copier'), cb);
+gulp.task('fonts:copier:cleanup', function () {
+  return copierUtils.cleanup(getObject.get(fontsConfig, 'copier'));
 });
 
 
-gulp.task('fonts:builder', function (cb) {
+gulp.task('fonts:builder', function () {
   var stream = gulp.src(fontsConfig.src)
     .pipe(gulpPlumber(__.plumberErrorHandler))
   ;
 
   if (getObject.get(fontsConfig, 'transform') && _.isFunction(fontsConfig.transform)) {
-    var tmp = fontsConfig.transform(stream, cb);
-    stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
+    var transformStream = fontsConfig.transform(stream);
+
+    if (gulpUtil.isStream(transformStream)) {
+      stream = transformStream;
+    }
   }
 
   stream = stream
@@ -62,11 +62,7 @@ gulp.task('fonts:builder:cleanup', function (cb) {
     return;
   }
 
-  del(fontsConfig.cleanups)
-    .then(function () {
-      cb();
-    })
-    .catch(cb);
+  return del(fontsConfig.cleanups);
 });
 
 
@@ -93,11 +89,13 @@ gulp.task('fonts:watch', function () {
 
   gulp.watch(fontsConfig.src, ['fonts:builder']);
 
-  var copiers = __.getCopier(getObject.get(fontsConfig, 'copier'));
-  var copyWatchers = [];
-  _.each(copiers, function (copier) {
-    copyWatchers = copyWatchers.concat(copier.from);
-  });
-  copyWatchers.length && gulp.watch(copyWatchers, ['fonts:copier']);
+  var copiers = getObject.get(fontsConfig, 'copier');
+  if (copiers) {
+    copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+    copiers = _.map(copiers, function (copier) {
+      return __.getCopier(copier).from;
+    });
+    copiers.length && gulp.watch(copiers, ['fonts:copier']);
+  }
 });
 

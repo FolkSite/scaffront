@@ -4,21 +4,21 @@ var __              = require('../helpers'),
     gulpFont2Base64 = require('gulp-font2base64')
 ;
 
+
 var config = {};
 
-config.src = __.getGlobPaths('app/fonts/2css', ['ttf', 'woff'] || [], true);
+var src = 'app/fonts/2css';
+
+config.src = __.getGlobPaths(src, ['ttf', 'woff'] || [], true);
 config.dest = 'dist/css/fonts';
 
-config.transform = function (stream, cb) {
-  if (!stream) { return; }
-  if (!gulpUtil.isStream(stream)) { return stream; }
-
-  stream.pipe(gulpFont2Base64());
-
-  return stream;
+config.transform = function (stream) {
+  return stream
+    .pipe(gulpFont2Base64())
+  ;
 };
 
-//config.cleanups = __.getGlobPaths(config.src, ['css']);
+config.cleanups = __.getGlobPaths(src, ['ttf.css', 'woff.css']);
 
 /**
  * @type {Copier}

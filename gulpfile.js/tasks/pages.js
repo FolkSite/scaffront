@@ -99,10 +99,9 @@ gulp.task('pages:watch', function () {
     copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
     copiers = _.map(copiers, __.getCopier);
 
-    var copyWatchers = [];
-    _.each(copiers, function (copier) {
-      copyWatchers = copyWatchers.concat(copier.from);
+    copiers = _.map(copiers, function (copier) {
+      return copier.from;
     });
-    copyWatchers.length && gulp.watch(copyWatchers, ['pages:copier']);
+    copiers.length && gulp.watch(copiers, ['pages:copier']);
   }
 });
