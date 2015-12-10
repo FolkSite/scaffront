@@ -39,6 +39,7 @@ global.environment = (global.isProduction) ? 'production' : 'development';
 
 global.isWatching = false;
 
+
 //var config = require('./_config/');
 //var Gulp = require('gulp');
 //var Path = require('path');

@@ -20,7 +20,7 @@ config.servers = {
       server: {
         index: "index.html",
         directory: true,
-        baseDir: 'dist'
+        baseDir: path.join(global.Builder.dest)
       }
     },
     callback: function (err, bs) {

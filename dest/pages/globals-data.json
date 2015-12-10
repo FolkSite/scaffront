@@ -1,0 +1,8 @@
+{
+  "config": {
+    "isProduction": false,
+    "Environment": "development",
+    "param1": "qweqweqweqwe",
+    "param2": 123234345456
+  }
+}

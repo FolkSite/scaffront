@@ -1,6 +1,10 @@
 var config = {};
 
-config.tmpPath = 'tmp';
+global.Builder = {
+  src: 'app',
+  dest: 'dest'
+};
+
 
 config.server = require('./server');
 

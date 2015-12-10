@@ -5,18 +5,15 @@ var _                = require('lodash'),
     fs               = require('fs'),
     gulp             = require('gulp'),
     gulpTap          = require('gulp-tap'),
-    gulpData         = require('gulp-data'),
-    gulpRename       = require('gulp-rename'),
-    gulpConsolidate  = require('gulp.consolidate'),
-    gulpJsBeautifier = require('gulp-jsbeautifier')
+    gulpRename       = require('gulp-rename')
   ;
-
 
 var utils = {};
 
 utils.getTplData = function (tplFile) {
   var dataFile,
       data = {},
+      tmp = null,
       parsed = path.parse(tplFile.path),
       ext = '.js';
 
@@ -27,94 +24,56 @@ utils.getTplData = function (tplFile) {
   dataFile = path.format(parsed);
 
   if (dataFile && fs.existsSync(dataFile)) {
-    data = require(dataFile);
+    tmp = require(dataFile);
 
-    if (!_.isPlainObject(data)) {
+    if (!_.isPlainObject(tmp)) {
       try {
-        data = JSON.parse(data);
-        data = data || {}; // prevent null
-      } catch (e) { data = {}; }
+        tmp = JSON.parse(data);
+        data = tmp || data;
+      } catch (e) {}
     }
   }
 
   return data;
 };
 
-var src = 'app/pages';
 
 var config = {};
 
-config.src = __.getGlobPaths(src, ['tpl'], true);
-config.dest = 'dist/pages';
+config.src = path.join(global.Builder.src, 'pages');
+config.extnames = 'tpl';
+config.dest = path.join(global.Builder.dest, 'pages');
 
-config.tplsData = require('../../app/pages/globals-data');
-
-config.transform = function (stream) {
-
-  return stream
-    .pipe(gulpData(utils.getTplData))
-    .pipe(gulpConsolidate('swig', config.tplsData || {}, {
-      //setupEngine: function (engine, Engine) {
-      //  return Engine;
-      //}
-    }))
-    .pipe(gulpRename({extname: '.html'}))
-    .pipe(gulpJsBeautifier({
-      html: {
-        braceStyle: 'collapse',
-        endWithNewline: true,
-        indentInnerHtml: true,
-        indentChar: ' ',
-        indentScripts: 'normal',
-        indentSize: 2,
-        maxPreserveNewlines: 1,
-        preserveNewlines: false,
-        unformatted: ['a', 'sub', 'sup', 'b', 'i', 'strong', 'em', 'u'],
-        wrapLineLength: 0,
-        extra_liners: []
-      },
-      css: {
-        indentChar: ' ',
-        indentSize: 2
-      },
-      js: {
-        braceStyle: 'collapse',
-        breakChainedMethods: false,
-        e4x: false,
-        evalCode: false,
-        indentChar: ' ',
-        indentLevel: 0,
-        indentSize: 2,
-        indentWithTabs: false,
-        jslintHappy: false,
-        keepArrayIndentation: false,
-        keepFunctionIndentation: false,
-        maxPreserveNewlines: 10,
-        preserveNewlines: true,
-        spaceBeforeConditional: true,
-        spaceInParen: false,
-        unescapeStrings: false,
-        wrapLineLength: 0
-      }
-    }))
-  ;
-};
+// '../../app/pages/globals-data'
+var srcRelative = path.relative(path.dirname(__filename), config.src);
+config.tplsData = require(path.join(srcRelative, 'globals-data'));
 
 config.cleanups = __.getGlobPaths(config.dest, ['html'], true);
 
 config.copier = [{
-  from: __.getGlobPaths(src, ['*-data.js', '*-data.json'], true),
+  from: __.getGlobPaths(config.src, ['*-data.js', '*-data.json'], true),
   to: config.dest,
   transform: function (stream) {
-    stream
+    return stream
       .pipe(gulpTap(function (file) {
+        var data = '{}',
+            tmp = null
+          ;
+
         if (fs.existsSync(file.path)) {
-          file.contents = new Buffer(JSON.stringify(require(file.path), null, 2));
+
+          try {
+            tmp = require(file.path);
+            if (_.isPlainObject(tmp)) {
+              tmp = JSON.stringify(tmp, null, 2);
+              data = tmp || data;
+            }
+          } catch (e) {}
+
+          file.contents = new Buffer(data);
         }
       }))
       .pipe(gulpRename({extname: '.json'}));
-
-    return stream;
   },
   cleanups: __.getGlobPaths(config.dest, ['*-data.json'], true)
 }];

@@ -22,8 +22,8 @@ config.importPaths = {
   scaffrontStyles: __.getBowerPath('scaffront-styles/stylesheets'),
 };
 
-config.src = 'app/styles';
-config.dest = 'dist/css';
+config.src = path.join(global.Builder.src, 'styles');
+config.dest = path.join(global.Builder.dest, 'css');
 
 config.extnames = {
   sass: ['sass', 'scss'],

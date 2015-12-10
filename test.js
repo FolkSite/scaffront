@@ -3,6 +3,17 @@ var _ = require('lodash');
 var Extend = require('extend');
 var Path = require('path');
 
+
+
+
+var tmp = Path.relative(__filename, 'app/dest');
+
+console.log(tmp);
+
+
+return;
+
+
 var getObject = require('getobject');
 
 var pathes = [

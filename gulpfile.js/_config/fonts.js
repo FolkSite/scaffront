@@ -5,9 +5,9 @@ var __              = require('../helpers'),
 
 var config = {};
 
-config.src = 'app/fonts/2css';
+config.src = path.join(global.Builder.src, 'fonts/2css');
 config.extnames = 'woff';
-config.dest = 'dist/css/fonts';
+config.dest = path.join(global.Builder.dest, 'css/fonts');
 
 
 config.cleanups = __.getGlobPaths(config.dest, 'woff.css', true);
