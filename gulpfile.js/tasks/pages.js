@@ -137,11 +137,10 @@ gulp.task('pages:watch', function () {
   var copiers = getObject.get(pagesConfig, 'copier');
   if (copiers) {
     copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
-    copiers = _.map(copiers, __.getCopier);
-
     copiers = _.map(copiers, function (copier) {
-      return copier.from;
+      return __.getCopier(copier).from;
     });
+    copiers = _.compact(copiers);
     copiers.length && gulp.watch(copiers, ['pages:copier']);
   }
 });

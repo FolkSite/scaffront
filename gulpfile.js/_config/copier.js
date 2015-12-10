@@ -1,12 +1,27 @@
 var _            = require('lodash'),
-    __           = require('../../helpers'),
-    del          = require('del'),
+    __           = require('../helpers'),
+    path         = require('path'),
     gulp         = require('gulp'),
     gulpUtil     = require('gulp-util'),
     gulpPlumber  = require('gulp-plumber'),
-    mergeStreams = require('event-stream').merge,
-    Promise      = require('bluebird')
+    Promise      = require('bluebird'),
+    mergeStreams = require('event-stream').merge
 ;
+
+var config = {};
+
+/**
+ * @property {Copier|Copier[]}
+ */
+config.copier = [{
+  //from: '',
+  //to: '',
+  //transform: function (stream, cb) {
+  //  return stream;
+  //},
+  //cleanups: _.flatten(cleanupGlobs)
+}];
+
 
 var utils = {};
 
@@ -74,4 +89,5 @@ utils.cleanup = function (config) {
 };
 
 
-module.exports = utils;
+module.exports.utils  = utils;
+module.exports.config = config;

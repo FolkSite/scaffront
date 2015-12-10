@@ -90,6 +90,7 @@ gulp.task('fonts:watch', function () {
     copiers = _.map(copiers, function (copier) {
       return __.getCopier(copier).from;
     });
+    copiers = _.compact(copiers);
     copiers.length && gulp.watch(copiers, ['fonts:copier']);
   }
 });

@@ -184,6 +184,7 @@ gulp.task('styles:watch', function () {
     copiers = _.map(copiers, function (copier) {
       return __.getCopier(copier).from;
     });
+    copiers = _.compact(copiers);
     copiers.length && gulp.watch(copiers, ['styles:copier']);
   }
 });

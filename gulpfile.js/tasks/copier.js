@@ -38,3 +38,21 @@ gulp.task('copier:dist:cleanup', function (cb) {
   runSequence('copier:build:cleanup', cb);
 });
 
+
+gulp.task('copier:watch', function () {
+
+  server = serverUtils.runServer(serverConfig.devServerName);
+
+  var copiers = getObject.get(copierConfig, 'copier');
+
+  if (copiers) {
+    copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+    copiers = _.map(copiers, function (copier) {
+      return __.getCopier(copier).from;
+    });
+    copiers = _.compact(copiers);
+    copiers.length && gulp.watch(copiers, ['pages:copier']);
+  }
+
+});
+
