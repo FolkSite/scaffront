@@ -1,20 +1,20 @@
-$base-font-size: 14px !default;
-$base-line-height: 17px !default;
-$base-color: #5e5e5e !default;
-$base-font: tahoma !default;
+$base-font-size: 16px !default;
+$base-line-height: 20px !default;
+$base-color: #262626 !default;
+$base-font: PTSans !default;
 
-$selection-color: #363636 !default;
-$selection-background: #b3d4fc !default;
+$selection-color: #fff !default;
+$selection-background: #ff6600 !default;
 $selection-text-shadow: none !default;
 
 $color-scheme-white: #fff !default;
 $color-scheme-green: #30bb43 !default;
 
 $fonts: (
-  //(name: roboto, type: regular, font: font-stack(RobotoRegular, tahoma), weight: 400, style: normal),
-  //(name: roboto-italic, type: regular, font: font-stack(RobotoItalic, tahoma), weight: 400, style: italic),
-  //(name: roboto-bold, type: regular, font: font-stack(RobotoBold, tahoma), weight: 700, style: normal),
-  //(name: roboto-bold-italic, type: regular, font: font-stack(RobotoBoldItalic, tahoma), weight: 700, style: italic)
+  (name: ptsans,    type: regular, font: font-stack(PTSans, tahoma, sans-serif), weight: 400, style: normal),
+  (name: ptsans-i,  type: regular, font: font-stack(PTSansItalic, tahoma, sans-serif), weight: 400, style: italic),
+  (name: ptsans-b,  type: regular, font: font-stack(PTSansBold, tahoma, sans-serif), weight: 700, style: normal),
+  (name: ptsans-ib, type: regular, font: font-stack(PTSansBoldItalic, tahoma, sans-serif), weight: 700, style: italic)
 ) !default;
 
 $validated-error-color: #ff0000 !default;

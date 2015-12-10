@@ -13,19 +13,19 @@
       $sidebar-right-gutter: 0
     );
   }
+}
 
-  .layout__width {
-    @include layout-width-min(
-      $width: 1000px,
-      $side-space: 20px
+.layout__width {
+  @include layout-width-min(
+  $width: 1000px,
+  $side-space: 20px
+  );
+
+  > .layout__width-inner {
+    @include layout-width-max(
+    $width: 1400px,
+    $side-space: 0px
     );
-
-    > .layout__width-inner {
-      @include layout-width-max(
-        $width: 1400px,
-        $side-space: 0px
-      );
-    }
   }
 }
 
@@ -36,6 +36,3 @@
   $selector-footer: '.layout__footer'
 );
 
-
-
-@debug(type-of(0));

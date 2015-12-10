@@ -6,6 +6,7 @@
 
 {% block Content-content %}
   Контент регистрации
+  <a href="#">Это ссылка</a>
 {% endblock %}
 
 {% block Footer-content %}

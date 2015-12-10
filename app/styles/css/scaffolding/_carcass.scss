@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+}
+
+@if (type-of($layouts) == map) {
+
+  @each $name, $options in $layouts {
+    $container: 'body';
+    $layout: null;
+    @if (map-has-key($options, 'container') and map-get($options, 'container') != '') {
+      $container: map-get($options, 'container');
+    }
+    @if (map-has-key($options, 'layout')) {
+      $layout: map-get($options, 'layout');
+    }
+
+    @if (type-of($layout) == map) {
+      #{$container} {
+        @if (map-has-key($layout, 'sidebars')) {
+          $sidebars: map-get($layout, 'sidebars');
+          @if (type-of($sidebars) == map) {
+            @include sidebars ($sidebars...);
+          }
+        }
+
+        @if (map-has-key($layout, 'sticky-footer')) {
+          $sticky-footer: map-get($layout, 'sticky-footer');
+          @if (type-of($sticky-footer) == map) {
+            @include sticky-footer ($sticky-footer...);
+          }
+        }
+      }
+
+      @if (map-has-key($layout, 'width')) {
+        $map: map-get($layout, 'width');
+        @if (type-of($map) == map) {
+          $selector: '';
+          $selector-min: '';
+          $selector-max: '';
+          $min: 0;
+          $max: 0;
+          $side-space: 0;
+          $side-space-type: padding;
+
+          @if (map-has-key($map, 'selector')) {
+            $selector: map-get($map, 'selector');
+          }
+          @if (map-has-key($map, 'selector-min')) {
+            $selector-min: map-get($map, 'selector-min');
+          }
+          @if (map-has-key($map, 'selector-max')) {
+            $selector-max: map-get($map, 'selector-max');
+          }
+          @if (map-has-key($map, 'min')) {
+            $min: map-get($map, 'min');
+          }
+          @if (map-has-key($map, 'max')) {
+            $max: map-get($map, 'max');
+          }
+          @if (map-has-key($map, 'side-space')) {
+            $side-space: map-get($map, 'side-space');
+          }
+          @if (map-has-key($map, 'side-space-type')) {
+            $side-space-type: map-get($map, 'side-space-type');
+          }
+
+          @if ($selector and $min and $max) {
+            #{unquote($selector)} {
+              @include layout-width (
+                $min: $min,
+                $max: $max,
+                $side-space: $side-space,
+                $side-space-type: $side-space-type
+              );
+            }
+          }
+          @if ($selector-min and $min) {
+            #{unquote($selector-min)} {
+              @include layout-width-min (
+                $width: $min,
+                $side-space: $side-space,
+                $side-space-type: $side-space-type
+              );
+
+              @if ($selector-max and $max) {
+                #{unquote($selector-max)} {
+                  #{unquote($side-space-type)}-left: 0;
+                  #{unquote($side-space-type)}-right: 0;
+                }
+              }
+            }
+          }
+
+          @if ($selector-max and $max) {
+            #{unquote($selector-max)} {
+              @include layout-width-max (
+                $width: $max,
+                $side-space: $side-space,
+                $side-space-type: $side-space-type
+              );
+
+              @if ($selector-min and $min) {
+                #{unquote($selector-min)} {
+                  #{unquote($side-space-type)}-left: 0;
+                  #{unquote($side-space-type)}-right: 0;
+                }
+              }
+            }
+          }
+
+          //@include layout-width ($width...);
+        }
+      }
+    }
+  }
+}
+
