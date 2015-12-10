@@ -1,5 +1,4 @@
 // https://github.com/osscafe/gulp-cheatsheet/blob/master/examples/js/stream-array.js
-// https://www.npmjs.com/login?done=/package/gulp-consolidate
 
 var _                = require('lodash'),
     __               = require('../helpers'),
@@ -10,7 +9,6 @@ var _                = require('lodash'),
     gulpTap          = require('gulp-tap'),
     del              = require('del'),
     getObject        = require('getobject'),
-    lazypipe         = require('lazypipe'),
     gulpChanged      = require('gulp-changed'),
     runSequence      = require('run-sequence').use(gulp),
     gulpPlumber      = require('gulp-plumber')
@@ -47,7 +45,6 @@ gulp.task('pages:compile', function (cb) {
 
 
   if (getObject.get(pagesConfig, 'transform') && _.isFunction(pagesConfig.transform)) {
-    //var tmp = pagesConfig.transform(stream, cb).pipe(gulp.dest(pagesConfig.dest));
     var transformStream = pagesConfig.transform(stream);
 
     if (gulpUtil.isStream(transformStream)) {

@@ -20,8 +20,8 @@ utils.getTplData = function (tplFile) {
       parsed = path.parse(tplFile.path),
       ext = '.js';
 
-  parsed.name = parsed.name +'-data';
-  parsed.ext = ext;
+  parsed.name = parsed.name + '-data';
+  parsed.ext  = ext;
   parsed.base = parsed.name + ext;
 
   dataFile = path.format(parsed);
