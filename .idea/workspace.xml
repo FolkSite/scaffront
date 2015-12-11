@@ -2,27 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24b3cb0e-08c7-4be3-b17c-3d274cc60c07" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_buttons.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_carcass.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_controls-group.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_fonts.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_forms.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_h5bp.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_icons.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_inputs.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_links.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_normalize.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/_scaffolding.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_snippets.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/scaffolding/_typography.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/_common.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/styles/css/common/_layouts.scss" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\app\styles\css\_blocks.scss" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\app\styles\css\_layouts.scss" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\app\styles\css\_scaffolding.scss" afterPath="" />
+      <change type="DELETED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_carcass.scss" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css/vars/_base.scss" afterPath="$PROJECT_DIR$/app/styles/css/vars/_base.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" afterPath="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css/_vars.scss" afterPath="$PROJECT_DIR$/app/styles/css/_vars.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/css.scss" afterPath="$PROJECT_DIR$/app/styles/css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout.tpl" afterPath="$PROJECT_DIR$/app/pages/layout.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout/head.tpl" afterPath="$PROJECT_DIR$/app/pages/layout/head.tpl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/registration.tpl" afterPath="$PROJECT_DIR$/app/pages/registration.tpl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout/styles.tpl" afterPath="$PROJECT_DIR$/app/pages/layout/styles.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/pages/layout/scripts.tpl" afterPath="$PROJECT_DIR$/app/pages/layout/scripts.tpl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\layouts\_default.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/layouts/_default.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_buttons.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_buttons.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_controls-group.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_controls-group.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_fonts.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_fonts.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_forms.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_forms.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_h5bp.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_h5bp.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_icons.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_icons.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_inputs.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_inputs.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_links.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_links.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_normalize.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_normalize.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_snippets.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_snippets.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\scaffolding\_typography.scss" afterPath="$PROJECT_DIR$/app/styles/css/common/_typography.scss" />
+      <change type="MOVED" beforePath="D:\Repos\scaffront\app\styles\css\vars\_carcass.scss" afterPath="$PROJECT_DIR$/app/styles/css/vars/_layouts.scss" />
     </list>
     <ignored path="scaffront.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,31 +51,130 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="layout.tpl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/pages/layout.tpl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.821428">
-              <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="registration.tpl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/pages/registration.tpl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.428571">
-              <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="css.scss" pinned="false" current-in-tab="true">
+      <file leaf-file-name="css.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/styles/css.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3096624">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.785714">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_base.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/styles/css/vars/_base.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.321428">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_fonts.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_fonts.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-12.214286">
+              <caret line="18" column="57" selection-start-line="18" selection-start-column="57" selection-end-line="18" selection-end-column="57" />
+              <folding>
+                <element signature="e#2239#2682#0" expanded="false" />
+                <element signature="e#2730#2886#0" expanded="false" />
+                <element signature="e#2927#3130#0" expanded="false" />
+                <element signature="e#2988#3128#0" expanded="false" />
+                <element signature="e#3257#3538#0" expanded="false" />
+                <element signature="e#3301#3536#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.65592635">
+              <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_relative-units.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_relative-units.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.6785714">
+              <caret line="1" column="31" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
+              <folding>
+                <element signature="e#245#805#0" expanded="false" />
+                <element signature="e#883#1404#0" expanded="false" />
+                <element signature="e#1529#2004#0" expanded="false" />
+                <element signature="e#2132#2255#0" expanded="false" />
+                <element signature="e#2353#2476#0" expanded="false" />
+                <element signature="e#2552#2692#0" expanded="false" />
+                <element signature="e#2768#2907#0" expanded="false" />
+                <element signature="e#3034#3227#0" expanded="false" />
+                <element signature="e#3354#3546#0" expanded="false" />
+                <element signature="e#3632#5547#0" expanded="false" />
+                <element signature="e#5600#5656#0" expanded="false" />
+                <element signature="e#5709#5765#0" expanded="false" />
+                <element signature="e#5819#5876#0" expanded="false" />
+                <element signature="e#5941#6233#0" expanded="false" />
+                <element signature="e#6294#6337#0" expanded="false" />
+                <element signature="e#6421#6566#0" expanded="false" />
+                <element signature="e#6452#6523#0" expanded="false" />
+                <element signature="e#6600#6937#0" expanded="false" />
+                <element signature="e#6984#7599#0" expanded="false" />
+                <element signature="e#7650#8106#0" expanded="false" />
+                <element signature="e#8203#8691#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_mixins.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_mixins.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.75">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_controls-group.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_controls-group.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="20.892857">
+              <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_scaffolding.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_scaffolding.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.785714">
+              <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_h5bp.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_h5bp.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.035714">
+              <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bower.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/bower.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-14.25">
+              <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -82,26 +188,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/pages/index-data.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/_tpl.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/tasks/_tpl.js" />
-        <option value="$PROJECT_DIR$/app/pages/layout/head/favicons.tpl" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/_styles.js" />
-        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/bower.json" />
-        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/_scaffront-styles.scss" />
-        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_mixins.scss" />
-        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_scaffolding.scss" />
-        <option value="$PROJECT_DIR$/bower.json" />
-        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_images.scss" />
-        <option value="$PROJECT_DIR$/gulpfile.js/tasks/_styles.js" />
-        <option value="$PROJECT_DIR$/app/styles/_include.css" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/fonts.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/styles.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/index.js" />
-        <option value="$PROJECT_DIR$/test.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/pages.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/copier/index.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js/_config/copier.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/_config/server.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/copier.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/fonts.js" />
@@ -111,7 +197,6 @@
         <option value="$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/config/server.js" />
         <option value="$PROJECT_DIR$/gulpfile.js/index.js" />
-        <option value="$PROJECT_DIR$/app/styles/css/_layouts.scss" />
         <option value="$PROJECT_DIR$/app/styles/libs/jquery.ajax.form.loader/_settings.scss" />
         <option value="$PROJECT_DIR$/app/styles/libs/jquery.ajax.form.loader/_main.scss" />
         <option value="$PROJECT_DIR$/app/styles/libs/_jquery.ajax.form.loader.scss" />
@@ -121,18 +206,39 @@
         <option value="$PROJECT_DIR$/app/styles/libs.scss" />
         <option value="$PROJECT_DIR$/app/styles/libs/_slick-carousel.scss" />
         <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/layout/_carcass.scss" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/pages/layout.tpl" />
         <option value="$PROJECT_DIR$/app/styles/css/typography.scss" />
         <option value="$PROJECT_DIR$/app/styles/css/layouts/_default.scss" />
         <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_typography.scss" />
         <option value="$PROJECT_DIR$/app/styles/css/_typography.scss" />
-        <option value="$PROJECT_DIR$/app/pages/registration.tpl" />
-        <option value="$PROJECT_DIR$/app/styles/css/_vars.scss" />
         <option value="$PROJECT_DIR$/app/pages/layout/styles.tpl" />
-        <option value="$PROJECT_DIR$/app/styles/css/vars/_base.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/scaffolding/_carcass.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/_layouts.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/scaffolding/_layouts.scss" />
         <option value="$PROJECT_DIR$/app/styles/css/_scaffolding.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/common/_layouts.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/_vars.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/_common.scss" />
+        <option value="$PROJECT_DIR$/dest/css/css.css" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_links.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_snippets.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_vars.scss" />
+        <option value="$PROJECT_DIR$/app/pages/registration.tpl" />
+        <option value="$PROJECT_DIR$/app/pages/layout/scripts.tpl" />
+        <option value="$PROJECT_DIR$/app/pages/layout/head.tpl" />
+        <option value="$PROJECT_DIR$/app/styles/css/common/_fonts.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/_scaffront-styles.scss" />
         <option value="$PROJECT_DIR$/app/styles/css.scss" />
+        <option value="$PROJECT_DIR$/app/styles/css/vars/_base.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_base.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_fonts.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_mixins.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_scaffolding.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_h5bp.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/bower.json" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_helpers.scss" />
+        <option value="$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_relative-units.scss" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -145,9 +251,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="3074" />
-    <option name="width" value="1413" />
-    <option name="height" value="1047" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="2576" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -290,6 +397,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="toast" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="toast" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scss" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="scaffront-styles" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -339,6 +486,70 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="scaffront-styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront-styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stylesheets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront-styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mixins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront-styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stylesheets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront-styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mixins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="content" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -379,6 +590,58 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vars" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffront" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -445,7 +708,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="File.Encoding" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scaffront-styles" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sass-relative-units" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
@@ -456,6 +719,7 @@
       <recent name="D:\Repos\scaffront\gulpfile.js\_config" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Repos\scaffront\app\styles\css\scaffolding" />
       <recent name="D:\Repos\scaffront\gulpfile.js\_config" />
       <recent name="D:\Repos\scaffront\gulpfile.js\_tasks" />
     </key>
@@ -502,14 +766,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3074" y="0" width="1413" height="1047" extended-state="0" />
+    <frame x="1912" y="-8" width="2576" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35846266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18004769" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896176" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -520,7 +785,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
@@ -535,300 +799,82 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/bluebird/js/release/bluebird.js">
+    <entry file="file://$PROJECT_DIR$/app/styles/css/vars/_links.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/bluebird/js/release/promise.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="191" column="13" selection-start-line="191" selection-start-column="13" selection-end-line="191" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/config/copier.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31772575">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/_config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40245262">
-          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/helpers/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.8428093">
-          <caret line="21" column="30" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/copier.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21181718">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/fonts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31772575">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/images.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36008918">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/pages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46599776">
-          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/styles.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5295429">
-          <caret line="25" column="31" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/tasks/scripts/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44481605">
-          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/config/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="3" selection-start-line="63" selection-start-column="3" selection-end-line="63" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_h5bp.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.30930233">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.044237487">
+          <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_inputs.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_lists.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26511627">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.24330617">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/_scaffront-styles.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_side_positions.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1767442">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/magnific-popup/src/css/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30930233">
-          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_images.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61860466">
-          <caret line="100" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js/config/styles.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27815315">
-          <caret line="13" column="59" selection-start-line="13" selection-start-column="59" selection-end-line="13" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/_magnific-popup.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15465117">
-          <caret line="7" column="59" selection-start-line="7" selection-start-column="59" selection-end-line="7" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/_jquery.bootstrap-tabs.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1767442">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/slick-carousel/slick/slick.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.6531532">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/slick-carousel/slick/slick-theme.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/slick-carousel/slick/slick-theme.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/slick-carousel/slick/slick.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3151163">
-          <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/_slick-carousel.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28754365">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/jquery.ajax.form.loader/_main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3096624">
-          <caret line="14" column="65" selection-start-line="14" selection-start-column="65" selection-end-line="14" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/jquery.ajax.form.loader/_settings.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.110593714">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs/_jquery.ajax.form.loader.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.071429">
-          <caret line="6" column="39" selection-start-line="6" selection-start-column="39" selection-end-line="6" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.9259257">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/layout/_carcass.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13271245">
-          <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/libs.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.110593714">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/css/_layouts.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3571428">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_snippets.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.08381839">
-          <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_links.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.535714">
-          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_common.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2654249">
-          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+        <state vertical-scroll-proportion="-0.6193248">
+          <caret line="54" column="43" selection-start-line="54" selection-start-column="43" selection-end-line="54" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_snippets.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="12.892858">
-          <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.19906868">
+          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/css/layouts/_default.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_links.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8405122">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.4202561">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_typography.scss">
+    <entry file="file://$PROJECT_DIR$/app/styles/css/common/_links.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7264261">
-          <caret line="140" column="11" selection-start-line="140" selection-start-column="11" selection-end-line="140" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.22118743">
+          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_vars.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.785714">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/css/vars/_controls-group.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.088474974">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pages/layout/scripts.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.110593714">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pages/layout/head.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06635623">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -841,82 +887,374 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/pages/layout.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.821428">
-          <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/pages/registration.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.428571">
-          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
+        <state vertical-scroll-proportion="-21.035715">
+          <caret line="31" column="22" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_scaffolding.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_common.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2654249">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/libs.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.043778803">
+          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/stylesheets/SassyLists/_first.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25576037">
+          <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/stylesheets/SassyLists/helpers/_true.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.218894">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/pages/layout.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.857142">
+          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/stylesheets/SassyLists/_range.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13736904">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/sass/lib/sass.jar!/org/jetbrains/plugins/sass/stdlib/sass_functions.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3434226">
+          <caret line="1049" column="10" selection-start-line="1049" selection-start-column="10" selection-end-line="1049" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/stylesheets/SassyLists/_prepend.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39813736">
+          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/dist/_SassyLists.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3434226">
+          <caret line="674" column="10" selection-start-line="674" selection-start-column="10" selection-end-line="674" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/SassyLists/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.044237487">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/_scaffront-styles.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06635623">
+          <caret line="3" column="49" selection-start-line="3" selection-start-column="49" selection-end-line="3" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/css/common/_fonts.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.088474974">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dest/css/css.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3145434">
+          <caret line="937" column="7" selection-start-line="937" selection-start-column="7" selection-end-line="937" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_base.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2654249">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_buttons.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.48195577">
+          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_carcass.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15948778">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_controls-group.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/css/scaffolding/_h5bp.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_icons.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.110593714">
-          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_fonts.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_inputs.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13271245">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/css/_vars.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_links.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19906868">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/css/_scaffolding.scss">
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_snippets.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13271245">
-          <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/vars/_typography.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/styles/css/vars/_base.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1548312">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_fonts.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27706635">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+        <state vertical-scroll-proportion="-10.321428">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/styles/css.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3096624">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.785714">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_buttons.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19906868">
+          <caret line="9" column="3" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_carcass.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24330617">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_mixins.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.75">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_controls-group.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="20.892857">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_icons.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/_scaffolding.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.785714">
+          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/toast/scss/_grid.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22584401">
+          <caret line="270" column="17" selection-start-line="270" selection-start-column="17" selection-end-line="270" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/scaffolding/_h5bp.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.035714">
+          <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.25">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_content.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28754365">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_helpers.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.15017462">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#130#275#0" expanded="false" />
+            <element signature="e#153#273#0" expanded="false" />
+            <element signature="e#197#269#0" expanded="false" />
+            <element signature="e#236#263#0" expanded="false" />
+            <element signature="e#297#442#0" expanded="false" />
+            <element signature="e#320#440#0" expanded="false" />
+            <element signature="e#364#436#0" expanded="false" />
+            <element signature="e#403#430#0" expanded="false" />
+            <element signature="e#469#985#0" expanded="false" />
+            <element signature="e#1019#1309#0" expanded="false" />
+            <element signature="e#1364#2420#0" expanded="false" />
+            <element signature="e#2467#2551#0" expanded="false" />
+            <element signature="e#2606#2881#0" expanded="false" />
+            <element signature="e#2937#3160#0" expanded="false" />
+            <element signature="e#3198#3343#0" expanded="false" />
+            <element signature="e#3383#3572#0" expanded="false" />
+            <element signature="e#3443#3472#0" expanded="false" />
+            <element signature="e#3602#3706#0" expanded="false" />
+            <element signature="e#3746#4093#0" expanded="false" />
+            <element signature="e#4312#4354#0" expanded="false" />
+            <element signature="e#4333#4352#0" expanded="false" />
+            <element signature="e#4390#4421#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_layout.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22118743">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/_relative-units.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.6785714">
+          <caret line="1" column="31" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
+          <folding>
+            <element signature="e#245#805#0" expanded="false" />
+            <element signature="e#883#1404#0" expanded="false" />
+            <element signature="e#1529#2004#0" expanded="false" />
+            <element signature="e#2132#2255#0" expanded="false" />
+            <element signature="e#2353#2476#0" expanded="false" />
+            <element signature="e#2552#2692#0" expanded="false" />
+            <element signature="e#2768#2907#0" expanded="false" />
+            <element signature="e#3034#3227#0" expanded="false" />
+            <element signature="e#3354#3546#0" expanded="false" />
+            <element signature="e#3632#5547#0" expanded="false" />
+            <element signature="e#5600#5656#0" expanded="false" />
+            <element signature="e#5709#5765#0" expanded="false" />
+            <element signature="e#5819#5876#0" expanded="false" />
+            <element signature="e#5941#6233#0" expanded="false" />
+            <element signature="e#6294#6337#0" expanded="false" />
+            <element signature="e#6421#6566#0" expanded="false" />
+            <element signature="e#6452#6523#0" expanded="false" />
+            <element signature="e#6600#6937#0" expanded="false" />
+            <element signature="e#6984#7599#0" expanded="false" />
+            <element signature="e#7650#8106#0" expanded="false" />
+            <element signature="e#8203#8691#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins/content/_fonts.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.214286">
+          <caret line="18" column="57" selection-start-line="18" selection-start-column="57" selection-end-line="18" selection-end-column="57" />
+          <folding>
+            <element signature="e#2239#2682#0" expanded="false" />
+            <element signature="e#2730#2886#0" expanded="false" />
+            <element signature="e#2927#3130#0" expanded="false" />
+            <element signature="e#2988#3128#0" expanded="false" />
+            <element signature="e#3257#3538#0" expanded="false" />
+            <element signature="e#3301#3536#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.65592635">
+          <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
           <folding />
         </state>
       </provider>

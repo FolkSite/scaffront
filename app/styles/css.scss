@@ -2,13 +2,49 @@
 @import '../../bower_components/breakpoint-sass/stylesheets/breakpoint';
 @import '../../bower_components/sass-toolkit/stylesheets/toolkit';
 @import '../../bower_components/singularity/stylesheets/singularitygs';
-//@import '../../bower_components/';
 
 
-@import 'css/vars';
-@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/vars';
 @import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins';
+@import 'css/vars';
+//@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/vars';
 
-@import 'css/scaffolding';
-@import 'css/layouts';
-@import 'css/widgets';
+
+//@import 'css/common';
+//@import 'css/widgets';
+
+
+
+////.test {
+////  font-family: "PTSans", "Tahoma", "Geneva CY", "sans-serif";
+////}
+//
+//.test {
+//  font-size: $base-font-size;
+//  line-height: 1.4;
+//}
+//.test1 {
+//  //font-family: font-stack(PTSans, tahoma);
+//  @include sf-font(ptsans);
+//}
+//.test2 {
+//  @include sf-font(ptsans, italic);
+//}
+//.test3 {
+//  @include sf-font(ptsans, italic);
+//  font-style: italic;
+//}
+//.test4 {
+//  @include sf-font(ptsans, bold);
+//}
+//.test5 {
+//  @include sf-font(ptsans, bold);
+//  font-weight: 700;
+//}
+//.test6 {
+//  @include sf-font(ptsans, bold-italic);
+//}
+//.test7 {
+//  @include sf-font(ptsans, bold-italic);
+//  font-style: italic;
+//  font-weight: 700;
+//}

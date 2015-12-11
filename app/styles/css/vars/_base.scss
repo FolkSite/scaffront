@@ -10,12 +10,16 @@ $selection-text-shadow: none !default;
 $color-scheme-white: #fff !default;
 $color-scheme-green: #30bb43 !default;
 
+$tahomaStack: map-get(sf-get-font(tahoma), stack);
+
 $fonts: (
-  (name: ptsans,    type: regular, font: font-stack(PTSans, tahoma, sans-serif), weight: 400, style: normal),
-  (name: ptsans-i,  type: regular, font: font-stack(PTSansItalic, tahoma, sans-serif), weight: 400, style: italic),
-  (name: ptsans-b,  type: regular, font: font-stack(PTSansBold, tahoma, sans-serif), weight: 700, style: normal),
-  (name: ptsans-ib, type: regular, font: font-stack(PTSansBoldItalic, tahoma, sans-serif), weight: 700, style: italic)
+  (name: ptsans, type: regular,     weight: 400, style: normal, stack: sl-prepend($tahomaStack, "PTSans")),
+  (name: ptsans, type: italic,      weight: 400, style: italic, stack: sl-prepend($tahomaStack, "PTSansItalic")),
+  (name: ptsans, type: bold,        weight: 700, style: normal, stack: sl-prepend($tahomaStack, "PTSansBold")),
+  (name: ptsans, type: bold-italic, weight: 700, style: italic, stack: sl-prepend($tahomaStack, "PTSansBoldItalic")),
 ) !default;
+
+$unused: sf-add-fonts($fonts);
 
 $validated-error-color: #ff0000 !default;
 $validated-success-color: #3a9814 !default;
