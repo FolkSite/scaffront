@@ -35,7 +35,6 @@ gulp.task('styles:sass', function () {
   var stream = gulp.src(__.getGlobPaths(stylesConfig.src, stylesConfig.extnames.sass))
     .pipe(gulpPlumber(__.plumberErrorHandler))
 
-      // здесь init не нужен, потому что gulpSass сам выставит нужные опции и сгенерирует все map'ы
       //.pipe(gulpSourcemaps.init())
       .pipe(gulpSass({
         precision: 10,
@@ -82,7 +81,7 @@ gulp.task('styles:css', function () {
       //  baseDir:      'public',
       //  extensions:   ['jpg', 'png'],
       //  exclude:      [/\.server\.(com|net)\/dynamic\//, '--live.jpg'],
-      //  maxImageSize: 32*1024, // размер указывается в байтах, тут он 32кб потому, что больше уже плохо для IE8
+      //  maxImageSize: 32*1024,
       //  debug: true
       //}))
       .pipe(gulpSourcemaps.write('./', {

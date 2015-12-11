@@ -64,6 +64,7 @@
     "scaffront-styles": "*",
     "animate.css": "~3.4.0",
     "toast": "toast-grid#~1.0.0",
-    "normalize-css": "normalize.css#~3.0.3"
+    "Effeckt.css": "git://github.com/h5bp/Effeckt.css.git",
+    "normalize-scss": "normalize.scss#~4.0.3"
   }
 }
