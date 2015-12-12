@@ -18,6 +18,9 @@
  */
 
 
+
+
+
 // https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
 
 // https://gist.github.com/HPieters/88dd18e99c8925b2cabb
@@ -39,7 +42,8 @@ global.environment = (global.isProduction) ? 'production' : 'development';
 
 global.isWatching = false;
 
-var config = require('./_config/');
+
+//var config = require('./_config/');
 //var Gulp = require('gulp');
 //var Path = require('path');
 
@@ -47,13 +51,113 @@ var config = require('./_config/');
 //  recurse: true
 //});
 
+
+var gulp            = require('gulp'),
+    gulpUtil        = require('gulp-util'),
+    runSequence     = require('run-sequence').use(gulp)
+;
+
 require('./tasks/fonts');
-//require('./tasks/_styles');
 require('./tasks/styles');
 require('./tasks/copier');
 require('./tasks/pages');
-require('./tasks/scripts');
+//require('./tasks/scripts');
 //require('./tasks/images');
+
+
+gulp.task('build', function (cb) {
+  runSequence(
+    [
+      'fonts:build',
+      //'images:build',
+      'copier:build'
+    ],
+    [
+      'styles:build',
+      //'scripts:build'
+    ],
+    [
+      'pages:build',
+    ],
+    cb
+  );
+});
+
+gulp.task('build:cleanup', function (cb) {
+  runSequence(
+    [
+      'fonts:build:cleanup',
+      //'images:build:cleanup',
+      'copier:build:cleanup'
+    ],
+    [
+      'styles:build:cleanup',
+      //'scripts:build:cleanup'
+    ],
+    [
+      'pages:build:cleanup',
+    ],
+    cb
+  );
+});
+
+
+gulp.task('dist', function (cb) {
+  runSequence(
+    [
+      'fonts:dist',
+      //'images:dist',
+      'copier:dist'
+    ],
+    [
+      'styles:dist',
+      //'scripts:dist'
+    ],
+    [
+      'pages:dist',
+    ],
+    cb
+  );
+});
+
+gulp.task('dist:cleanup', function (cb) {
+  runSequence(
+    [
+      'fonts:dist:cleanup',
+      //'images:dist:cleanup',
+      'copier:dist:cleanup'
+    ],
+    [
+      'styles:dist:cleanup',
+      //'scripts:dist:cleanup'
+    ],
+    [
+      'pages:dist:cleanup',
+    ],
+    cb
+  );
+});
+
+
+gulp.task('watch', function (cb) {
+  runSequence(
+    [
+      'fonts:watch',
+      //'images:watch',
+      'copier:watch'
+    ],
+    [
+      'styles:watch',
+      //'scripts:watch'
+    ],
+    [
+      'pages:watch',
+    ],
+    cb
+  );
+});
+
+
 
 //return;
 //

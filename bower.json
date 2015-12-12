@@ -35,7 +35,6 @@
     "sassy-buttons": "*",
     "sassy-maps": "*",
     "SassyLists": "*",
-    "scaffront-styles": "*",
     "singularity": "*",
     "singularity-quick-spanner": "*",
     "slick-carousel": "*",
@@ -61,6 +60,11 @@
     "nouislider": "~8.2.1",
     "tap.js": "~2.1.2",
     "jquery-form": "~3.46.0",
-    "jquery.fileapi": "~0.4.11"
+    "jquery.fileapi": "~0.4.11",
+    "scaffront-styles": "*",
+    "animate.css": "~3.4.0",
+    "toast": "toast-grid#~1.0.0",
+    "Effeckt.css": "git://github.com/h5bp/Effeckt.css.git",
+    "normalize-scss": "normalize.scss#~4.0.3"
   }
 }

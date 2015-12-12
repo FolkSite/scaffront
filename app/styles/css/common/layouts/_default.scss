@@ -1,7 +1,6 @@
 .layout {
-
   &,
-  .layout--default {
+  &.layout--default {
     @include sidebars (
       $selector-container: '.layout__middle',
       $selector-content-container: '.layout__content-container',
@@ -13,9 +12,21 @@
       $sidebar-right-width: 0,
       $sidebar-right-gutter: 0
     );
-
   }
+}
 
+.layout__width {
+  @include layout-width-min(
+  $width: 1000px,
+  $side-space: 20px
+  );
+
+  > .layout__width-inner {
+    @include layout-width-max(
+    $width: 1400px,
+    $side-space: 0px
+    );
+  }
 }
 
 @include sticky-footer (
@@ -24,3 +35,4 @@
   $selector-content: '.layout__middle',
   $selector-footer: '.layout__footer'
 );
+

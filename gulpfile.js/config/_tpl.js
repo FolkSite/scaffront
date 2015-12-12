@@ -1,5 +1,5 @@
 var _                = require('lodash'),
-    __               = require('../../helpers'),
+    __               = require('../helpers'),
     path             = require('path'),
     extend           = require('extend'),
     fs               = require('fs'),
@@ -40,63 +40,17 @@ utils.getTplData = function (tplFile) {
   return data;
 };
 
-var src = 'app/pages';
+var src = 'app/_tpl';
 
 var config = {};
 
 config.src = __.getGlobPaths(src, ['tpl'], true);
-config.dest = 'dist/pages';
-
-config.tplsData = require('../../../app/pages/globals-data');
+config.dest = 'dist/_tpl';
 
 config.transform = function (stream) {
 
   return stream
-    .pipe(gulpData(utils.getTplData))
-    .pipe(gulpConsolidate('swig', config.tplsData || {}, {
-      //setupEngine: function (engine, Engine) {
-      //  return Engine;
-      //}
-    }))
-    .pipe(gulpRename({extname: '.html'}))
-    .pipe(gulpJsBeautifier({
-      html: {
-        braceStyle: 'collapse',
-        endWithNewline: true,
-        indentInnerHtml: true,
-        indentChar: ' ',
-        indentScripts: 'normal',
-        indentSize: 2,
-        maxPreserveNewlines: 1,
-        preserveNewlines: false,
-        unformatted: ['a', 'sub', 'sup', 'b', 'i', 'strong', 'em', 'u'],
-        wrapLineLength: 0,
-        extra_liners: []
-      },
-      css: {
-        indentChar: ' ',
-        indentSize: 2
-      },
-      js: {
-        braceStyle: 'collapse',
-        breakChainedMethods: false,
-        e4x: false,
-        evalCode: false,
-        indentChar: ' ',
-        indentLevel: 0,
-        indentSize: 2,
-        indentWithTabs: false,
-        jslintHappy: false,
-        keepArrayIndentation: false,
-        keepFunctionIndentation: false,
-        maxPreserveNewlines: 10,
-        preserveNewlines: true,
-        spaceBeforeConditional: true,
-        spaceInParen: false,
-        unescapeStrings: false,
-        wrapLineLength: 0
-      }
-    }))
+
   ;
 };
 

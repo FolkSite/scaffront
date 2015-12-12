@@ -1,10 +1,13 @@
 var config = {};
 
-config.tmpPath = 'tmp';
+global.Builder = {
+  src: 'app',
+  dest: 'dest'
+};
+
 
 config.server = require('./server');
 
-//config._styles = require('./_styles');
 config.styles = require('./styles');
 config.fonts  = require('./fonts');
 config.copier = require('./copier');

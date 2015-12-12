@@ -10,14 +10,19 @@ var _                = require('lodash'),
     del              = require('del'),
     getObject        = require('getobject'),
     gulpChanged      = require('gulp-changed'),
+    gulpData         = require('gulp-data'),
     runSequence      = require('run-sequence').use(gulp),
+    gulpConsolidate  = require('gulp.consolidate'),
+    gulpJsBeautifier = require('gulp-jsbeautifier'),
+    gulpRename       = require('gulp-rename'),
     gulpPlumber      = require('gulp-plumber')
     //gulpUmd          = require('gulp-umd')
   ;
 
 var server       = null,
-    config       = require('../_config'),
+    config       = require('../config'),
     pagesConfig  = config.pages.config,
+    pagesUtils   = config.pages.utils,
     copierUtils  = config.copier.utils,
     serverConfig = config.server.config,
     serverUtils  = config.server.utils;
@@ -38,21 +43,56 @@ gulp.task('pages:copier:cleanup', function () {
 });
 
 
-gulp.task('pages:compile', function (cb) {
-  var stream = gulp.src(pagesConfig.src)
+gulp.task('pages:compile', function () {
+  var stream = gulp.src(__.getGlobPaths(pagesConfig.src, pagesConfig.extnames, true))
     .pipe(gulpPlumber(__.plumberErrorHandler))
-  ;
 
+      .pipe(gulpData(pagesUtils.getTplData))
+      .pipe(gulpConsolidate('swig', config.tplsData || {}, {
+        //setupEngine: function (engine, Engine) {
+        //  return Engine;
+        //}
+      }))
+      .pipe(gulpRename({extname: '.html'}))
+      .pipe(gulpJsBeautifier({
+        html: {
+          braceStyle: 'collapse',
+          endWithNewline: true,
+          indentInnerHtml: true,
+          indentChar: ' ',
+          indentScripts: 'normal',
+          indentSize: 2,
+          maxPreserveNewlines: 1,
+          preserveNewlines: false,
+          unformatted: ['a', 'sub', 'sup', 'b', 'i', 'strong', 'em', 'u'],
+          wrapLineLength: 0,
+          extra_liners: []
+        },
+        css: {
+          indentChar: ' ',
+          indentSize: 2
+        },
+        js: {
+          braceStyle: 'collapse',
+          breakChainedMethods: false,
+          e4x: false,
+          evalCode: false,
+          indentChar: ' ',
+          indentLevel: 0,
+          indentSize: 2,
+          indentWithTabs: false,
+          jslintHappy: false,
+          keepArrayIndentation: false,
+          keepFunctionIndentation: false,
+          maxPreserveNewlines: 10,
+          preserveNewlines: true,
+          spaceBeforeConditional: true,
+          spaceInParen: false,
+          unescapeStrings: false,
+          wrapLineLength: 0
+        }
+      }))
 
-  if (getObject.get(pagesConfig, 'transform') && _.isFunction(pagesConfig.transform)) {
-    var transformStream = pagesConfig.transform(stream);
-
-    if (gulpUtil.isStream(transformStream)) {
-      stream = transformStream;
-    }
-  }
-
-  stream = stream
     .pipe(gulp.dest(pagesConfig.dest))
   ;
 
@@ -92,17 +132,15 @@ gulp.task('pages:dist:cleanup', function (cb) {
 gulp.task('pages:watch', function () {
   server = serverUtils.runServer(serverConfig.devServerName);
 
-  gulp.watch(pagesConfig.src, ['pages:compile']);
+  gulp.watch(__.getGlobPaths(pagesConfig.src, pagesConfig.extnames, true), ['pages:compile']);
 
   var copiers = getObject.get(pagesConfig, 'copier');
   if (copiers) {
     copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
-    copiers = _.map(copiers, __.getCopier);
-
-    var copyWatchers = [];
-    _.each(copiers, function (copier) {
-      copyWatchers = copyWatchers.concat(copier.from);
+    copiers = _.map(copiers, function (copier) {
+      return __.getCopier(copier).from;
     });
-    copyWatchers.length && gulp.watch(copyWatchers, ['pages:copier']);
+    copiers = _.compact(copiers);
+    copiers.length && gulp.watch(copiers, ['pages:copier']);
   }
 });

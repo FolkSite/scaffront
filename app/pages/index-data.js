@@ -15,4 +15,4 @@ module.exports = function () {
       body: "Me too!"
     }]
   }, {});
-}();
+}

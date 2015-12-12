@@ -14,6 +14,15 @@ var _                 = require('lodash'),
     getObject         = require('getobject')
   ;
 
+var server       = null,
+    config       = require('../config'),
+    pagesConfig  = config.pages.config,
+    pagesUtils   = config.pages.utils,
+    copierUtils  = config.copier.utils,
+    serverConfig = config.server.config,
+    serverUtils  = config.server.utils;
+
+
 var _config      = require('../_config'),
     Config       = _config.images.config,
     ServerConfig = _config.server,
@@ -21,22 +30,6 @@ var _config      = require('../_config'),
 
 
 var Server = null;
-
-/**
- * @param [stream]
- * @param {{}} [bsConfig]
- */
-var watcherHandler = function (stream, bsConfig) {
-  if (!Server) { return; }
-
-  bsConfig = (_.isPlainObject(bsConfig)) ? bsConfig : {};
-
-  if (gulpUtil.isStream(stream)) {
-    stream.pipe(Server.stream(bsConfig));
-  } else {
-    Server.reload(bsConfig);
-  }
-};
 
 
 gulp.task('images:copier', function (cb) {
@@ -50,7 +43,7 @@ gulp.task('images:copier:cleanup', function (cb) {
 
 gulp.task('images:builder', function () {
   var stream = gulp.src(__.getGlobPaths(Config.src, Config.extnames || [], true))
-        .pipe(gulpPlumber(__.plumberErrorHandler))
+      .pipe(gulpPlumber(__.plumberErrorHandler))
     ;
 
   if (getObject.get(Config, 'transform') && _.isFunction(Config.transform)) {
@@ -62,7 +55,7 @@ gulp.task('images:builder', function () {
     .pipe(gulp.dest(Config.dest))
   ;
 
-  watcherHandler(stream);
+  //watcherHandler(stream);
 
   return stream;
 });
@@ -99,18 +92,19 @@ gulp.task('images:dist:cleanup', function (cb) {
 });
 
 
-gulp.task('images:watch', function (cb) {
-  if (_.isFunction(ServerConfig.runServer)) {
-    Server = ServerConfig.runServer(ServerConfig.devServerName);
-  }
+gulp.task('images:watch', function () {
+  server = serverUtils.runServer(serverConfig.devServerName);
 
   gulp.watch(__.getGlobPaths(Config.src, Config.extnames || []), ['images:builder']);
 
   var copiers = __.getCopier(getObject.get(Config, 'copier'));
-  var copyWatchers = [];
-  _.each(copiers, function (copier) {
-    copyWatchers = copyWatchers.concat(copier.from);
-  });
-  copyWatchers.length && gulp.watch(copyWatchers, ['images:copier']);
+  if (copiers) {
+    copiers = (!_.isArray(copiers)) ? [copiers] : copiers;
+    copiers = _.map(copiers, function (copier) {
+      return __.getCopier(copier).from;
+    });
+    copiers = _.compact(copiers);
+    copiers.length && gulp.watch(copiers, ['images:copier']);
+  }
 });
 

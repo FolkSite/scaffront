@@ -1,25 +1,69 @@
-@import 'compass';
-@import 'breakpoint';
-@import 'singularitygs';
-@import 'toolkit';
+@import '../../bower_components/compass-mixins/lib/compass';
+@import '../../bower_components/breakpoint-sass/stylesheets/breakpoint';
+@import '../../bower_components/sass-toolkit/stylesheets/toolkit';
+@import '../../bower_components/singularity/stylesheets/singularitygs';
 
 
-@import 'css/vars';
-@import 'scaffront-styles/vars';
-@import 'scaffront-styles/mixins';
-@import 'css/widgets';
-@import 'css/layouts';
+//@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/mixins';
+//@import 'css/vars';
+//@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/vars';
 
+// как быть с тем, что в файлах с переменными мне нужно использовать наработки из scaffolding'а? Ведь scaffolding должен идти после переменных
 
-.layout-header,
-.layout-footer {
-  @extend %layout-width-min;
-  @include e(inner) {
-    @extend %layout-width-max;
-  }
+@import 'SassyLists';
+
+$qweqwe: "";
+
+@each $font in $qweqwe {
+  @debug("===#{$font}===");
 }
+@debug(#{sl-to-list($qweqwe)});
 
 .qweqwe {
-  @include bg-size(100px 300px);
+  font-family: unquote('"#{sl-to-string($qweqwe, '", "')}"');
 }
 
+
+
+
+
+
+//@import 'css/common';
+//@import 'css/widgets';
+
+
+
+////.test {
+////  font-family: "PTSans", "Tahoma", "Geneva CY", "sans-serif";
+////}
+//
+//.test {
+//  font-size: $base-font-size;
+//  line-height: 1.4;
+//}
+//.test1 {
+//  //font-family: font-stack(PTSans, tahoma);
+//  @include sf-font(ptsans);
+//}
+//.test2 {
+//  @include sf-font(ptsans, italic);
+//}
+//.test3 {
+//  @include sf-font(ptsans, italic);
+//  font-style: italic;
+//}
+//.test4 {
+//  @include sf-font(ptsans, bold);
+//}
+//.test5 {
+//  @include sf-font(ptsans, bold);
+//  font-weight: 700;
+//}
+//.test6 {
+//  @include sf-font(ptsans, bold-italic);
+//}
+//.test7 {
+//  @include sf-font(ptsans, bold-italic);
+//  font-style: italic;
+//  font-weight: 700;
+//}

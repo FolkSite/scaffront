@@ -19,7 +19,7 @@ var _                 = require('lodash'),
     vinylBuffer       = require('vinyl-buffer')
   ;
 
-var _config        = require('../../_config'),
+var _config        = require('../../config'),
     Config         = _config.scripts,
     ServerConfig   = _config.server,
     CopierUtils    = _config.copier.utils,
