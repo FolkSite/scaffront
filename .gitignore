@@ -1,5 +1,7 @@
 dist
 dist/
+dest
+dest/
 node_modules
 node_modules/
 bower_components
@@ -8,7 +10,6 @@ bower_components/
 .sass-cache/
 .idea
 .idea/
-.idea
 npm-debug.log
 
 *.iml
@@ -42,5 +43,4 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-.idea/workspace.xml
 .idea/workspace.xml
