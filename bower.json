@@ -95,7 +95,8 @@
     "ihover": "~1.0.0",
     "enquire": "~2.1.2",
     "cropper": "~2.2.1",
-    "loadcss": "~0.2.4"
+    "loadcss": "~0.2.4",
+    "Matreshka": "matreshka#~1.4.1"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
