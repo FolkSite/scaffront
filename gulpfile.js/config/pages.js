@@ -31,6 +31,8 @@ utils.getTplData = function (tplFile) {
         tmp = JSON.parse(data);
         data = tmp || data;
       } catch (e) {}
+    } else {
+      data = tmp;
     }
   }
 

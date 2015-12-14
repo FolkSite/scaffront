@@ -14,13 +14,16 @@ config.importPaths = {
   'memo':                           __.getBowerPath('sassy-maps/sass'),
   'sassy-maps':                     __.getBowerPath('sassy-maps/sass'),
   'SassyLists':                     __.getBowerPath('SassyLists/dist'),
-  'singularity':                    __.getBowerPath('singularity/stylesheets'),
+  'singularitygs':                  __.getBowerPath('singularity/stylesheets'),
   'singularity-quick-spanner':      __.getBowerPath('singularity-quick-spanner/stylesheets'),
   'breakpoint':                     __.getBowerPath('breakpoint-sass/stylesheets'),
   'breakpoint-slicer':              __.getBowerPath('breakpoint-slicer/stylesheets'),
   'sass-units-transform':           __.getBowerPath('sass-units-transform'),
   'support-for':                    __.getBowerPath('support-for/sass'),
-  'normalize':                      __.getBowerPath('normalize-scss/sass'),
+  'normalize-scss':                 __.getBowerPath('normalize-scss/sass'),
+  'sassdash':                       __.getBowerPath('sassdash/scss'),
+  'sassy-validation':               __.getBowerPath('sassy-validation/stylesheets'),
+  'modernizr-mixin':                __.getBowerPath('modernizr-mixin/stylesheets'),
   'scaffront-styles':               __.getBowerPath('scaffront-styles/stylesheets'),
 };
 

@@ -7,11 +7,11 @@
     <title>{{ title }} | WowWorks</title>
 
     {% block Head %}
-      {% include './layout/head.tpl' %}
+      {% include '../chunks/head.tpl' %}
     {% endblock %}
 
     {% block Styles %}
-      {% include './layout/styles.tpl' %}
+      {% include '../chunks/styles.tpl' %}
     {% endblock %}
 
   </head>
@@ -23,13 +23,13 @@
 
     <div class="layout layout--default">
       {% block Header %}
-        <header class="layout__header">
-          <div class="layout__width">
-            <div class="layout__width-inner">
-              {% block Header-content %}{% endblock %}
-            </div>
+      <header class="layout__header">
+        <div class="layout__width">
+          <div class="layout__width-inner">
+            {% block Header-content %}{% endblock %}
           </div>
-        </header>
+        </div>
+      </header>
       {% endblock %}
 
 
@@ -37,25 +37,25 @@
         <div class="layout__width-inner">
           <div class="layout__middle">
             {% block Content %}
-              <div class="layout__content-container">
-                <main class="layout__content" role="main">
-                  {% block Content-content %}
-                    sdf
-                  {% endblock %}
-                </main>
-              </div>
+            <div class="layout__content-container">
+              <main class="layout__content" role="main">
+                {% block Content-content %}
+                sdf
+                {% endblock %}
+              </main>
+            </div>
             {% endblock %}
 
             {% block SidebarLeft %}
-              <aside class="layout__sidebar layout__sidebar--left">
-                {% block SidebarLeft.content %}{% endblock %}
-              </aside>
+            <aside class="layout__sidebar layout__sidebar--left">
+              {% block SidebarLeft.content %}{% endblock %}
+            </aside>
             {% endblock %}
 
             {% block SidebarRight %}
-              <aside class="layout__sidebar layout__sidebar--right">
-                {% block SidebarRight.content %}{% endblock %}
-              </aside>
+            <aside class="layout__sidebar layout__sidebar--right">
+              {% block SidebarRight.content %}{% endblock %}
+            </aside>
             {% endblock %}
           </div>
         </div>
@@ -63,17 +63,17 @@
     </div>
 
     {% block Footer %}
-      <footer class="layout__footer">
-        <div class="layout__width">
-          <div class="layout__width-inner">
-            {% block Footer-content %}{% endblock %}
-          </div>
+    <footer class="layout__footer">
+      <div class="layout__width">
+        <div class="layout__width-inner">
+          {% block Footer-content %}{% endblock %}
         </div>
-      </footer>
+      </div>
+    </footer>
     {% endblock %}
 
     {% block Scripts %}
-      {% include './layout/scripts.tpl' %}
+      {% include '../chunks/scripts.tpl' %}
     {% endblock %}
 
   </body>

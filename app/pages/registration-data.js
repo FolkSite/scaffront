@@ -1,5 +1,10 @@
 var extend = require('extend');
 
-module.exports = extend(true, {
+var data = {
   title: 'Блаблабла'
-}, {});
+};
+
+
+data = extend(true, {}, require('./layouts/default-data'), data);
+
+module.exports = data;
