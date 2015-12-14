@@ -8,21 +8,6 @@
 //@import 'css/vars';
 //@import '../../bower_components/scaffront-styles/stylesheets/scaffront-styles/vars';
 
-// как быть с тем, что в файлах с переменными мне нужно использовать наработки из scaffolding'а? Ведь scaffolding должен идти после переменных
-
-@import 'SassyLists';
-
-$qweqwe: "";
-
-@each $font in $qweqwe {
-  @debug("===#{$font}===");
-}
-@debug(#{sl-to-list($qweqwe)});
-
-.qweqwe {
-  font-family: unquote('"#{sl-to-string($qweqwe, '", "')}"');
-}
-
 
 
 
