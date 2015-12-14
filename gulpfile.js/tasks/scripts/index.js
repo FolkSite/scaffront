@@ -13,6 +13,7 @@ var _                 = require('lodash'),
     gulpIf            = require('gulp-if'),
     getObject         = require('getobject'),
     gulpDerequire     = require('gulp-derequire'),
+    gulpSourcemaps    = require('gulp-sourcemaps'),
     browserify        = require('browserify'),
     watchify          = require('watchify'),
     vinylSourceStream = require('vinyl-source-stream'),
@@ -56,6 +57,7 @@ var makeBundleStream = function (bundle, returnBuffer) {
   bundle.stream = bundle.bundler.bundle(bundle.callback)
     .on('error', bundle.errorHandler)
     .pipe(vinylSourceStream(bundle.outfile))
+    .pipe(gulpSourcemaps.init({loadMaps: true}))
     .pipe(gulpIf(getObject.get(bundle, 'options.standalone'), gulpDerequire()))
     .pipe(gulpIf(returnBuffer, vinylBuffer()))
   ;
@@ -72,6 +74,12 @@ var buildBundle = function (bundle) {
 
   return bundle.stream
     .pipe(gulp.dest(bundle.dest))
+    .pipe(gulpSourcemaps.write('./', {
+      sourceRoot: './',
+      sourceMappingURLPrefix: __.preparePath({
+        startSlash: true
+      }, path.relative(global.Builder.dest, bundle.dest))
+    }))
     .pipe(gulpTap(function () {
       var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.destFullPath));
       gulpUtil.log('Bundle built:', gulpUtil.colors.cyan(bundlePath));

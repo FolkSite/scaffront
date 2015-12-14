@@ -29,6 +29,8 @@ var server       = null,
     serverConfig = config.server.config,
     serverUtils  = config.server.utils;
 
+console.log('__.preparePath({startSlash: true}, stylesConfig.dest)', __.preparePath({startSlash: true}, path.relative(global.Builder.dest, stylesConfig.dest)));
+
 gulp.task('styles:sass', function () {
   var _importPaths = _.values(stylesConfig.importPaths);
 
@@ -53,7 +55,10 @@ gulp.task('styles:sass', function () {
         omitSourceMapUrl: true
       }).on('error', __.plumberErrorHandler.errorHandler))
       .pipe(gulpSourcemaps.write('./', {
-        sourceRoot: './'
+        sourceRoot: './',
+        sourceMappingURLPrefix: __.preparePath({
+          startSlash: true
+        }, path.relative(global.Builder.dest, stylesConfig.dest))
       }))
 
     .pipe(gulp.dest(stylesConfig.dest))

@@ -40,6 +40,24 @@ $fonts: (
   (name: ptsans, type: bold-italic,  stack: sl-prepend($tahoma-stack, "PTSansBoldItalic")),
 ) !default;
 
+
+$theme-current: default;
+$themes: (
+  default: (
+    base: #000000,
+    base-contrast: #fff,
+    input-border: #cccccc,
+    input-border-active: #ff6633,
+    input-border-error: #f00,
+
+    btn-primary-normal:        #fff,
+    btn-primary-bg-normal:     #ff6633,
+    btn-primary-bg-hover:      lighten(#ff6633, 2%),
+    btn-primary-bg-active:     lighten(#ff6633, 2%),
+    btn-primary-border-normal: transparent
+  )
+);
+
 $base-layout-width-min: 950px;
 $base-layout-width-max: 1400px;
 $base-layout-side-space: 20px;
@@ -58,3 +76,29 @@ $background-size-behavior: '/js/vendor/backgroundsize.min.htc' !default;
 $inputs-like-text-types: text email number password search tel url color date datetime datetime-local month time week !default;
 
 
+$themes: () !default;
+$theme-current: default !default;
+@function sf-get-color ($name, $theme: $theme-current) {
+  @return map-get-deep($themes, $theme $name);
+
+  @if (map-has-key($themes, $theme)) {
+    $colors: map-get($themes, $theme);
+    @if (is-map($colors) and map-has-key($colors, $name)) {
+      @return map-get($colors, $name);
+    } @else {
+      @warn('[get-color] Color "#{$name}" doesn\'t exists!');
+    }
+  } @else {
+    @warn('[get-color] Theme "#{$theme}" doesn\'t exists!');
+  }
+
+  @return null;
+}
+
+@function sf-default ($val, $default: null) {
+  @if (is-null($val)) {
+    @return $default;
+  }
+
+  @return $val;
+}

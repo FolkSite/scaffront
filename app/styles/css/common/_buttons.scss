@@ -1,3 +1,53 @@
 .btn {
   @include sf-btn();
+
+  .btn-file & {
+    @include sf-btn--file();
+  }
+}
+
+.btn--full {
+  @include sf-btn--block();
+}
+
+
+.btn--primary {
+  @include sf-btn--variant(
+    $color-normal:        sf-get-color(btn-primary-normal),
+    $color-hover:         sf-default(sf-get-color(btn-primary-hover),     sf-get-color(btn-primary-normal)),
+    $color-focus:         sf-default(sf-get-color(btn-primary-focus),     sf-get-color(btn-primary-normal)),
+    $color-active:        sf-default(sf-get-color(btn-primary-active),    sf-get-color(btn-primary-normal)),
+
+    $color-bg-normal:     sf-get-color(btn-primary-bg-normal),
+    $color-bg-hover:      sf-default(sf-get-color(btn-primary-bg-hover),  sf-get-color(btn-primary-bg-normal)),
+    $color-bg-focus:      sf-default(sf-get-color(btn-primary-bg-focus),  sf-get-color(btn-primary-bg-normal)),
+    $color-bg-active:     sf-default(sf-get-color(btn-primary-bg-active), sf-get-color(btn-primary-bg-normal)),
+
+    $color-border-normal: sf-get-color(btn-primary-border-normal),
+    $color-border-hover:  sf-default(sf-get-color(btn-primary-border-hover),  sf-get-color(btn-primary-border-normal)),
+    $color-border-focus:  sf-default(sf-get-color(btn-primary-border-focus),  sf-get-color(btn-primary-border-normal)),
+    $color-border-active: sf-default(sf-get-color(btn-primary-border-active), sf-get-color(btn-primary-border-normal)),
+
+    $border-radius:       4px
+  );
+}
+
+.btn--lg {
+  @include sf-btn--size(
+    $height:                38px,
+    $font-size:             $base-font-size,
+    $line-height:           $base-line-height,
+    $border-width:          1px,
+    $padding:               5px 10px,
+    $active-offset:         1px,
+    $active-offset-type:    inner
+  );
+
+  #{$is-active} {
+    box-shadow: inset 0 5px 10px -2px rgba(#000, .3);
+
+    #{$is-disabled} {
+      box-shadow: none;
+    }
+  }
 }

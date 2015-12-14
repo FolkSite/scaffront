@@ -161,7 +161,6 @@ module.exports = (function () {
     ;
 
     gulpMerge(bundlesMergeStream, streamPolyfill)
-      .pipe(gulpSourcemaps.init({loadMaps: true}))
       .pipe(gulpTap(function (file) {
         gulpUtil.log('Minifying', gulpUtil.colors.cyan(file.path));
       }))
@@ -170,7 +169,12 @@ module.exports = (function () {
       .pipe(gulpTap(function (file) {
         gulpUtil.log('Write sourcemaps for', gulpUtil.colors.cyan(file.path));
       }))
-      .pipe(gulpSourcemaps.write('./'))
+      .pipe(gulpSourcemaps.write('./', {
+        sourceRoot: './',
+        sourceMappingURLPrefix: __.preparePath({
+          startSlash: true
+        }, path.relative(global.Builder.dest, config.dest))
+      }))
       .pipe(gulp.dest(config.dest))
       .on('end', cb)
     ;
