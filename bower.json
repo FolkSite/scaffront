@@ -97,7 +97,8 @@
     "cropper": "~2.2.1",
     "loadcss": "~0.2.4",
     "Matreshka": "matreshka#~1.4.1",
-    "motion-ui": "~1.1.1"
+    "motion-ui": "~1.1.1",
+    "Buttons": "~2.0.0"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
