@@ -5,24 +5,14 @@
 {% endblock %}
 
 {% block Content-content %}
-<p class="test test1">
-  Обычный. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, eius?
-  <a href="#">Это ссылка</a>
+<p>
+  <button class="btn btn--primary btn--lg btn--full">Кнопка</button>
 </p>
-<hr>
-<p class="test test2">
-  Исходный bold. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, eius?
-  <a href="#">Это ссылка</a>
+<p>
+
 </p>
-<hr>
-<p class="test test3">
-  Браузерный bold. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, eius?
-  <a href="#">Это ссылка</a>
-</p>
-<hr>
-<p class="test test4">
-  Исходный italic. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, eius?
-  <a href="#">Это ссылка</a>
+<p>
+
 </p>
 {% endblock %}
 

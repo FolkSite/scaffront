@@ -14,29 +14,5 @@
 @import 'scaffront-styles';
 
 
-//@import 'css/common';
+@import 'css/common';
 //@import 'css/widgets';
-
-
-
-//.test {
-//  font-family: "PTSans", "Tahoma", "Geneva CY", "sans-serif";
-//}
-
-.test {
-  font-size: $base-font-size;
-  line-height: 1.4;
-}
-.test1 {
-  //font-family: font-stack(PTSans, tahoma);
-  @include sf-font(ptsans);
-}
-.test2 {
-  @include sf-font(ptsans, italic);
-}
-.test3 {
-  @include sf-font(ptsans, bold);
-}
-.test4 {
-  @include sf-font(ptsans, bold-italic);
-}

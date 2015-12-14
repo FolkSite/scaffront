@@ -60,17 +60,17 @@
           </div>
         </div>
       </div>
-    </div>
 
-    {% block Footer %}
-    <footer class="layout__footer">
-      <div class="layout__width">
-        <div class="layout__width-inner">
-          {% block Footer-content %}{% endblock %}
+      {% block Footer %}
+      <footer class="layout__footer">
+        <div class="layout__width">
+          <div class="layout__width-inner">
+            {% block Footer-content %}{% endblock %}
+          </div>
         </div>
-      </div>
-    </footer>
-    {% endblock %}
+      </footer>
+      {% endblock %}
+    </div>
 
     {% block Scripts %}
       {% include '../chunks/scripts.tpl' %}

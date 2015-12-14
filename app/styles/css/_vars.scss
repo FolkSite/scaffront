@@ -40,6 +40,10 @@ $fonts: (
   (name: ptsans, type: bold-italic,  stack: sl-prepend($tahoma-stack, "PTSansBoldItalic")),
 ) !default;
 
+$base-layout-width-min: 950px;
+$base-layout-width-max: 1400px;
+$base-layout-side-space: 20px;
+
 $is-hovered:  unquote('&:hover, &.is-hovered') !default;
 $is-focused:  unquote('&:focus, &.is-focused') !default;
 $is-active:   unquote('&:active, &.is-active') !default;
@@ -53,7 +57,4 @@ $background-size-behavior: '/js/vendor/backgroundsize.min.htc' !default;
 
 $inputs-like-text-types: text email number password search tel url color date datetime datetime-local month time week !default;
 
-
-$base-layout-width-min: 1000px;
-$base-layout-width-max: 1400px;
 
