@@ -53,7 +53,7 @@ $themes: (
     btn-primary-normal:        #fff,
     btn-primary-bg-normal:     #ff6633,
     btn-primary-bg-hover:      lighten(#ff6633, 2%),
-    btn-primary-bg-active:     lighten(#ff6633, 2%),
+    btn-primary-bg-active:     darken(#ff6633, 2%),
     btn-primary-border-normal: transparent
   )
 );

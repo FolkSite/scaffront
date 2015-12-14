@@ -9,6 +9,9 @@
   <button class="btn btn--primary btn--lg btn--full">Кнопка</button>
 </p>
 <p>
+  <input type="text" class="input input--default input--lg input--full" value="Инпут">
+</p>
+<p>
 
 </p>
 <p>

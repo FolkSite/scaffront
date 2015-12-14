@@ -10,7 +10,6 @@
   @include sf-btn--block();
 }
 
-
 .btn--primary {
   @include sf-btn--variant(
     $color-normal:        sf-get-color(btn-primary-normal),
@@ -51,3 +50,4 @@
     }
   }
 }
+
