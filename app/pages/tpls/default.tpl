@@ -5,6 +5,7 @@
 
       {% block Meta %}
         {% include './default/meta.tpl' %}
+        {% include './default/favicons.tpl' %}
       {% endblock %} {# //Meta #}
 
       {% block Styles %}
@@ -21,6 +22,30 @@
     {% block Body %}
 
       <div class="layout {% spaceless %}layout--{% block layout-type %}{% endblock %}{% endspaceless %}">
+
+        {% block Menu %}
+          <header class="layout__menu">
+            <div class="layout__width">
+              <div class="layout__width-inner">
+                <div class="layout__menu-inner">
+                  <div class="asides">
+                    <div class="asides__left">
+                      <a href="/" class="logo">
+                        <img src="/images/logo@2x.png">
+                      </a>
+                    </div>
+                    <div class="asides__center">
+                      {% block Menu-content %}
+                        {% include './default/chunks/layout-menu.tpl' %}
+                      {% endblock %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+        {% endblock %} {# //Menu #}
+
         {% block Header-before %}{% endblock %}
 
         {% block Header %}
@@ -42,24 +67,30 @@
           <div class="layout__middle">
             <div class="layout__width">
               <div class="layout__width-inner">
-                <div class="layout__content-container">
-                  <main class="layout__content" role="main">
-                    {% include './default/oldbrowser.tpl' %}
-                    {% block Content %}{% endblock %}
-                  </main>
+                <div class="layout__middle-inner">
+                  {% block Middle-content %}
+                    {% block Content %}
+                    <div class="layout__content">
+                      <main class="layout__content-inner page" role="main">
+                        {% include './default/oldbrowser.tpl' %}
+                        {% block Content-content %}{% endblock %}
+                      </main>
+                    </div>
+                    {% endblock %} {# //Content #}
+
+                    {% block Sidebar-left %}
+                      <aside class="layout__sidebar layout__sidebar--left">
+                        {% block Sidebar-left-content %}{% endblock %}
+                      </aside>
+                    {% endblock %} {# //Sidebar-left #}
+
+                    {% block Sidebar-right %}
+                      <aside class="layout__sidebar layout__sidebar--right">
+                        {% block Sidebar-right-content %}{% endblock %}
+                      </aside>
+                    {% endblock %} {# //Sidebar-right #}
+                  {% endblock %} {# //Middle-content #}
                 </div>
-
-                {% block Sidebar-left %}
-                  <aside class="layout__sidebar layout__sidebar--left">
-                    {% block Sidebar-left-content %}{% endblock %}
-                  </aside>
-                {% endblock %} {# //Sidebar-left #}
-
-                {% block Sidebar-right %}
-                  <aside class="layout__sidebar layout__sidebar--right">
-                    {% block Sidebar-right-content %}{% endblock %}
-                  </aside>
-                {% endblock %} {# //Sidebar-right #}
               </div>
             </div>
           </div>

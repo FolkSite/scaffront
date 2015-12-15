@@ -2,6 +2,8 @@
 
 {% block layout-type %}auth{% endblock %}
 
+{% block Menu %}{% endblock %}
+
 {% block Header-before %}
   <div class="layout--auth__bg" style="background-image: url('{{ background.image }}')"></div>
 {% endblock %}

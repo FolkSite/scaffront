@@ -1,24 +1,6 @@
 $base-layout-width-min:   1000px !default;
 $base-layout-width-max:   1400px !default;
-$base-layout-side-space:  20px   !default;
-
-.layout {
-  @include sf-sidebars (
-    $selector-container: '.layout__middle',
-    $selector-content-container: '.layout__content-container',
-    $selector-content: '.layout__content',
-    $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
-    $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
-    $sidebar-left-width: 0,
-    $sidebar-left-gutter: 0,
-    $sidebar-right-width: 0,
-    $sidebar-right-gutter: 0
-  );
-
-  @include sf-sticky-footer-fluid (
-    $selector-footer: '.layout__footer'
-  );
-}
+$base-layout-side-space:  50px   !default;
 
 .layout__width {
   @if (is-measure($base-layout-width-max) and $base-layout-width-max > 0) {
@@ -30,11 +12,45 @@ $base-layout-side-space:  20px   !default;
 
     > .layout__width-inner {
       min-width: $base-layout-width-min;
-
-      @if (is-measure($base-layout-side-space) and $base-layout-side-space > 0) {
-        padding-left: $base-layout-side-space;
-        padding-right: $base-layout-side-space;
-      }
     }
+  }
+}
+
+.layout {
+  @include sf-sidebars (
+    $selector-container: '.layout__middle',
+    $selector-content-container: '.layout__content',
+    $selector-content: '.layout__content-inner',
+    $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
+    $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
+    $sidebar-left-width: 0,
+    $sidebar-left-gutter: 0,
+    $sidebar-right-width: 0,
+    $sidebar-right-gutter: 0
+  );
+
+  @include sf-sticky-footer-fluid (
+    $selector-footer: '.layout__footer'
+  );
+
+  @include e(menu-inner, header-inner, middle-inner, footer-inner) {
+    padding-left: $base-layout-side-space;
+    padding-right: $base-layout-side-space;
+  }
+
+
+  @include e(menu) {
+    background: #222222;
+
+    .logo {
+      display: block;
+      margin-right: 25px;
+      height: 30px;
+    }
+  }
+  @include e(menu-inner) {
+    @include sf-clearfix;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 }

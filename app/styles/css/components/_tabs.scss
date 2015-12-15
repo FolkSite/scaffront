@@ -1,0 +1,118 @@
+.tabs {
+  $gutter: 40px;
+  $gutter-em: em($gutter);
+
+  $badge-fs: 10px;
+  $badge-height: 18px;
+
+  @include sf-clearfix;
+
+  @include e(nav) {
+    @include sf-clearfix;
+    @include unlist();
+
+    border-bottom: 1px solid #dddddd;
+  }
+
+  @include e(nav-item) {
+    float: left;
+    display: block;
+    position: relative;
+
+    &:first-child {
+      margin-left: -($gutter-em /2);
+    }
+
+    .badge {
+      @include sf-smart-positions-bc($offset: 0 (-$badge-height /2));
+      @include sf-vcenter-lh(em($badge-height, $badge-fs));
+
+      border-radius: em($badge-height/2, $badge-fs);
+      font-size: $badge-fs;
+      padding: 0 em(6px, $badge-fs);
+      border: 1px solid #dddddd;
+      color: #999999;
+      background: #fff;
+
+      &.is-active {
+        color: #fff;
+        background: #ff6633;
+        border-color: transparent;
+      }
+    }
+  }
+
+  @include e(nav-link) {
+    @include sf-link(
+      $color-normal: #999999,
+      $color-hover: #333333,
+      $color-active: #ff6633,
+      $border-color-normal: transparent,
+      $border-color-focus: transparent,
+      $transition: .1s ease-out,
+      $target-inner-selector: '.tabs__nav-link-inner'
+    );
+
+    display: block;
+    border: none;
+    padding-left: $gutter-em /2;
+    padding-right: $gutter-em /2;
+    position: relative;
+
+    > * {
+      vertical-align: middle;
+    }
+
+    .badge {
+
+    }
+  }
+
+  @include e(nav-link-inner) {
+    display: inline-block;
+    padding-top: $gutter-em /2;
+    padding-bottom: $gutter-em /2;
+    margin-top: 0;
+    margin-bottom: -1px;
+  }
+
+  @include e(nav-item) {
+    &.is-active {
+      .tabs__nav-link {
+        @include sf-link(
+          $color-normal: #333333,
+          $color-hover: #333333,
+          $color-active: #333333,
+          $border-color-normal: #ff6633,
+          $border-color-hover: #ff6633,
+          $border-color-active: #ff6633,
+          $transition: .1s ease-out,
+          $target-inner-selector: '.tabs__nav-link-inner'
+        );
+      }
+    }
+  }
+
+
+  @include e(nav, content) {
+    padding-left: $base-layout-side-space;
+    padding-right: $base-layout-side-space;
+  }
+
+  @include e(nav, content) {
+    padding-left: $base-layout-side-space;
+    padding-right: $base-layout-side-space;
+  }
+
+  @include e(content) {
+    > .tabs__pane {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
+    }
+  }
+}
+
+

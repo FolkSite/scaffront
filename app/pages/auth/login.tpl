@@ -1,4 +1,4 @@
-{% extends './tpls/auth.tpl' %}
+{% extends '../tpls/auth.tpl' %}
 
 {% block Content %}
   <div class="auth auth--login">

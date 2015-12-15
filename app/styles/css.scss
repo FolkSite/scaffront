@@ -18,7 +18,8 @@ html {
   font-family: sf-fonts-get-stack(ptsans);
 }
 
+@import 'css/mixins';
+@import 'css/components';
 @import 'css/layouts';
-@import 'css/common';
 @import 'css/widgets';
-
+@import 'css/pages';

@@ -2,7 +2,7 @@
 
 {% block Header-content %}{% endblock %}
 
-{% block Content %}
+{% block Content-content %}
   <h2>Линейка</h2>
   <p>
     <button class="btn btn--lg btn--primary">Кнопка</button>

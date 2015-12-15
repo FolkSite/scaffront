@@ -1,0 +1,22 @@
+.page {
+  padding-top: 30px;
+  padding-bottom: 10px;
+
+  @include e(title) {
+    font-size: 30px;
+    line-height: 1.4em;
+    margin: 0 0 30px;
+
+
+    .avatar {
+      margin-right: 20px;
+      width: 50px;
+    }
+  }
+
+  @include e(menu) {
+    margin-left: -$base-layout-side-space;
+    margin-right: -$base-layout-side-space;
+  }
+}
+

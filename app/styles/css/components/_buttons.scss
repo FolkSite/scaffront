@@ -82,14 +82,13 @@
 }
 
 
-
 .btn--lg {
   @include sf-btn--size(
     $height:                38px,
     $font-size:             $base-font-size,
     $line-height:           $base-line-height,
     $border-width:          1px,
-    $padding:               5px 10px,
+    $padding:               5px 20px,
     $active-offset:         1px,
     $active-offset-type:    inner
   );
@@ -101,7 +100,7 @@
     $font-size:             14px,
     $line-height:           1.4em,
     $border-width:          1px,
-    $padding:               5px 10px,
+    $padding:               5px 15px,
     $active-offset:         1px,
     $active-offset-type:    inner
   );
