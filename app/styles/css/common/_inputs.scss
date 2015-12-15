@@ -8,21 +8,9 @@
 
 .input--default {
   @include sf-input--variant(
-    $color-normal:        sf-get-color(btn-primary-normal),
-    $color-hover:         sf-default(sf-get-color(btn-primary-hover),     sf-get-color(btn-primary-normal)),
-    $color-focus:         sf-default(sf-get-color(btn-primary-focus),     sf-get-color(btn-primary-normal)),
-    $color-active:        sf-default(sf-get-color(btn-primary-active),    sf-get-color(btn-primary-normal)),
-
-    $color-bg-normal:     sf-get-color(btn-primary-bg-normal),
-    $color-bg-hover:      sf-default(sf-get-color(btn-primary-bg-hover),  sf-get-color(btn-primary-bg-normal)),
-    $color-bg-focus:      sf-default(sf-get-color(btn-primary-bg-focus),  sf-get-color(btn-primary-bg-normal)),
-    $color-bg-active:     sf-default(sf-get-color(btn-primary-bg-active), sf-get-color(btn-primary-bg-normal)),
-
-    $color-border-normal: sf-get-color(btn-primary-border-normal),
-    $color-border-hover:  sf-default(sf-get-color(btn-primary-border-hover),  sf-get-color(btn-primary-border-normal)),
-    $color-border-focus:  sf-default(sf-get-color(btn-primary-border-focus),  sf-get-color(btn-primary-border-normal)),
-    $color-border-active: sf-default(sf-get-color(btn-primary-border-active), sf-get-color(btn-primary-border-normal)),
-
+    $color-normal:        lighten($base-color, 10%),
+    $color-bg-normal:     #fff,
+    $color-border-normal: #ccc,
     $border-radius:       4px
   );
 
@@ -36,6 +24,16 @@
     $height:                38px,
     $font-size:             $base-font-size,
     $line-height:           $base-line-height,
+    $border-width:          1px,
+    $padding:               5px 10px
+  );
+}
+
+.input--md {
+  @include sf-input--size(
+    $height:                32px,
+    $font-size:             14px,
+    $line-height:           1.4em,
     $border-width:          1px,
     $padding:               5px 10px
   );
