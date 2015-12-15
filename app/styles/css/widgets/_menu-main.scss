@@ -1,0 +1,74 @@
+.layout__menu {
+  background: #222222;
+}
+
+.nav-bar {
+  min-height: 40px;
+  @include sf-asides (
+    $selector-aside-left: '.nav-bar__left',
+    $selector-aside-right: '.nav-bar__right',
+    $selector-aside-center: '.nav-bar__center',
+    $gutter: 30px
+  );
+
+  @include e(left, center, right) {
+    height: 100%;
+  }
+
+  @include e(logo) {
+    display: block;
+  }
+
+  @include e(item) {
+    display: block;
+  }
+
+  @include e(link) {
+    display: block;
+  }
+
+
+
+  //sf-vcenter-td
+
+
+
+
+  //
+  //$menu-height: 40px;
+  //$menu-gutter-y: 12px;
+  //$menu-logo-height: 30px;
+  //
+  //background: #222222;
+  //min-height: $menu-height;
+  //
+  //@include e(logo) {
+  //  height: $menu-logo-height;
+  //  display: block;
+  //  margin-top: $menu-gutter-y;
+  //  margin-right: 25px;
+  //}
+  //
+  //@include e(inner) {
+  //  @include sf-clearfix;
+  //  padding-top:    $menu-gutter-y;
+  //  padding-bottom: $menu-gutter-y;
+  //}
+  //
+  //@include e(content) {
+  //  min-height: $menu-height;
+  //}
+  //
+  //@include e(item) {
+  //  vertical-align: middle;
+  //}
+  //
+  ////@include e(link) {
+  ////  //@include sf-link(
+  ////  //
+  ////  //);
+  ////
+  ////  margin-top:     -$menu-gutter-y;
+  ////  margin-bottom:  -$menu-gutter-y;
+  ////}
+}

@@ -38,19 +38,4 @@ $base-layout-side-space:  50px   !default;
     padding-right: $base-layout-side-space;
   }
 
-
-  @include e(menu) {
-    background: #222222;
-
-    .logo {
-      display: block;
-      margin-right: 25px;
-      height: 30px;
-    }
-  }
-  @include e(menu-inner) {
-    @include sf-clearfix;
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
 }

@@ -3,4 +3,3 @@
     <img src="{{ url }}" alt="{{ name }}">
   </span>
 {% endmacro %}
-

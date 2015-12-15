@@ -24,26 +24,27 @@
       <div class="layout {% spaceless %}layout--{% block layout-type %}{% endblock %}{% endspaceless %}">
 
         {% block Menu %}
-          <header class="layout__menu">
+          <section class="layout__menu">
             <div class="layout__width">
               <div class="layout__width-inner">
                 <div class="layout__menu-inner">
-                  <div class="asides">
-                    <div class="asides__left">
-                      <a href="/" class="logo">
+                  <nav class="nav-bar">
+                    <div class="nav-bar__left">
+                      <a href="/" class="nav-bar__logo logo">
                         <img src="/images/logo@2x.png">
                       </a>
                     </div>
-                    <div class="asides__center">
+                    <div class="nav-bar__right"></div>
+                    <div class="nav-bar__center">
                       {% block Menu-content %}
                         {% include './default/chunks/layout-menu.tpl' %}
                       {% endblock %}
                     </div>
-                  </div>
+                  </nav>
                 </div>
               </div>
             </div>
-          </header>
+          </section>
         {% endblock %} {# //Menu #}
 
         {% block Header-before %}{% endblock %}
