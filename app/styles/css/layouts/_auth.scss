@@ -1,29 +1,63 @@
-.layout-auth {
-  min-height: 100%;
-  height: 100%;
-  width: 100%;
-
+.layout--auth {
   position: relative;
 
-  @include sf-sticky-footer-fluid (
-    $selector-footer: '.layout__footer'
-  );
+  .layout__header-inner,
+  .layout__footer-inner {
+    padding: 30px 40px;
+  }
+
+  .layout__footer-inner {
+    @include sf-clearfix;
+  }
 
   @include e(bg) {
     @include sf-stretch();
     background-color: #ccc;
     background-repeat: no-repeat;
     background-size: cover;
+
+    z-index: -999;
+  }
+
+  .bg-copyright {
+    float: right;
+    margin-right: 55px;
+
+    font-size: 14px;
+    line-height: 17px;
+    color: #fff;
+
+    > * {
+      margin-top: 10px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    @include e(title, author) {
+      display: block;
+
+      &:empty {
+        display: none;
+      }
+    }
+    @include e(title) {
+
+    }
+    @include e(author) {
+      opacity: .5;
+    }
   }
 
 
-  .layout__middle {
-    max-width: 500px;
-    min-width: 350px;
-    max-height: 100%;
-    overflow-y: auto;
-    padding: 20px;
+  .layout__content {
+    position: relative;
 
-    @include sf-smart-position(center center);
+    .auth {
+      margin-top: 90px;
+
+      @include sf-block-center;
+    }
   }
 }

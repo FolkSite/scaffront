@@ -59,6 +59,11 @@
 
     }
   }
+
+  @include m(login, registration) {
+    width: 300px;
+  }
+
 }
 
 .auth-outer {

@@ -48,7 +48,7 @@ gulp.task('pages:compile', function () {
     .pipe(gulpPlumber(__.plumberErrorHandler))
 
       .pipe(gulpData(pagesUtils.getTplData))
-      .pipe(gulpConsolidate('swig', config.tplsData || {}, {
+      .pipe(gulpConsolidate('swig', pagesConfig.tplsData || {}, {
         //setupEngine: function (engine, Engine) {
         //  return Engine;
         //}

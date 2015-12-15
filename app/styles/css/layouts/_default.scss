@@ -3,17 +3,17 @@ $base-layout-width-max:   1400px !default;
 $base-layout-side-space:  20px   !default;
 
 .layout {
-  //@include sf-sidebars (
-  //  $selector-container: '.layout__middle',
-  //  $selector-content-container: '.layout__content-container',
-  //  $selector-content: '.layout__content',
-  //  $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
-  //  $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
-  //  $sidebar-left-width: 0,
-  //  $sidebar-left-gutter: 0,
-  //  $sidebar-right-width: 0,
-  //  $sidebar-right-gutter: 0
-  //);
+  @include sf-sidebars (
+    $selector-container: '.layout__middle',
+    $selector-content-container: '.layout__content-container',
+    $selector-content: '.layout__content',
+    $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
+    $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
+    $sidebar-left-width: 0,
+    $sidebar-left-gutter: 0,
+    $sidebar-right-width: 0,
+    $sidebar-right-gutter: 0
+  );
 
   @include sf-sticky-footer-fluid (
     $selector-footer: '.layout__footer'
@@ -24,17 +24,17 @@ $base-layout-side-space:  20px   !default;
   @if (is-measure($base-layout-width-max) and $base-layout-width-max > 0) {
     max-width: $base-layout-width-max;
     @include sf-block-center;
-
-    @if (is-measure($base-layout-side-space) and $base-layout-side-space > 0) {
-      padding-left: $base-layout-side-space;
-      padding-right: $base-layout-side-space;
-    }
   }
 
   @if (is-measure($base-layout-width-min) and $base-layout-width-min > 0) {
 
     > .layout__width-inner {
       min-width: $base-layout-width-min;
+
+      @if (is-measure($base-layout-side-space) and $base-layout-side-space > 0) {
+        padding-left: $base-layout-side-space;
+        padding-right: $base-layout-side-space;
+      }
     }
   }
 }

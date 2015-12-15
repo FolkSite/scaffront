@@ -1,8 +1,7 @@
 {% extends './tpls/auth.tpl' %}
 
 {% block Content %}
-
-  <div class="auth">
+  <div class="auth auth--registration">
     <h1 class="auth__title">Регистрация исполнителя</h1>
     <p>
       <input type="text"
@@ -39,8 +38,4 @@
     <a href="#" class="link link--white">Зарегистрированы?</a>
   </p>
 
-{% endblock %}
-
-{% block Footer %}
-  Какой-то текст
 {% endblock %}

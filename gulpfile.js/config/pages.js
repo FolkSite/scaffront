@@ -48,7 +48,9 @@ config.dest = path.join(global.Builder.dest, 'pages');
 
 // '../../app/pages/globals-data'
 var srcRelative = path.relative(path.dirname(__filename), config.src);
-config.tplsData = require(path.join(srcRelative, 'globals-data'));
+config.tplsData = {
+  config: require(path.join(srcRelative, 'globals-data'))
+};
 
 config.cleanups = __.getGlobPaths(config.dest, ['html'], true);
 

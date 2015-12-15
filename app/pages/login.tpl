@@ -1,7 +1,7 @@
 {% extends './tpls/auth.tpl' %}
 
 {% block Content %}
-  <div class="auth">
+  <div class="auth auth--login">
     <h1 class="auth__title">Вход на сайт</h1>
     <p>
       <input type="text"
@@ -35,6 +35,3 @@
   </p>
 {% endblock %}
 
-{% block Footer %}
-  Какой-то текст
-{% endblock %}
