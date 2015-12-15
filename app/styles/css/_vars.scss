@@ -13,8 +13,8 @@ $base-font-size:            16px;
 $base-line-height:          px(1.4em, $base-font-size);
 $base-font-family:          sans-serif;
 $base-color:                #000000;
-$base-selection-color:      #b3d4fc;
-$base-selection-background: $base-color;
+$base-selection-color:      #fff;
+$base-selection-background: #ff6633;
 $base-hr-color:             #ccc;
 $base-hr-height:            1px;
 $base-gutter:               $base-font-size;
@@ -32,7 +32,7 @@ $indent-amount: $base-gutter !default;
 
 $normalize-vertical-rhythm: false !default;
 
-$tahoma-stack: sf-fonts-get-stack(tahoma);
+$tahoma-stack: 'Tahoma', 'Geneva CY', 'sans-serif';
 $fonts: (
   (name: ptsans, type: regular,      stack: sl-prepend($tahoma-stack, "PTSans")),
   (name: ptsans, type: italic,       stack: sl-prepend($tahoma-stack, "PTSansItalic")),

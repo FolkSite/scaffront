@@ -3,24 +3,21 @@ $base-layout-width-max:   1400px !default;
 $base-layout-side-space:  20px   !default;
 
 .layout {
-  &,
-  &.layout--default {
-    @include sf-sidebars (
-      $selector-container: '.layout__middle',
-      $selector-content-container: '.layout__content-container',
-      $selector-content: '.layout__content',
-      $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
-      $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
-      $sidebar-left-width: 0,
-      $sidebar-left-gutter: 0,
-      $sidebar-right-width: 0,
-      $sidebar-right-gutter: 0
-    );
+  //@include sf-sidebars (
+  //  $selector-container: '.layout__middle',
+  //  $selector-content-container: '.layout__content-container',
+  //  $selector-content: '.layout__content',
+  //  $selector-sidebar-left: '.layout__sidebar.layout__sidebar--left',
+  //  $selector-sidebar-right: '.layout__sidebar.layout__sidebar--right',
+  //  $sidebar-left-width: 0,
+  //  $sidebar-left-gutter: 0,
+  //  $sidebar-right-width: 0,
+  //  $sidebar-right-gutter: 0
+  //);
 
-    @include sf-sticky-footer-fluid (
-      $selector-footer: '.layout__footer'
-    );
-  }
+  @include sf-sticky-footer-fluid (
+    $selector-footer: '.layout__footer'
+  );
 }
 
 .layout__width {

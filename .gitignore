@@ -6,8 +6,6 @@ node_modules
 node_modules/
 bower_components
 bower_components/
-app/pages/
-app/styles/css/
 .sass-cache
 .sass-cache/
 .idea

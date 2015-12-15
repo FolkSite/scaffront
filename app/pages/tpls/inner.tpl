@@ -16,10 +16,11 @@
 
   </head>
   <body>
+    {% block Body %}
 
-    <!--[if lt IE 8]>
-    <p class="browserupgrade">У вас <strong>очень</strong> старый браузер. Пожалуйста, <a href="http://browsehappy.com/">обновите его</a>, чтобы вкусить все прелести современного интернета.</p>
-    <![endif]-->
+  <!--[if lt IE 8]>
+  <p class="browserupgrade">У вас <strong>очень</strong> старый браузер. Пожалуйста, <a href="http://browsehappy.com/">обновите его</a>, чтобы вкусить все прелести современного интернета.</p>
+  <![endif]-->
 
     <div class="layout layout--default">
       {% block Header %}
@@ -71,6 +72,8 @@
       </footer>
       {% endblock %}
     </div>
+
+    {% endblock %}
 
     {% block Scripts %}
       {% include '../chunks/scripts.tpl' %}

@@ -1,20 +1,16 @@
-@if (type-of($links) == map) {
-  @each $type, $parameters in $links {
-    @if (type-of($parameters) == map and map-has-key($parameters, 'selector') and map-has-key($parameters, 'options')) {
-      #{map-get($parameters, 'selector')} {
-        $options: map-get($parameters, 'options');
-        @include link($options...);
+.link {
 
-        &.no-border {
-          @include no-border();
-        }
-        &.pseudo,
-        &.link--pseudo {
-          @include link-pseudo();
-        }
-      }
-    }
+  &.no-border {
+    @include sf-no-border();
+  }
+  &.pseudo,
+  &.link--pseudo {
+    @include sf-link--pseudo();
   }
 }
 
-
+.link--white {
+  @include sf-link(
+    $color-normal: #fff
+  );
+}
