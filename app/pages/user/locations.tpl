@@ -29,8 +29,16 @@
           {% parent %}
 
 <section class="user-locations">
-  {% include './chunks/locations-add-form.tpl' %}
-  {% include './chunks/locations-list.tpl' %}
+  {% set hasLocations = false %}
+  {% if userLocations|isArray and userLocations|size %}
+    {% set hasLocations = true %}
+  {% endif %}
+
+  {% include './locations/add-intro.tpl' %}
+
+  {% include './locations/add-form.tpl' %}
+
+  {% include './locations/list.tpl' %}
 </section>
 
         {% endblock %}

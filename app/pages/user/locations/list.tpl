@@ -1,9 +1,4 @@
-{% set hasLocations = false %}
-{% if userLocations|isArray and userLocations|size %}
-  {% set hasLocations = true %}
-{% endif %}
-
-<div class="user-locations__list uloc-list panel {% if not hasLocations %}hidden{% endif %}">
+<div class="user-locations__list uloc-list panel">
   <h2 class="uloc-list__title">Мои локации</h2>
   <div class="uloc-list__items">
     {% for index, location in userLocations %}
