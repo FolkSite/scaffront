@@ -10,14 +10,7 @@
   }
 
   @include e(form) {
-    margin-top: 35px;
 
-    &.ul-form {
-
-      @include e(input-text) {
-
-      }
-    }
   }
 
   @include e(list) {
