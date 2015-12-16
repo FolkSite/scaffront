@@ -1,6 +1,6 @@
-{% extends '../_layouts/user.tpl' %}
+{% extends './default.tpl' %}
 
-{#{% block layout-type %}{% endblock %}#}
+{% block layout-type %}layout--user{% endblock %}
 
 {#{% block Head %}{% endblock %}#}
   {#{% block Meta %}{% endblock %}#}
@@ -26,19 +26,20 @@
 
       {#{% block Content %}{% endblock %}#}
         {% block Content-content %}
-          {% parent %}
 
-<section class="user-locations">
-  {% include './chunks/locations-add-form.tpl' %}
-  {% include './chunks/locations-list.tpl' %}
-</section>
+          {{ widget.pageTitle(widget.userAvatar(avatar) +'Никита Ласточкин') }}
+
+          {{ widget.tabs({
+            items: pageMenu,
+            needContent: false
+          }) }}
 
         {% endblock %}
 
-      {#{% block Sidebar-left %}{% endblock %}#}
+      {% block Sidebar-left %}{% endblock %}
         {#{% block Sidebar-left-content %}{% endblock %}#}
 
-      {#{% block Sidebar-right %}{% endblock %}#}
+      {% block Sidebar-right %}{% endblock %}
         {#{% block Sidebar-right-content %}{% endblock %}#}
 
   {#{% block Middle-after %}{% endblock %}#}

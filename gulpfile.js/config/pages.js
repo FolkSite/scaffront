@@ -24,6 +24,7 @@ utils.getTplData = function (tplFile) {
   dataFile = path.format(parsed);
 
   if (dataFile && fs.existsSync(dataFile)) {
+    delete require.cache[require.resolve(dataFile)];
     tmp = require(dataFile);
 
     if (!_.isPlainObject(tmp)) {
@@ -42,24 +43,8 @@ utils.getTplData = function (tplFile) {
 var config = {};
 
 config.src = path.join(global.Builder.src, 'pages');
-config.extnames = ['*.tpl', '!_*.tpl', '!/_**/*.tpl'];
+config.extnames = ['*.tpl', '!_*.tpl', '!_widgets/!**!/!*.tpl'];
 config.dest = path.join(global.Builder.dest, 'pages');
-
-
-//var globTest = __.getGlobPaths(path.join(config.src, 'test'), ['*.tpl', '!_*.tpl', '!/_**/*.tpl'], true);
-//var globTest = __.getGlobPaths(path.join(config.src, 'test'), ['**/*.tpl'/*, '!**!/_*!/!**'*/]);
-
-//console.log(globTest);
-//
-//var glob = require('glob');
-//var files = [];
-//gulp.src(globTest)
-//  .pipe(gulpTap(function (file) {
-//    files.push(file.path);
-//  })).on('end', function () {
-//    console.log(files);
-//  });
-
 
 // '../../app/pages/globals-data'
 var srcRelative = path.relative(path.dirname(__filename), config.src);
@@ -93,6 +78,10 @@ config.copier = [{
       .pipe(gulpRename({extname: '.json'}));
   },
   cleanups: __.getGlobPaths(config.dest, ['*-data.json'], true)
+}, {
+  from: __.getGlobPaths(config.src, ['_*.tpl', '_widgets/**/*.tpl'], true),
+  to: config.dest,
+  cleanups: __.getGlobPaths(config.dest, ['_*.html', '_widgets/**/*.html'], true)
 }];
 
 

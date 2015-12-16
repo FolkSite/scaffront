@@ -1,74 +1,56 @@
-{% extends '../_layouts/default.tpl' %}
-{% import '../_macros/user.tpl' as user %}
-{% import '../_macros/page.tpl' as page %}
+{% extends '../_layouts/user.tpl' %}
 
-{% block layout-type %}user{% endblock %}
+{#{% block layout-type %}{% endblock %}#}
 
-{% block Body-before %}{% endblock %}
+{#{% block Head %}{% endblock %}#}
+  {#{% block Meta %}{% endblock %}#}
+  {#{% block Styles %}{% endblock %}#}
 
-{% block Menu-content %}
-  {% include './chunks/layout-menu.tpl' %}
-{% endblock %}
+{#{% block Body-before %}{% endblock %}#}
 
-{% block Header-before %}{% endblock %}
+{#{% block Body %}{% endblock %}#}
+  {#{% block Menu %}{% endblock %}#}
+    {#{% block Menu-content %}{% endblock %}#}
 
-{% block Header-content %}{% endblock %}
+  {#{% block Header-before %}{% endblock %}#}
 
-{% block Header-after %}{% endblock %}
+  {#{% block Header %}{% endblock %}#}
+    {#{% block Header-content %}{% endblock %}#}
 
-{% block Middle-before %}{% endblock %}
+  {#{% block Header-after %}{% endblock %}#}
 
-{% block Content-content %}
-  {#content#}
+  {#{% block Middle-before %}{% endblock %}#}
 
-  {{ page.title(user.avatar(avatar) +'Никита Ласточкин') }}
+  {#{% block Middle %}{% endblock %}#}
+    {#{% block Middle-content %}{% endblock %}#}
 
-  {% include './chunks/page-menu.tpl' %}
+      {#{% block Content %}{% endblock %}#}
+        {% block Content-content %}
+          {% parent %}
 
-  <section class="user-locations">
-    <div class="user-locations__add-intro uloc-add-intro">
-      <p class="uloc-add-intro__icon">
-        <i class="icon icon--globus-question"></i>
-      </p>
-      <h2 class="uloc-add-intro__title">Добавьте город</h2>
-      <p class="uloc-add-intro__description">
-        область или регион, чтобы получать информацию <br>
-        о новых заданиях рядом с вами
-      </p>
-    </div>
-
-    <div class="user-locations__form uloc-form">
-      <form method="post">
-        <p class="asides">
-          <span class="asides__right">
-            <button type="submit"
-                    class="btn btn--primary btn--lg">Добавить</button>
-          </span>
-          <span class="asides__center">
-            <input name="text"
-                   type="text"
-                   class="uloc-form__input-text input input--default input--lg input--full"
-                   placeholder="Название города, области или региона">
-          </span>
-        </p>
-      </form>
-    </div>
-  </section>
+<section class="user-locations">
+  {% include './chunks/locations-add-intro.tpl' %}
+  {% include './chunks/locations-add-form.tpl' %}
+  {% include './chunks/locations-list.tpl' %}
+</section>
 
 {% endblock %}
 
-{% block Sidebar-left %}{% endblock %}
-{% block Sidebar-right %}{% endblock %}
+      {#{% block Sidebar-left %}{% endblock %}#}
+        {#{% block Sidebar-left-content %}{% endblock %}#}
 
-{% block Middle-after %}{% endblock %}
+      {#{% block Sidebar-right %}{% endblock %}#}
+        {#{% block Sidebar-right-content %}{% endblock %}#}
 
-{% block Footer-before %}{% endblock %}
-{% block Footer %}
-  {#footer#}
+  {#{% block Middle-after %}{% endblock %}#}
 
+  {#{% block Footer-before %}{% endblock %}#}
 
+  {#{% block Footer %}{% endblock %}#}
+    {#{% block Footer-content %}{% endblock %}#}
 
-{% endblock %}
-{% block Footer-after %}{% endblock %}
+  {#{% block Footer-after %}{% endblock %}#}
 
-{% block Body-after %}{% endblock %}
+{#{% block Body-after %}{% endblock %}#}
+
+{#{% block Scripts %}{% endblock %}#}

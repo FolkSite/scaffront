@@ -1,3 +1,5 @@
+<!-- _layouts/default/layout-menu.tpl -->
+
 <nav class="nav-bar">
   <ul class="nav-bar__nav">
     <li class="is-active">
@@ -34,3 +36,5 @@
   </div>
 #}
 </nav>
+
+<!-- // _layouts/default/layout-menu.tpl -->

@@ -42,16 +42,37 @@ gulp.task('pages:copier:cleanup', function () {
   return copierUtils.cleanup(getObject.get(pagesConfig, 'copier'));
 });
 
-
 gulp.task('pages:compile', function () {
   var stream = gulp.src(__.getGlobPaths(pagesConfig.src, pagesConfig.extnames, true))
     .pipe(gulpPlumber(__.plumberErrorHandler))
-
       .pipe(gulpData(pagesUtils.getTplData))
-      .pipe(gulpConsolidate('swig', pagesConfig.tplsData || {}, {
-        //setupEngine: function (engine, Engine) {
-        //  return Engine;
-        //}
+      .pipe(gulpConsolidate('swig', extend(true, {}, pagesConfig.tplsData || {}, {cache: false}), {
+        setupEngine: function (engineName, instance) {
+          var lodashMethods = ['isArray', 'isPlainObject', 'size'];
+          _.each(lodashMethods, function (method) {
+            instance.setFilter(method, _[method]);
+          });
+
+          instance.setFilter('toString', function (content) {
+            var result = '';
+            try {
+              result = JSON.stringify(content);
+              result = result || '';
+            } catch (e) {
+              result = (!_.isUndefined(content['toString'])) ? content.toString() : '';
+            }
+
+            return result;
+          });
+
+          instance.setFilter('defaults', function (input, defaults) {
+            input = (_.isPlainObject(input)) ? input : {};
+            defaults = (_.isPlainObject(defaults)) ? defaults : {};
+            return extend(true, {}, defaults, input);
+          });
+
+          return instance;
+        }
       }))
       .pipe(gulpRename({extname: '.html'}))
       .pipe(gulpJsBeautifier({
@@ -112,7 +133,7 @@ gulp.task('pages:compile:cleanup', function (cb) {
 
 
 gulp.task('pages:build', function (cb) {
-  runSequence(['pages:copier', 'pages:compile'], cb);
+  runSequence('pages:copier', 'pages:compile', cb);
 });
 
 gulp.task('pages:build:cleanup', function (cb) {

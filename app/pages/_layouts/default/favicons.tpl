@@ -1,3 +1,5 @@
+<!-- _layouts/default/favicons.tpl -->
+
   <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-touch-icon-57x57.png?v=3">
   <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-touch-icon-60x60.png?v=3">
   <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-touch-icon-72x72.png?v=3">
@@ -18,3 +20,5 @@
   <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png?v=3">
   <meta name="msapplication-config" content="/favicon/browserconfig.xml?v=3">
   <meta name="theme-color" content="#ffffff">
+
+<!-- // _layouts/default/favicons.tpl -->

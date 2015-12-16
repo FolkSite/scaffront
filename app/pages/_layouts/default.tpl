@@ -1,3 +1,4 @@
+{% import '../_widgets/index.tpl' as widget %}
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>
