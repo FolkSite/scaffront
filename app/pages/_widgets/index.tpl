@@ -13,16 +13,20 @@
 {% endmacro %}
 
 
-{% macro icon(name, svg) %}
+{% macro icon(config) %}
   <!-- widget 'icon' -->
+  {% set config = config|defaults({
+    name: '',
+    svg: false,
+    classes: ''
+  }) %}
+
   {% spaceless %}
-    {% if name %}
-      {% if svg %}
+    {% if config.name %}
+      {% if config.svg %}
 
       {% else %}
-
-        <i class="icon icon--{{ name }}"></i>
-
+        <i class="icon icon--{{ config.name }} {{ config.classes }}"></i>
       {% endif %}
     {% endif %}
 

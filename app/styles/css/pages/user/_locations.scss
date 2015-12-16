@@ -1,0 +1,92 @@
+.user-locations {
+  @include sf-block-center;
+  @include sf-content-gutter-x(30px);
+
+  max-width: 60%;
+  margin-top: 80px;
+
+  @include e(add-intro) {
+
+  }
+
+  @include e(form) {
+    margin-top: 35px;
+
+    &.ul-form {
+
+      @include e(input-text) {
+
+      }
+    }
+  }
+
+  @include e(list) {
+
+  }
+}
+
+
+.uloc-add-intro {
+  @include sf-text-center;
+  @include sf-content-gutter-x(15px);
+
+  @include e(icon) {
+
+  }
+
+  @include e(title) {
+    @include sf-text-center;
+
+    font-size: 20px;
+    margin-top: 0;
+  }
+
+  @include e(description) {
+    color: #999999;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+
+.uloc-form {
+
+  @include e(action) {
+
+  }
+
+  @include e(input-text) {
+
+  }
+}
+
+
+.uloc-list {
+  $gutter: 30px;
+
+  @include e(title) {
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: $gutter /2;
+  }
+
+  @include e(items) {
+    @include sf-content-gutter-x($gutter /2);
+  }
+
+  @include e(item) {
+    & + & {
+      padding-top: ($gutter /2);
+      border-top: 1px solid #ccc;
+    }
+  }
+
+  @include e(item-title) {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  @include e(item-action) {
+
+  }
+}

@@ -1,0 +1,12 @@
+$base-font-size: 16px;
+$base-gutter: $base-font-size !default;
+$base-border-radius: 4px !default;
+$base-border-color: #dddddd !default;
+
+.panel {
+  border-radius: $base-border-radius;
+  padding: $base-gutter *1.5;
+  border: 1px solid $base-border-color;
+
+  @include sf-content-gutter-x($base-gutter);
+}
