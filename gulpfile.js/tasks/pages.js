@@ -29,13 +29,13 @@ var server       = null,
 
 
 gulp.task('pages:copier', function () {
-  var result = copierUtils.copy(getObject.get(pagesConfig, 'copier'));
+  var stream = copierUtils.copy(getObject.get(pagesConfig, 'copier'));
 
-  if (typeof result != 'undefined') {
+  if (typeof stream != 'undefined') {
     server && serverUtils.reloadServer(serverConfig.devServerName);
-
-    return result;
   }
+
+  return stream;
 });
 
 gulp.task('pages:copier:cleanup', function () {

@@ -14,15 +14,14 @@ var config = {};
  * @property {Copier|Copier[]}
  */
 config.copier = [{
-  from: __.getGlobPaths(path.join(global.Builder.src, 'images/content'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true),
-  to: path.join(global.Builder.dest, 'images'),
+  from:     __.getGlobPaths(path.join(global.Builder.src, 'images/content'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true),
+  to:       path.join(global.Builder.dest, 'images'),
   cleanups: __.getGlobPaths(path.join(global.Builder.dest, 'images'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true)
-},
-  {
-    from: __.getGlobPaths(path.join(global.Builder.src, 'images/inline'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true),
-    to: path.join(global.Builder.dest, 'i'),
-    cleanups: __.getGlobPaths(path.join(global.Builder.dest, 'i'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true)
-  }
+}, {
+  from:     __.getGlobPaths(path.join(global.Builder.src, 'images/inline'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true),
+  to:       path.join(global.Builder.dest, 'i'),
+  cleanups: __.getGlobPaths(path.join(global.Builder.dest, 'i'), ['png', 'jpg', 'jpeg', 'gif', 'svg'], true)
+}
   //{
     //from: '',
     //to: '',
@@ -55,9 +54,9 @@ utils.copy = function (config) {
   });
 
   return mergeStreams(_.map(copiers, function (item) {
-    var stream = gulp.src(item.from);
-
-    stream.pipe(gulpPlumber(__.plumberErrorHandler));
+    var stream = gulp.src(item.from)
+      .pipe(gulpPlumber(__.plumberErrorHandler))
+    ;
 
     if (_.isFunction(item.transform)) {
       var tmp = item.transform(stream);

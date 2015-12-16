@@ -82,6 +82,7 @@
     "klass": "^1.4.1",
     "lazypipe": "^1.0.1",
     "lodash": "^3.10.1",
+    "merge-stream": "^1.0.0",
     "mkpath": "*",
     "nightmare": "*",
     "node-sass-asset-functions": "0.0.9",

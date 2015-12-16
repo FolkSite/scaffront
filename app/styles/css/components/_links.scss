@@ -11,6 +11,8 @@
 
 .link--white {
   @include sf-link(
-    $color-normal: #fff
+    $color-normal: #fff,
+    $border-color-normal: rgba(#fff, .6)
   );
 }
+

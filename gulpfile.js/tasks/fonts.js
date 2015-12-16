@@ -25,9 +25,9 @@ gulp.task('fonts:copier', function () {
 
   if (stream && gulpUtil.isStream(stream)) {
     server && serverUtils.reloadServer(serverConfig.devServerName, stream);
-
-    return stream;
   }
+
+  return stream;
 });
 
 gulp.task('fonts:copier:cleanup', function () {

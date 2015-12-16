@@ -1,37 +1,47 @@
 {% extends './default.tpl' %}
 
-{% block layout-type %}user{% endblock %}
+{#{% block layout-type %}layout--another{% endblock %}#}
 
-{% block Body-before %}{% endblock %}
+{#{% block Head %}{% endblock %}#}
+  {#{% block Meta %}{% endblock %}#}
+  {#{% block Styles %}{% endblock %}#}
 
-{% block Menu-content %}{% include './default/chunks/layout-menu.tpl' %}{% endblock %}
+{#{% block Body-before %}{% endblock %}#}
 
-{% block Header-before %}{% endblock %}
-{% block Header-content %}
-  {#header#}
+{#{% block Body %}{% endblock %}#}
+  {#{% block Menu %}{% endblock %}#}
+    {#{% block Menu-content %}{% endblock %}#}
 
+  {#{% block Header-before %}{% endblock %}#}
 
-{% endblock %}
-{% block Header-after %}{% endblock %}
+  {#{% block Header %}{% endblock %}#}
+    {#{% block Header-content %}{% endblock %}#}
 
-{% block Middle-before %}{% endblock %}
+  {#{% block Header-after %}{% endblock %}#}
 
-{% block Content-content %}
-  {#content#}
+  {#{% block Middle-before %}{% endblock %}#}
 
+  {#{% block Middle %}{% endblock %}#}
+    {#{% block Middle-content %}{% endblock %}#}
 
-{% endblock %}
+      {#{% block Content %}{% endblock %}#}
+        {#{% block Content-content %}{% endblock %}#}
 
-{% block Sidebar-left %}{% endblock %}
-{% block Sidebar-right %}{% endblock %}
+      {#{% block Sidebar-left %}{% endblock %}#}
+        {#{% block Sidebar-left-content %}{% endblock %}#}
 
-{% block Middle-after %}{% endblock %}
+      {#{% block Sidebar-right %}{% endblock %}#}
+        {#{% block Sidebar-right-content %}{% endblock %}#}
 
-{% block Footer-before %}{% endblock %}
-{% block Footer-content %}
-  {#footer#}
+  {#{% block Middle-after %}{% endblock %}#}
 
-{% endblock %}
-{% block Footer-after %}{% endblock %}
+  {#{% block Footer-before %}{% endblock %}#}
 
-{% block Body-after %}{% endblock %}
+  {#{% block Footer %}{% endblock %}#}
+    {#{% block Footer-content %}{% endblock %}#}
+
+  {#{% block Footer-after %}{% endblock %}#}
+
+{#{% block Body-after %}{% endblock %}#}
+
+{#{% block Scripts %}{% endblock %}#}

@@ -103,7 +103,13 @@ gulp.task('styles:css', function () {
 
 
 gulp.task('styles:copier', function () {
-  return copierUtils.copy(getObject.get(stylesConfig, 'copier'));
+  var stream = copierUtils.copy(getObject.get(stylesConfig, 'copier'));
+
+  if (typeof stream != 'undefined') {
+    server && serverUtils.reloadServer(serverConfig.devServerName);
+  }
+
+  return stream;
 });
 
 gulp.task('styles:copier:cleanup', function () {

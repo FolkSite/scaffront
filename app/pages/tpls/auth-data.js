@@ -1,4 +1,4 @@
-var config = {
+var data = {
   background: {
     image: '/i/auth-backgrounds/1.jpg',
     title: 'Классный Владивосток',
@@ -6,4 +6,4 @@ var config = {
   }
 };
 
-module.exports = config;
+module.exports = data;

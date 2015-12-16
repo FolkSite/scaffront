@@ -1,0 +1,90 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$combinations: (
+  (name: top,          position: top),
+  (name: bottom,       position: bottom),
+  (name: left,         position: left),
+  (name: right,        position: right),
+  (name: top-outer,    position: outer-top),
+  (name: bottom-outer, position: outer-bottom),
+  (name: right-outer,  position: outer-right),
+  (name: left--outer,  position: outer-left),
+  (name: center-x,     position: center auto),
+  (name: center-y,     position: auto center),
+  (name: center,       position: center),
+);
+
+
+.qwe {
+  @debug('===========');
+  @include sf-smart-position(center center);
+  @include sf-smart-position(center);
+  @debug('===========');
+  @include sf-smart-position(top);
+  @include sf-smart-position(right);
+  @include sf-smart-position(auto top);
+  @include sf-smart-position(top auto);
+  @debug('===========');
+  @include sf-smart-position(auto right);
+  @include sf-smart-position(right auto);
+  @debug('===========');
+  @include sf-smart-position(auto center);
+  @include sf-smart-position(center auto);
+  @debug('===========');
+  @include sf-smart-position(center top);
+  @include sf-smart-position(top center);
+  @debug('===========');
+  @include sf-smart-position(center left);
+  @include sf-smart-position(left center);
+  @debug('===========');
+  @include sf-smart-position(top left);
+  @include sf-smart-position(left top);
+}
+
+
+
+@each $combination in $combinations {
+  .push-#{map-get($combination, name)} {
+    //@include sf-smart-position(map-get($combination, position));
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

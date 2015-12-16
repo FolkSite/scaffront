@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
   <head>
     {% block Head %}
 
@@ -12,7 +12,8 @@
         {% include './default/styles.tpl' %}
       {% endblock %} {# //Styles #}
 
-      <title>{{ title }} | WowWorks</title>
+      <title>{{ title }}</title>
+      <meta name="description" content="{{ description }}">
 
     {% endblock %} {# //Head #}
   </head>
@@ -21,7 +22,7 @@
 
     {% block Body %}
 
-      <div class="layout {% spaceless %}layout--{% block layout-type %}{% endblock %}{% endspaceless %}">
+      <div class="layout {% spaceless %}{% block layout-type %}{% endblock %}{% endspaceless %}">
 
         {% block Menu %}
           <section class="layout__menu">
@@ -62,6 +63,7 @@
         {% endblock %} {# //Header #}
 
         {% block Header-after %}{% endblock %}
+
         {% block Middle-before %}{% endblock %}
 
         {% block Middle %}
@@ -98,6 +100,7 @@
         {% endblock %} {# //Middle #}
 
         {% block Middle-after %}{% endblock %}
+
         {% block Footer-before %}{% endblock %}
 
         {% block Footer %}

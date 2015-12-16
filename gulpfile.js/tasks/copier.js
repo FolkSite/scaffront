@@ -16,17 +16,17 @@ var server       = null,
 
 
 gulp.task('copier:build', function (cb) {
-  var stream = copierUtils.copy(getObject.get(copierConfig, 'copier'), cb);
+  var stream = copierUtils.copy(getObject.get(copierConfig, 'copier'));
 
   if (stream && gulpUtil.isStream(stream)) {
     server && serverUtils.reloadServer(serverConfig.devServerName, stream);
-
-    return stream;
   }
+
+  return stream;
 });
 
-gulp.task('copier:build:cleanup', function (cb) {
-  return copierUtils.cleanup(getObject.get(copierConfig, 'build'), cb);
+gulp.task('copier:build:cleanup', function () {
+  return copierUtils.cleanup(getObject.get(copierConfig, 'build'));
 });
 
 

@@ -1,9 +1,15 @@
 .layout--auth {
   position: relative;
 
+  .logo {
+    display: block;
+    width: 160px;
+  }
+
   .layout__header-inner,
   .layout__footer-inner {
-    padding: 30px 40px;
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 
   .layout__footer-inner {
@@ -50,14 +56,13 @@
     }
   }
 
-
   .layout__content {
-    position: relative;
 
     .auth {
-      margin-top: 90px;
-
       @include sf-block-center;
+
+      width: 300px;
+      margin-top: 90px;
     }
   }
 }
