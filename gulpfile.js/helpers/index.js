@@ -273,41 +273,46 @@ __.capitalize = function (str) {
 /**
  *
  * @param {String|String[]} paths
- * @param {String|String[]|boolean} [files] Default is '.*'. Pass false for return only paths without extensions
+ * @param {String|String[]|boolean} [globs] Default is '.*'. Pass false for return only paths without extensions
  * @param {boolean} [forceDeep] If undefined then has no effect. But if it == true/false then to each path will be added/removed suffix '/**'
  * @returns {[]}
  */
-__.getGlobPaths = function (paths, files, forceDeep) {
+__.getGlobPaths = function (paths, globs, forceDeep) {
   var result = [];
   paths = __.getArray(paths || null);
-  files = __.getArray(files || null);
+  globs = __.getArray(globs || null);
 
-  if (!files.length || (files.length == 1 && !files[0])) {
-    files = [];
+  if (!globs.length || (globs.length == 1 && !globs[0])) {
+    globs = [];
   }
 
   paths = _.compact(paths);
-  files = _.compact(files);
+  globs = _.compact(globs);
 
-  files = _.map(files, function (ext) {
-    var itsExclude = (ext.indexOf('!') === 0);
+  globs = _.map(globs, function (glob) {
+    var itsExclude = (glob.indexOf('!') === 0);
     if (itsExclude) {
-      ext = ext.slice(1);
+      glob = glob.slice(1);
     }
 
-    if (ext.indexOf('.') >= 0 && ext.indexOf('*') >= 0 ) {
-      // it's filename mask
-    } else {
-      // dot unify
-      ext = ((ext.indexOf('.') !== 0) ? '.'+ ext : ext);
-      ext = '*'+ ext;
+    var isSimpleExt = false,
+        ext = '',
+        matches = glob.match(/^\*?\.?([a-z0-9]+)$/i);
+
+    if (matches && matches[1]) {
+      ext = matches[1];
+      isSimpleExt = true;
+    }
+
+    if (isSimpleExt && ext) {
+      glob = '*.'+ ext;
     }
 
     if (itsExclude) {
-      ext = '!'+ ext;
+      glob = '!'+ glob;
     }
 
-    return ext;
+    return glob;
   });
 
   _.each(paths, function (path) {
@@ -324,10 +329,10 @@ __.getGlobPaths = function (paths, files, forceDeep) {
       }
     }
 
-    if (!files.length) {
+    if (!globs.length) {
       result.push(path);
     } else {
-      _.each(files, function (file) {
+      _.each(globs, function (file) {
         var isFileExcluded = (file.indexOf('!') === 0);
         if (isFileExcluded) {
           file = file.slice(1);

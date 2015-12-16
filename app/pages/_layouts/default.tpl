@@ -29,19 +29,9 @@
             <div class="layout__width">
               <div class="layout__width-inner">
                 <div class="layout__menu-inner">
-                  <nav class="nav-bar">
-                    <div class="nav-bar__left">
-                      <a href="/" class="nav-bar__logo logo">
-                        <img src="/images/logo@2x.png">
-                      </a>
-                    </div>
-                    <div class="nav-bar__right"></div>
-                    <div class="nav-bar__center">
-                      {% block Menu-content %}
-                        {% include './default/chunks/layout-menu.tpl' %}
-                      {% endblock %}
-                    </div>
-                  </nav>
+                  {% block Menu-content %}
+                    {% include './default/layout-menu.tpl' %}
+                  {% endblock %}
                 </div>
               </div>
             </div>

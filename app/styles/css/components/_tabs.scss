@@ -15,8 +15,6 @@
   }
 
   @include e(nav-item) {
-    @include sf-vcenter-ib('.badge');
-
     float: left;
     display: block;
     position: relative;
@@ -71,6 +69,8 @@
     > * {
       vertical-align: middle;
     }
+
+    @include sf-vcenter-ib('.badge');
 
     .badge {
 

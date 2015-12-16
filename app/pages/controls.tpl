@@ -1,4 +1,4 @@
-{% extends './tpls/default.tpl' %}
+{% extends './_layouts/default.tpl' %}
 
 {% block Header-content %}{% endblock %}
 

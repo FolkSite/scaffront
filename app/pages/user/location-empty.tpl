@@ -26,7 +26,18 @@
   {% include './chunks/page-menu.tpl' %}
 
   <section class="user-locations">
-    <div class="user-locations__form ul-form">
+    <div class="user-locations__add-intro uloc-add-intro">
+      <p class="uloc-add-intro__icon">
+        <i class="icon icon--globus-question"></i>
+      </p>
+      <h2 class="uloc-add-intro__title">Добавьте город</h2>
+      <p class="uloc-add-intro__description">
+        область или регион, чтобы получать информацию <br>
+        о новых заданиях рядом с вами
+      </p>
+    </div>
+
+    <div class="user-locations__form uloc-form">
       <form method="post">
         <p class="asides">
           <span class="asides__right">
@@ -36,15 +47,11 @@
           <span class="asides__center">
             <input name="text"
                    type="text"
-                   class="ul-form__input-text input input--default input--lg input--full"
+                   class="uloc-form__input-text input input--default input--lg input--full"
                    placeholder="Название города, области или региона">
           </span>
         </p>
       </form>
-    </div>
-
-    <div class="user-locations__list ul-locations">
-
     </div>
   </section>
 

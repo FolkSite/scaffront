@@ -39,12 +39,27 @@ utils.getTplData = function (tplFile) {
   return data;
 };
 
-
 var config = {};
 
 config.src = path.join(global.Builder.src, 'pages');
-config.extnames = 'tpl';
+config.extnames = ['*.tpl', '!_*.tpl', '!/_**/*.tpl'];
 config.dest = path.join(global.Builder.dest, 'pages');
+
+
+//var globTest = __.getGlobPaths(path.join(config.src, 'test'), ['*.tpl', '!_*.tpl', '!/_**/*.tpl'], true);
+//var globTest = __.getGlobPaths(path.join(config.src, 'test'), ['**/*.tpl'/*, '!**!/_*!/!**'*/]);
+
+//console.log(globTest);
+//
+//var glob = require('glob');
+//var files = [];
+//gulp.src(globTest)
+//  .pipe(gulpTap(function (file) {
+//    files.push(file.path);
+//  })).on('end', function () {
+//    console.log(files);
+//  });
+
 
 // '../../app/pages/globals-data'
 var srcRelative = path.relative(path.dirname(__filename), config.src);

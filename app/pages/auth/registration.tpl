@@ -1,4 +1,4 @@
-{% extends '../tpls/auth.tpl' %}
+{% extends '../_layouts/auth.tpl' %}
 
 {#{% block Head %}{% endblock %}#}
   {#{% block Meta %}{% endblock %}#}

@@ -1,3 +1,3 @@
-{% import '../../macros/user.tpl' as user %}
+{% import '../../_macros/user.tpl' as user %}
 
-{% extends '../../tpls/default/chunks/layout-menu.tpl' %}
+{% extends '../../_layouts/default/layout-menu.tpl' %}

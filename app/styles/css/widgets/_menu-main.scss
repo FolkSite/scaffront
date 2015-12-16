@@ -3,7 +3,64 @@
 }
 
 .nav-bar {
+  $navbar-height: 40px;
+
+  @include sf-clearfix;
+
+  height: $navbar-height;
+  min-height: $navbar-height;
+
+  //@include e(logo) {
+  //  display: block;
+  //  max-height: 100%;
+  //  width: 100px;
+  //  margin: 12px 0;
+  //}
+
+  @include e(nav) {
+    @include unlist;
+    @include sf-clearfix;
+    @include sf-ib;
+
+    height: 100%;
+    color: #999999;
+
+    > li {
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+
+      > * {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      > a {
+        display: block;
+        @include sf-vcenter-lh($navbar-height);
+        //padding: 12px;
+
+        //height: 100%;
+
+      }
+
+      &.is-active {
+
+      }
+    }
+  }
+
+
+}
+
+
+/*
+.nav-bar {
+  $navbar-height: 40px;
+
+  height: 40px;
   min-height: 40px;
+
   @include sf-asides (
     $selector-aside-left: '.nav-bar__left',
     $selector-aside-right: '.nav-bar__right',
@@ -11,64 +68,50 @@
     $gutter: 30px
   );
 
+  //display: table;
+  //width: 100%;
+
   @include e(left, center, right) {
     height: 100%;
+    //@include sf-vcenter-ib;
+    //display: table-cell;
+    //vertical-align: middle;
+    //height: 100%;
+    //padding: 0;
   }
 
   @include e(logo) {
     display: block;
+    max-height: 100%;
+    max-width: 100px;
+    margin: 12px 0;
   }
 
-  @include e(item) {
-    display: block;
+  @include e(nav) {
+    @include unlist;
+    @include sf-clearfix;
+    @include sf-ib;
+
+    height: 100%;
+
+    color: #999999;
+
+    > li {
+      display: inline-block;
+      vertical-align: middle;
+
+      > a {
+        display: block;
+        padding: 12px;
+
+        //height: 100%;
+
+      }
+
+
+    }
   }
 
-  @include e(link) {
-    display: block;
-  }
 
-
-
-  //sf-vcenter-td
-
-
-
-
-  //
-  //$menu-height: 40px;
-  //$menu-gutter-y: 12px;
-  //$menu-logo-height: 30px;
-  //
-  //background: #222222;
-  //min-height: $menu-height;
-  //
-  //@include e(logo) {
-  //  height: $menu-logo-height;
-  //  display: block;
-  //  margin-top: $menu-gutter-y;
-  //  margin-right: 25px;
-  //}
-  //
-  //@include e(inner) {
-  //  @include sf-clearfix;
-  //  padding-top:    $menu-gutter-y;
-  //  padding-bottom: $menu-gutter-y;
-  //}
-  //
-  //@include e(content) {
-  //  min-height: $menu-height;
-  //}
-  //
-  //@include e(item) {
-  //  vertical-align: middle;
-  //}
-  //
-  ////@include e(link) {
-  ////  //@include sf-link(
-  ////  //
-  ////  //);
-  ////
-  ////  margin-top:     -$menu-gutter-y;
-  ////  margin-bottom:  -$menu-gutter-y;
-  ////}
 }
+*/
