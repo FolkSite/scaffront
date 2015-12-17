@@ -83,7 +83,7 @@
       <ul class="tabs__nav {{ config.classesNav }}">
         {% for index, item in config.items %}
           <li data-tabs-index="{{ index + 1 }}"
-              class="tabs__nav-item {% if item.isActive %}is-active{% endif %}">
+              class="tabs__nav-item {% if item.isActive %}is-active{% endif %} {{ item.classes }}">
             <a href="{{ item.href }}" class="tabs__nav-link">
               <span class="tabs__nav-link-inner">{{ item.title }}</span>
 

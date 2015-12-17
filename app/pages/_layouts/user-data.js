@@ -2,6 +2,12 @@ var extend = require('extend');
 
 var data = {
   pageMenu: [{
+    classes: 'pull-right muted',
+    isActive: false,
+    href: '#',
+    title: 'Удалить аккаунт',
+  }, {
+    classes: '',
     isActive: false,
     href: '#',
     title: 'Профиль',

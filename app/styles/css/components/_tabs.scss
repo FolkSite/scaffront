@@ -84,6 +84,18 @@
     .badge {
 
     }
+
+    .muted & {
+      @include sf-link(
+        $color-normal: #cccccc,
+        $color-hover: #333333,
+        $color-active: #ff6633,
+        $border-color-normal: transparent,
+        $border-color-focus: transparent,
+        $transition: .1s ease-out,
+        $target-inner-selector: '.tabs__nav-link-inner'
+      );
+    }
   }
 
   @include e(nav-link-inner) {
