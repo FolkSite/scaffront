@@ -1,0 +1,56 @@
+.user-profile {
+  @include sf-block-center;
+
+  width: 670px;
+
+  @include e(edit) {
+
+  }
+}
+
+
+
+.uprof-form {
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  @include e(section) {
+    @include sf-asides(
+      $selector-aside-left: '.uprof-form__section-left',
+      $selector-aside-right: '',
+      $selector-aside-center: '.uprof-form__section-right',
+      $gutter: 60px
+    );
+
+    $gutter: 40px;
+    padding-top: $gutter;
+    padding-bottom: $gutter;
+    border-top: 1px solid #dddddd;
+
+    &:first-child {
+      padding-top: $gutter;
+      border-top: none;
+    }
+  }
+
+  @include e(avatar) {
+    @include sf-content-gutter-x($gutter: 10px);
+  }
+
+  @include e(fields) {
+    @include sf-content-gutter-x($gutter: 20px);
+
+    label {
+      color: #999999;
+      margin-bottom: 10px;
+    }
+  }
+
+  @include e(phone) {
+    .input-group {
+      width: 100%;
+    }
+  }
+}
+

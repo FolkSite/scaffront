@@ -1,4 +1,9 @@
 .avatar {
-  @include avatar();
+  @include avatar;
+
+  border: 1px solid #ccc;
 }
 
+.color-red {
+  color: #f00 !important;
+}

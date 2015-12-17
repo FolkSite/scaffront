@@ -25,6 +25,7 @@ config.importPaths = {
   'sassy-validation':               __.getBowerPath('sassy-validation/stylesheets'),
   'modernizr-mixin':                __.getBowerPath('modernizr-mixin/stylesheets'),
   'scaffront-styles':               __.getBowerPath('scaffront-styles/stylesheets'),
+  'bootstrap-sass':                 __.getBowerPath('bootstrap-sass/assets/stylesheets'),
 };
 
 config.src = path.join(global.Builder.src, 'styles');

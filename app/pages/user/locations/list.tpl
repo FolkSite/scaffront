@@ -12,7 +12,7 @@
           <button type="submit"
                   name="action"
                   value="user/locations/delete"
-                  class="uloc-list__item-action btn pull-right">
+                  class="uloc-list__item-action">
             Удалить
             {{ widget.icon({name: 'trash'}) }}
           </button>

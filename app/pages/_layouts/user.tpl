@@ -25,16 +25,18 @@
     {#{% block Middle-content %}{% endblock %}#}
 
       {#{% block Content %}{% endblock %}#}
-        {% block Content-content %}
+        {% block Content-content-before %}
 
-          {{ widget.pageTitle(widget.userAvatar(avatar) +'Никита Ласточкин') }}
+          {{ widget.pageTitle(widget.userAvatar({url: avatar_url, name: 'Никита Ласточкин'}) +'Никита Ласточкин') }}
 
           {{ widget.tabs({
             items: pageMenu,
             needContent: false
           }) }}
-
         {% endblock %}
+
+        {#{% block Content-content %}{% endblock %}#}
+        {#{% block Content-content-after %}{% endblock %}#}
 
       {% block Sidebar-left %}{% endblock %}
         {#{% block Sidebar-left-content %}{% endblock %}#}

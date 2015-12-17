@@ -1,0 +1,21 @@
+@mixin avatar () {
+  @include sr-ratio(
+    $ratio: 1/1,
+    $selector: ''
+  );
+
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-position: center;
+  background-size: cover;
+
+  vertical-align: middle;
+  border-radius: 50%;
+
+  img {
+    @include sf-visually-hidden;
+  }
+
+  @content;
+}

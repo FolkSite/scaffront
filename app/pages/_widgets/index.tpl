@@ -35,11 +35,19 @@
 {% endmacro %}
 
 
-{% macro userAvatar(url, name, width) %}
+{% macro userAvatar(config) %}
+  {% set config = config|defaults({
+    url: '',
+    name: '',
+    width: '',
+    classes: ''
+  }) %}
   <!-- widget 'userAvatar' -->
-  <span class="avatar" style="background-image: url('{{ url }}'); {% if width %}width: {{ width }};{% endif %}">
-    <img src="{{ url }}" alt="{{ name }}">
-  </span>
+  {% if config.url %}
+    <span class="avatar {{ config.classes }}" style="background-image: url('{{ config.url }}'); {% if config.width %}width: {{ config.width }};{% endif %}">
+      <img src="{{ config.url }}" alt="{{ config.name }}">
+    </span>
+  {% endif %}
   <!-- //widget 'userAvatar' -->
 {% endmacro %}
 

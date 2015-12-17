@@ -31,7 +31,9 @@
     {#{% block Middle-content %}{% endblock %}#}
 
       {#{% block Content %}{% endblock %}#}
+        {#{% block Content-content-before %}{% endblock %}#}
         {#{% block Content-content %}{% endblock %}#}
+        {#{% block Content-content-after %}{% endblock %}#}
 
       {% block Sidebar-left %}{% endblock %}
         {#{% block Sidebar-left-content %}{% endblock %}#}
@@ -45,9 +47,9 @@
 
   {#{% block Footer %}{% endblock %}#}
     {% block Footer-content %}
-      <p class="bg-copyright">
-        <span class="bg-copyright__title">{{ background.title }}</span>
-        <span class="bg-copyright__author">&copy; {{ background.author }}</span>
+      <p class="layout--auth__bg-copyright la-bg-copyright">
+        <span class="la-bg-copyright__title">{{ background.title }}</span>
+        <span class="la-bg-copyright__author">&copy; {{ background.author }}</span>
       </p>
     {% endblock %}
 

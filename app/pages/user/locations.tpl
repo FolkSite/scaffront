@@ -25,8 +25,8 @@
     {#{% block Middle-content %}{% endblock %}#}
 
       {#{% block Content %}{% endblock %}#}
+        {#{% block Content-content-before %}{% endblock %}#}
         {% block Content-content %}
-          {% parent %}
 
 <section class="user-locations">
   {% set hasLocations = false %}
@@ -41,7 +41,9 @@
   {% include './locations/list.tpl' %}
 </section>
 
-        {% endblock %}
+{% endblock %}
+
+        {#{% block Content-content-after %}{% endblock %}#}
 
       {#{% block Sidebar-left %}{% endblock %}#}
         {#{% block Sidebar-left-content %}{% endblock %}#}

@@ -67,7 +67,9 @@
                     <div class="layout__content">
                       <main class="layout__content-inner page" role="main">
                         {% include './default/oldbrowser.tpl' %}
+                        {% block Content-content-before %}{% endblock %}
                         {% block Content-content %}{% endblock %}
+                        {% block Content-content-after %}{% endblock %}
                       </main>
                     </div>
                     {% endblock %} {# //Content #}

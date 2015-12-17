@@ -3,6 +3,35 @@
 {% block Header-content %}{% endblock %}
 
 {% block Content-content %}
+
+  <p>
+    <button type="button" class="btn btn-default">Default</button>
+    <button type="button" class="btn btn-primary">Primary</button>
+    <button type="button" class="btn btn-warning">Warning</button>
+
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-link">Link</button>
+  </p>
+
+  <p>
+    <input class="form-control input-lg" type="text" placeholder=".input-lg">
+    <input class="form-control" type="text" placeholder="Default input">
+    <input class="form-control input-sm" type="text" placeholder=".input-sm">
+
+    <select class="form-control input-lg">
+      <option value="">test</option>
+    </select>
+    <select class="form-control">
+      <option value="">test</option>
+    </select>
+    <select class="form-control input-sm">
+      <option value="">test</option>
+    </select>
+  </p>
+
+
   <h2>Линейка</h2>
   <p>
     <button class="btn btn--lg btn--primary">Кнопка</button>

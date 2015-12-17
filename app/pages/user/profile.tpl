@@ -1,6 +1,6 @@
-{% extends './default.tpl' %}
+{% extends '../_layouts/user.tpl' %}
 
-{#{% block layout-type %}layout--another{% endblock %}#}
+{#{% block layout-type %}{% endblock %}#}
 
 {#{% block Head %}{% endblock %}#}
   {#{% block Meta %}{% endblock %}#}
@@ -26,7 +26,15 @@
 
       {#{% block Content %}{% endblock %}#}
         {#{% block Content-content-before %}{% endblock %}#}
-        {#{% block Content-content %}{% endblock %}#}
+        {% block Content-content %}
+
+<section class="user-profile">
+
+  {% include './profile/edit.tpl' %}
+
+</section>
+
+        {% endblock %}
         {#{% block Content-content-after %}{% endblock %}#}
 
       {#{% block Sidebar-left %}{% endblock %}#}

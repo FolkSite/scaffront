@@ -1,41 +1,41 @@
+$base-border-radius:  4px !default;
+$base-font-size:      16px !default;
+$base-line-height:    px(1.4em, $base-font-size);
+$base-color:          #333;
+
 .input {
   @include sf-input();
-}
 
-.input--full {
-  @include sf-input--block();
-}
-
-.input--default {
   @include sf-input--variant(
     $color-normal:        lighten($base-color, 10%),
     $color-bg-normal:     #fff,
     $color-border-normal: #ccc,
-    $border-radius:       4px
+    $border-radius:       $base-border-radius
+  );
+
+  @include sf-input--size(
+    $height:              38px,
+    $font-size:           $base-font-size,
+    $line-height:         $base-line-height,
+    $border-width:        1px,
+    $padding:             5px 10px
   );
 
   #{$is-error} {
 
   }
-}
 
-.input--lg {
-  @include sf-input--size(
-    $height:                38px,
-    $font-size:             $base-font-size,
-    $line-height:           $base-line-height,
-    $border-width:          1px,
-    $padding:               5px 10px
-  );
-}
+  @include m(full) {
+    @include sf-input--block();
+  }
 
-.input--md {
-  @include sf-input--size(
-    $height:                32px,
-    $font-size:             14px,
-    $line-height:           1.4em,
-    $border-width:          1px,
-    $padding:               5px 10px
-  );
+  @include m(sm) {
+    @include sf-input--size(
+      $height:                32px,
+      $font-size:             14px,
+      $line-height:           1.4em,
+      $border-width:          1px,
+      $padding:               5px 10px
+    );
+  }
 }
-
