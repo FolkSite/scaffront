@@ -68,7 +68,11 @@
                       <main class="layout__content-inner page" role="main">
                         {% include './default/oldbrowser.tpl' %}
                         {% block Content-content-before %}{% endblock %}
-                        {% block Content-content %}{% endblock %}
+
+                        <section class="page__content">
+                          {% block Content-content %}{% endblock %}
+                        </section>
+
                         {% block Content-content-after %}{% endblock %}
                       </main>
                     </div>

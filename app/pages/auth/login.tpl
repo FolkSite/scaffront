@@ -30,14 +30,14 @@
               <input type="text"
                   name="login"
                   placeholder="Телефон или email"
-                  class="auth__field input input--default input--full input--lg">
+                  class="auth__field form-control">
               <input type="text"
                   name="password"
                   placeholder="Пароль"
-                  class="auth__field input input--default input--full input--lg">
+                  class="auth__field form-control">
             </p>
             <p>
-              <button type="submit" class="auth__submit btn btn--primary btn--full btn--lg">Войти</button>
+              <button type="submit" class="auth__submit btn btn-primary btn-block">Войти</button>
             </p>
             <p class="text-center">или войти через</p>
             <p class="auth__socials">

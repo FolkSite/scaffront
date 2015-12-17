@@ -1,6 +1,6 @@
-{% extends './default.tpl' %}
+{% extends '../_layouts/user.tpl' %}
 
-{% block layout-type %}{% endblock %}
+{#{% block layout-type %}{% endblock %}#}
 
 {#{% block Head %}{% endblock %}#}
   {#{% block Meta %}{% endblock %}#}
@@ -25,25 +25,22 @@
     {#{% block Middle-content %}{% endblock %}#}
 
       {#{% block Content %}{% endblock %}#}
-        {% block Content-content-before %}
-<h1 class="page__title">
-  {{ widget.userAvatar({url: avatar_url, name: 'Никита Ласточкин'})}} Никита Ласточкин
-</h1>
+        {#{% block Content-content-before %}{% endblock %}#}
+        {% block Content-content %}
 
-<nav class="page__menu">
-  {{ widget.tabs({
-    items: pageMenu,
-    needContent: false
-  }) }}
-</nav>
+<section class="user-skills">
+
+
+
+</section>
+
         {% endblock %}
-        {#{% block Content-content %}{% endblock %}#}
         {#{% block Content-content-after %}{% endblock %}#}
 
-      {% block Sidebar-left %}{% endblock %}
+      {#{% block Sidebar-left %}{% endblock %}#}
         {#{% block Sidebar-left-content %}{% endblock %}#}
 
-      {% block Sidebar-right %}{% endblock %}
+      {#{% block Sidebar-right %}{% endblock %}#}
         {#{% block Sidebar-right-content %}{% endblock %}#}
 
   {#{% block Middle-after %}{% endblock %}#}

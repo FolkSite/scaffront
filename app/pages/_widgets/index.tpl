@@ -1,18 +1,3 @@
-{% macro pageTitle(content) %}
-  <!-- widget 'pageTitle' -->
-  {% autoescape false %}
-    {% spaceless %}
-
-      <h1 class="page__title">
-        {{ content }}
-      </h1>
-
-    {% endspaceless %}
-  {% endautoescape %}
-  <!-- //widget 'pageTitle' -->
-{% endmacro %}
-
-
 {% macro icon(config) %}
   <!-- widget 'icon' -->
   {% set config = config|defaults({
@@ -44,9 +29,9 @@
   }) %}
   <!-- widget 'userAvatar' -->
   {% if config.url %}
-    <span class="avatar {{ config.classes }}" style="background-image: url('{{ config.url }}'); {% if config.width %}width: {{ config.width }};{% endif %}">
+    <i class="avatar {{ config.classes }}" style="background-image: url('{{ config.url }}'); {% if config.width %}width: {{ config.width }};{% endif %}">
       <img src="{{ config.url }}" alt="{{ config.name }}">
-    </span>
+    </i>
   {% endif %}
   <!-- //widget 'userAvatar' -->
 {% endmacro %}
@@ -77,7 +62,7 @@
   }) %}
 
   {% if config.items|isArray and config.items|size %}
-    <div class="page__menu tabs">
+    <div class="tabs">
 
       {% if config.needNav %}
       <ul class="tabs__nav {{ config.classesNav }}">

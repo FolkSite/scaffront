@@ -30,14 +30,14 @@
               <input type="text"
                   name="phone"
                   placeholder="Мобильный телефон"
-                  class="auth__field input input--default input--full input--lg">
+                  class="auth__field form-control">
               <input type="text"
                   name="password"
                   placeholder="Пароль"
-                  class="auth__field input input--default input--full input--lg">
+                  class="auth__field form-control">
             </p>
             <p>
-              <button type="submit" class="auth__submit btn btn--primary btn--full btn--lg">Зарегистрироваться</button>
+              <button type="submit" class="auth__submit btn btn-primary btn-block">Зарегистрироваться</button>
             </p>
             <p class="auth__description">
               Нажимая на кнопку «Зарегистрироваться», вы подтверждаете свое согласие с условиями
