@@ -1,7 +1,209 @@
-.user-skills {
+$base-border-radius: 4px !default;
 
+// .usr-skls
+.user-skills {}
+.usr-skls {
+  @include sf-content-gutter-x($gutter: 30px, $selector: usr-skls-sect);
+
+  @include e(title) {
+    font-size: 24px;
+    margin: 0 0 24px;
+  }
+
+  // .usr-skls-sect
+  @include e(section) {
+
+  }
+
+  @include e(list) {
+
+  }
+}
+
+.usr-skls-sect {
+
+  @include e(title) {
+    color: #999999;
+    margin: 0 0 7px;
+    font-size: 16px;
+  }
+
+  & + & {
+    margin-top: 40px;
+  }
+}
+
+
+// .usr-skl
+.user-skill {}
+.usr-skl {
+
+
+  @include e(header) {
+    padding: 20px 30px;
+    padding-left: 100px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+
+    transition: background 0.1s ease-out;
+
+    .is-approved & {
+      $bg-color: #eef9f2;
+      background: $bg-color;
+
+      #{$is-hovered} {
+        background: darken($bg-color, 3%);
+      }
+    }
+    .is-not-approved & {
+      $bg-color: #f6f6f6;
+      background: $bg-color;
+
+      #{$is-hovered} {
+        background: darken($bg-color, 3%);
+      }
+    }
+    .is-consideration & {
+      $bg-color: #fbf7cb;
+      background: $bg-color;
+
+      #{$is-hovered} {
+        background: darken($bg-color, 3%);
+      }
+    }
+  }
+
+  @include e(icon) {
+    $icon-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-left: $icon-size/ 2;
+    transform: translateY(-50%);
+
+    // todo remove '.avatar'
+    .icon, .avatar {
+      width: $icon-size;
+      height: $icon-size;
+    }
+  }
+
+  @include e(actions) {
+
+  }
+
+  @include e(name) {
+    color: #666666;
+    font-size: 15px;
+    display: inline-block;
+    margin-top: 5px;
+  }
+
+  // .usr-skl-cnt
+  @include e(content) {
+    display: none;
+
+    .is-expanded & {
+      display: block;
+    }
+  }
+
+  // .usr-skl-docs
+  @include e(docs) {
+
+  }
+
+  position: relative;
+  &:after {
+    content: '';
+    display: none;
+    position: absolute;
+    z-index: -1;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    border-radius: $base-border-radius;
+    border: 1px dashed #979797;
+  }
+
+  &.is-expanded {
+    margin: 20px 0;
+    border-radius: $base-border-radius;
+
+    &:after {
+      display: block;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+.usr-skl-cnt {
+  padding: 20px 30px;
+
+  @include sf-content-gutter-x(30px);
+
+  @include e(description) {
+    font-size: 14px;
+    line-height: 17px;
+
+    h4 {
+      @include sf-font(ptsans, bold);
+      margin: 0 0 10px;
+    }
+  }
+
+  a {
+    @include sf-link($color-normal: #2965a8);
+  }
+}
+
+
+.usr-skl-docs {
+  $gutter: 20px;
+
+  @include sf-content-gutter-x($gutter);
+
+  @include e(title) {
+    font-size: 12px;
+    color: #9b9b9b;
+  }
+
+  @include e(list) {
+    @include sf-content-gutter-x(10px);
+
+    margin-top: 0;
+  }
+
+  @include e(add) {
+    padding-top: $gutter;
+    border-top: 1px solid #e7e7e7;
+
+  }
+}
+
+.usr-skl-doc {
 
   @include e(title) {
 
   }
+
+  @include e(actions) {
+
+
+    select {
+      font-size: 14px;
+      padding-top: 4px;
+    }
+  }
 }
+
+

@@ -1,55 +1,62 @@
-.user-profile {
+// .usr-prof
+.user-profile {}
+.usr-prof {
   @include sf-block-center;
 
   width: 670px;
 
-  @include e(edit) {
+  @include e(form) {
 
+  }
+
+  $section-gutter: 40px;
+  @include sf-content-gutter-x($section-gutter, $selector: '.usr-prof__section');
+
+  @include e(section) {
+    @include sf-asides(
+      $selector-aside-left: '.usr-prof__section-left',
+      $selector-aside-right: '',
+      $selector-aside-center: '.usr-prof__section-right',
+      $gutter: 60px
+    );
+
+    padding-top: $section-gutter;
+    border-top: 1px solid #dddddd;
+
+    &:first-child {
+      padding-top: 0;
+      border-top: none;
+    }
+
+    @include e(left) {
+
+    }
+
+    @include e(right) {
+
+    }
   }
 }
 
 
-.uprof-form {
-  .form-group {
-    margin-bottom: 0;
-  }
-
-  @include e(section) {
-    @include sf-asides(
-      $selector-aside-left: '.uprof-form__section-left',
-      $selector-aside-right: '',
-      $selector-aside-center: '.uprof-form__section-right',
-      $gutter: 60px
-    );
-
-    $gutter: 40px;
-    padding-top: $gutter;
-    padding-bottom: $gutter;
-    border-top: 1px solid #dddddd;
-
-    &:first-child {
-      padding-top: $gutter;
-      border-top: none;
-    }
-  }
+.usr-prof-form {
 
   @include e(avatar) {
     @include sf-content-gutter-x($gutter: 10px);
   }
 
   @include e(fields) {
-    @include sf-content-gutter-x($gutter: 20px);
 
-    label {
-      color: #999999;
-      margin-bottom: 10px;
-    }
   }
 
   @include e(phone) {
     .input-group {
       width: 100%;
     }
+  }
+
+  @include e(bdate) {
+    display: block;
   }
 }
 

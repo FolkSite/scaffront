@@ -61,7 +61,7 @@
     classesContent: ''
   }) %}
 
-  {% if config.items|isArray and config.items|size %}
+  {% if config.items|_isArray and config.items|_size %}
     <div class="tabs">
 
       {% if config.needNav %}
@@ -72,7 +72,7 @@
             <a href="{{ item.href }}" class="tabs__nav-link">
               <span class="tabs__nav-link-inner">{{ item.title }}</span>
 
-              {% if item.badge|isPlainObject %}
+              {% if item.badge|_isPlainObject %}
                 {% set badgeClasses = '' %}
                 {% if item.badge.isActive %}
                   {% set badgeClasses = 'is-active' %}

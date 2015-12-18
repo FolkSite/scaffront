@@ -1,4 +1,5 @@
 {% import '../_widgets/index.tpl' as widget %}
+<!-- default layout -->
 <!doctype html>
 <html lang="ru" class="no-js">
   <head>

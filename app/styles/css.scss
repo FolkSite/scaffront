@@ -10,11 +10,11 @@
 @import 'sassdash';
 @import 'sassy-validation';
 
-@import 'css/vars';
 
-@import 'scaffront-styles';
 @import 'css/bootstrap-custom';
 
+@import 'css/vars';
+@import 'scaffront-styles';
 
 html {
   font-family: sf-fonts-get-stack(ptsans);

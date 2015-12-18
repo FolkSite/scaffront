@@ -48,9 +48,8 @@ gulp.task('pages:compile', function () {
       .pipe(gulpData(pagesUtils.getTplData))
       .pipe(gulpConsolidate('swig', extend(true, {}, pagesConfig.tplsData || {}, {cache: false}), {
         setupEngine: function (engineName, instance) {
-          var lodashMethods = ['isArray', 'isPlainObject', 'size'];
-          _.each(lodashMethods, function (method) {
-            instance.setFilter(method, _[method]);
+          _.each(_.functions(_), function (method) {
+            instance.setFilter('_'+ method, _[method]);
           });
 
           instance.setFilter('toString', function (content) {

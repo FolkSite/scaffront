@@ -1,3 +1,4 @@
+<!-- auth layout -->
 {% extends './default.tpl' %}
 
 {% block layout-type %}layout--auth{% endblock %}

@@ -26,16 +26,7 @@
 
       {#{% block Content %}{% endblock %}#}
         {% block Content-content-before %}
-<h1 class="page__title">
-  {{ widget.userAvatar({url: avatar_url, name: 'Никита Ласточкин'})}} Никита Ласточкин
-</h1>
-
-<nav class="page__menu">
-  {{ widget.tabs({
-    items: pageMenu,
-    needContent: false
-  }) }}
-</nav>
+{% include './user/content-content-before.tpl' %}
         {% endblock %}
         {#{% block Content-content %}{% endblock %}#}
         {#{% block Content-content-after %}{% endblock %}#}

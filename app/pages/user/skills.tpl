@@ -27,13 +27,7 @@
       {#{% block Content %}{% endblock %}#}
         {#{% block Content-content-before %}{% endblock %}#}
         {% block Content-content %}
-
-<section class="user-skills">
-
-
-
-</section>
-
+{% include './skills/content-content.tpl' %}
         {% endblock %}
         {#{% block Content-content-after %}{% endblock %}#}
 
