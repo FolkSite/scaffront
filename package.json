@@ -80,7 +80,6 @@
     "gulp-preprocess": "^1.2.0",
     "gulp-rename": "*",
     "gulp-replace": "^0.5.4",
-    "gulp-ruby-sass": "*",
     "gulp-sass": "^2.1.0",
     "gulp-sass-bulk-import": "^0.3.2",
     "gulp-sourcemaps": "^1.6.0",
