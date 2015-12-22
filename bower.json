@@ -99,7 +99,8 @@
     "Matreshka": "matreshka#~1.4.1",
     "motion-ui": "~1.1.1",
     "Buttons": "~2.0.0",
-    "bootstrap-sass": "~3.3.6"
+    "bootstrap-sass": "~3.3.6",
+    "datetimepicker": "~2.4.5"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
