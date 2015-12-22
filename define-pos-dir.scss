@@ -1,3 +1,44 @@
+@import "sassy-validation";
+@import "sassdash";
+
+@function map-set($map, $key, $value) {
+  @return map-merge($map, ($key: $value));
+}
+
+@function sf-assign ($properties, $values) {
+  @if (not is-list($properties)) {
+    $properties: ($properties,);
+  }
+
+  @if (is-list($values)) {
+    $values: _flatten($values, true);
+  } @elseif (not is-map($values)) {
+    $values: ($values,);
+  }
+
+  $result: ();
+  $propertiesLength: length($properties);
+  $valuesLength: length($values);
+
+  @if (is-map($values)) {
+    @each $property in $properties {
+      $value: map-get($values, $property);
+      @if (not is-null($value)) {
+        $result: map-set($result, $property, $value);
+      }
+    }
+  } @else {
+    @each $property in $properties {
+      $propertyIndex: index($properties, $property);
+      @if ($propertyIndex <= $valuesLength) {
+        $result: map-set($result, $property, nth($values, $propertyIndex));
+      }
+    }
+  }
+
+  @return $result;
+}
+
 @function sf-define-position-direction ($position) {
   $x-allowed: left outer-left right outer-right;
   $y-allowed: outer-top top outer-bottom bottom;
@@ -7,8 +48,8 @@
   $y-raw: unquote(map-get($xy-raw, y));
 
   $xy: (
-    y: null,
-    x: null
+          y: null,
+          x: null
   );
 
   // one argument
@@ -62,6 +103,9 @@
   @return $xy;
 }
 
+
+
+
 .test {
   test: inspect(sf-define-position-direction(center));
   test: inspect(sf-define-position-direction(left));
@@ -95,3 +139,10 @@
   test: inspect(sf-define-position-direction(xtop left));
   test: inspect(sf-define-position-direction(top xleft));
 }
+
+
+
+
+
+
+
