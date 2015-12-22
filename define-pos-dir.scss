@@ -75,6 +75,8 @@
   test: inspect(sf-define-position-direction(left top));
   test: inspect(sf-define-position-direction(top left));
 
+  test: '=====';
+
   test: inspect(sf-define-position-direction(xcenter));
   test: inspect(sf-define-position-direction(xleft));
   test: inspect(sf-define-position-direction(xtop));
