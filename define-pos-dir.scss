@@ -1,0 +1,64 @@
+@function sf-define-position-direction ($position) {
+  $x-allowed: left outer-left right outer-right;
+  $y-allowed: outer-top top outer-bottom bottom;
+
+  $xy-raw: sf-assign(x y, $position);
+  $x-raw: unquote(map-get($xy-raw, x));
+  $y-raw: unquote(map-get($xy-raw, y));
+
+  $xy: (
+    y: null,
+    x: null
+  );
+
+  // one argument
+  @if (not is-null($x-raw) and is-null($y-raw)) {
+    @if (index($y-allowed, $x-raw)) {
+      $xy: map-set($xy, y, $x-raw);
+    } @else if (index($x-allowed, $x-raw)) {
+      $xy: map-set($xy, x, $x-raw);
+    } @else if ($x-raw == center) {
+      $xy: map-set($xy, x, $x-raw);
+      $xy: map-set($xy, y, $x-raw);
+    }
+  } @else if (not is-null($x-raw) and not is-null($y-raw)) {
+    // two arguments
+    @if ($x-raw == center) {
+      @if (index($y-allowed, $y-raw)) {
+        $xy: map-set($xy, y, $y-raw);
+        $xy: map-set($xy, x, $x-raw);
+      } @else if (index($x-allowed, $y-raw)) {
+        $xy: map-set($xy, x, $y-raw);
+        $xy: map-set($xy, y, $x-raw);
+      } @else if ($y-raw == center) {
+        $xy: map-set($xy, x, $x-raw);
+        $xy: map-set($xy, y, $y-raw);
+      }
+    } @else if ($y-raw == center) {
+      @if (index($x-allowed, $x-raw)) {
+        $xy: map-set($xy, x, $x-raw);
+        $xy: map-set($xy, y, $y-raw);
+      } @else if (index($y-allowed, $x-raw)) {
+        $xy: map-set($xy, x, $y-raw);
+        $xy: map-set($xy, y, $x-raw);
+      } @else if ($x-raw == center) {
+        $xy: map-set($xy, x, $x-raw);
+        $xy: map-set($xy, y, $y-raw);
+      }
+    } @else {
+      @if (index($x-allowed, $x-raw)) {
+        $xy: map-set($xy, x, $x-raw);
+      } @else if (index($y-allowed, $x-raw)) {
+        $xy: map-set($xy, y, $x-raw);
+      }
+      @if (index($y-allowed, $y-raw)) {
+        $xy: map-set($xy, y, $y-raw);
+      } @else if (index($x-allowed, $y-raw)) {
+        $xy: map-set($xy, x, $y-raw);
+      }
+    }
+  }
+
+  @return $xy;
+}
+
