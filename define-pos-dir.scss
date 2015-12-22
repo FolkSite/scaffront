@@ -62,3 +62,34 @@
   @return $xy;
 }
 
+.test {
+  test: inspect(sf-define-position-direction(center));
+  test: inspect(sf-define-position-direction(left));
+  test: inspect(sf-define-position-direction(top));
+  test: inspect(sf-define-position-direction(center center));
+  test: inspect(sf-define-position-direction(left center));
+  test: inspect(sf-define-position-direction(left center));
+  test: inspect(sf-define-position-direction(center left));
+  test: inspect(sf-define-position-direction(top center));
+  test: inspect(sf-define-position-direction(center top));
+  test: inspect(sf-define-position-direction(left top));
+  test: inspect(sf-define-position-direction(top left));
+
+  test: inspect(sf-define-position-direction(xcenter));
+  test: inspect(sf-define-position-direction(xleft));
+  test: inspect(sf-define-position-direction(xtop));
+  test: inspect(sf-define-position-direction(xcenter center));
+  test: inspect(sf-define-position-direction(center xcenter));
+  test: inspect(sf-define-position-direction(xleft center));
+  test: inspect(sf-define-position-direction(left xcenter));
+  test: inspect(sf-define-position-direction(xcenter left));
+  test: inspect(sf-define-position-direction(center xleft));
+  test: inspect(sf-define-position-direction(xtop center));
+  test: inspect(sf-define-position-direction(top xcenter));
+  test: inspect(sf-define-position-direction(xcenter top));
+  test: inspect(sf-define-position-direction(center xtop));
+  test: inspect(sf-define-position-direction(xleft top));
+  test: inspect(sf-define-position-direction(left xtop));
+  test: inspect(sf-define-position-direction(xtop left));
+  test: inspect(sf-define-position-direction(top xleft));
+}
