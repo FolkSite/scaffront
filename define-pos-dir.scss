@@ -48,8 +48,8 @@
   $y-raw: unquote(map-get($xy-raw, y));
 
   $xy: (
-          y: null,
-          x: null
+    y: null,
+    x: null
   );
 
   // one argument
@@ -74,6 +74,8 @@
       } @else if ($y-raw == center) {
         $xy: map-set($xy, x, $x-raw);
         $xy: map-set($xy, y, $y-raw);
+      } @else {
+        $xy: map-set($xy, x, $x-raw);
       }
     } @else if ($y-raw == center) {
       @if (index($x-allowed, $x-raw)) {
@@ -84,6 +86,8 @@
         $xy: map-set($xy, y, $x-raw);
       } @else if ($x-raw == center) {
         $xy: map-set($xy, x, $x-raw);
+        $xy: map-set($xy, y, $y-raw);
+      } @else {
         $xy: map-set($xy, y, $y-raw);
       }
     } @else {
@@ -102,7 +106,6 @@
 
   @return $xy;
 }
-
 
 
 
