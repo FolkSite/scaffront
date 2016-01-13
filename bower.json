@@ -101,7 +101,7 @@
     "Buttons": "~2.0.0",
     "bootstrap-sass": "~3.3.6",
     "datetimepicker": "~2.4.5",
-    "PubSubJS": "~1.5.3"
+    "postal.js": "~1.0.7"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
