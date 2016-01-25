@@ -111,6 +111,7 @@
     "vinyl-paths": "^2.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.0",
-    "fibers": "*"
+    "fibers": "*",
+    "json-serialize": "^1.1.3"
   }
 }
