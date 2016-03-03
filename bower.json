@@ -102,7 +102,8 @@
     "bootstrap-sass": "~3.3.6",
     "datetimepicker": "~2.4.5",
     "postal.js": "~1.0.7",
-    "PubSubJS": "~1.5.3"
+    "PubSubJS": "~1.5.3",
+    "is_js": "~0.8.0"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
