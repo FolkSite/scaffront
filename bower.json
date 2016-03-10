@@ -104,7 +104,8 @@
     "postal.js": "~1.0.7",
     "PubSubJS": "~1.5.3",
     "is_js": "~0.8.0",
-    "javascript-state-machine": "~2.3.5"
+    "javascript-state-machine": "~2.3.5",
+    "jspath": "~0.3.2"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
