@@ -103,7 +103,8 @@
     "datetimepicker": "~2.4.5",
     "postal.js": "~1.0.7",
     "PubSubJS": "~1.5.3",
-    "is_js": "~0.8.0"
+    "is_js": "~0.8.0",
+    "javascript-state-machine": "~2.3.5"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
