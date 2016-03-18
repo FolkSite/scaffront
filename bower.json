@@ -110,7 +110,8 @@
     "clipboard": "~1.5.9",
     "element-resize-detector": "*",
     "odometer": "*",
-    "intro.js": "*"
+    "intro.js": "*",
+    "okaynav": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
