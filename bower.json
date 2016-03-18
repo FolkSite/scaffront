@@ -109,7 +109,8 @@
     "dragula.js": "~3.6.8",
     "clipboard": "~1.5.9",
     "element-resize-detector": "*",
-    "odometer": "odometer"
+    "odometer": "*",
+    "intro.js": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
