@@ -112,7 +112,9 @@
     "odometer": "*",
     "intro.js": "*",
     "okaynav": "*",
-    "wormhole": "git://github.com/RubaXa/wormhole.git"
+    "wormhole": "git://github.com/RubaXa/wormhole.git",
+    "jquery.sparkline": "git://github.com/gwatts/jquery.sparkline.git",
+    "autosize": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
