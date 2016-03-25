@@ -69,6 +69,7 @@
     "fastclick": "~1.0.6",
     "jquery.requestAnimationFrame": "~0.1.0",
     "animation-frame": "~0.2.5",
+    "window.requestanimationframe": "1.0.0",
     "hover": "~2.0.2",
     "immutable": "~3.7.5",
     "history.js": "~1.8.0",
