@@ -80,7 +80,7 @@
     "FitText.js": "~1.2.0",
     "fetch": "~0.10.1",
     "tether": "~1.1.1",
-    "console-normalizer": "git://github.com/Zenovations/console-normalizer.git",
+    "console-polyfill": "0.2.2",
     "jquery.leaks.js": "git://github.com/antixrist/jquery.leaks.js.git",
     "jquery.textarea.resize.event.js": "*",
     "lodash": "~3.10.1",
