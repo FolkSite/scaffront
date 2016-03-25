@@ -119,7 +119,8 @@
     "garlic": "https://github.com/guillaumepotier/garlic.js",
     "perfnow-polyfill": "~1.0.0",
     "flexibility": "*",
-    "IE8": "*"
+    "IE8": "*",
+    "polyfiller": "git://github.com/Polyfiller/polyfiller.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
