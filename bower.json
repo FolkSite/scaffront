@@ -114,7 +114,8 @@
     "okaynav": "*",
     "wormhole": "git://github.com/RubaXa/wormhole.git",
     "jquery.sparkline": "git://github.com/gwatts/jquery.sparkline.git",
-    "autosize": "*"
+    "autosize": "*",
+    "garlic": "https://github.com/guillaumepotier/garlic.js"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
