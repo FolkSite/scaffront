@@ -115,7 +115,8 @@
     "wormhole": "git://github.com/RubaXa/wormhole.git",
     "jquery.sparkline": "git://github.com/gwatts/jquery.sparkline.git",
     "autosize": "*",
-    "garlic": "https://github.com/guillaumepotier/garlic.js"
+    "garlic": "https://github.com/guillaumepotier/garlic.js",
+    "perfnow-polyfill": "~1.0.0"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
