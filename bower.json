@@ -116,7 +116,8 @@
     "jquery.sparkline": "git://github.com/gwatts/jquery.sparkline.git",
     "autosize": "*",
     "garlic": "https://github.com/guillaumepotier/garlic.js",
-    "perfnow-polyfill": "~1.0.0"
+    "perfnow-polyfill": "~1.0.0",
+    "flexibility": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
