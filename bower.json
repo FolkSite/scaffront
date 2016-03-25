@@ -118,7 +118,8 @@
     "autosize": "*",
     "garlic": "https://github.com/guillaumepotier/garlic.js",
     "perfnow-polyfill": "~1.0.0",
-    "flexibility": "*"
+    "flexibility": "*",
+    "IE8": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
