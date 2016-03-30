@@ -120,7 +120,8 @@
     "perfnow-polyfill": "~1.0.0",
     "flexibility": "*",
     "IE8": "*",
-    "polyfiller": "git://github.com/Polyfiller/polyfiller.git"
+    "polyfiller": "git://github.com/Polyfiller/polyfiller.git",
+    "checkit": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
