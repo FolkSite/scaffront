@@ -122,7 +122,8 @@
     "IE8": "*",
     "polyfiller": "git://github.com/Polyfiller/polyfiller.git",
     "checkit": "*",
-    "keypather": "*"
+    "keypather": "*",
+    "expounder": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
