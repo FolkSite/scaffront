@@ -123,7 +123,8 @@
     "polyfiller": "git://github.com/Polyfiller/polyfiller.git",
     "checkit": "*",
     "keypather": "*",
-    "expounder": "*"
+    "expounder": "*",
+    "skrollr": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
