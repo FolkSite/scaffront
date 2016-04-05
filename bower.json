@@ -137,7 +137,8 @@
     "mousetrap": "https://github.com/ccampbell/mousetrap",
     "offline": "*",
     "scrollmagic": "*",
-    "mailcheck": "*"
+    "mailcheck": "*",
+    "gridster": "git://github.com/ducksboard/gridster.js.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
