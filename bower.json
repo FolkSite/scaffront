@@ -133,7 +133,10 @@
     "jquery.cookie": "*",
     "quill": "git://github.com/quilljs/quill.git",
     "jquery-knob": "*",
-    "mjolnic-bootstrap-colorpicker": "*"
+    "mjolnic-bootstrap-colorpicker": "*",
+    "mousetrap": "https://github.com/ccampbell/mousetrap",
+    "offline": "*",
+    "scrollmagic": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
