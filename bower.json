@@ -136,7 +136,8 @@
     "mjolnic-bootstrap-colorpicker": "*",
     "mousetrap": "https://github.com/ccampbell/mousetrap",
     "offline": "*",
-    "scrollmagic": "*"
+    "scrollmagic": "*",
+    "mailcheck": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
