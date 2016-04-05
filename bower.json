@@ -124,7 +124,8 @@
     "checkit": "*",
     "keypather": "*",
     "expounder": "*",
-    "skrollr": "*"
+    "skrollr": "*",
+    "clipboard": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
