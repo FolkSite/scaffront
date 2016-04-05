@@ -41,7 +41,7 @@
     "filament-sticky": "~0.1.6",
     "filament-tablesaw": "~2.0.2",
     "select2": "~4.0.1",
-    "Swiper": "swiper#~3.2.6",
+    "Swiper": "swiper#~3.3.1",
     "waypoints": "~4.0.0",
     "jquery.transit": "~0.9.12",
     "scrollreveal": "scroll-reveal#~2.3.2",
@@ -125,7 +125,13 @@
     "keypather": "*",
     "expounder": "*",
     "skrollr": "*",
-    "clipboard": "*"
+    "clipboard": "*",
+    "respond": "*",
+    "dropzone": "*",
+    "picturefill": "*",
+    "onepage-scroll": "*",
+    "jquery.cookie": "*",
+    "quill": "git://github.com/quilljs/quill.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
