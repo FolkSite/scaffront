@@ -61,7 +61,7 @@
     "tap.js": "~2.1.2",
     "jquery-form": "~3.46.0",
     "jquery.fileapi": "~0.4.11",
-    "scaffront-styles": "~0.0.26",
+    "scaffront-styles": "*",
     "animate.css": "~3.4.0",
     "toast": "toast-grid#~1.0.0",
     "Effeckt.css": "git://github.com/h5bp/Effeckt.css.git",
