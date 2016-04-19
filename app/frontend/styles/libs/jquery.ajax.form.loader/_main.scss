@@ -1,4 +1,4 @@
-@import '_settings';
+@import 'settings';
 
 
 @function afl-file (
@@ -15,7 +15,7 @@ $background-size-behavior: '/js/vendor/backgroundsize.min.htc' !default;
       $sizes: map-get($sizes, 'width') map-get($sizes, 'height');
     }
   } @else {
-    // здесь вроде ничего больше проверять не нужно
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
   }
 
   background-size: $sizes;

@@ -1,3 +1,6 @@
+// http://stackoverflow.com/questions/29222745/how-do-i-exclude-the-requirereact-from-my-browserified-bundle
+// https://toster.ru/q/176877
+
 var _                 = require('lodash'),
     __                = require('../../helpers'),
     extend            = require('extend'),
@@ -10,15 +13,17 @@ var _                 = require('lodash'),
     gulpIf            = require('gulp-if'),
     getObject         = require('getobject'),
     gulpDerequire     = require('gulp-derequire'),
+    gulpSourcemaps    = require('gulp-sourcemaps'),
     browserify        = require('browserify'),
     watchify          = require('watchify'),
     vinylSourceStream = require('vinyl-source-stream'),
     vinylBuffer       = require('vinyl-buffer')
   ;
 
-var Config         = require('../../_config').scripts,
-    BowerConfig    = require('../../_config').bower,
-    ServerConfig   = require('../../_config').server,
+var _config        = require('../../config'),
+    Config         = _config.scripts,
+    ServerConfig   = _config.server,
+    CopierUtils    = _config.copier.utils,
     ScriptsClasses = require('./classes');
 
 
@@ -52,6 +57,7 @@ var makeBundleStream = function (bundle, returnBuffer) {
   bundle.stream = bundle.bundler.bundle(bundle.callback)
     .on('error', bundle.errorHandler)
     .pipe(vinylSourceStream(bundle.outfile))
+    .pipe(gulpSourcemaps.init({loadMaps: true}))
     .pipe(gulpIf(getObject.get(bundle, 'options.standalone'), gulpDerequire()))
     .pipe(gulpIf(returnBuffer, vinylBuffer()))
   ;
@@ -68,6 +74,12 @@ var buildBundle = function (bundle) {
 
   return bundle.stream
     .pipe(gulp.dest(bundle.dest))
+    .pipe(gulpSourcemaps.write('./', {
+      sourceRoot: './',
+      sourceMappingURLPrefix: __.preparePath({
+        startSlash: true
+      }, path.relative(global.Builder.dest, bundle.dest))
+    }))
     .pipe(gulpTap(function () {
       var bundlePath = path.normalize(path.resolve(process.cwd(), bundle.destFullPath));
       gulpUtil.log('Bundle built:', gulpUtil.colors.cyan(bundlePath));
@@ -184,3 +196,99 @@ gulp.task('scripts:watch', function (cb) {
     buildBundle(bundle);
   });
 });
+
+
+
+
+
+
+
+
+//var watcherHandler = function (stream, bsConfig) {
+//  if (!Server) { return; }
+//
+//  bsConfig = (_.isPlainObject(bsConfig)) ? bsConfig : {};
+//
+//  if (gulpUtil.isStream(stream)) {
+//    stream.pipe(Server.stream(bsConfig));
+//  } else {
+//    Server.reload(bsConfig);
+//  }
+//};
+//
+//
+//gulp.task('scripts:copier', function (cb) {
+//  CopierUtils.copy(getObject.get(Config, 'copier'), cb);
+//});
+//
+//gulp.task('scripts:copier:cleanup', function (cb) {
+//  CopierUtils.cleanup(getObject.get(Config, 'copier'), cb);
+//});
+//
+//
+//gulp.task('scripts:builder', function () {
+//  var stream = gulp.src(__.getGlobPaths(Config.src, Config.extnames || [], true))
+//        .pipe(gulpPlumber(__.plumberErrorHandler))
+//    ;
+//
+//  if (getObject.get(Config, 'transform') && _.isFunction(Config.transform)) {
+//    var tmp = Config.transform(stream);
+//    stream = (gulpUtil.isStream(tmp)) ? tmp : stream;
+//  }
+//
+//  stream = stream
+//    .pipe(gulp.dest(Config.dest))
+//  ;
+//
+//  watcherHandler(stream);
+//
+//  return stream;
+//});
+//
+//gulp.task('scripts:builder:cleanup', function (cb) {
+//  if (!getObject.get(Config, 'cleanups') || !Config.cleanups) {
+//    cb();
+//    return;
+//  }
+//
+//  del(Config.cleanups)
+//    .then(function () {
+//      cb();
+//    })
+//    .catch(cb);
+//});
+//
+//
+//gulp.task('scripts:build', function (cb) {
+//  runSequence(['scripts:copier', 'scripts:builder'], cb);
+//});
+//
+//gulp.task('scripts:build:cleanup', function (cb) {
+//  runSequence(['scripts:copier:cleanup', 'scripts:builder:cleanup'], cb);
+//});
+//
+//
+//gulp.task('scripts:dist', function (cb) {
+//  runSequence('scripts:build', cb);
+//});
+//
+//gulp.task('scripts:dist:cleanup', function (cb) {
+//  runSequence('scripts:dist:cleanup', cb);
+//});
+//
+//
+//gulp.task('scripts:watch', function (cb) {
+//  if (_.isFunction(ServerConfig.runServer)) {
+//    Server = ServerConfig.runServer(ServerConfig.devServerName);
+//  }
+//
+//  gulp.watch(__.getGlobPaths(Config.src, Config.extnames || []), ['scripts:builder']);
+//
+//  var copiers = __.getCopier(getObject.get(Config, 'copier'));
+//  var copyWatchers = [];
+//  _.each(copiers, function (copier) {
+//    copyWatchers = copyWatchers.concat(copier.from);
+//  });
+//  copyWatchers.length && gulp.watch(copyWatchers, ['scripts:copier']);
+//});
+//
