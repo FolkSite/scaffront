@@ -16,8 +16,9 @@ module.exports = function(options) {
           message: err.message
         }))
       }))
-      // При повторном запуске таска отметает неизменившиеся файлы, сравнивая их по названию файла и содержимому (замена since)
-      .pipe($.cached())
+      // При повторном запуске таска отметает неизменившиеся файлы, сравнивая их по названию файла и содержимому
+      // (замена since, но since быстрее, потому что ему не нужно полностью читать файл)
+      .pipe($.cached('css'))
       // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
       // и потом, если в потоке они отсутствуют, добавляет их.
       // но если какой-то файл из src-потока удалён с диска, то $.remember всё-равно будет его восстанавливать.
@@ -34,6 +35,7 @@ module.exports = function(options) {
 //  gulp
 //    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'))
 //    .on('unlink', function (filepath) {
-//      $.remember.forget('css', path.resolve(filepath))
+//      $.remember.forget('css', path.resolve(filepath));
+//      delete $.cached.caches.css[path.resolve(filepath)];
 //    });
 //});
