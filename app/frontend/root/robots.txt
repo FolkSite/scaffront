@@ -1,0 +1,8 @@
+User-agent: Yandex
+Disallow:
+Host: agrokomplect.ru
+# Sitemap: http://agrokomplect.ru/sitemap.xml
+
+User-agent: *
+Disallow:
+# Sitemap: http://agrokomplect.ru/sitemap.xml

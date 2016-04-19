@@ -18,6 +18,12 @@ var isProduction = (process.env.NODE_ENV === 'production');
 global.isProduction = isProduction;
 
 
+lazyRequireTask('root-copy', './tasks/root-copy', {
+  // удаляем все css-ки, которые были получены в таске 'styles:css', но из целевой директории
+  src: __.getGlob('app/frontend/root', '*.*', true),
+  dist: 'dist/frontend'
+});
+
 lazyRequireTask('styles:css', './tasks/styles/css', {
   src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
   dist: 'dist/frontend/css'

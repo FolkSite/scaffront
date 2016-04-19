@@ -15,6 +15,7 @@ module.exports = function(options) {
           message: err.message
         }))
       }))
+      .pipe($.debug({title: 'SCSS style'}))
       .pipe(gulp.dest(options.dist));
   };
 

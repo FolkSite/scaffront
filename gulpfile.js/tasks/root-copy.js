@@ -10,12 +10,10 @@ module.exports = function(options) {
       })
       .pipe($.plumber({
         errorHandler: $.notify.onError(err => ({
-          title: 'CSS styles',
+          title: 'Copy root files',
           message: err.message
         }))
       }))
-      .pipe($.debug({title: 'CSS style'}))
-      .pipe($.include())
       .pipe(gulp.dest(options.dist));
   };
 };
