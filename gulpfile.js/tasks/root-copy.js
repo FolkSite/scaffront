@@ -6,7 +6,6 @@ module.exports = function(options) {
   return function() {
     return gulp
       .src(options.src, {
-        // при повторных запусках копируются только изменённые и новые файлы
         since: gulp.lastRun(options.taskName)
       })
       .pipe($.plumber({
