@@ -6,9 +6,7 @@ module.exports = function(options) {
 
   return function() {
     return gulp
-      .src(options.src, {
-        since: gulp.lastRun(options.taskName)
-      })
+      .src(options.src, {since: gulp.lastRun(options.taskName)})
       .pipe($.plumber({
         errorHandler: $.notify.onError(err => ({
           title: 'CSS styles',

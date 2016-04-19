@@ -6,6 +6,7 @@ module.exports = function(options) {
   return function() {
     return gulp
       .src(options.src, {
+        // при повторных запусках копируются только изменённые и новые файлы
         since: gulp.lastRun(options.taskName)
       })
       .pipe($.plumber({
@@ -14,6 +15,10 @@ module.exports = function(options) {
           message: err.message
         }))
       }))
+      // фильтр - если файлы здесь уже проходили и с прошлого раза они не изменились,
+      // то $.newer их не пропускает
+      .pipe($.newer(options.dist))
+      .pipe($.debug({title: 'CSS style'}))
       .pipe(gulp.dest(options.dist));
   };
 };

@@ -3,6 +3,7 @@
 const __   = require('./helpers');
 const $    = require('gulp-load-plugins')();
 const gulp = require('gulp');
+const path = require('path');
 
 function lazyRequireTask(taskName, path, options) {
   options = options || {};
@@ -17,11 +18,11 @@ function lazyRequireTask(taskName, path, options) {
 var isProduction = (process.env.NODE_ENV === 'production');
 global.isProduction = isProduction;
 
-
+const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
+const ROOT_COPY_DIST = 'dist/frontend';
 lazyRequireTask('root-copy', './tasks/root-copy', {
-  // удаляем все css-ки, которые были получены в таске 'styles:css', но из целевой директории
-  src: __.getGlob('app/frontend/root', '*.*', true),
-  dist: 'dist/frontend'
+  src: ROOT_COPY_SRC,
+  dist: ROOT_COPY_DIST
 });
 
 lazyRequireTask('styles:css', './tasks/styles/css', {
@@ -34,6 +35,40 @@ lazyRequireTask('styles:css:clean', './tasks/cleaner', {
   src: __.getGlob('dist/frontend/css', '*.css', true)
 });
 
+
+
+//var imgSrc = 'src/img/**';
+//var imgDest = 'build/img';
+//
+//// Minify any new images
+//gulp.task('images', function() {
+//
+//  // Add the newer pipe to pass through newer images only
+//  return gulp.src(imgSrc)
+//    .pipe($.newer(imgDest))
+//    .pipe($.imagemin())
+//    .pipe(gulp.dest(imgDest));
+//
+//});
+
+
+
+
+gulp.task('watch', function () {
+  gulp
+    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'))
+    .on('unlink', function (filepath) {
+      $.remember.forget('css', path.resolve(filepath))
+    });
+
+  gulp
+    .watch(ROOT_COPY_SRC, gulp.series('styles:css'))
+    .on('unlink', function (filepath) {
+      $.remember.forget('css', path.resolve(filepath))
+    });
+
+
+});
 
 
 
