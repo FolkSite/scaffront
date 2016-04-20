@@ -23,14 +23,13 @@ const servers = {
   }
 };
 
-function lazyRequireTask(taskName, path, options) {
-  options = options || {};
-  options.taskName = taskName;
-  gulp.task(taskName, function(callback) {
-    let task = require(path).call(this, options);
+function lazyRequireTask(path) {
+  var args = [].slice.call(arguments, 1);
+  return function(callback) {
+    var task = require(path).apply(this, args);
 
     return task(callback);
-  });
+  };
 }
 
 var isProduction = (process.env.NODE_ENV === 'production');
@@ -38,21 +37,20 @@ global.isProduction = isProduction;
 
 const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
 const ROOT_COPY_DIST = 'dist/frontend';
-lazyRequireTask('root-copy', './tasks/root-copy', {
+gulp.task('root-copy', lazyRequireTask('./tasks/root-copy', {
   src: ROOT_COPY_SRC,
   dist: ROOT_COPY_DIST
-});
+}));
 
-lazyRequireTask('styles:css', './tasks/styles/css', {
+gulp.task('styles:css', lazyRequireTask('./tasks/styles/css', {
   src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
   dist: 'dist/frontend/css'
-});
+}));
 
-lazyRequireTask('styles:css:clean', './tasks/cleaner', {
+gulp.task('styles:css:clean', lazyRequireTask('./tasks/cleaner', {
   // удаляем все css-ки, которые были получены в таске 'styles:css', но из целевой директории
   src: __.getGlob('dist/frontend/css', '*.css', true)
-});
-
+}));
 
 
 //var imgSrc = 'src/img/**';
