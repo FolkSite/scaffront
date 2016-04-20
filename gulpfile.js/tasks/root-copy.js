@@ -2,6 +2,7 @@
 const $ = require('gulp-load-plugins')();
 const gulp = require('gulp');
 const combiner = require('stream-combiner2').obj;
+const config = require('../config');
 
 module.exports = function(options) {
   return function() {
@@ -16,7 +17,8 @@ module.exports = function(options) {
       // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
       // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
       $.newer(options.dist),
-      $.debug({title: 'Root file:'}),
+      $.if(config.isDev, $.debug({title: 'Root file:'})),
+
       gulp.dest(options.dist)
     ).on('error', $.notify.onError(err => ({
       title: 'Copy root files',

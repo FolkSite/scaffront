@@ -5,6 +5,18 @@ const $    = require('gulp-load-plugins')();
 const gulp = require('gulp');
 const path = require('path');
 
+function lazyRequireTask(path) {
+  var args = [].slice.call(arguments, 1);
+  return function(callback) {
+    var task = require(path).apply(this, args);
+
+    return task(callback);
+  };
+}
+
+
+const config = require('./config');
+
 const servers = {
   dev: {
     ui: false,
@@ -23,17 +35,13 @@ const servers = {
   }
 };
 
-function lazyRequireTask(path) {
-  var args = [].slice.call(arguments, 1);
-  return function(callback) {
-    var task = require(path).apply(this, args);
-
-    return task(callback);
-  };
+if (!config.isProd) {
+  require('trace');
+  require('clarify');
 }
 
-var isProduction = (process.env.NODE_ENV === 'production');
-global.isProduction = isProduction;
+
+
 
 const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
 const ROOT_COPY_DIST = 'dist/frontend';
