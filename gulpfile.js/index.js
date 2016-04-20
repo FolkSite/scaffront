@@ -35,7 +35,7 @@ const servers = {
   }
 };
 
-if (!config.isProd) {
+if (!config.flags.isDev) {
   require('trace');
   require('clarify');
 }

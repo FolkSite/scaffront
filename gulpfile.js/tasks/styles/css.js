@@ -4,6 +4,12 @@ const gulp = require('gulp');
 const combiner = require('stream-combiner2').obj;
 const config = require('../../config');
 
+/*
+  Описание $.remember, $.cached здесь:
+  https://youtu.be/uYZPNrT-e-8?t=240
+*/
+
+
 module.exports = function(options) {
   return function() {
     return combiner(
@@ -14,15 +20,19 @@ module.exports = function(options) {
       // (замена since, но since быстрее, потому что ему не нужно полностью читать файл)
       $.cached('css'),
 
-      //$.autoprefixer(),
       // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
-      // и потом, если в потоке они отсутствуют, добавляет их.
+      // и потом, если в потоке они отсутствуют, добавляет их
+      // (это может произойти, если перед ним установлен since/$.newer - они пропускают только изменённые файлы, исключая из gulp.src не изменившееся).
       // но если какой-то файл из src-потока удалён с диска, то $.remember всё-равно будет его восстанавливать.
       // для избежания подобного поведения, в watch-таске заставляем $.remember забыть об удалённых файлах.
       $.remember('css'),
-      $.if(config.isDev, $.debug({title: 'CSS style:'})),
+      $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
 
+      // инклюдим файлы
       $.include(),
+
+      // если сборка для продакшна, то пропускаем через autoprefixer
+      $.if(config.flags.isProd, $.autoprefixer()),
 
       gulp.dest(options.dist)
     ).on('error', $.notify.onError(err => ({
