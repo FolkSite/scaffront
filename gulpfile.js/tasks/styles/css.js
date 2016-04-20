@@ -29,7 +29,6 @@ module.exports = function(options) {
   };
 };
 
-
 //gulp.task('watch', function () {
 //  gulp
 //    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'))
