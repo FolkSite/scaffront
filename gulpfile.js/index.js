@@ -26,8 +26,8 @@ const config = require('./config');
 
 const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
 const ROOT_COPY_DIST = 'dist/frontend';
-gulp.task('root-copy', lazyRequireTask('./tasks/root-copy', {
-  taskName: 'root-copy',
+gulp.task('root-files', lazyRequireTask('./tasks/root-files', {
+  taskName: 'root-files',
   src: ROOT_COPY_SRC,
   dist: ROOT_COPY_DIST
 }));
@@ -35,8 +35,7 @@ gulp.task('root-copy', lazyRequireTask('./tasks/root-copy', {
 gulp.task('styles:css', lazyRequireTask('./tasks/styles/css', {
   taskName: 'styles:css',
   src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
-  dist: 'dist/frontend/css',
-  //watch: ''
+  dist: 'dist/frontend/css'
 }));
 
 gulp.task('styles:css:clean', lazyRequireTask('./tasks/cleaner', {
@@ -65,20 +64,28 @@ gulp.task('clean', lazyRequireTask('./tasks/cleaner', {
 
 gulp.task('build', gulp.series(
   'clean',
-  gulp.parallel('root-copy', 'styles:css')
+  gulp.parallel('root-files', 'styles:css')
 ));
 
 gulp.task('watch:styles', function () {
   gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
 });
-gulp.task('watch:root', function () {
-  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
+gulp.task('watch:root-files', function () {
+  gulp
+    .watch(__.getGlob('app/frontend'), gulp.series('root-files'))
+    .on('unlink', function (filepath) {
+      var file = path.resolve(filepath);
+      if ($.cached.caches['root-files']) {
+        delete $.cached.caches['root-files'][file];
+      }
+    })
+  ;
 });
 
 
 gulp.task('watch', gulp.parallel(
   'watch:styles',
-  'watch:root'
+  'watch:root-files'
 ));
 
 gulp.task('server', function () {
