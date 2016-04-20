@@ -38,16 +38,19 @@ global.isProduction = isProduction;
 const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
 const ROOT_COPY_DIST = 'dist/frontend';
 gulp.task('root-copy', lazyRequireTask('./tasks/root-copy', {
+  taskName: 'root-copy',
   src: ROOT_COPY_SRC,
   dist: ROOT_COPY_DIST
 }));
 
 gulp.task('styles:css', lazyRequireTask('./tasks/styles/css', {
+  taskName: 'styles:css',
   src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
   dist: 'dist/frontend/css'
 }));
 
 gulp.task('styles:css:clean', lazyRequireTask('./tasks/cleaner', {
+  taskName: 'styles:css:clean',
   // удаляем все css-ки, которые были получены в таске 'styles:css', но из целевой директории
   src: __.getGlob('dist/frontend/css', '*.css', true)
 }));
