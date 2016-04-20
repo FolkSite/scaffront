@@ -386,12 +386,15 @@ var bsInstances = {};
 
 /**
  * @param {string} instanceName
+ * @param {{}} [config]
  * @returns {*}
  */
-__.runServer = function (instanceName) {
-  if (!instanceName || typeof config.servers[instanceName] == 'undefined') { return null; }
+__.runServer = function (instanceName, config) {
+  if (!instanceName) {
+    throw new Error('[runServer] `instanceName` is required');
+  }
 
-  var options = (_.isPlainObject(config.servers[instanceName].options)) ? config.servers[instanceName].options : {};
+  config = (_.isPlainObject(config)) ? config : {};
 
   var bs;
   try {
@@ -417,9 +420,8 @@ __.runServer = function (instanceName) {
     bs.resume();
   } else
   if (!bs.active && !bsInstances[instanceName].pending) {
-
     bsInstances[instanceName].pending = true;
-    bs.init(options);
+    bs.init(config);
   }
 
   return bs;
@@ -433,21 +435,43 @@ __.runServer = function (instanceName) {
  * @returns {*}
  */
 __.reloadServer = function (instanceName, stream, options) {
-  if (!instanceName) { return; }
-
-  var server = __.runServer(instanceName);
-
-  if (!server) { return; }
-
-  options = (_.isPlainObject(options)) ? options : {};
-
-  if (typeof stream != 'undefined' && $.util.isStream(stream)) {
-    stream.pipe(server.stream(options));
-  } else {
-    server.reload(options);
+  if (!instanceName) {
+    throw new Error('[reloadServer] `instanceName` is required');
   }
 
-  return server;
+  var instance = __.runServer(instanceName);
+  if (!instance) {
+    throw new Error('[reloadServer] Try to reload not existing `instanceName`');
+  }
+
+  var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
+
+  switch (args.length) {
+    case 1:
+      stream = null;
+      options = {};
+      break;
+    case 2:
+      if ($.util.isStream(args[1])) {
+        options = {};
+      } else if (_.isPlainObject(args[1])) {
+        stream = null;
+        options = args[1];
+      }
+      break;
+    default:
+      stream = $.util.isStream(stream) ? stream : null;
+      options = (_.isPlainObject(options)) ? options : {};
+  }
+
+
+  if (stream) {
+    stream.pipe(instance.stream(options));
+  } else {
+    instance.reload(options);
+  }
+
+  return instance;
 };
 
 
