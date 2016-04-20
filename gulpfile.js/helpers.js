@@ -1,9 +1,10 @@
-var _              = require('lodash'),
-    FS             = require('fs'),
-    Path           = require('path'),
-    Crypto         = require('crypto'),
-    bowerDirectory = require('bower-directory')
-  ;
+const $              = require('gulp-load-plugins')();
+const _              = require('lodash');
+const fs             = require('fs');
+const path           = require('path');
+const crypto         = require('crypto');
+const bowerDirectory = require('bower-directory');
+const browserSync    = require('browser-sync');
 
 var __ = {};
 
@@ -12,7 +13,7 @@ __.noop = function noop () {};
 var bowerPath = (bowerDirectory) ? bowerDirectory.sync() : '';
 __.bower = {
   path: bowerPath,
-  pathRelative: Path.relative(process.cwd(), bowerPath)
+  pathRelative: path.relative(process.cwd(), bowerPath)
 };
 
 /**
@@ -20,7 +21,7 @@ __.bower = {
  * @returns String
  */
 __.getPackagePath = function (directory) {
-  return Path.join('node_modules', directory || '');
+  return path.join('node_modules', directory || '');
 };
 
 /**
@@ -28,7 +29,7 @@ __.getPackagePath = function (directory) {
  * @returns String
  */
 __.getBowerPath = function (directory) {
-  return Path.join(__.bower.pathRelative, directory || '');
+  return path.join(__.bower.pathRelative, directory || '');
 };
 
 /**
@@ -44,8 +45,8 @@ __.getRelativePath = function (from, to) {
   if (!from) { return result; }
 
   if (to) {
-    result = Path.relative(from, to);
-  } else if (Path.isAbsolute(from)) {
+    result = path.relative(from, to);
+  } else if (path.isAbsolute(from)) {
     result = from.substr(1);
   } else {
     result = from;
@@ -55,100 +56,101 @@ __.getRelativePath = function (from, to) {
 };
 
 /**
- * @param {String} path
+ * @param {String} pathname
  * @returns {Boolean}
  */
-__.hasTrailingSlash = function (path) {
-  path = path.toString() || '';
-  if (!path) { return false; }
+__.hasTrailingSlash = function (pathname) {
+  pathname = pathname.toString() || '';
+  if (!pathname) { return false; }
 
-  var lastChar = path.substr(path.length - 1);
+  var lastChar = pathname.substr(pathname.length - 1);
   return (lastChar == '/' || lastChar == '\\')
 };
 
 /**
- * @param {String} path
+ * @param {String} pathname
  * @returns {boolean}
  */
-__.isFile = function (path) {
-  path = path.toString() || '';
-  if (!path) { return false; }
+__.isFile = function (pathname) {
+  pathname = pathname.toString() || '';
+  if (!pathname) { return false; }
 
-  return (!!Path.extname(path) && !__.hasTrailingSlash(path));
+  return (!!path.extname(pathname) && !__.hasTrailingSlash(pathname));
 };
 
 /**
- * @param {String} path
+ * @param {String} pathname
  * @param {{startSlash: Boolean, trailingSlash: Boolean}} [config]
  * @param {...} [toJoin]
  */
-__.preparePath = function (path, config, toJoin) {
+__.preparePath = function (pathname, config, toJoin) {
   var args = _.toArray(arguments);
 
   if (_.isPlainObject(args[0])) {
     config = args[0];
-    path = args[1];
+    pathname = args[1];
     toJoin = args.slice(2);
   } else if (_.isString(args[0])) {
     config = {};
-    path = args[0];
+    pathname = args[0];
     toJoin = args.slice(1);
   } else {
     config = {};
-    path = null;
+    pathname = null;
     toJoin = [];
   }
 
-  if (!path) { return ''; }
+  if (!pathname) { return ''; }
 
-  path = Path.join.apply(null, [path].concat(toJoin));
+  pathname = path.join.apply(null, [pathname].concat(toJoin));
 
   if (typeof config.startSlash != 'undefined') {
 
-    if (config.startSlash && !Path.isAbsolute(path)) {
-      path = Path.join('/', path);
+    if (config.startSlash && !path.isAbsolute(pathname)) {
+      pathname = path.join('/', pathname);
     }
-    if (!config.startSlash && Path.isAbsolute(path)) {
-      path = Path.relative('/', path);
+    if (!config.startSlash && path.isAbsolute(pathname)) {
+      pathname = path.relative('/', pathname);
     }
 
   }
 
   if (typeof config.trailingSlash != 'undefined') {
 
-    if (config.trailingSlash && !__.isFile(path)) {
-      path += '/';
+    if (config.trailingSlash && !__.isFile(pathname)) {
+      pathname += '/';
     }
     if (!config.trailingSlash) {
-      var lastChar = path.substr(path.length - 1);
+      var lastChar = pathname.substr(pathname.length - 1);
       if (lastChar == '/' || lastChar == '\/') {
-        path = path.substr(0, path.length - 1);
+        pathname = pathname.substr(0, pathname.length - 1);
       }
     }
 
   }
 
-  path = Path.normalize(path);
+  pathname = path.normalize(pathname);
 
-  return path;
+  return pathname;
 };
 
 /**
- * @param {string} path
+ * @param {string} pathname
  * @param {boolean} [format=false]
- * @returns {{root: string, dir: string, base: string, ext: string, name: string, isOnlyFile: boolean, isOnlyPath: boolean, isPathToFile: boolean}|string}
+ * @returns {{root: string, dir: string, base: string, ext: string, name: string, isOnlyFile: boolean, isOnlyPath:
+ *   boolean, isPathToFile: boolean}|string}
  */
-__.parsePath = function (path, format) {
+__.parsePath = function (pathname, format) {
   format = !!format;
-  var isFile = __.isFile(path);
-  var parsed = Path.parse(path);
+  var isFile = __.isFile(pathname);
+  var parsed = path.parse(pathname);
 
   if (!isFile) {
     parsed.base = '';
     parsed.name = '';
-    parsed.dir = path;
+    parsed.dir = pathname;
   } else {
-    parsed.dir = parsed.dir.split(Path.sep).join('/');
+    parsed.dir = parsed.dir.split(path.sep).join('/');
   }
 
   parsed.isPathToFile = isFile && !!parsed.dir;
@@ -156,7 +158,7 @@ __.parsePath = function (path, format) {
   parsed.isOnlyPath   = !isFile;
 
   return (format)
-    ? Path.normalize(Path.format(parsed))
+    ? path.normalize(path.format(parsed))
     : parsed;
 };
 
@@ -165,7 +167,7 @@ __.parsePath = function (path, format) {
  * @returns {String}
  */
 __.md5 = function (content) {
-  return Crypto.createHash('md5').update(content).digest('hex');
+  return crypto.createHash('md5').update(content).digest('hex');
 };
 
 /**
@@ -174,15 +176,15 @@ __.md5 = function (content) {
  * @constructor
  */
 __.Is = function (file) {
-  var path = '';
+  var pathname = '';
   if (_.isString(file)) {
-    path = file;
+    pathname = file;
   } else if (_.isString(file.path)) {
-    path = file.path;
+    pathname = file.path;
   }
 
-  var extname = Path.extname(path);
-  var basename = Path.basename(path, extname);
+  var extname = path.extname(pathname);
+  var basename = path.basename(pathname, extname);
 
   return {
     css: extname === '.css',
@@ -194,8 +196,12 @@ __.Is = function (file) {
   };
 };
 
-__.filePathWithoutExt = function (path) {
-  return Path.basename(path, Path.extname(path))
+/**
+ * @param {string} pathname
+ * @returns {string}
+ */
+__.filePathWithoutExt = function (pathname) {
+  return path.basename(pathname, path.extname(pathname))
 };
 
 /**
@@ -214,7 +220,7 @@ __.getDataForTpl = function (getFile) {
       dataFile = getFile;
     }
 
-    if (dataFile && FS.existsSync(dataFile)) {
+    if (dataFile && fs.existsSync(dataFile)) {
       _data = require(dataFile);
       data = (_.isPlainObject(_data)) ? _data : data;
     }
@@ -225,21 +231,22 @@ __.getDataForTpl = function (getFile) {
 
 /**
  *
- * @param {String|String[]} paths
- * @param {String|String[]|boolean} [globs] Default is '.*'. Pass false for return only paths without extensions
- * @param {boolean} [forceDeep] If undefined then has no effect. But if it == true/false then to each path will be added/removed suffix '/**'
+ * @param {String|String[]} pathnames
+ * @param {String|String[]|boolean} [globs] Default is '.*'. Pass false for return only pathnames without extensions
+ * @param {boolean} [forceDeep] If undefined then has no effect. But if it == true/false then to each path will be
+ *   added/removed suffix '/**'
  * @returns {[]}
  */
-__.getGlob = function (paths, globs, forceDeep) {
+__.getGlob = function (pathnames, globs, forceDeep) {
   var result = [];
-  paths = __.getArray(paths || null);
+  pathnames = __.getArray(pathnames || null);
   globs = __.getArray(globs || null);
 
   if (!globs.length || (globs.length == 1 && !globs[0])) {
     globs = [];
   }
 
-  paths = _.compact(paths);
+  pathnames = _.compact(pathnames);
   globs = _.compact(globs);
 
   globs = _.map(globs, function (glob) {
@@ -268,22 +275,22 @@ __.getGlob = function (paths, globs, forceDeep) {
     return glob;
   });
 
-  _.each(paths, function (path) {
-    var isPathExcluded = (path.indexOf('!') === 0);
+  _.each(pathnames, function (pathname) {
+    var isPathExcluded = (pathname.indexOf('!') === 0);
 
     if (_.isBoolean(forceDeep)) {
-      path = __.preparePath({trailingSlash: false}, path);
-      var pathIsDeep = /\*\*$/.test(path);
+      pathname = __.preparePath({trailingSlash: false}, pathname);
+      var pathIsDeep = /\*\*$/.test(pathname);
 
       if (forceDeep && !pathIsDeep) {
-        path = Path.join(path, '**');
+        pathname = path.join(pathname, '**');
       } else if (!forceDeep && pathIsDeep) {
-        path = path.slice(0, path.length - 2);
+        pathname = pathname.slice(0, pathname.length - 2);
       }
     }
 
     if (!globs.length) {
-      result.push(path);
+      result.push(pathname);
     } else {
       _.each(globs, function (file) {
         var isFileExcluded = (file.indexOf('!') === 0);
@@ -291,11 +298,11 @@ __.getGlob = function (paths, globs, forceDeep) {
           file = file.slice(1);
         }
 
-        if ((isFileExcluded || isPathExcluded) && path.indexOf('!') !== 0) {
-          path = '!'+ path;
+        if ((isFileExcluded || isPathExcluded) && pathname.indexOf('!') !== 0) {
+          pathname = '!'+ pathname;
         }
 
-        result.push(Path.join(path, file));
+        result.push(path.join(pathname, file));
       });
     }
   });
@@ -361,16 +368,16 @@ __.getArray = function (anything) {
 __.pathResolver = function (paths) {
   var tmp = _.compact(_.flatten(_.toArray(arguments)));
 
-  tmp = _.map(tmp, function (path, index) {
+  tmp = _.map(tmp, function (pathname, index) {
     // first item
     if (!index) {
-      return path;
+      return pathname;
     }
-    return (tmp[index - 1] != path) ? path : null;
+    return (tmp[index - 1] != pathname) ? pathname : null;
   });
 
-  return _.reduce(_.compact(tmp), function (result, path) {
-    return Path.resolve(result, path);
+  return _.reduce(_.compact(tmp), function (result, pathname) {
+    return path.resolve(result, pathname);
   });
 };
 
@@ -434,7 +441,7 @@ __.reloadServer = function (instanceName, stream, options) {
 
   options = (_.isPlainObject(options)) ? options : {};
 
-  if (typeof stream != 'undefined' && gulpUtil.isStream(stream)) {
+  if (typeof stream != 'undefined' && $.util.isStream(stream)) {
     stream.pipe(server.stream(options));
   } else {
     server.reload(options);
