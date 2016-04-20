@@ -5,6 +5,21 @@ const $    = require('gulp-load-plugins')();
 const gulp = require('gulp');
 const path = require('path');
 
+const servers = {
+  dev: {
+    options: {
+      open: false,
+      startPath: '/',
+      port: 666,
+      server: {
+        index: "index.html",
+        directory: true,
+        baseDir: 'dist/frontend'
+      }
+    }
+  }
+};
+
 function lazyRequireTask(taskName, path, options) {
   options = options || {};
   options.taskName = taskName;
@@ -70,7 +85,11 @@ gulp.task('watch', function () {
 });
 
 
+gulp.task('server', function () {
+  var server = __.server.run('dev', servers.dev);
 
+  server.watch('dist/frontend/**/*.*').on('change', server.reload);
+});
 
 
 

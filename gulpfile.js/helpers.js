@@ -383,96 +383,100 @@ __.pathResolver = function (paths) {
 
 
 var bsInstances = {};
+__.server = {
+  get: function (instanceName) {
+    return bsInstances[instanceName] || null;
+  },
 
-/**
- * @param {string} instanceName
- * @param {{}} [config]
- * @returns {*}
- */
-__.runServer = function (instanceName, config) {
-  if (!instanceName) {
-    throw new Error('[runServer] `instanceName` is required');
-  }
+  /**
+   * @param {string} instanceName
+   * @param {{}} [config]
+   * @returns {*}
+   */
+  run: function (instanceName, config) {
+    if (!instanceName) {
+      throw new Error('[runServer] `instanceName` is required');
+    }
 
-  config = (_.isPlainObject(config)) ? config : {};
+    config = (_.isPlainObject(config)) ? config : {};
 
-  var bs;
-  try {
-    bs = browserSync.get(instanceName);
-  } catch (e) {
-    bs = browserSync.create(instanceName);
+    var bs;
+    try {
+      bs = browserSync.get(instanceName);
+    } catch (e) {
+      bs = browserSync.create(instanceName);
 
-    bsInstances[instanceName] = {
-      inited: false,
-      pending: false,
-      instance: bs
-    };
+      bsInstances[instanceName] = {
+        name:     instanceName,
+        inited:   false,
+        pending:  false,
+        instance: bs
+      };
 
-    bs.emitter.on('init', (function (instanceName) {
-      return function () {
-        bsInstances[instanceName].inited = true;
-        bsInstances[instanceName].pending = false;
-      }
-    })(instanceName));
-  }
+      bs.emitter.on('init', (function (instanceName) {
+        return function () {
+          bsInstances[instanceName].inited = true;
+          bsInstances[instanceName].pending = false;
+        }
+      })(instanceName));
+    }
 
-  if (bs.paused) {
-    bs.resume();
-  } else
-  if (!bs.active && !bsInstances[instanceName].pending) {
-    bsInstances[instanceName].pending = true;
-    bs.init(config);
-  }
+    if (bs.paused) {
+      bs.resume();
+    } else
+    if (!bs.active && !bsInstances[instanceName].pending) {
+      bsInstances[instanceName].pending = true;
+      bs.init(config);
+    }
 
-  return bs;
-};
+    return bs;
+  },
 
-/**
- *
- * @param {string} instanceName
- * @param {Stream} [stream]
- * @param {{}} [options]
- * @returns {*}
- */
-__.reloadServer = function (instanceName, stream, options) {
-  if (!instanceName) {
-    throw new Error('[reloadServer] `instanceName` is required');
-  }
+  /**
+   *
+   * @param {string} instanceName
+   * @param {Stream} [stream]
+   * @param {{}} [options]
+   * @returns {*}
+   */
+  reload: function (instanceName, stream, options) {
+    if (!instanceName) {
+      throw new Error('[reloadServer] `instanceName` is required');
+    }
 
-  var instance = __.runServer(instanceName);
-  if (!instance) {
-    throw new Error('[reloadServer] Try to reload not existing `instanceName`');
-  }
+    var instance = __.server.run(instanceName);
+    if (!instance) {
+      throw new Error('[reloadServer] Try to reload not existing `instanceName`');
+    }
 
-  var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
+    var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
 
-  switch (args.length) {
-    case 1:
-      stream = null;
-      options = {};
-      break;
-    case 2:
-      if ($.util.isStream(args[1])) {
-        options = {};
-      } else if (_.isPlainObject(args[1])) {
+    switch (args.length) {
+      case 1:
         stream = null;
-        options = args[1];
-      }
-      break;
-    default:
-      stream = $.util.isStream(stream) ? stream : null;
-      options = (_.isPlainObject(options)) ? options : {};
+        options = {};
+        break;
+      case 2:
+        if ($.util.isStream(args[1])) {
+          options = {};
+        } else if (_.isPlainObject(args[1])) {
+          stream = null;
+          options = args[1];
+        }
+        break;
+      default:
+        stream = $.util.isStream(stream) ? stream : null;
+        options = (_.isPlainObject(options)) ? options : {};
+    }
+
+    if (stream) {
+      stream.pipe(instance.stream(options));
+    } else {
+      instance.reload(options);
+    }
+
+    return instance;
   }
-
-
-  if (stream) {
-    stream.pipe(instance.stream(options));
-  } else {
-    instance.reload(options);
-  }
-
-  return instance;
 };
-
 
 module.exports = __;
