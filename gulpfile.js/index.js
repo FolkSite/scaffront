@@ -69,18 +69,16 @@ gulp.task('build', gulp.series(
 ));
 
 gulp.task('watch:styles', function () {
-  gulp
-    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'))
-    //.on('change', function (filepath) {
-    //  console.log('on change. filepath', filepath);
-    //  console.log(path.resolve('dist/frontend/styles', filepath));
-    //})
-  ;
+  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
+});
+gulp.task('watch:root', function () {
+  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
 });
 
 
 gulp.task('watch', gulp.parallel(
-  'watch:styles'
+  'watch:styles',
+  'watch:root'
 ));
 
 gulp.task('server', function () {
