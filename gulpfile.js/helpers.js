@@ -374,4 +374,74 @@ __.pathResolver = function (paths) {
   });
 };
 
+
+var bsInstances = {};
+
+/**
+ * @param {string} instanceName
+ * @returns {*}
+ */
+__.runServer = function (instanceName) {
+  if (!instanceName || typeof config.servers[instanceName] == 'undefined') { return null; }
+
+  var options = (_.isPlainObject(config.servers[instanceName].options)) ? config.servers[instanceName].options : {};
+
+  var bs;
+  try {
+    bs = browserSync.get(instanceName);
+  } catch (e) {
+    bs = browserSync.create(instanceName);
+
+    bsInstances[instanceName] = {
+      inited: false,
+      pending: false,
+      instance: bs
+    };
+
+    bs.emitter.on('init', (function (instanceName) {
+      return function () {
+        bsInstances[instanceName].inited = true;
+        bsInstances[instanceName].pending = false;
+      }
+    })(instanceName));
+  }
+
+  if (bs.paused) {
+    bs.resume();
+  } else
+  if (!bs.active && !bsInstances[instanceName].pending) {
+
+    bsInstances[instanceName].pending = true;
+    bs.init(options);
+  }
+
+  return bs;
+};
+
+/**
+ *
+ * @param {string} instanceName
+ * @param {Stream} [stream]
+ * @param {{}} [options]
+ * @returns {*}
+ */
+__.reloadServer = function (instanceName, stream, options) {
+  if (!instanceName) { return; }
+
+  var server = __.runServer(instanceName);
+
+  if (!server) { return; }
+
+  options = (_.isPlainObject(options)) ? options : {};
+
+  if (typeof stream != 'undefined' && gulpUtil.isStream(stream)) {
+    stream.pipe(server.stream(options));
+  } else {
+    server.reload(options);
+  }
+
+  return server;
+};
+
+
 module.exports = __;
