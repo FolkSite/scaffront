@@ -94,7 +94,13 @@ gulp.task('server', function () {
   server.watch('dist/frontend/**/*.*').on('change', server.reload);
 });
 
-//gulp.task('dev', gulp.series('build', gulp.parallel('watch', 'server')));
+//gulp.task('dev', gulp.series(
+//  'build',
+//  gulp.parallel(
+//    'watch',
+//    'server'
+//  )
+//));
 
 
 
