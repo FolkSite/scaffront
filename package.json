@@ -114,6 +114,7 @@
     "require-dir": "^0.3.0",
     "resolve": "^1.1.6",
     "run-sequence": "*",
+    "stream-combiner2": "^1.1.1",
     "swig": "^1.4.2",
     "swigify": "0.0.3",
     "vinyl-buffer": "^1.0.0",

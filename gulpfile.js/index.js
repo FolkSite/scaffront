@@ -7,15 +7,18 @@ const path = require('path');
 
 const servers = {
   dev: {
-    options: {
-      open: false,
-      startPath: '/',
-      port: 666,
-      server: {
-        index: "index.html",
-        directory: true,
-        baseDir: 'dist/frontend'
-      }
+    ui: false,
+    open: false,
+    //reloadDelay: 1000,
+    //reloadDebounce: 1000,
+    ghostMode: false,
+
+    startPath: '/',
+    port: 1313,
+    server: {
+      index: 'index.html',
+      directory: true,
+      baseDir: 'dist/frontend'
     }
   }
 };
@@ -91,7 +94,7 @@ gulp.task('server', function () {
   server.watch('dist/frontend/**/*.*').on('change', server.reload);
 });
 
-
+//gulp.task('dev', gulp.series('build', gulp.parallel('watch', 'server')));
 
 
 
