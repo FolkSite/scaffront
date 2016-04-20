@@ -385,7 +385,7 @@ __.pathResolver = function (paths) {
 var bsInstances = {};
 __.server = {
   get: function (instanceName) {
-    return bsInstances[instanceName] || null;
+    return bsInstances[instanceName] && bsInstances[instanceName].instance || null;
   },
 
   /**

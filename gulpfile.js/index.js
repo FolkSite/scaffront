@@ -17,24 +17,6 @@ function lazyRequireTask(path) {
 
 const config = require('./config');
 
-const servers = {
-  dev: {
-    ui: false,
-    open: false,
-    //reloadDelay: 1000,
-    //reloadDebounce: 1000,
-    ghostMode: false,
-
-    startPath: '/',
-    port: 1313,
-    server: {
-      index: 'index.html',
-      directory: true,
-      baseDir: 'dist/frontend'
-    }
-  }
-};
-
 //if (!config.flags.isDev) {
 //  require('trace');
 //  require('clarify');
@@ -86,31 +68,32 @@ gulp.task('build', gulp.series(
   gulp.parallel('root-copy', 'styles:css')
 ));
 
-gulp.task('watch', function () {
+gulp.task('watch:styles', function () {
   gulp
     .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'))
-    .on('unlink', function (filepath) {
-      console.log('filepath', filepath);
-      console.log('$.cached.caches.css', $.cached.caches.css);
-      $.remember.forget('css', path.resolve(filepath));
-      if ($.cached.caches.css) {
-        delete $.cached.caches.css[path.resolve(filepath)];
-      }
-    });
+    //.on('change', function (filepath) {
+    //  console.log('on change. filepath', filepath);
+    //  console.log(path.resolve('dist/frontend/styles', filepath));
+    //})
+  ;
 });
 
 
-gulp.task('server', function () {
-  var server = __.server.run('dev', servers.dev);
+gulp.task('watch', gulp.parallel(
+  'watch:styles'
+));
 
+gulp.task('server', function () {
+  var server = __.server.run('dev', config.servers.dev);
   server.watch('dist/frontend/**/*.*').on('change', server.reload);
 });
 
 gulp.task('dev', gulp.series(
   'build',
+  //'server',
   gulp.parallel(
-    'watch',
-    'server'
+    'server',
+    'watch'
   )
 ));
 

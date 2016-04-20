@@ -9,6 +9,23 @@ let flags = {
   debug: process.env.DEBUG == 'true'
 };
 
+let servers = {
+  dev: {
+    ui: false,
+    open: false,
+    //reloadDelay: 1000,
+    //reloadDebounce: 1000,
+    ghostMode: false,
+
+    startPath: '/',
+    port: 1313,
+    server: {
+      index: 'index.html',
+      directory: true,
+      baseDir: 'dist/frontend'
+    }
+  }
+};
 
 var paths = {
   //js : {
@@ -52,4 +69,4 @@ var paths = {
   //},
 };
 
-module.exports = {flags, paths};
+module.exports = {flags, paths, servers};
