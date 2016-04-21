@@ -383,7 +383,7 @@ __.server = {
    */
   run: function server$run (instanceName, config) {
     if (!instanceName) {
-      throw new Error('[runServer] `instanceName` is required');
+      console.warn('[runServer] `instanceName` is required');
     }
 
     config = (_.isPlainObject(config)) ? config : {};
@@ -429,12 +429,12 @@ __.server = {
    */
   reload: function server$reload (instanceName, stream, options) {
     if (!instanceName) {
-      throw new Error('[reloadServer] `instanceName` is required');
+      console.warn('[reloadServer] `instanceName` is required');
     }
 
     var instance = __.server.run(instanceName);
     if (!instance) {
-      throw new Error('[reloadServer] Try to reload not existing `instanceName`');
+      console.warn('[reloadServer] Try to reload not existing `instanceName`');
     }
 
     var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
@@ -447,14 +447,14 @@ __.server = {
       case 2:
         if ($.util.isStream(args[1])) {
           options = {};
-        } else if (_.isPlainObject(args[1])) {
+        } else if (!_.isUndefined(args[1])) {
           stream = null;
           options = args[1];
         }
         break;
       default:
         stream = $.util.isStream(stream) ? stream : null;
-        options = (_.isPlainObject(options)) ? options : {};
+        options = (!_.isUndefined(options)) ? options : {};
     }
 
     if (stream) {

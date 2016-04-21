@@ -73,7 +73,11 @@ const config = require('./config');
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('dev', config.servers.dev);
-  server.watch('dist/frontend/**/*.*').on('change', server.reload);
+  server.watch('dist/frontend/**/*.*')
+    .on('add', server.reload)
+    .on('change', server.reload)
+    .on('unlink', server.reload)
+  ;
 });
 /** ========== //SERVER ========== **/
 
@@ -134,19 +138,19 @@ gulp.task('root-files:clean', noopTask);
 /** ========== STYLES ========== **/
 //- Simple CSS styles -//
 
-var optionsCSS = {
-  src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
-  dist: 'dist/frontend/css'
-};
-
 gulp.task('styles:css:build', function () {
+  var options = {
+    src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
+    dist: 'dist/frontend/css'
+  };
+
   /*
      Описание $.remember, $.cached здесь:
      https://youtu.be/uYZPNrT-e-8?t=240
    */
 
   return combiner(
-    gulp.src(optionsCSS.src, {
+    gulp.src(options.src, {
       //since: gulp.lastRun(options.taskName)
     }),
     // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
@@ -166,7 +170,7 @@ gulp.task('styles:css:build', function () {
 
     $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
 
-    gulp.dest(optionsCSS.dist)
+    gulp.dest(options.dist)
   ).on('error', $.notify.onError(err => ({
     title: 'CSS styles',
     message: err.message
@@ -174,29 +178,27 @@ gulp.task('styles:css:build', function () {
 });
 
 gulp.task('styles:css:watch', function () {
+  var options = {
+    basePath: 'app/frontend/styles',
+    targetPath: 'dist/frontend/css'
+  };
+
   gulp
-    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css:build'))
+    .watch(__.getGlob(options.basePath, '*.css', true), gulp.series('styles:css:build'))
     .on('unlink', function (filepath) {
       var file = path.resolve(filepath);
       if ($.cached.caches['css']) {
         delete $.cached.caches['css'][file];
       }
 
-      var targetFile = resolveTargetFile(filepath, 'app/frontend/styles', 'dist/frontend/css');
+      var targetFile = resolveTargetFile(filepath, options.basePath, options.targetPath);
 
       if (__.isFile(targetFile)) {
-        targetFile = path.join(process.cwd(), targetFile);
-        console.log('targetFile', targetFile);
-        del.sync(targetFile);
-
-        var server = __.server.get('dev');
-        server && server.reload();
+        del.sync(path.join(process.cwd(), targetFile));
       }
-
-      //console.log('filepath', filepath);
-      //console.log('targetFile', targetFile);
     })
   ;
+
 });
 //- //Simple CSS styles -//
 
@@ -258,7 +260,6 @@ gulp.task('clean', lazyRequireTask('./tasks/cleaner', {
 }));
 
 gulp.task('build', gulp.series(
-  'clean',
   gulp.parallel('root-files:build', 'styles:build')
 ));
 
@@ -270,6 +271,7 @@ gulp.task('watch', gulp.parallel(
 ));
 
 gulp.task('dev', gulp.series(
+  'clean',
   'build',
   //'server',
   gulp.parallel(
