@@ -93,7 +93,8 @@ export function getPositions () {
     .map(position => _.trim(position))
     .compact()
     .map(position => new Position(position))
-    .value();
+    .value()
+  ;
 
   var positions = {
     vertical: null,
