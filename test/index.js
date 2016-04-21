@@ -1,68 +1,107 @@
+'use strict';
+
 const path = require('path');
-const _ = require('../gulpfile.js/helpers.js');
+const _ = require('lodash');
+const slice = require('sliced');
 
-var filePath = 'app/frontend/styles/dir/entry.css';
+var verticalTokens = 'top bottom outer-top outer-bottom'.split(' ');
+var horizontalTokens = 'left right outer-left outer-right'.split(' ');
+var centerTokens = 'center'.split(' ');
 
-var baseDir = 'app/frontend/styles';
-var targetDir = 'dist/frontend/css';
+/**
+ * @param {string} value
+ * @returns {Position}
+ * @constructor
+ */
+var Position = function Position (value) {
+  if (!(this instanceof Position)) {
+    return new Position(value);
+  }
 
-var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir) {
-  'use strict';
+  this.value = value;
+  this._isVertical = void 0;
+  this._isHorizontal = void 0;
+  this._isCenter = void 0;
+  this._isNothing = void 0;
 
-  filePath  = _.preparePath(filePath, {startSlash: true, trailingSlash: false});
-  baseDir   = _.preparePath(baseDir, {startSlash: true, trailingSlash: true});
-  targetDir = _.preparePath(targetDir, {startSlash: true, trailingSlash: true});
-
-  var parsedFilePath        = _.parsePath(filePath);
-  var fileName              = parsedFilePath.base;
-  var fileDirWithoutBaseDir = path.relative(baseDir, parsedFilePath.dir);
-  var targetFile            = path.join(targetDir, fileDirWithoutBaseDir, fileName);
-
-  console.log('targetFile', targetFile);
-
-  return targetFile;
+  this.isVertical();
+  this.isHorizontal();
+  this.isCenter();
+  this.isNothing();
 };
 
-resolveTargetFile(filePath, baseDir, targetDir);
+Position.prototype.isVertical = function Position$isVertical () {
+  if (_.isUndefined(this._isVertical)) {
+    this._isVertical = !!~verticalTokens.indexOf(this.value)
+  }
 
-return;
+  return this._isVertical;
+};
 
+Position.prototype.isHorizontal = function Position$isHorizontal () {
+  if (_.isUndefined(this._isHorizontal)) {
+    this._isHorizontal = !!~horizontalTokens.indexOf(this.value)
+  }
 
-var p1 = 'app/frontend/styles/dir/entry.css';
-var p2 = 'app/frontend/styles';
-var p3 = 'dist/frontend/css';
+  return this._isHorizontal;
+};
 
-var prepared1 = _.preparePath(p1, {startSlash: true});
-var prepared2 = _.preparePath(p2, {startSlash: true});
-var prepared3 = _.preparePath(p3, {startSlash: true});
+Position.prototype.isCenter = function Position$isCenter () {
+  if (_.isUndefined(this._isCenter)) {
+    this._isCenter = this.value == 'center';
+  }
 
-var parsed1 = _.parsePath(prepared1);
-var parsed2 = _.parsePath(prepared2);
+  return this._isCenter;
+};
 
-console.log('prepared1', prepared1);
-console.log('prepared2', prepared2);
+Position.prototype.isNothing = function Position$isNothing () {
+  if (_.isUndefined(this._isNothing)) {
+    this._isNothing = !this.isCenter() && !this.isHorizontal() && !this.isVertical();
+  }
 
-console.log('parsed1', parsed1.dir);
-console.log('parsed2', parsed2.dir);
-
-console.log('');
-
-console.log(path.resolve(parsed1.dir, parsed2.dir));
-console.log(path.resolve(parsed2.dir, parsed1.dir));
-
-console.log('');
-
-console.log(path.relative(parsed1.dir, parsed2.dir));
-console.log(path.relative(parsed2.dir, parsed1.dir));
-
-console.log('');
-
-var result = path.join(prepared3, path.relative(parsed2.dir, parsed1.dir));
-var resultPrepared = _.preparePath(result, {startSlash: false, trailingSlash: false});
-
-var targetFile = path.join(process.cwd(), resultPrepared, parsed1.base);
-
-console.log('result:', targetFile);
+  return this._isNothing;
+};
 
 
-//console.log(path.relative(p1, '/app/frontend/css'));
+var getPositions = function getPositions () {
+  var args = slice(arguments);
+
+  args = _(args)
+    .flattenDeep()
+    .map(position => position.split(' '))
+    .flatten()
+    .map(position => _.trim(position))
+    .compact()
+    .map(position => new Position(position))
+    .value();
+
+  var positions = {
+    vertical: null,
+    horizontal: null
+  };
+
+  console.log(args);
+
+  switch (args.length) {
+    case 0:
+
+      break;
+    case 1:
+
+      break;
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    default:
+      args = slice(args, 0, 4);
+
+
+      break;
+  }
+
+};
+
+getPositions('top  right ', ['center'], [['outer-right '], 'outer-left']);
