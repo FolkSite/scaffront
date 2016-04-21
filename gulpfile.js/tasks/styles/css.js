@@ -4,12 +4,6 @@ const gulp = require('gulp');
 const combiner = require('stream-combiner2').obj;
 const config = require('../../config');
 
-/*
-  Описание $.remember, $.cached здесь:
-  https://youtu.be/uYZPNrT-e-8?t=240
-*/
-
-
 module.exports = function(options) {
   return function() {
     return combiner(
@@ -39,3 +33,4 @@ module.exports = function(options) {
     })));
   };
 };
+

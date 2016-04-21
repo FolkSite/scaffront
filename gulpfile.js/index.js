@@ -1,14 +1,41 @@
 'use strict';
 
-const __   = require('./helpers');
-const $    = require('gulp-load-plugins')();
-const gulp = require('gulp');
-const path = require('path');
+const __       = require('./helpers');
+const $        = require('gulp-load-plugins')();
+const gulp     = require('gulp');
+const del      = require('del');
+const path     = require('path');
+const slice    = require('sliced');
+const combiner = require('stream-combiner2').obj;
 
-function lazyRequireTask(path) {
-  var args = [].slice.call(arguments, 1);
+var noopTask = function noopTask (cb) { cb() };
+
+/**
+ * @param {string} path
+ * @param {*} [taskType]
+ * @returns {Function}
+ */
+function lazyRequireTask(path, taskType) {
+  var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
+  var _taskType = null;
+
+  if (typeof args[1] == 'string') {
+    _taskType = args[1];
+    args = slice(args, 1);
+  }
+
   return function(callback) {
-    var task = require(path).apply(this, args);
+    var task;
+    var required = require(path);
+
+    if (_taskType && typeof required[_taskType] == 'function') {
+      task = required[_taskType].apply(this, args);
+    } else
+    if (typeof required == 'function') {
+      task = required.apply(this, args);
+    } else {
+      task = noopTask;
+    }
 
     return task(callback);
   };
@@ -22,26 +49,132 @@ const config = require('./config');
 //  require('clarify');
 //}
 
+//- Root files -//
+gulp.task('root-files:build', function () {
+  var options = {
+    src: __.getGlob('app/frontend/root', '*.*', true),
+    dist: 'dist/frontend'
+  };
 
+  return combiner(
+    gulp.src(options.src, {
+      // При повторном запуске таска (например, через watch) выбирает только те файлы,
+      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
+      //since: gulp.lastRun(options.taskName)
+    }),
+    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по названию файла и содержимому)
+    // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью читать файл.
+    // Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+    $.cached('root-files'),
 
-const ROOT_COPY_SRC = __.getGlob('app/frontend/root', '*.*', true);
-const ROOT_COPY_DIST = 'dist/frontend';
-gulp.task('root-files', lazyRequireTask('./tasks/root-files', {
-  taskName: 'root-files',
-  src: ROOT_COPY_SRC,
-  dist: ROOT_COPY_DIST
+    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
+    // если в целевой директории такие файлы уже есть, то не пропускает их.
+    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
+    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
+    $.newer(options.dist),
+    $.if(config.flags.isDev, $.debug({title: 'Root file:'})),
+
+    gulp.dest(options.dist)
+  ).on('error', $.notify.onError(err => ({
+    title: 'Copy root files',
+    message: err.message
+  })));
+});
+
+gulp.task('root-files:watch', function () {
+  gulp
+    .watch(__.getGlob('app/frontend'), gulp.series('root-files'))
+    .on('unlink', function (filepath) {
+      var file = path.resolve(filepath);
+      if ($.cached.caches['root-files']) {
+        delete $.cached.caches['root-files'][file];
+      }
+    })
+  ;
+});
+
+gulp.task('root-files:clean', noopTask);
+//- /Root files -//
+
+/** ========== STYLES ========== **/
+//- Simple CSS styles -//
+gulp.task('styles:css:build', function () {
+  var options = {
+    src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
+    dist: 'dist/frontend/css'
+  };
+
+  /*
+     Описание $.remember, $.cached здесь:
+     https://youtu.be/uYZPNrT-e-8?t=240
+   */
+
+  return combiner(
+    gulp.src(options.src, {
+      //since: gulp.lastRun(options.taskName)
+    }),
+    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+    // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+    // $.cached('css'),
+
+    // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
+    // и потом, если в потоке они отсутствуют, добавляет их
+    // (это может произойти, если перед ним установлен since/$.newer - они пропускают только изменённые файлы, исключая
+    // из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember всё-равно будет
+    // его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember забыть об удалённых
+    // файлах. $.remember('css'),
+    $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
+
+    // инклюдим файлы
+    $.include(),
+
+    gulp.dest(options.dist)
+  ).on('error', $.notify.onError(err => ({
+    title: 'CSS styles',
+    message: err.message
+  })));
+});
+
+gulp.task('styles:css:watch', function () {
+  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
+});
+//- /Simple CSS styles -//
+
+//- SCSS styles -//
+
+//- /SCSS styles -//
+
+gulp.task('styles:watch', gulp.parallel(
+  'styles:css:watch'
+  //, 'styles:scss:watch'
+));
+
+gulp.task('styles:clean', function () {
+  return del(__.getGlob('dist/frontend/css', '*.css', true), {read: false});
+});
+
+gulp.task('styles:build', gulp.parallel('styles:css:build', /*'styles:scss:build',*/ function (cb) {
+
 }));
 
-gulp.task('styles:css', lazyRequireTask('./tasks/styles/css', {
-  taskName: 'styles:css',
-  src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
-  dist: 'dist/frontend/css'
+gulp.task('styles:dist', gulp.parallel('styles:build', /*'styles:scss:build',*/ function (cb) {
+
 }));
 
-gulp.task('styles:css:clean', lazyRequireTask('./tasks/cleaner', {
-  // удаляем все css-ки, которые были получены в таске 'styles:css', но из целевой директории
-  src: __.getGlob('dist/frontend/css', '*.css', true)
-}));
+/** ========== /STYLES ========== **/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //var imgSrc = 'src/img/**';
@@ -67,26 +200,11 @@ gulp.task('build', gulp.series(
   gulp.parallel('root-files', 'styles:css')
 ));
 
-gulp.task('watch:styles', function () {
-  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
-});
-gulp.task('watch:root-files', function () {
-  gulp
-    .watch(__.getGlob('app/frontend'), gulp.series('root-files'))
-    .on('unlink', function (filepath) {
-      var file = path.resolve(filepath);
-      if ($.cached.caches['root-files']) {
-        delete $.cached.caches['root-files'][file];
-      }
-    })
-  ;
-});
-
 
 
 gulp.task('watch', gulp.parallel(
-  'watch:styles',
-  'watch:root-files'
+  'styles:watch',
+  'root-files:watch'
 ));
 
 gulp.task('server', function () {

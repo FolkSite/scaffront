@@ -115,6 +115,7 @@
     "require-dir": "^0.3.0",
     "resolve": "^1.1.6",
     "run-sequence": "*",
+    "sliced": "^1.0.1",
     "stream-combiner2": "^1.1.1",
     "swig": "^1.4.2",
     "swigify": "0.0.3",
