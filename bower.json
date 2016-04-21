@@ -138,7 +138,8 @@
     "scrollmagic": "*",
     "mailcheck": "*",
     "gridster": "git://github.com/ducksboard/gridster.js.git",
-    "popper.js": "*"
+    "popper.js": "*",
+    "jquery.payment": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
