@@ -49,6 +49,12 @@ const config = require('./config');
 //  require('clarify');
 //}
 
+
+gulp.task('server', function () {
+  var server = __.server.run('dev', config.servers.dev);
+  server.watch('dist/frontend/**/*.*').on('change', server.reload);
+});
+
 //- Root files -//
 gulp.task('root-files:build', function () {
   var options = {
@@ -92,6 +98,13 @@ gulp.task('root-files:watch', function () {
     })
   ;
 });
+
+gulp.task('root-files:dist', gulp.series(
+  'root-files:build',
+  function (cb) {
+    cb();
+  }
+));
 
 gulp.task('root-files:clean', noopTask);
 //- /Root files -//
@@ -150,17 +163,20 @@ gulp.task('styles:watch', gulp.parallel(
   //, 'styles:scss:watch'
 ));
 
+gulp.task('styles:build', gulp.series(
+  gulp.parallel('styles:css:build'/*, 'styles:scss:build'*/),
+  function (cb) {
+    cb();
+  }
+));
+
+gulp.task('styles:dist', gulp.series('styles:build', /*'styles:scss:build',*/ function (cb) {
+  cb();
+}));
+
 gulp.task('styles:clean', function () {
   return del(__.getGlob('dist/frontend/css', '*.css', true), {read: false});
 });
-
-gulp.task('styles:build', gulp.parallel('styles:css:build', /*'styles:scss:build',*/ function (cb) {
-
-}));
-
-gulp.task('styles:dist', gulp.parallel('styles:build', /*'styles:scss:build',*/ function (cb) {
-
-}));
 
 /** ========== /STYLES ========== **/
 
@@ -197,7 +213,7 @@ gulp.task('clean', lazyRequireTask('./tasks/cleaner', {
 
 gulp.task('build', gulp.series(
   'clean',
-  gulp.parallel('root-files', 'styles:css')
+  gulp.parallel('root-files:build', 'styles:build')
 ));
 
 
@@ -206,11 +222,6 @@ gulp.task('watch', gulp.parallel(
   'styles:watch',
   'root-files:watch'
 ));
-
-gulp.task('server', function () {
-  var server = __.server.run('dev', config.servers.dev);
-  server.watch('dist/frontend/**/*.*').on('change', server.reload);
-});
 
 gulp.task('dev', gulp.series(
   'build',
