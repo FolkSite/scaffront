@@ -8,7 +8,6 @@ const path     = require('path');
 const slice    = require('sliced');
 const combiner = require('stream-combiner2').obj;
 
-var noopTask = function noopTask (cb) { cb() };
 
 /**
  * @param {string} path
@@ -41,6 +40,7 @@ function lazyRequireTask(path, taskType) {
   };
 }
 
+var noopTask = function noopTask (cb) { cb() };
 
 const config = require('./config');
 
@@ -49,13 +49,14 @@ const config = require('./config');
 //  require('clarify');
 //}
 
-
+/** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('dev', config.servers.dev);
   server.watch('dist/frontend/**/*.*').on('change', server.reload);
 });
+/** ========== //SERVER ========== **/
 
-//- Root files -//
+/** ========== ROOT FILES ========== **/
 gulp.task('root-files:build', function () {
   var options = {
     src: __.getGlob('app/frontend/root', '*.*', true),
@@ -89,7 +90,7 @@ gulp.task('root-files:build', function () {
 
 gulp.task('root-files:watch', function () {
   gulp
-    .watch(__.getGlob('app/frontend'), gulp.series('root-files'))
+    .watch(__.getGlob('app/frontend'), gulp.series('root-files:build'))
     .on('unlink', function (filepath) {
       var file = path.resolve(filepath);
       if ($.cached.caches['root-files']) {
@@ -107,7 +108,7 @@ gulp.task('root-files:dist', gulp.series(
 ));
 
 gulp.task('root-files:clean', noopTask);
-//- /Root files -//
+/** ========== //ROOT FILES ========== **/
 
 /** ========== STYLES ========== **/
 //- Simple CSS styles -//
@@ -150,13 +151,13 @@ gulp.task('styles:css:build', function () {
 });
 
 gulp.task('styles:css:watch', function () {
-  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css'));
+  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css:build'));
 });
-//- /Simple CSS styles -//
+//- //Simple CSS styles -//
 
 //- SCSS styles -//
 
-//- /SCSS styles -//
+//- //SCSS styles -//
 
 gulp.task('styles:watch', gulp.parallel(
   'styles:css:watch'
@@ -178,7 +179,7 @@ gulp.task('styles:clean', function () {
   return del(__.getGlob('dist/frontend/css', '*.css', true), {read: false});
 });
 
-/** ========== /STYLES ========== **/
+/** ========== //STYLES ========== **/
 
 
 
