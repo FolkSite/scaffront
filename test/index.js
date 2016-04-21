@@ -83,7 +83,7 @@ class Position {
   }
 }
 
-export function getPositions () {
+function getPositions () {
   var args = slice(arguments);
 
   args = _(args)
@@ -126,3 +126,6 @@ export function getPositions () {
 }
 
 getPositions('top  right ', ['center'], [['outer-right '], 'outer-left']);
+
+
+module.export = getPositions;
