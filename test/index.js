@@ -32,6 +32,13 @@ class Position {
   }
 
   /**
+   * @returns {string}
+   */
+  getValue () {
+    return this.value;
+  }
+
+  /**
    * @returns {boolean}
    */
   isVertical () {
@@ -76,7 +83,7 @@ class Position {
   }
 }
 
-export default function getPositions () {
+export function getPositions () {
   var args = slice(arguments);
 
   args = _(args)
