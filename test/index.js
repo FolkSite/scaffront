@@ -19,16 +19,10 @@ class Position {
       return new Position(value);
     }
 
-    this.value = value;
-    this._isVertical = void 0;
-    this._isHorizontal = void 0;
-    this._isCenter = void 0;
-    this._isNothing = void 0;
+    this.value = value.toLowerCase();
 
-    this.isVertical();
-    this.isHorizontal();
-    this.isCenter();
-    this.isNothing();
+    //this.isNothing();
+    //this.isOuter();
   }
 
   /**
@@ -38,26 +32,68 @@ class Position {
     return this.value;
   }
 
+  isOuter () {
+    if (_.isUndefined(this._isOuter)) {
+      let tmp = this.value.split('-');
+
+      this._isOuter = tmp[0] == 'outer' || (tmp[1] || '')  == 'outer';
+    }
+
+    return this._isOuter;
+  }
+
+  isTop () {
+    if (_.isUndefined(this._isTop)) {
+      let tmp = this.value.split('-');
+
+      this._isTop = tmp[0] == 'top' || (tmp[1] || '')  == 'top';
+    }
+
+    return this._isTop;
+  }
+
+  isRight () {
+    if (_.isUndefined(this._isRight)) {
+      let tmp = this.value.split('-');
+
+      this._isRight = tmp[0] == 'right' || (tmp[1] || '')  == 'right';
+    }
+
+    return this._isRight;
+  }
+
+  isBottom () {
+    if (_.isUndefined(this._isBottom)) {
+      let tmp = this.value.split('-');
+
+      this._isBottom = tmp[0] == 'bottom' || (tmp[1] || '') == 'bottom';
+    }
+
+    return this._isBottom;
+  }
+
+  isLeft () {
+    if (_.isUndefined(this._isLeft)) {
+      let tmp = this.value.split('-');
+
+      this._isLeft = tmp[0] == 'left' || (tmp[1] || '') == 'left';
+    }
+
+    return this._isLeft;
+  }
+
   /**
    * @returns {boolean}
    */
   isVertical () {
-    if (_.isUndefined(this._isVertical)) {
-      this._isVertical = !!~verticalTokens.indexOf(this.value)
-    }
-
-    return this._isVertical;
+    return this.isTop() || this.isBottom();
   }
 
   /**
    * @returns {boolean}
    */
   isHorizontal () {
-    if (_.isUndefined(this._isHorizontal)) {
-      this._isHorizontal = !!~horizontalTokens.indexOf(this.value)
-    }
-
-    return this._isHorizontal;
+    return this.isLeft() || this.isRight();
   }
 
   /**
@@ -65,7 +101,7 @@ class Position {
    */
   isCenter () {
     if (_.isUndefined(this._isCenter)) {
-      this._isCenter = !!~centerTokens.indexOf(this.value);
+      this._isCenter = this.value == 'center';
     }
 
     return this._isCenter;
@@ -125,7 +161,7 @@ function getPositions () {
 
 }
 
-getPositions('top  right ', ['center'], [['outer-right '], 'outer-left']);
+getPositions('top  Riwght ', ['center'], [['outer-right '], 'outer-left']);
 
 
 module.export = getPositions;
