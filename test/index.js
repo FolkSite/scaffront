@@ -13,54 +13,89 @@ var centerTokens = 'center'.split(' ');
  * @returns {Position}
  * @constructor
  */
-var Position = function Position (value) {
-  if (!(this instanceof Position)) {
-    return new Position(value);
+class Position {
+  constructor (value) {
+    if (!(this instanceof Position)) {
+      return new Position(value);
+    }
+
+    this.value = value;
+    this._isVertical = void 0;
+    this._isHorizontal = void 0;
+    this._isCenter = void 0;
+    this._isNothing = void 0;
+
+    this.isVertical();
+    this.isHorizontal();
+    this.isCenter();
+    this.isNothing();
   }
 
-  this.value = value;
-  this._isVertical = void 0;
-  this._isHorizontal = void 0;
-  this._isCenter = void 0;
-  this._isNothing = void 0;
+  isVertical () {
+    if (_.isUndefined(this._isVertical)) {
+      this._isVertical = !!~verticalTokens.indexOf(this.value)
+    }
 
-  this.isVertical();
-  this.isHorizontal();
-  this.isCenter();
-  this.isNothing();
-};
-
-Position.prototype.isVertical = function Position$isVertical () {
-  if (_.isUndefined(this._isVertical)) {
-    this._isVertical = !!~verticalTokens.indexOf(this.value)
+    return this._isVertical;
   }
 
-  return this._isVertical;
-};
+  isHorizontal () {
+    if (_.isUndefined(this._isHorizontal)) {
+      this._isHorizontal = !!~horizontalTokens.indexOf(this.value)
+    }
 
-Position.prototype.isHorizontal = function Position$isHorizontal () {
-  if (_.isUndefined(this._isHorizontal)) {
-    this._isHorizontal = !!~horizontalTokens.indexOf(this.value)
+    return this._isHorizontal;
   }
 
-  return this._isHorizontal;
-};
+  isCenter () {
+    if (_.isUndefined(this._isCenter)) {
+      this._isCenter = !!~centerTokens.indexOf(this.value);
+    }
 
-Position.prototype.isCenter = function Position$isCenter () {
-  if (_.isUndefined(this._isCenter)) {
-    this._isCenter = this.value == 'center';
+    return this._isCenter;
   }
 
-  return this._isCenter;
-};
+  isNothing () {
+    if (_.isUndefined(this._isNothing)) {
+      this._isNothing = !this.isCenter() && !this.isHorizontal() && !this.isVertical();
+    }
 
-Position.prototype.isNothing = function Position$isNothing () {
-  if (_.isUndefined(this._isNothing)) {
-    this._isNothing = !this.isCenter() && !this.isHorizontal() && !this.isVertical();
+    return this._isNothing;
   }
+}
 
-  return this._isNothing;
-};
+
+//Position.prototype.isVertical = function Position$isVertical () {
+//  if (_.isUndefined(this._isVertical)) {
+//    this._isVertical = !!~verticalTokens.indexOf(this.value)
+//  }
+//
+//  return this._isVertical;
+//};
+//
+//Position.prototype.isHorizontal = function Position$isHorizontal () {
+//  if (_.isUndefined(this._isHorizontal)) {
+//    this._isHorizontal = !!~horizontalTokens.indexOf(this.value)
+//  }
+//
+//  return this._isHorizontal;
+//};
+//
+//Position.prototype.isCenter = function Position$isCenter () {
+//  if (_.isUndefined(this._isCenter)) {
+//    this._isCenter = !!~centerTokens.indexOf(this.value);
+//  }
+//
+//  return this._isCenter;
+//};
+//
+//Position.prototype.isNothing = function Position$isNothing () {
+//  if (_.isUndefined(this._isNothing)) {
+//    this._isNothing = !this.isCenter() && !this.isHorizontal() && !this.isVertical();
+//  }
+//
+//  return this._isNothing;
+//};
 
 
 var getPositions = function getPositions () {
