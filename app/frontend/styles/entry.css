@@ -2,5 +2,11 @@
     font-size: 1313px;
 }
 
+p {
+    font-size: 16px;
+    color: #2524f0;
+}
+
+
 /*=require _include.css */
 /*=require dir/_include2.css */

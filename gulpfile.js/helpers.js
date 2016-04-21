@@ -20,7 +20,7 @@ __.bower = {
  * @param {string} [directory]
  * @returns String
  */
-__.getPackagePath = function (directory) {
+__.getPackagePath = function getPackagePath (directory) {
   return path.join('node_modules', directory || '');
 };
 
@@ -28,7 +28,7 @@ __.getPackagePath = function (directory) {
  * @param {string} [directory]
  * @returns String
  */
-__.getBowerPath = function (directory) {
+__.getBowerPath = function getBowerPath (directory) {
   return path.join(__.bower.pathRelative, directory || '');
 };
 
@@ -37,7 +37,7 @@ __.getBowerPath = function (directory) {
  * @param {String} [to]
  * @returns {string}
  */
-__.getRelativePath = function (from, to) {
+__.getRelativePath = function getRelativePath (from, to) {
   var result = '';
   from = from || null;
   to = to || null;
@@ -59,7 +59,7 @@ __.getRelativePath = function (from, to) {
  * @param {String} pathname
  * @returns {Boolean}
  */
-__.hasTrailingSlash = function (pathname) {
+__.hasTrailingSlash = function hasTrailingSlash (pathname) {
   pathname = pathname.toString() || '';
   if (!pathname) { return false; }
 
@@ -71,7 +71,7 @@ __.hasTrailingSlash = function (pathname) {
  * @param {String} pathname
  * @returns {boolean}
  */
-__.isFile = function (pathname) {
+__.isFile = function isFile (pathname) {
   pathname = pathname.toString() || '';
   if (!pathname) { return false; }
 
@@ -80,28 +80,16 @@ __.isFile = function (pathname) {
 
 /**
  * @param {String} pathname
- * @param {{startSlash: Boolean, trailingSlash: Boolean}} [config]
- * @param {...} [toJoin]
+ * @param {{}} config
+ * @param {Boolean} [config.startSlash]
+ * @param {Boolean} [config.trailingSlash]
+ * @param {string[]} [toJoin]
  */
-__.preparePath = function (pathname, config, toJoin) {
-  var args = _.toArray(arguments);
-
-  if (_.isPlainObject(args[0])) {
-    config = args[0];
-    pathname = args[1];
-    toJoin = args.slice(2);
-  } else if (_.isString(args[0])) {
-    config = {};
-    pathname = args[0];
-    toJoin = args.slice(1);
-  } else {
-    config = {};
-    pathname = null;
-    toJoin = [];
-  }
-
+__.preparePath = function preparePath (pathname, config, toJoin) {
   if (!pathname) { return ''; }
 
+  config = _.isPlainObject(config) ? config : {};
+  toJoin = (_.isArray(toJoin)) ? toJoin : [];
   pathname = path.join.apply(null, [pathname].concat(toJoin));
 
   if (typeof config.startSlash != 'undefined') {
@@ -140,7 +128,7 @@ __.preparePath = function (pathname, config, toJoin) {
  * @returns {{root: string, dir: string, base: string, ext: string, name: string, isOnlyFile: boolean, isOnlyPath:
  *   boolean, isPathToFile: boolean}|string}
  */
-__.parsePath = function (pathname, format) {
+__.parsePath = function parsePath (pathname, format) {
   format = !!format;
   var isFile = __.isFile(pathname);
   var parsed = path.parse(pathname);
@@ -166,7 +154,7 @@ __.parsePath = function (pathname, format) {
  * @param content
  * @returns {String}
  */
-__.md5 = function (content) {
+__.md5 = function md5 (content) {
   return crypto.createHash('md5').update(content).digest('hex');
 };
 
@@ -175,7 +163,7 @@ __.md5 = function (content) {
  * @returns {{css: boolean, scss: boolean, sass: boolean, js: boolean, minified: boolean, underscored: boolean}}
  * @constructor
  */
-__.Is = function (file) {
+__.Is = function Is (file) {
   var pathname = '';
   if (_.isString(file)) {
     pathname = file;
@@ -200,7 +188,7 @@ __.Is = function (file) {
  * @param {string} pathname
  * @returns {string}
  */
-__.filePathWithoutExt = function (pathname) {
+__.filePathWithoutExt = function filePathWithoutExt (pathname) {
   return path.basename(pathname, path.extname(pathname))
 };
 
@@ -208,7 +196,7 @@ __.filePathWithoutExt = function (pathname) {
  * @param {Function} getFile
  * @returns {Function}
  */
-__.getDataForTpl = function (getFile) {
+__.getDataForTpl = function getDataForTpl (getFile) {
 
   return function (file) {
     var dataFile = false;
@@ -237,7 +225,7 @@ __.getDataForTpl = function (getFile) {
  *   added/removed suffix '/**'
  * @returns {[]}
  */
-__.getGlob = function (pathnames, globs, forceDeep) {
+__.getGlob = function getGlob (pathnames, globs, forceDeep) {
   var result = [];
   pathnames = __.getArray(pathnames || null);
   globs = __.getArray(globs || null);
@@ -279,7 +267,7 @@ __.getGlob = function (pathnames, globs, forceDeep) {
     var isPathExcluded = (pathname.indexOf('!') === 0);
 
     if (_.isBoolean(forceDeep)) {
-      pathname = __.preparePath({trailingSlash: false}, pathname);
+      pathname = __.preparePath(pathname, {trailingSlash: false});
       var pathIsDeep = /\*\*$/.test(pathname);
 
       if (forceDeep && !pathIsDeep) {
@@ -314,7 +302,7 @@ __.getGlob = function (pathnames, globs, forceDeep) {
  * @param {*} obj
  * @returns {string}
  */
-__.stringify = function (obj) {
+__.stringify = function stringify (obj) {
   var prop, string = [];
 
   if (typeof obj == 'undefined') {
@@ -354,7 +342,7 @@ __.stringify = function (obj) {
 /**
  * @param {*} anything
  */
-__.getArray = function (anything) {
+__.getArray = function getArray (anything) {
   if (!_.isUndefined(anything)) {
     return (_.isArray(anything)) ? anything : [anything];
   }
@@ -365,7 +353,7 @@ __.getArray = function (anything) {
 /**
  * @param {(...string|...string[])} paths
  */
-__.pathResolver = function (paths) {
+__.pathResolver = function pathResolver (paths) {
   var tmp = _.compact(_.flatten(_.toArray(arguments)));
 
   tmp = _.map(tmp, function (pathname, index) {
@@ -384,7 +372,7 @@ __.pathResolver = function (paths) {
 
 var bsInstances = {};
 __.server = {
-  get: function (instanceName) {
+  get: function server$get (instanceName) {
     return bsInstances[instanceName] && bsInstances[instanceName].instance || null;
   },
 
@@ -393,7 +381,7 @@ __.server = {
    * @param {{}} [config]
    * @returns {*}
    */
-  run: function (instanceName, config) {
+  run: function server$run (instanceName, config) {
     if (!instanceName) {
       throw new Error('[runServer] `instanceName` is required');
     }
@@ -439,7 +427,7 @@ __.server = {
    * @param {{}} [options]
    * @returns {*}
    */
-  reload: function (instanceName, stream, options) {
+  reload: function server$reload (instanceName, stream, options) {
     if (!instanceName) {
       throw new Error('[reloadServer] `instanceName` is required');
     }

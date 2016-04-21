@@ -42,6 +42,27 @@ function lazyRequireTask(path, taskType) {
 
 var noopTask = function noopTask (cb) { cb() };
 
+/**
+ * @param {string} filePath
+ * @param {string} baseDir
+ * @param {string} targetDir
+ * @returns {string}
+ */
+var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir) {
+  'use strict';
+
+  filePath  = __.preparePath(filePath, {startSlash: true, trailingSlash: false});
+  baseDir   = __.preparePath(baseDir, {startSlash: true, trailingSlash: true});
+  targetDir = __.preparePath(targetDir, {startSlash: true, trailingSlash: true});
+
+  var parsedFilePath        = __.parsePath(filePath);
+  var fileName              = parsedFilePath.base;
+  var fileDirWithoutBaseDir = path.relative(baseDir, parsedFilePath.dir);
+  var targetFile            = path.join(targetDir, fileDirWithoutBaseDir, fileName);
+
+  return targetFile;
+};
+
 const config = require('./config');
 
 //if (!config.flags.isDev) {
@@ -69,9 +90,9 @@ gulp.task('root-files:build', function () {
       // которые изменились с заданной даты (сравнивает по дате модификации mtime)
       //since: gulp.lastRun(options.taskName)
     }),
-    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по названию файла и содержимому)
-    // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью читать файл.
-    // Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
     $.cached('root-files'),
 
     // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
@@ -112,38 +133,40 @@ gulp.task('root-files:clean', noopTask);
 
 /** ========== STYLES ========== **/
 //- Simple CSS styles -//
-gulp.task('styles:css:build', function () {
-  var options = {
-    src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
-    dist: 'dist/frontend/css'
-  };
 
+var optionsCSS = {
+  src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
+  dist: 'dist/frontend/css'
+};
+
+gulp.task('styles:css:build', function () {
   /*
      Описание $.remember, $.cached здесь:
      https://youtu.be/uYZPNrT-e-8?t=240
    */
 
   return combiner(
-    gulp.src(options.src, {
+    gulp.src(optionsCSS.src, {
       //since: gulp.lastRun(options.taskName)
     }),
-    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-    // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    // $.cached('css'),
-
     // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
     // и потом, если в потоке они отсутствуют, добавляет их
-    // (это может произойти, если перед ним установлен since/$.newer - они пропускают только изменённые файлы, исключая
-    // из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember всё-равно будет
-    // его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember забыть об удалённых
-    // файлах. $.remember('css'),
-    $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
+    // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
+    // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
+    // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
+    // забыть об удалённых файлах. $.remember('css'),
 
     // инклюдим файлы
     $.include(),
 
-    gulp.dest(options.dist)
+    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+    // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+    $.cached('css'),
+
+    $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
+
+    gulp.dest(optionsCSS.dist)
   ).on('error', $.notify.onError(err => ({
     title: 'CSS styles',
     message: err.message
@@ -151,7 +174,29 @@ gulp.task('styles:css:build', function () {
 });
 
 gulp.task('styles:css:watch', function () {
-  gulp.watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css:build'));
+  gulp
+    .watch(__.getGlob('app/frontend/styles/', '*.css', true), gulp.series('styles:css:build'))
+    .on('unlink', function (filepath) {
+      var file = path.resolve(filepath);
+      if ($.cached.caches['css']) {
+        delete $.cached.caches['css'][file];
+      }
+
+      var targetFile = resolveTargetFile(filepath, 'app/frontend/styles', 'dist/frontend/css');
+
+      if (__.isFile(targetFile)) {
+        targetFile = path.join(process.cwd(), targetFile);
+        console.log('targetFile', targetFile);
+        del.sync(targetFile);
+
+        var server = __.server.get('dev');
+        server && server.reload();
+      }
+
+      //console.log('filepath', filepath);
+      //console.log('targetFile', targetFile);
+    })
+  ;
 });
 //- //Simple CSS styles -//
 
