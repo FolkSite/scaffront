@@ -139,7 +139,8 @@
     "mailcheck": "*",
     "gridster": "git://github.com/ducksboard/gridster.js.git",
     "popper.js": "*",
-    "jquery.payment": "*"
+    "jquery.payment": "*",
+    "scrollbear": "git://github.com/changbenny/scrollbear.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
