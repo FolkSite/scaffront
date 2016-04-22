@@ -15,22 +15,25 @@ class Position {
       return new Position(value);
     }
 
-    this.value = value.toLowerCase();
+    this._value = value.toLowerCase();
 
-    //this.isNothing();
-    //this.isOuter();
+    this.isNothing;
+    this.isOuter;
   }
 
   /**
    * @returns {string}
    */
-  getValue () {
-    return this.value;
+  get value () {
+    return this._value;
   }
 
-  isOuter () {
+  /**
+   * @returns {boolean}
+   */
+  get isOuter () {
     if (_.isUndefined(this._isOuter)) {
-      let tmp = this.value.split('-');
+      let tmp = this._value.split('-');
 
       this._isOuter = tmp[0] == 'outer' || (tmp[1] || '')  == 'outer';
     }
@@ -38,9 +41,12 @@ class Position {
     return this._isOuter;
   }
 
-  isTop () {
+  /**
+   * @returns {boolean}
+   */
+  get isTop () {
     if (_.isUndefined(this._isTop)) {
-      let tmp = this.value.split('-');
+      let tmp = this._value.split('-');
 
       this._isTop = tmp[0] == 'top' || (tmp[1] || '')  == 'top';
     }
@@ -48,9 +54,12 @@ class Position {
     return this._isTop;
   }
 
-  isRight () {
+  /**
+   * @returns {boolean}
+   */
+  get isRight () {
     if (_.isUndefined(this._isRight)) {
-      let tmp = this.value.split('-');
+      let tmp = this._value.split('-');
 
       this._isRight = tmp[0] == 'right' || (tmp[1] || '')  == 'right';
     }
@@ -58,9 +67,12 @@ class Position {
     return this._isRight;
   }
 
-  isBottom () {
+  /**
+   * @returns {boolean}
+   */
+  get isBottom () {
     if (_.isUndefined(this._isBottom)) {
-      let tmp = this.value.split('-');
+      let tmp = this._value.split('-');
 
       this._isBottom = tmp[0] == 'bottom' || (tmp[1] || '') == 'bottom';
     }
@@ -68,9 +80,12 @@ class Position {
     return this._isBottom;
   }
 
-  isLeft () {
+  /**
+   * @returns {boolean}
+   */
+  get isLeft () {
     if (_.isUndefined(this._isLeft)) {
-      let tmp = this.value.split('-');
+      let tmp = this._value.split('-');
 
       this._isLeft = tmp[0] == 'left' || (tmp[1] || '') == 'left';
     }
@@ -81,23 +96,23 @@ class Position {
   /**
    * @returns {boolean}
    */
-  isVertical () {
-    return this.isTop() || this.isBottom();
+  get isVertical () {
+    return this.isTop || this.isBottom;
   }
 
   /**
    * @returns {boolean}
    */
-  isHorizontal () {
-    return this.isLeft() || this.isRight();
+  get isHorizontal () {
+    return this.isLeft || this.isRight;
   }
 
   /**
    * @returns {boolean}
    */
-  isCenter () {
+  get isCenter () {
     if (_.isUndefined(this._isCenter)) {
-      this._isCenter = this.value == 'center';
+      this._isCenter = this._value == 'center';
     }
 
     return this._isCenter;
@@ -106,65 +121,89 @@ class Position {
   /**
    * @returns {boolean}
    */
-  isNothing () {
+  get isNothing () {
     if (_.isUndefined(this._isNothing)) {
-      this._isNothing = !this.isCenter() && !this.isHorizontal() && !this.isVertical();
+      this._isNothing = !this.isCenter && !this.isHorizontal && !this.isVertical;
     }
 
     return this._isNothing;
   }
 }
 
-
 class Positions {
+  constructor () {
+    var args = slice(arguments);
 
-}
+    this.input = _(args)
+      .flattenDeep()
+      .map(position => position.split(' '))
+      .flatten()
+      .map(position => _.trim(position))
+      .compact()
+      .map(position => new Position(position))
+      .filter(position => !position.isNothing)
+      .value()
+    ;
 
+    if (this.input.length > 4) {
+      this.input = slice(this.input, 0, 4);
+    }
 
+    this.grouped = _.reduce(this.input, (all, position) => {
+      position.isTop        && all.top.push(position);
+      position.isRight      && all.right.push(position);
+      position.isBottom     && all.bottom.push(position);
+      position.isLeft       && all.left.push(position);
+      position.isCenter     && all.center.push(position);
+      position.isHorizontal && all.horizontal.push(position);
+      position.isVertical   && all.vertical.push(position);
+      position.isOuter      && all.outer.push(position);
 
-function getPositions () {
-  var args = slice(arguments);
+      return all;
+    }, {
+      top: [],
+      right: [],
+      bottom: [],
+      left: [],
+      center: [],
+      horizontal: [],
+      vertical: [],
+      outer: []
+    });
 
-  args = _(args)
-    .flattenDeep()
-    .map(position => position.split(' '))
-    .flatten()
-    .map(position => _.trim(position))
-    .compact()
-    .map(position => new Position(position))
-    .value()
-  ;
+    console.log(this.grouped);
 
-  var positions = {
-    vertical: null,
-    horizontal: null
-  };
-
-  console.log(args);
-
-  switch (args.length) {
-    case 0:
-
-      break;
-    case 1:
-
-      break;
-    case 2:
-
-      break;
-    case 3:
-
-      break;
-    default:
-      args = slice(args, 0, 4);
-
-
-      break;
+    //switch (this.input.length) {
+    //  case 0:
+    //
+    //    break;
+    //  case 1:
+    //
+    //    break;
+    //  case 2:
+    //
+    //    break;
+    //  case 3:
+    //
+    //    break;
+    //  default:
+    //    args = slice(args, 0, 4);
+    //
+    //
+    //    break;
+    //}
   }
 
+  parse () {
+
+  }
 }
 
-getPositions('top  Riwght ', ['center'], [['outer-right '], 'outer-left']);
 
 
-module.export = getPositions;
+new Positions ('top  Riwght ', ['center'], [['outer-right '], 'outer-left']);
+
+
+module.export = function () {
+  return new Positions(arguments);
+};
