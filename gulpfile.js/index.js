@@ -137,6 +137,20 @@ gulp.task('root-files:clean', noopTask);
 /** ========== //ROOT FILES ========== **/
 
 /** ========== STYLES ========== **/
+
+/*
+ https://github.com/postcss/postcss-import
+ https://github.com/SlexAxton/css-colorguard
+ https://github.com/jonathantneal/postcss-short-position
+ https://github.com/trysound/postcss-easy-import
+ https://github.com/postcss/postcss-url
+ https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
+ https://github.com/postcss/postcss-color-rgba-fallback
+ http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
+ http://e-planet.ru/company/blog/ispolzovanie-postcss-dlja-kross-brauzernoj-sovmestimosti.html
+ http://e-planet.ru/company/blog/vybiraem-mezhdu-min-width-i-max-width.html
+ */
+
 var postCssProcessors = [
   require("postcss-import"),
   require('autoprefixer')({browsers: ['last 20 version']}),
@@ -146,8 +160,8 @@ var postCssProcessors = [
       cascade: false
     },
     calc: {},
-    colormin: {},
-    convertValues: {},
+    colormin: {legacy : false},
+    convertValues: {length: false},
     discardComments: {},
     discardDuplicates: {},
     discardEmpty: {},
