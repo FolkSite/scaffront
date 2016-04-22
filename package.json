@@ -37,6 +37,7 @@
     "setimmediate": "^1.0.4"
   },
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",
     "babelify": "^7.2.0",
@@ -47,6 +48,7 @@
     "clarify": "^1.0.5",
     "consolidate": "^0.13.1",
     "criticalcss": "*",
+    "cssnano": "^3.5.2",
     "deamdify": "^0.1.1",
     "deglobalify": "^0.2.0",
     "del": "^2.0.2",
@@ -85,6 +87,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-order": "*",
     "gulp-plumber": "*",
+    "gulp-postcss": "^6.1.0",
     "gulp-preprocess": "^1.2.0",
     "gulp-remember": "^0.3.1",
     "gulp-rename": "*",
@@ -111,6 +114,8 @@
     "node-notifier": "^4.3.1",
     "node-sass-asset-functions": "0.0.9",
     "node-sass-css-importer": "0.0.3",
+    "postcss-import": "^8.1.0",
+    "postcss-zindex": "^2.1.1",
     "remapify": "^2.1.0",
     "require-dir": "^0.3.0",
     "resolve": "^1.1.6",

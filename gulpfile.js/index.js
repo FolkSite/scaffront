@@ -6,6 +6,7 @@ const gulp     = require('gulp');
 const del      = require('del');
 const path     = require('path');
 const slice    = require('sliced');
+const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
 
@@ -136,8 +137,41 @@ gulp.task('root-files:clean', noopTask);
 /** ========== //ROOT FILES ========== **/
 
 /** ========== STYLES ========== **/
-//- Simple CSS styles -//
+var postCssProcessors = [
+  require("postcss-import"),
+  require('autoprefixer')({browsers: ['last 20 version']}),
+  require('cssnano')({
+    autoprefixer: {
+      browsers: ['last 3 versions', 'ie 8-9', '> 2%'],
+      cascade: false
+    },
+    calc: {},
+    colormin: {},
+    convertValues: {},
+    discardComments: {},
+    discardDuplicates: {},
+    discardEmpty: {},
+    discardUnused: {},
+    filterPlugins: {},
+    mergeIdents: {},
+    mergeLonghand: {},
+    mergeRules: {},
+    minifyFontValues: {},
+    minifyGradients: {},
+    minifySelectors: {},
+    normalizeCharset: {},
+    normalizeUrl: {},
+    orderedValues: {},
+    reduceIdents: {},
+    reduceTransforms: {},
+    svgo: {},
+    uniqueSelectors: {},
+    zindex: {},
+  })
+];
+var postCssTasks = $.postcss(postCssProcessors);
 
+//- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
   var options = {
     src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
@@ -169,6 +203,8 @@ gulp.task('styles:css:build', function () {
     $.cached('css'),
 
     $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
+
+    postCssTasks,
 
     gulp.dest(options.dist)
   ).on('error', $.notify.onError(err => ({
