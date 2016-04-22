@@ -4,10 +4,6 @@ const path = require('path');
 const _ = require('lodash');
 const slice = require('sliced');
 
-var verticalTokens = 'top bottom outer-top outer-bottom'.split(' ');
-var horizontalTokens = 'left right outer-left outer-right'.split(' ');
-var centerTokens = 'center'.split(' ');
-
 class Position {
 
   /**
@@ -118,6 +114,13 @@ class Position {
     return this._isNothing;
   }
 }
+
+
+class Positions {
+
+}
+
+
 
 function getPositions () {
   var args = slice(arguments);
