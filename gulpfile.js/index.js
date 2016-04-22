@@ -149,6 +149,10 @@ gulp.task('root-files:clean', noopTask);
  http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
  http://e-planet.ru/company/blog/ispolzovanie-postcss-dlja-kross-brauzernoj-sovmestimosti.html
  http://e-planet.ru/company/blog/vybiraem-mezhdu-min-width-i-max-width.html
+ https://github.com/cssdream/cssgrace
+ https://www.npmjs.com/package/image-size
+ https://www.npmjs.com/package/postcss-media-minmax
+
  */
 
 var postCssProcessors = [
