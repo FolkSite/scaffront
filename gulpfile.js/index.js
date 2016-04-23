@@ -158,41 +158,41 @@ gulp.task('root-files:clean', noopTask);
 var postCssProcessors = [
   require("postcss-import"),
   require('autoprefixer')({browsers: ['last 20 version']}),
-  require('cssnano')({
-    autoprefixer: {
-      browsers: ['last 3 versions', 'ie 8-9', '> 2%'],
-      cascade: false
-    },
-    calc: {},
-    colormin: {legacy : false},
-    convertValues: {length: false},
-    discardComments: {},
-    discardDuplicates: {},
-    discardEmpty: {},
-    discardUnused: {},
-    filterPlugins: {},
-    mergeIdents: {},
-    mergeLonghand: {},
-    mergeRules: {},
-    minifyFontValues: {},
-    minifyGradients: {},
-    minifySelectors: {},
-    normalizeCharset: {},
-    normalizeUrl: {},
-    orderedValues: {},
-    reduceIdents: {},
-    reduceTransforms: {},
-    svgo: {},
-    uniqueSelectors: {},
-    zindex: {},
-  })
+  //require('cssnano')({
+  //  autoprefixer: {
+  //    browsers: ['last 3 versions', 'ie 8-9', '> 2%'],
+  //    cascade: false
+  //  },
+  //  calc: {},
+  //  colormin: {legacy : false},
+  //  convertValues: {length: false},
+  //  discardComments: {},
+  //  discardDuplicates: {},
+  //  discardEmpty: {},
+  //  discardUnused: {},
+  //  filterPlugins: {},
+  //  mergeIdents: {},
+  //  mergeLonghand: {},
+  //  mergeRules: {},
+  //  minifyFontValues: {},
+  //  minifyGradients: {},
+  //  minifySelectors: {},
+  //  normalizeCharset: {},
+  //  normalizeUrl: {},
+  //  orderedValues: {},
+  //  reduceIdents: {},
+  //  reduceTransforms: {},
+  //  svgo: {},
+  //  uniqueSelectors: {},
+  //  zindex: {},
+  //})
 ];
 var postCssTasks = $.postcss(postCssProcessors);
 
 //- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
   var options = {
-    src: __.getGlob('app/frontend/styles/', ['*.css', '!_*.css'], true),
+    src: __.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true),
     dist: 'dist/frontend/css'
   };
 
@@ -213,7 +213,7 @@ gulp.task('styles:css:build', function () {
     // забыть об удалённых файлах. $.remember('css'),
 
     // инклюдим файлы
-    $.include(),
+    //$.include(),
 
     // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
     // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
@@ -233,7 +233,7 @@ gulp.task('styles:css:build', function () {
 
 gulp.task('styles:css:watch', function () {
   var options = {
-    basePath: 'app/frontend/styles',
+    basePath: 'app/frontend/css',
     targetPath: 'dist/frontend/css'
   };
 
