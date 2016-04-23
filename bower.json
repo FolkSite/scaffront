@@ -140,7 +140,8 @@
     "gridster": "git://github.com/ducksboard/gridster.js.git",
     "popper.js": "*",
     "jquery.payment": "*",
-    "scrollbear": "git://github.com/changbenny/scrollbear.git"
+    "scrollbear": "git://github.com/changbenny/scrollbear.git",
+    "visibilityjs": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
