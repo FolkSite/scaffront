@@ -6,6 +6,7 @@ const gulp     = require('gulp');
 const del      = require('del');
 const path     = require('path');
 const slice    = require('sliced');
+const merge    = require('merge-stream');
 const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
@@ -126,12 +127,9 @@ gulp.task('root-files:watch', function () {
   ;
 });
 
-gulp.task('root-files:dist', gulp.series(
-  'root-files:build',
-  function (cb) {
-    cb();
-  }
-));
+gulp.task('root-files:dist', gulp.series('root-files:build', function (cb) {
+  cb();
+}));
 
 gulp.task('root-files:clean', noopTask);
 /** ========== //ROOT FILES ========== **/
@@ -140,55 +138,77 @@ gulp.task('root-files:clean', noopTask);
 
 /*
  https://github.com/postcss/postcss-import
- https://github.com/SlexAxton/css-colorguard
- https://github.com/jonathantneal/postcss-short-position
- https://github.com/trysound/postcss-easy-import
+ Переписать на scss: https://github.com/jonathantneal/postcss-short-position
  https://github.com/postcss/postcss-url
  https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
+ https://github.com/postcss/postcss-will-change
+ https://github.com/postcss/postcss-focus
  https://github.com/postcss/postcss-color-rgba-fallback
+ https://github.com/postcss/postcss-selector-not
+ https://github.com/cssdream/cssgrace
+
  http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
  http://e-planet.ru/company/blog/ispolzovanie-postcss-dlja-kross-brauzernoj-sovmestimosti.html
  http://e-planet.ru/company/blog/vybiraem-mezhdu-min-width-i-max-width.html
- https://github.com/cssdream/cssgrace
  https://www.npmjs.com/package/image-size
- https://www.npmjs.com/package/postcss-media-minmax
-
  */
 
+var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
 var postCssProcessors = [
-  require("postcss-import"),
-  require('autoprefixer')({browsers: ['last 20 version']}),
-  //require('cssnano')({
-  //  autoprefixer: {
-  //    browsers: ['last 3 versions', 'ie 8-9', '> 2%'],
-  //    cascade: false
-  //  },
-  //  calc: {},
-  //  colormin: {legacy : false},
-  //  convertValues: {length: false},
-  //  discardComments: {},
-  //  discardDuplicates: {},
-  //  discardEmpty: {},
-  //  discardUnused: {},
-  //  filterPlugins: {},
-  //  mergeIdents: {},
-  //  mergeLonghand: {},
-  //  mergeRules: {},
-  //  minifyFontValues: {},
-  //  minifyGradients: {},
-  //  minifySelectors: {},
-  //  normalizeCharset: {},
-  //  normalizeUrl: {},
-  //  orderedValues: {},
-  //  reduceIdents: {},
-  //  reduceTransforms: {},
-  //  svgo: {},
-  //  uniqueSelectors: {},
-  //  zindex: {},
-  //})
+  require('postcss-import'),
+  require('postcss-focus')
 ];
 var postCssTasks = $.postcss(postCssProcessors);
-
+var postCssProcessorsDist = [
+  require("postcss-color-rgba-fallback")({
+    properties: ['background-color', 'background', 'color', 'border', 'border-color', 'outline', 'outline-color'],
+    oldie: true,
+    backgroundColor: [255, 255, 255]
+  }),
+  require('postcss-will-change'),
+  require('pixrem')({
+    // `pixrem` tries to get the root font-size from CSS (html or :root) and overrides this option
+    //rootValue: 16px,
+    replace: false,
+    atrules: true,
+    browsers: browsers,
+    unitPrecision: 10
+  }),
+  require('postcss-pseudoelements')({
+    selectors: ['before','after','first-letter','first-line']
+  }),
+  require('postcss-vmin'),
+  require('postcss-opacity'),
+  //require('cssgrace'),
+  require('cssnano')({
+    autoprefixer: {
+      browsers: browsers,
+      cascade: false
+    },
+    calc: {},
+    colormin: {legacy : false},
+    convertValues: {length: false},
+    discardComments: {},
+    discardDuplicates: {},
+    discardEmpty: {},
+    discardUnused: {},
+    filterPlugins: {},
+    mergeIdents: {},
+    mergeLonghand: {},
+    mergeRules: {},
+    minifyFontValues: {},
+    minifyGradients: {},
+    minifySelectors: {},
+    normalizeCharset: {},
+    normalizeUrl: {},
+    orderedValues: {},
+    reduceIdents: {},
+    reduceTransforms: {},
+    svgo: {},
+    uniqueSelectors: {},
+    zindex: {}
+  })
+];
 //- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
   var options = {
@@ -200,6 +220,82 @@ gulp.task('styles:css:build', function () {
      Описание $.remember, $.cached здесь:
      https://youtu.be/uYZPNrT-e-8?t=240
    */
+
+  //.pipe(gulpSourcemaps.init())
+  //.pipe(gulpSass({
+  //  precision: 10,
+  //  functions: assetFunctions({
+  //    images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
+  //    images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
+  //    http_images_path: '/i',
+  //    http_generated_images_path: '/i',
+  //  }),
+  //importer: importOnce,
+  //  importOnce: {
+  //    index: true,
+  //    css: true,
+  //    bower: false
+  //}
+  //  includePaths: _importPaths,
+  //  sourceMap: './',
+  //  sourceMapContents: true,
+  //  omitSourceMapUrl: true
+  //}).on('error', __.plumberErrorHandler.errorHandler))
+  //  .pipe(gulpSourcemaps.write('./', {
+  //    sourceRoot: './',
+  //    sourceMappingURLPrefix: __.preparePath({
+  //      startSlash: true
+  //    }, path.relative(global.Builder.dest, stylesConfig.dest))
+  //  }))
+  //
+
+  var cssStream = gulp
+    .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe($.postcss([
+      require("postcss-import")
+    ]))
+  ;
+
+  var scssStream = gulp
+    .src(__.getGlob('app/frontend/css/', ['*.scss', '!_*.scss'], true), {
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe($.sass({
+      precision: 10,
+      importer: require('node-sass-import-once'),
+      importOnce: {
+        index: true,
+        css: true,
+        bower: false
+      },
+      //functions: assetFunctions({
+      //  images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
+      //  images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
+      //  http_images_path: '/i',
+      //  http_generated_images_path: '/i',
+      //}),
+      //sourceMap: './',
+      //sourceMapContents: true,
+      //omitSourceMapUrl: true
+    }))
+  ;
+
+  return combine(
+    merge(cssStream, scssStream),
+
+    $.cached('styles'),
+
+    $.if(config.flags.isDev, $.debug({title: 'Style:'})),
+
+    gulp.dest(options.dist)
+  )
+    .on('error', $.notify.onError(err => ({
+      title: 'CSS styles',
+      message: err.message
+    })));
+
 
   return combiner(
     gulp.src(options.src, {
