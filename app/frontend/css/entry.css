@@ -1,3 +1,7 @@
 /*== Entry ==*/
 
 @import './dir/_include.css';
+
+.qwe {
+    aspect-ratio: '16:9';
+}

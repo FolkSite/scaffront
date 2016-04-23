@@ -141,21 +141,18 @@ gulp.task('root-files:clean', noopTask);
  Переписать на scss: https://github.com/jonathantneal/postcss-short-position
  https://github.com/postcss/postcss-url
  https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
- https://github.com/postcss/postcss-will-change
- https://github.com/postcss/postcss-focus
- https://github.com/postcss/postcss-color-rgba-fallback
- https://github.com/postcss/postcss-selector-not
- https://github.com/cssdream/cssgrace
 
  http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
- http://e-planet.ru/company/blog/ispolzovanie-postcss-dlja-kross-brauzernoj-sovmestimosti.html
- http://e-planet.ru/company/blog/vybiraem-mezhdu-min-width-i-max-width.html
  https://www.npmjs.com/package/image-size
  */
 
 var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
 var postCssProcessors = [
-  require('postcss-import'),
+  require('postcss-import')({
+    root: process.cwd(),
+    path: [],
+    //resolve: function (id, basedir, importOptions) { /*require.resolve(...);*/ }
+  }),
   require('postcss-focus')
 ];
 var postCssTasks = $.postcss(postCssProcessors);
@@ -165,6 +162,7 @@ var postCssProcessorsDist = [
     oldie: true,
     backgroundColor: [255, 255, 255]
   }),
+  require('postcss-single-charset')(),
   require('postcss-will-change'),
   require('pixrem')({
     // `pixrem` tries to get the root font-size from CSS (html or :root) and overrides this option
@@ -179,7 +177,21 @@ var postCssProcessorsDist = [
   }),
   require('postcss-vmin'),
   require('postcss-opacity'),
-  //require('cssgrace'),
+  require('postcss-filter-gradient'),
+  require('postcss-input-style'),
+  require('postcss-unroot')({
+    method: 'copy'
+  }),
+  // с `postcss-unmq` надо разобраться на тему -
+  // как засунуть получившиеся стили в поток отдельным файлом
+  //require('postcss-unmq')({
+  //  // these are already the default options
+  //  type: 'screen',
+  //  width: 1024,
+  //  height: 768,
+  //  resolution: '1dppx',
+  //  color: 3
+  //}),
   require('cssnano')({
     autoprefixer: {
       browsers: browsers,
