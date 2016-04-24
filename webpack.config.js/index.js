@@ -6,6 +6,8 @@ module.exports = {
     library: 'js'
   },
 
-  watch: true
-
+  watch: true,
+  watchOptions: {
+    aggregateTimeout: 300
+  }
 };
