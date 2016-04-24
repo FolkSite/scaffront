@@ -1,7 +1,7 @@
 import {utils as __} from './utils';
 
 let component = {
-  name: 'component1',
+  name: 'component2',
   utils: __
 };
 

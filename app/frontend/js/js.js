@@ -1,5 +1,5 @@
 import config from './config';
-import * as slice from 'sliced';
+let slice = require('sliced');
 //require('babel-runtime/core-js/promise').default = require('bluebird');
 
 console.log('slice', slice([1,2,3,4,5], 3));
@@ -16,5 +16,7 @@ export {config};
 
 
 class Person {
-
+  constructor () {
+    console.log('its alive!');
+  }
 }

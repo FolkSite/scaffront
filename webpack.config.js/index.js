@@ -7,11 +7,14 @@ const webpack = require('webpack');
 console.log(path.resolve('./app/frontend'));
 
 const config = {
-  entry: './app/frontend/js/js.js',
+  entry: {
+    js: './app/frontend/js/js.js',
+    components: './app/frontend/js/components.js'
+  },
   output: {
-    path: './dist/frontend/js',
-    filename: 'js.js',
-    library: 'js'
+    path: path.resolve('./dist/frontend/js'),
+    filename: '[name].js',
+    library: '[name]'
   },
 
   resolve: {
