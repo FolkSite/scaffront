@@ -4,31 +4,30 @@ const envs = require('../scaffront.env.js');
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = {
+console.log(path.resolve('./app/frontend'));
+
+const config = {
   entry: './app/frontend/js/js.js',
   output: {
     path: './dist/frontend/js',
     filename: 'js.js',
     library: 'js'
   },
-  //devtool: '#source-map',
 
   resolve: {
-    modulesDirectories: ['node_modules'],
+    modulesDirectories: ['node_modules', 'bower_components'],
     extensions: ['', '.js'],
     root: [
-      path.resolve('../app/frontend')
+      path.resolve('./app/frontend')
     ]
   },
 
-  // dev:
-  //watch: true,
+  //watch: (envs.isProd),
   //watchOptions: {
   //  aggregateTimeout: 300
   //},
 
-  devtool: '#inline-source-map',
-  //devtool: '#cheap-inline-module-source-map' ?
+  devtool: (!envs.isProd) ? '#inline-source-map' : '#source-map',
 
   plugins: [
     new webpack.EnvironmentPlugin(Object.keys(process.env)),
@@ -60,5 +59,19 @@ module.exports = {
     moduleTemplates: ['*-loader', '*'],
     extensions: ['', '.js']
   },
-
 };
+
+
+if (envs.isProd) {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        unsafe: true
+      }
+    })
+  );
+}
+
+module.exports = config;
