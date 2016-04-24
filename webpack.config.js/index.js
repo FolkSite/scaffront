@@ -5,9 +5,14 @@ module.exports = {
     filename: 'js.js',
     library: 'js'
   },
+  //devtool: '#source-map',
 
-  watch: true,
-  watchOptions: {
-    aggregateTimeout: 300
-  }
+  // dev:
+  //watch: true,
+  //watchOptions: {
+  //  aggregateTimeout: 300
+  //},
+
+  devtool: '#inline-source-map'
+  //devtool: '#cheap-inline-module-source-map' ?
 };
