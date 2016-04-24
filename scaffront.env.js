@@ -4,6 +4,7 @@
  */
 
 const config = {
+  NODE_ENV: process.env.NODE_ENV,
   mode: process.env.NODE_ENV || 'development',
   isDev: !process.env.NODE_ENV || process.env.NODE_ENV == 'development',
   isProd: process.env.NODE_ENV == 'production',

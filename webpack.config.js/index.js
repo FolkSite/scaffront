@@ -1,5 +1,7 @@
+'use strict';
+
+const envs = require('../scaffront.env.js');
 const webpack = require('webpack');
-const env = require('../scaffront.env.js');
 
 module.exports = {
   entry: './app/frontend/js/js.js',
@@ -21,6 +23,10 @@ module.exports = {
 
   plugins: [
     new webpack.EnvironmentPlugin(Object.keys(process.env)),
-    new webpack.DefinePlugin(env)
+    new webpack.DefinePlugin(Object.keys(envs).reduce((_envs, env) => {
+      _envs[env] = JSON.stringify(envs[env]);
+
+      return _envs;
+    }, {}))
   ]
 };
