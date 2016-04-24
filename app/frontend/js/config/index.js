@@ -1,6 +1,9 @@
 const config = {
   apiServer: 'https://something.tld',
-  db: {}
+  db: {
+    user: 'root',
+    pass: ''
+  }
 };
 
 export default config;
