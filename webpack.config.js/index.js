@@ -7,9 +7,10 @@ const webpack = require('webpack');
 console.log(path.resolve('./app/frontend'));
 
 const config = {
+  context: path.resolve('./app/frontend'),
   entry: {
-    js: './app/frontend/js/js.js',
-    components: './app/frontend/js/components.js'
+    js: './js/js.js',
+    components: './js/components.js'
   },
   output: {
     path: path.resolve('./dist/frontend/js'),
@@ -33,12 +34,16 @@ const config = {
   devtool: (!envs.isProd) ? '#inline-source-map' : '#source-map',
 
   plugins: [
+    new webpack.NoErrorsPlugin(),
     new webpack.EnvironmentPlugin(Object.keys(process.env)),
     new webpack.DefinePlugin(Object.keys(envs).reduce((_envs, env) => {
       _envs[env] = JSON.stringify(envs[env]);
 
       return _envs;
-    }, {}))
+    }, {})),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common'
+    })
   ],
 
   module: {
