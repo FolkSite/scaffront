@@ -141,7 +141,8 @@
     "popper.js": "*",
     "jquery.payment": "*",
     "scrollbear": "git://github.com/changbenny/scrollbear.git",
-    "visibilityjs": "*"
+    "visibilityjs": "*",
+    "ion.rangeSlider": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
