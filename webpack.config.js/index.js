@@ -1,6 +1,7 @@
 'use strict';
 
 const envs = require('../scaffront.env.js');
+const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -14,7 +15,10 @@ module.exports = {
 
   resolve: {
     modulesDirectories: ['node_modules'],
-    extensions: ['', '.js']
+    extensions: ['', '.js'],
+    root: [
+      path.resolve('../app/frontend')
+    ]
   },
 
   // dev:
@@ -53,7 +57,7 @@ module.exports = {
   },
   resolveLoader: {
     modulesDirectories: ['node_modules'],
-    moduleTemplates: ['*-loader'],
+    moduleTemplates: ['*-loader', '*'],
     extensions: ['', '.js']
   },
 
