@@ -137,10 +137,36 @@ gulp.task('root-files:clean', noopTask);
 /** ========== STYLES ========== **/
 
 /*
- https://github.com/postcss/postcss-import
  Переписать на scss: https://github.com/jonathantneal/postcss-short-position
+ Что-то похожее на центрирование:
+ https://github.com/jedmao/postcss-center
+
+ https://github.com/postcss/postcss-import
  https://github.com/postcss/postcss-url
  https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
+
+ Скаффолдер для плагинов под PostCSS:
+ https://github.com/postcss/postcss-plugin-boilerplate
+
+ Автоматические стайлгайды!
+ https://github.com/morishitter/postcss-style-guide
+
+ Форматирование стилей:
+ https://github.com/ben-eb/perfectionist
+
+ Сообщения об ошибках "компиляции", как в SCSS (body:before)
+ https://github.com/postcss/postcss-browser-reporter
+ require('postcss-browser-reporter')
+
+ Ещё один месседжер:
+ https://github.com/postcss/postcss-reporter
+
+ Отфильтровывает файлы из потока и применяет плагин:
+ https://github.com/tsm91/postcss-filter-stream
+ filterStream('**\/css/vendor/**', colorguard()),
+
+ H5BP'ые in-/visible хелперы:
+ https://github.com/lukelarsen/postcss-hidden
 
  http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
  https://www.npmjs.com/package/image-size
@@ -152,16 +178,24 @@ var postCssProcessors = [
     root: process.cwd(),
     path: [],
     //resolve: function (id, basedir, importOptions) { /*require.resolve(...);*/ }
-  }),
-  require('postcss-focus')
+  })
 ];
-var postCssTasks = $.postcss(postCssProcessors);
-var postCssProcessorsDist = [
-  require("postcss-color-rgba-fallback")({
+var postCssTasksForCss = $.postcss(postCssProcessors);
+var postCssTasksForAnyStyles = $.postcss([
+  require('postcss-pseudo-content-insert'),
+  require('postcss-focus'),
+  require('postcss-single-charset')(),
+  require('postcss-easings')({
+    easings: require('postcss-easings').easings
+  })
+]);
+var postCssProcessorsFallbacks = [
+  require('postcss-color-rgba-fallback')({
     properties: ['background-color', 'background', 'color', 'border', 'border-color', 'outline', 'outline-color'],
     oldie: true,
     backgroundColor: [255, 255, 255]
   }),
+  require('postcss-gradient-transparency-fix'),
   require('postcss-single-charset')(),
   require('postcss-will-change'),
   require('pixrem')({
@@ -182,6 +216,23 @@ var postCssProcessorsDist = [
   require('postcss-unroot')({
     method: 'copy'
   }),
+  //require('postcss-svg-fallback')({
+  //  // base path for the images found in the css
+  //  // this is most likely the path to the css file you're processing
+  //  // not setting this option might lead to unexpected behavior
+  //  basePath: '',
+  //
+  //  // destination for the generated SVGs
+  //  // this is most likely the path to where the generated css file is outputted
+  //  // not setting this option might lead to unexpected behavior
+  //  dest: '',
+  //
+  //  // selector that gets prefixed to selector
+  //  fallbackSelector: '.no-svg',
+  //
+  //  // when `true` only the css is changed (no new files created)
+  //  disableConvert: false,
+  //}),
   // с `postcss-unmq` надо разобраться на тему -
   // как засунуть получившиеся стили в поток отдельным файлом
   //require('postcss-unmq')({
@@ -192,6 +243,8 @@ var postCssProcessorsDist = [
   //  resolution: '1dppx',
   //  color: 3
   //}),
+];
+var postCssProcessorsDist = [
   require('cssnano')({
     autoprefixer: {
       browsers: browsers,
@@ -330,7 +383,7 @@ gulp.task('styles:css:build', function () {
 
     $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
 
-    postCssTasks,
+    postCssTasksForCss,
 
     gulp.dest(options.dist)
   ).on('error', $.notify.onError(err => ({
