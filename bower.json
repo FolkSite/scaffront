@@ -142,7 +142,8 @@
     "jquery.payment": "*",
     "scrollbear": "git://github.com/changbenny/scrollbear.git",
     "visibilityjs": "*",
-    "ion.rangeSlider": "*"
+    "ion.rangeSlider": "*",
+    "ion-checkradio": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
