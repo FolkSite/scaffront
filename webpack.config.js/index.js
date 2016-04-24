@@ -6,9 +6,10 @@ const webpack = require('webpack');
 
 console.log(path.resolve('./app/frontend'));
 
-const config = {
+const config = [{
   context: path.resolve('./app/frontend'),
   entry: {
+    common: ['./js/common.js'],
     js: './js/js.js',
     components: './js/components.js'
   },
@@ -42,7 +43,8 @@ const config = {
       return _envs;
     }, {})),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common'
+      name: 'common',
+      minChunks: 2
     })
   ],
 
@@ -67,19 +69,21 @@ const config = {
     moduleTemplates: ['*-loader', '*'],
     extensions: ['', '.js']
   },
-};
+}];
 
 
 if (envs.isProd) {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        drop_console: true,
-        unsafe: true
-      }
-    })
-  );
+  config.forEach(function (item) {
+    item.plugins.push(
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          drop_console: true,
+          unsafe: true
+        }
+      })
+    );
+  });
 }
 
 module.exports = config;
