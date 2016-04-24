@@ -17,6 +17,7 @@ const config = [{
     path: path.resolve('./dist/frontend/js'),
     filename: '[name].js',
     library: '[name]',
+    chunkFilename: '[id].js',
     publicPath: '/js/' // trailing slash is required!
   },
 
@@ -26,6 +27,10 @@ const config = [{
     root: [
       path.resolve('./app/frontend')
     ]
+  },
+
+  externals: {
+    lodash: '_'
   },
 
   //watch: (envs.isProd),
@@ -63,7 +68,11 @@ const config = [{
           }]
         ]
       },
-    }]
+    }],
+    noParse: [
+      /angular\/angular.js/,
+      // /jquery/,
+    ]
   },
   resolveLoader: {
     modulesDirectories: ['node_modules'],

@@ -9,7 +9,7 @@ require('domready')(function (e) {
         console.log('component1', component);
         console.log('loading component1 stop');
       }, 100);
-    });
+    }, 'components-bundle');
   };
 
   document.querySelector('#component2').onclick = function (e) {
@@ -20,6 +20,6 @@ require('domready')(function (e) {
         console.log('component2', component);
         console.log('loading component2 stop');
       }, 100);
-    });
+    }, 'components-bundle');
   };
 });
