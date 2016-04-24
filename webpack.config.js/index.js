@@ -17,7 +17,7 @@ const config = [{
     path: path.resolve('./dist/frontend/js'),
     filename: '[name].js',
     library: '[name]',
-    publicPath: '/'
+    publicPath: '/js'
   },
 
   resolve: {
