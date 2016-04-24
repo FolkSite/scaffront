@@ -67,7 +67,7 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
 
 const config = require('./config');
 
-//if (!config.flags.isDev) {
+//if (!config.env.isDev) {
 //  require('trace');
 //  require('clarify');
 //}
@@ -106,7 +106,7 @@ gulp.task('root-files:build', function () {
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
     $.newer(options.dist),
-    $.if(config.flags.isDev, $.debug({title: 'Root file:'})),
+    $.if(config.env.isDev, $.debug({title: 'Root file:'})),
 
     gulp.dest(options.dist)
   ).on('error', $.notify.onError(err => ({
@@ -352,7 +352,7 @@ gulp.task('styles:css:build', function () {
 
     $.cached('styles'),
 
-    $.if(config.flags.isDev, $.debug({title: 'Style:'})),
+    $.if(config.env.isDev, $.debug({title: 'Style:'})),
 
     gulp.dest(options.dist)
   )
@@ -381,7 +381,7 @@ gulp.task('styles:css:build', function () {
     // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
     $.cached('css'),
 
-    $.if(config.flags.isDev, $.debug({title: 'CSS style:'})),
+    $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
 
     postCssTasksForCss,
 

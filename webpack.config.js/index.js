@@ -1,3 +1,6 @@
+const webpack = require('webpack');
+const env = require('../scaffront.env.js');
+
 module.exports = {
   entry: './app/frontend/js/js.js',
   output: {
@@ -13,6 +16,11 @@ module.exports = {
   //  aggregateTimeout: 300
   //},
 
-  devtool: '#inline-source-map'
+  devtool: '#inline-source-map',
   //devtool: '#cheap-inline-module-source-map' ?
+
+  plugins: [
+    new webpack.EnvironmentPlugin(Object.keys(process.env)),
+    new webpack.DefinePlugin(env)
+  ]
 };
