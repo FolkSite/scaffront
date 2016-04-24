@@ -427,7 +427,7 @@ gulp.task('styles:watch', gulp.parallel(
 ));
 
 gulp.task('styles:build', gulp.series(
-  gulp.parallel('styles:css:build'/*, 'styles:scss:build'*/),
+  //gulp.parallel('styles:css:build'/*, 'styles:scss:build'*/),
   function (cb) {
     cb();
   }
