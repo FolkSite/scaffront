@@ -470,9 +470,9 @@ gulp.task('styles:clean', function () {
 //
 //});
 
-gulp.task('clean', lazyRequireTask('./tasks/cleaner', {
-  src: 'dist/frontend'
-}));
+gulp.task('clean', function() {
+  return del('dist/frontend', {read: false});
+});
 
 gulp.task('build', gulp.series(
   gulp.parallel('root-files:build', 'styles:build')
