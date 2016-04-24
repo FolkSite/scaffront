@@ -12,6 +12,11 @@ module.exports = {
   },
   //devtool: '#source-map',
 
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    extensions: ['', '.js']
+  },
+
   // dev:
   //watch: true,
   //watchOptions: {
@@ -36,8 +41,20 @@ module.exports = {
       exclude: /(node_modules|bower_components)/,
       loader: 'babel',
       query: {
-        presets: ['es2015']
-      }
+        presets: ['es2015'],
+        plugins: [
+          ['transform-runtime', {
+            "polyfill": false,
+            "regenerator": true
+          }]
+        ]
+      },
     }]
-  }
+  },
+  resolveLoader: {
+    modulesDirectories: ['node_modules'],
+    moduleTemplates: ['*-loader'],
+    extensions: ['', '.js']
+  },
+
 };
