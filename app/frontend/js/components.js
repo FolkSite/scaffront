@@ -1,5 +1,25 @@
-import component1 from './components/component1';
-import component2 from './components/component2';
+require('domready')(function (e) {
+  'use strict';
 
-console.log('component1', component1);
-console.log('component2', component2);
+  document.querySelector('#component1').onclick = function (e) {
+    console.log('loading component1 start');
+    require.ensure([], function (require) {
+      setTimeout(function () {
+        var component = require('./components/component1');
+        console.log('component1', component);
+        console.log('loading component1 stop');
+      }, 100);
+    });
+  };
+
+  document.querySelector('#component2').onclick = function (e) {
+    console.log('loading component2 start');
+    require.ensure([], function (require) {
+      setTimeout(function () {
+        var component = require('./components/component2');
+        console.log('component2', component);
+        console.log('loading component2 stop');
+      }, 100);
+    });
+  };
+});
