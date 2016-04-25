@@ -13,6 +13,7 @@ const config = [{
     js: './js/js.js',
     components: './js/components.js'
   },
+
   output: {
     path: path.resolve('./dist/frontend/js'),
     filename: '[name].js',
@@ -71,6 +72,7 @@ const config = [{
     }],
     noParse: [
       /angular\/angular.js/,
+      /lodash/,
       // /jquery/,
     ]
   },

@@ -10,7 +10,6 @@ const merge    = require('merge-stream');
 const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
-
 /**
  * @param {string} path
  * @param {*} [taskType]
@@ -42,7 +41,7 @@ function lazyRequireTask(path, taskType) {
   };
 }
 
-var noopTask = function noopTask (cb) { cb() };
+var noopTask = function noopTask (cb) { cb(null) };
 
 /**
  * @param {string} filePath
