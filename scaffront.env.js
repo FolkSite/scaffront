@@ -15,26 +15,26 @@ const config = {
 };
 
 
-config.paths = {};
+config.tasks = {};
 
-config.paths.root = 'app/frontend';
-config.paths.dest = (config.isDev) ? 'dest/frontend/development' : 'dest/frontend/production';
+config.tasks.src = 'app/frontend';
+config.tasks.dest = (config.isDev) ? 'dest/frontend/development' : 'dest/frontend/production';
 
-config.paths.scripts = {
-  src: __.glob(path.join(config.paths.root, 'js'), ['*.js', '!_*.js']),
-  dest: path.join(config.paths.dest, 'js')
+config.tasks.scripts = {
+  src: __.glob(path.join(config.tasks.src, 'js'), ['*.js', '!_*.js']),
+  dest: path.join(config.tasks.dest, 'js')
 };
 
-config.paths.styles = {};
-config.paths.styles.css = {
-  src: __.glob(path.join(config.paths.root, 'css'), ['*.css', '!_*.css']),
-  dest: path.join(config.paths.dest, 'css'),
-  watch: __.glob(path.join(config.paths.root, 'css'), ['*.css'], true)
+config.tasks.styles = {};
+config.tasks.styles.css = {
+  src: __.glob(path.join(config.tasks.src, 'css'), ['*.css', '!_*.css']),
+  dest: path.join(config.tasks.dest, 'css'),
+  watch: __.glob(path.join(config.tasks.src, 'css'), ['*.css'], true)
 };
-config.paths.styles.scss = {
-  src: __.glob(path.join(config.paths.root, 'css'), ['*.scss', '!_*.scss']),
-  dest: path.join(config.paths.dest, 'css'),
-  watch: __.glob(path.join(config.paths.root, 'css'), ['*.scss'], true)
+config.tasks.styles.scss = {
+  src: __.glob(path.join(config.tasks.src, 'css'), ['*.scss', '!_*.scss']),
+  dest: path.join(config.tasks.dest, 'css'),
+  watch: __.glob(path.join(config.tasks.src, 'css'), ['*.scss'], true)
 };
 
 
@@ -51,7 +51,7 @@ config.servers = {
     server: {
       index: 'index.html',
       //directory: true,
-      baseDir: config.paths.dest
+      baseDir: config.tasks.dest
     }
   },
   prod: {
@@ -66,7 +66,7 @@ config.servers = {
     server: {
       index: 'index.html',
       //directory: true,
-      baseDir: config.paths.dest
+      baseDir: config.tasks.dest
     }
   }
 };
