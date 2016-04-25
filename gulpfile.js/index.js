@@ -480,7 +480,7 @@ var webpackTask = function webpackTask (options) {
           cb();
         }
       })
-      ;
+    ;
   };
 };
 
