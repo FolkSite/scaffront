@@ -18,11 +18,12 @@ const config = {
 config.tasks = {};
 
 config.tasks.src = 'app/frontend';
-config.tasks.dest = (config.isDev) ? 'dest/frontend/development' : 'dest/frontend/production';
+config.tasks.dest = (config.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
 config.tasks.scripts = {
   src: __.glob(path.join(config.tasks.src, 'js'), ['*.js', '!_*.js']),
-  dest: path.join(config.tasks.dest, 'js')
+  dest: path.join(config.tasks.dest, 'js'),
+  clean: path.join(config.tasks.dest, 'js')
 };
 
 config.tasks.styles = {};
@@ -71,6 +72,6 @@ config.servers = {
   }
 };
 
-console.log('config', config);
+//console.log('config', config);
 
 module.exports = config;

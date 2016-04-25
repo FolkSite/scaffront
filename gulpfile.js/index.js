@@ -11,6 +11,7 @@ const extend   = require('extend');
 const combiner = require('stream-combiner2').obj;
 
 const envs    = require('../scaffront.env.js');
+const config = envs;
 const streams = require('./streams');
 
 var noopTask = function noopTask (cb) { cb(null) };
@@ -36,7 +37,7 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
   return targetFile;
 };
 
-const config = require('./config');
+//const config = require('./config');
 
 //if (!config.env.isDev) {
 //  require('trace');
@@ -453,7 +454,7 @@ const AssetsPlugin  = require('assets-webpack-plugin');
 const through       = require('through2').obj;
 
 let webpackConfig = require('../webpack.config.js');
-var webpackTask = function webpackTask (options) {
+let webpackTask = function webpackTask (options) {
   let config = extend(true, {}, webpackConfig);
 
   options = _.isPlainObject(options) ? options : {};
@@ -535,35 +536,25 @@ var webpackTask = function webpackTask (options) {
   };
 };
 
-gulp.task('scripts:cleaner', function () {
-  return del('dist/frontend/js', {read: false});
-});
-gulp.task('scripts:build', webpackTask({
-  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
-  dest: 'dist/frontend/js',
+let webpackConfigRequired = {
+  src: config.tasks.scripts.src,
+  dest: config.tasks.scripts.dest,
 
   profile: !envs.isProd,
   devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map'
-}));
-gulp.task('scripts:watch', webpackTask({
-  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
-  dest: 'dist/frontend/js',
+};
 
-  profile: false,
-  devtool: '#module-cheap-inline-source-map',
+gulp.task('scripts:build', webpackTask(webpackConfigRequired));
+gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
   watch: true,
   watchOptions: {
     aggregateTimeout: 100
   }
-}));
-gulp.task('scripts:dist', webpackTask({
-  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
-  dest: 'dist/frontend/js',
+})));
 
-  profile: false,
-  devtool: '#source-map'
-}));
-
+gulp.task('scripts:cleaner', function () {
+  return del(config.tasks.scripts.clean, {read: false});
+});
 
 /** ========== //SCRIPTS ========== **/
 
