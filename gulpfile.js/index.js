@@ -10,6 +10,7 @@ const merge    = require('merge-stream');
 const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
+const envs  = require('../scaffront.env.js');
 const streams  = require('./streams');
 
 /**
@@ -304,13 +305,18 @@ gulp.task('styles:css:build', function () {
       //since: gulp.lastRun(options.taskName)
     })
     .pipe($.sourcemaps.init())
-    .pipe(streams.styles.css)
-    .pipe($.sourcemaps.write('./', {
-      sourceRoot: './',
-      includeContent: true,
-      sourceMappingURLPrefix: '/css'
-    }))
-    .pipe(gulp.dest('dist/dev/css'))
+    .pipe(streams.styles.css())
+    .pipe($.if(
+      !envs.isProd,
+      $.sourcemaps.write(),
+      $.sourcemaps.write('.', {
+        //destPath: 'css',
+        sourceRoot: './app/frontend/css',
+        includeContent: true,
+        //sourceMappingURLPrefix: '/css'
+      })
+    ))
+    .pipe(gulp.dest('dist/frontend/css'))
   ;
 
 

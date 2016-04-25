@@ -3,22 +3,23 @@ const _        = require('lodash');
 const __       = require('../helpers');
 const envs     = require('../../scaffront.env.js');
 const lazypipe = require('lazypipe');
+const combiner = require('stream-combiner2').obj;
 
 
 var streams = {};
 
 streams.css = function () {
-  return lazypipe()
-    .pipe($.plumber({
+  return combiner(
+    $.plumber({
       errorHandler: $.notify.onError(err => ({
         title:   'CSS',
         message: err.message
       }))
-    }))
-    .pipe($.postcss([
+    }),
+    $.postcss([
       require('postcss-import')
-    ]))
-  ;
+    ])
+  );
 };
 
 streams.scss = function () {
