@@ -170,6 +170,17 @@ gulp.task('root-files:clean', noopTask);
 
  http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
  https://www.npmjs.com/package/image-size
+
+ Ассеты и шрифты:
+ http://postcss.parts/tag/images
+ http://postcss.parts/tag/svg
+ https://github.com/justim/postcss-svg-fallback
+ https://github.com/jonathantneal/postcss-font-magician
+ https://github.com/geut/postcss-copy
+
+ https://github.com/tars/tars-scss
+ https://toster.ru/q/256261
+ https://github.com/glebmachine/postcss-cachebuster
  */
 
 var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
