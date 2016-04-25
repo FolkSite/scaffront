@@ -447,7 +447,7 @@ var webpackTask = function webpackTask (options) {
     //};
 
     return gulp
-      .src(__.getGlob('app/frontend/js/', ['*.js', '!_*.js']), {
+      .src(options.src, {
         //since: gulp.lastRun(options.taskName)
       })
       .pipe(streams.scripts.webpack(extend(true, config, options), function done(err, stats) {
@@ -474,28 +474,38 @@ var webpackTask = function webpackTask (options) {
       //  $.sourcemaps.write('.', smOpts), // во внешний файл
       //  $.sourcemaps.write('', smOpts) // инлайн
       //))
-      .pipe(gulp.dest('dist/frontend/js'))
+      .pipe(gulp.dest(options.dest))
       .on('data', function() {
         if (firstBuildReady) {
           cb();
         }
       })
-      ;
+    ;
   };
 };
 
-gulp.task('scripts:webpack:build', webpackTask({
+gulp.task('scripts:build', webpackTask({
+  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
+  dest: 'dist/frontend/js',
+
   profile: true,
   devtool: '#module-cheap-inline-source-map'
 }));
-gulp.task('scripts:webpack:watch', webpackTask({
+gulp.task('scripts:watch', webpackTask({
+  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
+  dest: 'dist/frontend/js',
+
+  profile: false,
   devtool: '#module-cheap-inline-source-map',
   watch: true,
   watchOptions: {
     aggregateTimeout: 100
   }
 }));
-gulp.task('scripts:webpack:dist', webpackTask({
+gulp.task('scripts:dist', webpackTask({
+  src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
+  dest: 'dist/frontend/js',
+
   profile: false,
   devtool: '#source-map'
 }));
