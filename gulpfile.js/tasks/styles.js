@@ -1,3 +1,5 @@
+'use strict';
+
 const $  = require('gulp-load-plugins')();
 const _  = require('lodash');
 const __ = require('../helpers');

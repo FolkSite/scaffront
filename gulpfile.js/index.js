@@ -10,6 +10,8 @@ const merge    = require('merge-stream');
 const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
+const streams  = require('./streams');
+
 /**
  * @param {string} path
  * @param {*} [taskType]
@@ -297,6 +299,23 @@ gulp.task('styles:css:build', function () {
      https://youtu.be/uYZPNrT-e-8?t=240
    */
 
+  return gulp
+    .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe($.sourcemaps.init())
+    .pipe(streams.styles.css)
+    .pipe($.sourcemaps.write('./', {
+      sourceRoot: './',
+      includeContent: true,
+      sourceMappingURLPrefix: '/css'
+    }))
+    .pipe(gulp.dest('dist/dev/css'))
+  ;
+
+
+
+
   //.pipe(gulpSourcemaps.init())
   //.pipe(gulpSass({
   //  precision: 10,
@@ -324,6 +343,7 @@ gulp.task('styles:css:build', function () {
   //    }, path.relative(global.Builder.dest, stylesConfig.dest))
   //  }))
   //
+
 
   var cssStream = gulp
     .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
