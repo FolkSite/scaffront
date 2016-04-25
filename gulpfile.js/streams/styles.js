@@ -16,6 +16,9 @@ streams.css = function () {
         message: err.message
       }))
     }),
+    $.sourcemaps.init({
+      loadMaps: true
+    }),
     $.postcss([
       require('postcss-import')
     ])
@@ -23,14 +26,14 @@ streams.css = function () {
 };
 
 streams.scss = function () {
-  return lazypipe()
-    .pipe($.plumber({
+  return combiner(
+    $.plumber({
       errorHandler: $.notify.onError(err => ({
         title:   'SCSS',
         message: err.message
       }))
-    }))
-    .pipe($.sass({
+    }),
+    $.sass({
       precision: 10,
       importer: require('node-sass-import-once'),
       importOnce: {
@@ -47,9 +50,8 @@ streams.scss = function () {
       //sourceMap: './',
       //sourceMapContents: true,
       //omitSourceMapUrl: true
-    }))
-
-    ;
+    })
+  );
 };
 
 module.exports = streams;

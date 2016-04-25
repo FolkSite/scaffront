@@ -304,89 +304,25 @@ gulp.task('styles:css:build', function () {
     .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
       //since: gulp.lastRun(options.taskName)
     })
-    .pipe($.sourcemaps.init())
+    .pipe($.sourcemaps.init({
+      loadMaps: true
+    }))
     .pipe(streams.styles.css())
     .pipe($.if(
       !envs.isProd,
-      $.sourcemaps.write(),
-      $.sourcemaps.write('.', {
-        //destPath: 'css',
-        sourceRoot: './app/frontend/css',
+      $.sourcemaps.write('', {
+        sourceRoot: '/css/sources',
         includeContent: true,
-        //sourceMappingURLPrefix: '/css'
+      }),
+      $.sourcemaps.write('.', {
+        sourceRoot: '/css/sources',
+        includeContent: true,
       })
     ))
     .pipe(gulp.dest('dist/frontend/css'))
   ;
 
-
-
-
-  //.pipe(gulpSourcemaps.init())
-  //.pipe(gulpSass({
-  //  precision: 10,
-  //  functions: assetFunctions({
-  //    images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
-  //    images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
-  //    http_images_path: '/i',
-  //    http_generated_images_path: '/i',
-  //  }),
-  //importer: importOnce,
-  //  importOnce: {
-  //    index: true,
-  //    css: true,
-  //    bower: false
-  //}
-  //  includePaths: _importPaths,
-  //  sourceMap: './',
-  //  sourceMapContents: true,
-  //  omitSourceMapUrl: true
-  //}).on('error', __.plumberErrorHandler.errorHandler))
-  //  .pipe(gulpSourcemaps.write('./', {
-  //    sourceRoot: './',
-  //    sourceMappingURLPrefix: __.preparePath({
-  //      startSlash: true
-  //    }, path.relative(global.Builder.dest, stylesConfig.dest))
-  //  }))
-  //
-
-
-  var cssStream = gulp
-    .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe($.postcss([
-      require("postcss-import")
-    ]))
-  ;
-
-  var scssStream = gulp
-    .src(__.getGlob('app/frontend/css/', ['*.scss', '!_*.scss'], true), {
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe($.sass({
-      precision: 10,
-      importer: require('node-sass-import-once'),
-      importOnce: {
-        index: true,
-        css: true,
-        bower: false
-      },
-      //functions: assetFunctions({
-      //  images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
-      //  images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
-      //  http_images_path: '/i',
-      //  http_generated_images_path: '/i',
-      //}),
-      //sourceMap: './',
-      //sourceMapContents: true,
-      //omitSourceMapUrl: true
-    }))
-  ;
-
   return combine(
-    merge(cssStream, scssStream),
-
     $.cached('styles'),
 
     $.if(config.env.isDev, $.debug({title: 'Style:'})),
