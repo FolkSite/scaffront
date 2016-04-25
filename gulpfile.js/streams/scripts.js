@@ -13,42 +13,6 @@ const webpackStream = require('webpack-stream');
 const webpack       = webpackStream.webpack;
 
 let streams = {};
-let defaults = {
-  output: {
-    filename: '[name].js',
-    library: '[name]',
-    chunkFilename: '[id].js'
-  },
-
-  resolve: {
-    modulesDirectories: ['node_modules', 'bower_components'],
-    extensions: ['', '.js']
-  },
-
-  devtool: '#inline-source-map',
-
-  module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
-      loader: 'babel',
-      query: {
-        presets: ['es2015'],
-        plugins: [
-          ['transform-runtime', {
-            "polyfill": false,
-            "regenerator": true
-          }]
-        ]
-      }
-    }]
-  },
-  resolveLoader: {
-    modulesDirectories: ['node_modules'],
-    moduleTemplates: ['*-loader', '*'],
-    extensions: ['', '.js']
-  }
-};
 
 streams.webpack = function (options, cb) {
   let args = slice(arguments);
@@ -57,7 +21,7 @@ streams.webpack = function (options, cb) {
     cb = options;
   }
 
-  options = (_.isPlainObject(options)) ? _.defaultsDeep(args[0], defaults) : _.defaults({}, defaults);
+  options = (_.isPlainObject(options)) ? args[0] : {};
   cb = (_.isFunction(cb)) ? cb : __.noop;
 
   return combiner(

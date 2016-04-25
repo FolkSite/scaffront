@@ -5,10 +5,10 @@ const fs   = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-let context = path.join(path.resolve('./app/frontend/js/'), '/');
-let entries = fs.readdirSync(context).reduce(function (all, file) {
+let context = path.resolve('./app/frontend/');
+let entries = fs.readdirSync(path.join(context, 'js')).reduce(function (all, file) {
   if (/\.js$/.test(file) && !/^_/.test(file)) {
-    all[path.basename(file, '.js')] = './'+ file;
+    all[path.basename(file, '.js')] = './js/'+ file;
   }
 
   return all;
@@ -46,8 +46,8 @@ let config = {
   //  aggregateTimeout: 300
   //},
 
-  devtool: false,
-  //devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map',
+  //devtool: false,
+  devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map',
 
   plugins: [
     new webpack.NoErrorsPlugin(),
@@ -70,12 +70,12 @@ let config = {
       loader: 'babel',
       query: {
         presets: ['es2015'],
-        //plugins: [
-        //  ['transform-runtime', {
-        //    "polyfill": false,
-        //    "regenerator": true
-        //  }]
-        //]
+        plugins: [
+          ['transform-runtime', {
+            "polyfill": false,
+            "regenerator": true
+          }]
+        ]
       },
     }],
     //noParse: [
@@ -90,32 +90,5 @@ let config = {
     extensions: ['', '.js']
   }
 };
-
-//if (!envs.isProd) {
-//  config.plugins.push(new AssetsPlugin({
-//    filename: 'webpack.json',
-//    path:     __dirname + '/manifest',
-//    processOutput(assets) {
-//      Object.keys(assets).forEach(function (key) {
-//        assets[key + '.js'] = assets[key].js.slice(options.output.publicPath.length);
-//        delete assets[key];
-//      });
-//
-//      return JSON.stringify(assets);
-//    }
-//  }));
-//}
-
-//if (envs.isProd) {
-//  config.plugins.push(
-//    new webpack.optimize.UglifyJsPlugin({
-//      compress: {
-//        warnings: false,
-//        drop_console: true,
-//        unsafe: true
-//      }
-//    })
-//  );
-//}
 
 module.exports = config;

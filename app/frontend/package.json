@@ -8,10 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "sliced": "^1.0.1"
-  },
   "dependencies": {
-    "domready": "^1.0.8"
+    "domready": "^1.0.8",
+    "lodash": "^4.11.1",
+    "sliced": "^1.0.1"
   }
 }

@@ -1,12 +1,13 @@
 'use strict';
 
+const _        = require('lodash');
 const __       = require('./helpers');
 const $        = require('gulp-load-plugins')();
 const gulp     = require('gulp');
 const del      = require('del');
 const path     = require('path');
 const merge    = require('merge-stream');
-const through  = require('through2').obj;
+const extend   = require('extend');
 const combiner = require('stream-combiner2').obj;
 
 const envs    = require('../scaffront.env.js');
@@ -391,7 +392,6 @@ gulp.task('styles:dist', gulp.series('styles:build', /*'styles:scss:build',*/ fu
 gulp.task('styles:clean', function () {
   return del(__.getGlob('dist/frontend/css', '*.css', true), {read: false});
 });
-
 /** ========== //STYLES ========== **/
 
 /** ========== SCRIPTS ========== **/
@@ -399,41 +399,52 @@ const gulplog       = require('gulplog');
 const webpackStream = require('webpack-stream');
 const webpack       = webpackStream.webpack;
 const AssetsPlugin  = require('assets-webpack-plugin');
+const through       = require('through2').obj;
 
-gulp.task('scripts:webpack:build', function (cb) {
-  let firstBuildReady = false;
-  let config = {
-    profile: !envs.isProd,
+let webpackConfig = require('../webpack.config.js');
+var webpackTask = function webpackTask (options) {
+  let config = extend(true, {}, webpackConfig);
 
-    output: {
+  options = _.isPlainObject(options) ? extend(true, {}, options) : {};
+
+  return function (cb) {
+    config.profile = !envs.isProd;
+    config.output = {
       publicPath: '/js/',
-      filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
+      //filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js', /* 1 */
+      filename: '[name].js',
       library: '[name]',
-      chunkFilename: '[id].js',
-    },
+      chunkFilename: '[id].js'
+    };
 
-    resolve: {
+    config.resolve = {
       modulesDirectories: ['node_modules', 'bower_components'],
       extensions: ['', '.js'],
-      root: [
-        path.resolve('./app/frontend')
-      ]
-    },
+      //root: [
+      //  path.resolve('./app/frontend')
+      //]
+    };
 
-    //externals: {
-    //  lodash: '_',
-    //  jquery: 'jQuery',
-    //},
+    config.externals = {
+      //lodash: '_',
+      jquery: 'jQuery',
+    };
 
-    //watch:   !envs.isProd,
-    //watchOptions: {
-    //  aggregateTimeout: 300
-    //},
+    config.module = config.module || {};
+    config.module.noParse = [
+      /angular\/angular.js/,
+      /lodash/,
+      // /jquery/,
+    ];
 
-    //devtool: false,
-    //devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map',
+    config.watch = !envs.isProd;
+    config.watchOptions = {
+      aggregateTimeout: 100
+    };
 
-    plugins: [
+    config.devtool = !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map';
+
+    config.plugins = [
       new webpack.NoErrorsPlugin(),
       new webpack.EnvironmentPlugin(Object.keys(process.env)),
       new webpack.DefinePlugin(Object.keys(envs).reduce((_envs, env) => {
@@ -445,82 +456,87 @@ gulp.task('scripts:webpack:build', function (cb) {
         name: 'common',
         minChunks: 2
       })
-    ],
+    ];
 
-    module: {
-      loaders: [{
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015'],
-          plugins: [
-            ['transform-runtime', {
-              "polyfill": false,
-              "regenerator": true
-            }]
-          ]
-        },
-      }],
-      //noParse: [
-      //  /angular\/angular.js/,
-      //  /lodash/,
-      //  // /jquery/,
-      //]
-    },
-    resolveLoader: {
-      modulesDirectories: ['node_modules'],
-      moduleTemplates: ['*-loader', '*'],
-      extensions: ['', '.js']
+    config.plugins = _.isArray(config.plugins) ? config.plugins : [];
+    if (!envs.isProd) {
+
     }
-  };
 
-  //if (!envs.isProd) {
-  //  options.plugins.push(new AssetsPlugin({
-  //    filename: 'webpack.json',
-  //    path:     __dirname + '/manifest',
-  //    processOutput(assets) {
-  //      Object.keys(assets).forEach(function (key) {
-  //        assets[key + '.js'] = assets[key].js.slice(options.output.publicPath.length);
-  //        delete assets[key];
-  //      });
-  //
-  //      return JSON.stringify(assets);
-  //    }
-  //  }));
-  //}
+    if (envs.isProd) {
+      /* 1 */
+      //config.plugins.push(new AssetsPlugin({
+      //  filename: 'scripts.json',
+      //  path:     path.join(process.cwd(), 'dist/frontend-manifest'),
+      //  processOutput(assets) {
+      //    Object.keys(assets).forEach(function (key) {
+      //      assets[key + '.js'] = assets[key].js.slice(config.output.publicPath.length);
+      //      delete assets[key];
+      //    });
+      //
+      //    return JSON.stringify(assets);
+      //  }
+      //}));
 
-  return gulp
-    .src(__.getGlob('app/frontend/js/', ['*.js']), {
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe(streams.scripts.webpack(config, function done(err, stats) {
-      firstBuildReady = true;
-
-      if (err) { // hard error, see https://webpack.github.io/docs/node.js-api.html#error-handling
-        return;  // emit('error', err) in webpack-stream
-      }
-
-      gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
-        colors: true
+      config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          drop_console: true,
+          unsafe: true
+        }
       }));
+    }
 
-    }))
-    .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe(through(function (file, enc, cb) {
-      var isSourceMap = /\.map$/.test(file.path);
-      if (!isSourceMap) { this.push(file); }
-      cb();
-    }))
-    .pipe($.sourcemaps.write('.'))
-    .pipe(gulp.dest('dist/frontend/js'))
-    .on('data', function() {
-      if (firstBuildReady) {
-        cb();
-      }
-    })
-  ;
-});
+
+    //- Stream -//
+
+    let firstBuildReady = false;
+    //let smOpts = {
+    //  sourceRoot: '/js/sources',
+    //  includeContent: true,
+    //};
+
+    return gulp
+      .src(__.getGlob('app/frontend/js/', ['*.js', '!_*.js']), {
+        //since: gulp.lastRun(options.taskName)
+      })
+      .pipe(streams.scripts.webpack(extend(true, config, options), function done(err, stats) {
+        firstBuildReady = true;
+
+        if (err) { // hard error, see https://webpack.github.io/docs/node.js-api.html#error-handling
+          return;  // emit('error', err) in webpack-stream
+        }
+
+        gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
+          colors: true
+        }));
+
+      }))
+      //.pipe($.sourcemaps.init({loadMaps: true}))
+      //.pipe(through(function (file, enc, cb) {
+      //  var isSourceMap = /\.map$/.test(file.path);
+      //  if (!isSourceMap) { this.push(file); }
+      //  cb();
+      //}))
+      //.pipe($.if(envs.isProd, $.uglify()))
+      //.pipe($.if(
+      //  envs.isProd,
+      //  $.sourcemaps.write('.', smOpts), // во внешний файл
+      //  $.sourcemaps.write('', smOpts) // инлайн
+      //))
+      .pipe(gulp.dest('dist/frontend/js'))
+      .on('data', function() {
+        if (firstBuildReady) {
+          cb();
+        }
+      })
+      ;
+  };
+};
+
+gulp.task('scripts:webpack:build', webpackTask({
+  watch: true
+}));
 /** ========== //SCRIPTS ========== **/
 
 

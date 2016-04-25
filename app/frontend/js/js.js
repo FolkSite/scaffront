@@ -1,8 +1,10 @@
-import config from './config';
+let _ = require('lodash');
 let slice = require('sliced');
+
+import config from './config';
 //require('babel-runtime/core-js/promise').default = require('bluebird');
 
-console.log('slice', slice([1,2,3,4,5], 3));
+console.log('slice', _.map(slice([1,2,3,4,5], 3), (num) => num *2 ));
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 console.log('isProd', isProd);
@@ -13,7 +15,6 @@ if (isProd) {
 }
 
 export {config};
-
 
 class Person {
   constructor () {

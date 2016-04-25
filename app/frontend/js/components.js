@@ -1,9 +1,7 @@
 require('domready')(function (e) {
   'use strict';
+
   document.querySelector('#component1').onclick = function (e) {
-
-    //debugger;
-
     console.log('loading component1 start');
     require.ensure(['./components/component1'], function (require) {
       setTimeout(function () {
