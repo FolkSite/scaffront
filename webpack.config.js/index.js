@@ -37,7 +37,7 @@ let config = {
   },
 
   externals: {
-    lodash: 'window._',
+    //lodash: 'window._',
     jquery: 'window.jQuery',
   },
 
