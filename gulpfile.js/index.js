@@ -10,39 +10,8 @@ const merge    = require('merge-stream');
 const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
-const envs  = require('../scaffront.env.js');
-const streams  = require('./streams');
-
-/**
- * @param {string} path
- * @param {*} [taskType]
- * @returns {Function}
- */
-function lazyRequireTask(path, taskType) {
-  var args; for (var i = arguments.length, a = args = new Array(i); i--; a[i] = arguments[i]) {}
-  var _taskType = null;
-
-  if (typeof args[1] == 'string') {
-    _taskType = args[1];
-    args = slice(args, 1);
-  }
-
-  return function(callback) {
-    var task;
-    var required = require(path);
-
-    if (_taskType && typeof required[_taskType] == 'function') {
-      task = required[_taskType].apply(this, args);
-    } else
-    if (typeof required == 'function') {
-      task = required.apply(this, args);
-    } else {
-      task = noopTask;
-    }
-
-    return task(callback);
-  };
-}
+const envs    = require('../scaffront.env.js');
+const streams = require('./streams');
 
 var noopTask = function noopTask (cb) { cb(null) };
 
@@ -288,6 +257,7 @@ var postCssProcessorsDist = [
     zindex: {}
   })
 ];
+
 //- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
   /*
