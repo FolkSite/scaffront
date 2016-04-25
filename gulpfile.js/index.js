@@ -261,8 +261,8 @@ var postCssProcessorsDist = [
 //- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
   /*
-     Описание $.remember, $.cached здесь:
-     https://youtu.be/uYZPNrT-e-8?t=240
+   Описание $.remember, $.cached здесь:
+   https://youtu.be/uYZPNrT-e-8?t=240
    */
 
   var smOpts = {
@@ -281,7 +281,7 @@ gulp.task('styles:css:build', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest('dist/frontend/css'))
-  ;
+    ;
 
   return combine(
     $.cached('styles'),
@@ -369,7 +369,7 @@ gulp.task('styles:scss:build', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest('dist/frontend/css'))
-  ;
+    ;
 });
 //- //SCSS styles -//
 
@@ -480,10 +480,13 @@ var webpackTask = function webpackTask (options) {
           cb();
         }
       })
-    ;
+      ;
   };
 };
 
+gulp.task('scripts:cleaner', function () {
+  return del('dist/frontend/js', {read: false});
+});
 gulp.task('scripts:build', webpackTask({
   src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
   dest: 'dist/frontend/js',
@@ -522,19 +525,19 @@ gulp.task('scripts:dist', webpackTask({
 
 
 
-//var imgSrc = 'src/img/**';
-//var imgDest = 'build/img';
-//
-//// Minify any new images
-//gulp.task('images', function() {
-//
-//  // Add the newer pipe to pass through newer images only
-//  return gulp.src(imgSrc)
-//    .pipe($.newer(imgDest))
-//    .pipe($.imagemin())
-//    .pipe(gulp.dest(imgDest));
-//
-//});
+  //var imgSrc = 'src/img/**';
+  //var imgDest = 'build/img';
+  //
+  //// Minify any new images
+  //gulp.task('images', function() {
+  //
+  //  // Add the newer pipe to pass through newer images only
+  //  return gulp.src(imgSrc)
+  //    .pipe($.newer(imgDest))
+  //    .pipe($.imagemin())
+  //    .pipe(gulp.dest(imgDest));
+  //
+  //});
 
 gulp.task('clean', function() {
   return del('dist/frontend', {read: false});
