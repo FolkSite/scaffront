@@ -5,9 +5,8 @@ const $        = require('gulp-load-plugins')();
 const gulp     = require('gulp');
 const del      = require('del');
 const path     = require('path');
-const slice    = require('sliced');
 const merge    = require('merge-stream');
-const lazypipe = require('lazypipe');
+const through  = require('through2').obj;
 const combiner = require('stream-combiner2').obj;
 
 const envs    = require('../scaffront.env.js');
@@ -404,6 +403,8 @@ const AssetsPlugin  = require('assets-webpack-plugin');
 gulp.task('scripts:webpack:build', function (cb) {
   let firstBuildReady = false;
   let config = {
+    profile: !envs.isProd,
+
     output: {
       publicPath: '/js/',
       filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
@@ -429,7 +430,8 @@ gulp.task('scripts:webpack:build', function (cb) {
     //  aggregateTimeout: 300
     //},
 
-    devtool: !envs.isProd ? '#inline-source-map' : '#source-map',
+    //devtool: false,
+    //devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map',
 
     plugins: [
       new webpack.NoErrorsPlugin(),
@@ -460,11 +462,11 @@ gulp.task('scripts:webpack:build', function (cb) {
           ]
         },
       }],
-      noParse: [
-        /angular\/angular.js/,
-        /lodash/,
-        // /jquery/,
-      ]
+      //noParse: [
+      //  /angular\/angular.js/,
+      //  /lodash/,
+      //  // /jquery/,
+      //]
     },
     resolveLoader: {
       modulesDirectories: ['node_modules'],
@@ -504,6 +506,13 @@ gulp.task('scripts:webpack:build', function (cb) {
       }));
 
     }))
+    .pipe($.sourcemaps.init({loadMaps: true}))
+    .pipe(through(function (file, enc, cb) {
+      var isSourceMap = /\.map$/.test(file.path);
+      if (!isSourceMap) { this.push(file); }
+      cb();
+    }))
+    .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('dist/frontend/js'))
     .on('data', function() {
       if (firstBuildReady) {

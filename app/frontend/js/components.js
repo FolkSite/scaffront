@@ -1,9 +1,11 @@
 require('domready')(function (e) {
   'use strict';
-
   document.querySelector('#component1').onclick = function (e) {
+
+    //debugger;
+
     console.log('loading component1 start');
-    require.ensure([], function (require) {
+    require.ensure(['./components/component1'], function (require) {
       setTimeout(function () {
         var component = require('./components/component1');
         console.log('component1', component);
@@ -14,7 +16,7 @@ require('domready')(function (e) {
 
   document.querySelector('#component2').onclick = function (e) {
     console.log('loading component2 start');
-    require.ensure([], function (require) {
+    require.ensure(['./components/component2'], function (require) {
       setTimeout(function () {
         var component = require('./components/component2');
         console.log('component2', component);
