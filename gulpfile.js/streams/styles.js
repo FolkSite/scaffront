@@ -16,7 +16,7 @@ streams.css = function () {
       }))
     }))
     .pipe($.postcss([
-      require("postcss-import")
+      require('postcss-import')
     ]))
   ;
 };
