@@ -1,9 +1,9 @@
+.idea
 dist/
 dest/
-node_modules/
-bower_components/
-.sass-cache/
-.idea/
+node_modules
+bower_components
+.sass-cache
 npm-debug.log
 
 *.iml

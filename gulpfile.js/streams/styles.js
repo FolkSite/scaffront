@@ -2,7 +2,6 @@ const $        = require('gulp-load-plugins')();
 const _        = require('lodash');
 const __       = require('../helpers');
 const envs     = require('../../scaffront.env.js');
-const lazypipe = require('lazypipe');
 const combiner = require('stream-combiner2').obj;
 
 
