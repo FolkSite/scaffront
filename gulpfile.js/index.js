@@ -405,59 +405,9 @@ let webpackConfig = require('../webpack.config.js');
 var webpackTask = function webpackTask (options) {
   let config = extend(true, {}, webpackConfig);
 
-  options = _.isPlainObject(options) ? extend(true, {}, options) : {};
+  options = _.isPlainObject(options) ? options : {};
 
   return function (cb) {
-    config.profile = !envs.isProd;
-    config.output = {
-      publicPath: '/js/',
-      //filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js', /* 1 */
-      filename: '[name].js',
-      library: '[name]',
-      chunkFilename: '[id].js'
-    };
-
-    config.resolve = {
-      modulesDirectories: ['node_modules', 'bower_components'],
-      extensions: ['', '.js'],
-      //root: [
-      //  path.resolve('./app/frontend')
-      //]
-    };
-
-    config.externals = {
-      //lodash: '_',
-      jquery: 'jQuery',
-    };
-
-    config.module = config.module || {};
-    config.module.noParse = [
-      /angular\/angular.js/,
-      /lodash/,
-      // /jquery/,
-    ];
-
-    config.watch = !envs.isProd;
-    config.watchOptions = {
-      aggregateTimeout: 100
-    };
-
-    config.devtool = !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map';
-
-    config.plugins = [
-      new webpack.NoErrorsPlugin(),
-      new webpack.EnvironmentPlugin(Object.keys(process.env)),
-      new webpack.DefinePlugin(Object.keys(envs).reduce((_envs, env) => {
-        _envs[env] = JSON.stringify(envs[env]);
-
-        return _envs;
-      }, {})),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'common',
-        minChunks: 2
-      })
-    ];
-
     config.plugins = _.isArray(config.plugins) ? config.plugins : [];
     if (!envs.isProd) {
 
@@ -535,7 +485,19 @@ var webpackTask = function webpackTask (options) {
 };
 
 gulp.task('scripts:webpack:build', webpackTask({
-  watch: true
+  profile: true,
+  devtool: '#module-cheap-inline-source-map'
+}));
+gulp.task('scripts:webpack:watch', webpackTask({
+  devtool: '#module-cheap-inline-source-map',
+  watch: true,
+  watchOptions: {
+    aggregateTimeout: 100
+  }
+}));
+gulp.task('scripts:webpack:dist', webpackTask({
+  profile: false,
+  devtool: '#source-map'
 }));
 /** ========== //SCRIPTS ========== **/
 

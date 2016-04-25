@@ -5,6 +5,7 @@ const fs   = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
+// get all entries from './app/frontend/js/'
 let context = path.resolve('./app/frontend/');
 let entries = fs.readdirSync(path.join(context, 'js')).reduce(function (all, file) {
   if (/\.js$/.test(file) && !/^_/.test(file)) {
@@ -15,13 +16,14 @@ let entries = fs.readdirSync(path.join(context, 'js')).reduce(function (all, fil
 }, {});
 
 let config = {
-  profile: !envs.isProd,
+  context: context, /* ignored in gulp task */
+  entry: entries, /* ignored in gulp task */
 
-  context: context,
-  entry: entries,
+  profile: !envs.isProd,
+  devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map', /* ignored in gulp task */
 
   output: {
-    path: path.resolve('./dist/frontend/js'),
+    path: path.resolve('./dist/frontend/js'), /* ignored in gulp task */
     publicPath: '/js/',
     filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
     library: '[name]',
@@ -31,23 +33,13 @@ let config = {
   resolve: {
     modulesDirectories: ['node_modules', 'bower_components'],
     extensions: ['', '.js'],
-    root: [
-      path.resolve('./app/frontend')
-    ]
+    root: [path.resolve('./app/frontend')] /* ignored in gulp task */
   },
 
-  //externals: {
-  //  lodash: '_',
-  //  jquery: 'jQuery',
-  //},
-
-  //watch:   !envs.isProd,
-  //watchOptions: {
-  //  aggregateTimeout: 300
-  //},
-
-  //devtool: false,
-  devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map',
+  externals: {
+    //lodash: '_',
+    jquery: 'jQuery',
+  },
 
   plugins: [
     new webpack.NoErrorsPlugin(),
@@ -78,11 +70,11 @@ let config = {
         ]
       },
     }],
-    //noParse: [
-    //  /angular\/angular.js/,
-    //  /lodash/,
-    //  // /jquery/,
-    //]
+    noParse: [
+      /angular\/angular.js/,
+      /lodash/,
+      // /jquery/,
+    ]
   },
   resolveLoader: {
     modulesDirectories: ['node_modules'],
