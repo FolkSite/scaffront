@@ -8,7 +8,9 @@ const combiner = require('stream-combiner2').obj;
 
 var streams = {};
 
-streams.css = function () {
+streams.css = function (options) {
+  options = (_.isPlainObject(options)) ? options : {};
+
   return combiner(
     $.plumber({
       errorHandler: $.notify.onError(err => ({
@@ -25,7 +27,9 @@ streams.css = function () {
   );
 };
 
-streams.scss = function () {
+streams.scss = function (options) {
+  options = (_.isPlainObject(options)) ? options : {};
+
   return combiner(
     $.plumber({
       errorHandler: $.notify.onError(err => ({
