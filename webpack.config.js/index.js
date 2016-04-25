@@ -4,7 +4,7 @@ const envs = require('../scaffront.env.js');
 const path = require('path');
 const webpack = require('webpack');
 
-console.log(path.resolve('./app/frontend'));
+//console.log(path.resolve('./app/frontend'));
 
 const config = [{
   context: path.resolve('./app/frontend'),
