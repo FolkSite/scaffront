@@ -1,2 +1,11 @@
 // http://habrahabr.ru/post/220295/
 
+@import 'css/vars';
+
+p {
+  background-color: $base-selection-background;
+
+  & + & {
+    margin-top: 30px;
+  }
+}

@@ -290,34 +290,25 @@ var postCssProcessorsDist = [
 ];
 //- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
-  var options = {
-    src: __.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true),
-    dist: 'dist/frontend/css'
-  };
-
   /*
      Описание $.remember, $.cached здесь:
      https://youtu.be/uYZPNrT-e-8?t=240
    */
 
+  var smOpts = {
+    sourceRoot: '/css/sources',
+    includeContent: true,
+  };
+
   return gulp
     .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
       //since: gulp.lastRun(options.taskName)
     })
-    .pipe($.sourcemaps.init({
-      loadMaps: true
-    }))
     .pipe(streams.styles.css())
     .pipe($.if(
-      !envs.isProd,
-      $.sourcemaps.write('', {
-        sourceRoot: '/css/sources',
-        includeContent: true,
-      }),
-      $.sourcemaps.write('.', {
-        sourceRoot: '/css/sources',
-        includeContent: true,
-      })
+      envs.isProd,
+      $.sourcemaps.write('.', smOpts), // во внешний файл
+      $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest('dist/frontend/css'))
   ;
@@ -391,7 +382,25 @@ gulp.task('styles:css:watch', function () {
 //- //Simple CSS styles -//
 
 //- SCSS styles -//
+gulp.task('styles:scss:build', function () {
+  var smOpts = {
+    sourceRoot: '/css/sources',
+    includeContent: true,
+  };
 
+  return gulp
+    .src(__.getGlob('app/frontend/css/', ['*.scss', '!_*.scss'], true), {
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe(streams.styles.scss())
+    .pipe($.if(
+      envs.isProd,
+      $.sourcemaps.write('.', smOpts), // во внешний файл
+      $.sourcemaps.write('', smOpts) // инлайн
+    ))
+    .pipe(gulp.dest('dist/frontend/css'))
+  ;
+});
 //- //SCSS styles -//
 
 gulp.task('styles:watch', gulp.parallel(

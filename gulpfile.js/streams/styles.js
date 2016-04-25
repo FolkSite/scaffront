@@ -33,6 +33,9 @@ streams.scss = function () {
         message: err.message
       }))
     }),
+    $.sourcemaps.init({
+      loadMaps: true
+    }),
     $.sass({
       precision: 10,
       importer: require('node-sass-import-once'),
