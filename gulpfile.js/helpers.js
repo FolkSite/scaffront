@@ -225,7 +225,8 @@ __.getDataForTpl = function getDataForTpl (getFile) {
  *   added/removed suffix '/**'
  * @returns {[]}
  */
-__.getGlob = function getGlob (pathnames, globs, forceDeep) {
+__.glob =
+__.getGlob = function glob (pathnames, globs, forceDeep) {
   var result = [];
   pathnames = __.getArray(pathnames || null);
   globs = __.getArray(globs || null);

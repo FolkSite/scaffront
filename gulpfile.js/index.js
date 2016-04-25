@@ -542,8 +542,8 @@ gulp.task('scripts:build', webpackTask({
   src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
   dest: 'dist/frontend/js',
 
-  profile: true,
-  devtool: '#module-cheap-inline-source-map'
+  profile: !envs.isProd,
+  devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map'
 }));
 gulp.task('scripts:watch', webpackTask({
   src: __.getGlob('app/frontend/js/', ['*.js', '!_*.js']),
@@ -563,6 +563,8 @@ gulp.task('scripts:dist', webpackTask({
   profile: false,
   devtool: '#source-map'
 }));
+
+
 /** ========== //SCRIPTS ========== **/
 
 
