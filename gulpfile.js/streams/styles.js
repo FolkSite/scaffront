@@ -14,11 +14,14 @@ streams.css = function (options) {
     $.sourcemaps.init({
       loadMaps: true
     })
+    ,$.postcss([
+      require('postcss-import')()
+    ])
   );
 
-  if (options.postcss) {
-    stream = combiner(stream, $.postcss(options.postcss))
-  }
+  //if (options.postcss) {
+  //  stream = combiner(stream, $.postcss(options.postcss))
+  //}
 
   return stream;
 };
