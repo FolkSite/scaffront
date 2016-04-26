@@ -288,6 +288,7 @@ gulp.task('styles:css', function () {
             return resolve.sync(id, {basedir: basedir});
           }
         })
+        // todo: минификация, фоллбеки, полифиллы
       ]
     }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
@@ -552,6 +553,11 @@ gulp.task('build', gulp.series(
   'files'
 ));
 
+gulp.task('rebuild', gulp.series(
+  'clean',
+  'build'
+));
+
 gulp.task('watch', gulp.parallel(
   'scripts:watch',
   'styles:watch',
@@ -559,13 +565,18 @@ gulp.task('watch', gulp.parallel(
 ));
 
 gulp.task('dev', gulp.series(
-  'clean',
-  'build',
+  'rebuild',
   gulp.parallel(
     'watch',
     'server'
   )
 ));
+
+gulp.task('dist', gulp.series(
+  'rebuild',
+  'server'
+));
+
 
 
 
