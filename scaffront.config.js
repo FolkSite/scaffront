@@ -25,16 +25,15 @@ tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/producti
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
 tasks.files.dest  = tasks.dest;
-// todo копировать также всё из js/css, кроме .js/.css/.scss
-tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
+//tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
+
 /*
  хитрая хрень:
  - из рутовой директории матчит всё;
  - из директории скриптов матчит всё, кроме, собссна, скриптов;
- - из диретории стилей матчит всё, кроме этих самых стилей
+ - из директории стилей матчит всё, кроме этих самых стилей
  И скрипты, и стили, обрабатываются отдельными тасками.
  */
-
 var filesGlob = [
   'app/frontend/root/**/*.*',
   'app/frontend/{js,css}/**/*.*',

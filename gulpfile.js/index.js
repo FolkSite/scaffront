@@ -534,11 +534,14 @@ gulp.task('scripts:clean', function () {
   //});
 
 gulp.task('clean', gulp.series(
-  gulp.parallel(
-    'files:clean',
-    'styles:clean',
-    'scripts:clean'
-  )
+  //gulp.parallel(
+  //  'files:clean',
+  //  'styles:clean',
+  //  'scripts:clean'
+  //)
+  function clean () {
+    return del(config.tasks.dest, {read: false});
+  }
 ));
 
 gulp.task('build', gulp.series(
