@@ -66,7 +66,7 @@ gulp.task('files', function () {
     // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
     // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
     // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    $.cached('root-files'),
+    $.cached('files'),
 
     // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
     // если в целевой директории такие файлы уже есть, то не пропускает их.
@@ -77,18 +77,18 @@ gulp.task('files', function () {
 
     gulp.dest(config.tasks.files.dest)
   ).on('error', $.notify.onError(err => ({
-    title: 'Copy root files',
+    title: 'Copy files',
     message: err.message
   })));
 });
 
 gulp.task('files:watch', function () {
   gulp
-    .watch(__.getGlob('app/frontend'), gulp.series('root-files:build'))
+    .watch(config.tasks.files.watch, gulp.series('files'))
     .on('unlink', function (filepath) {
       var file = path.resolve(filepath);
-      if ($.cached.caches['root-files']) {
-        delete $.cached.caches['root-files'][file];
+      if ($.cached.caches['files']) {
+        delete $.cached.caches['files'][file];
       }
     })
   ;
