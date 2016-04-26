@@ -56,7 +56,7 @@ gulp.task('server', function () {
 /** ========== //SERVER ========== **/
 
 /** ========== FILES ========== **/
-gulp.task('files:build', function () {
+gulp.task('files', function () {
   return combiner(
     gulp.src(config.tasks.files.src, {
       // При повторном запуске таска (например, через watch) выбирает только те файлы,
@@ -252,7 +252,7 @@ var postCssProcessorsDist = [
   })
 ];
 
-gulp.task('styles:css:build', function () {
+gulp.task('styles:css', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
@@ -324,7 +324,7 @@ gulp.task('styles:css:build', function () {
   //})));
 });
 
-gulp.task('styles:scss:build', function () {
+gulp.task('styles:scss', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
@@ -380,8 +380,8 @@ gulp.task('styles:watch', gulp.parallel(
   //, 'styles:scss:watch'
 ));
 
-gulp.task('styles:build', gulp.series(
-  gulp.parallel('styles:css:build', 'styles:scss:build')
+gulp.task('styles', gulp.series(
+  gulp.parallel('styles:css', 'styles:scss')
   //,function (cb) {
   //  cb();
   //}
@@ -496,7 +496,7 @@ let webpackConfigRequired = {
   devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map'
 };
 
-gulp.task('scripts:build', webpackTask(webpackConfigRequired));
+gulp.task('scripts', webpackTask(webpackConfigRequired));
 gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
   watch: true,
   watchOptions: {
@@ -544,10 +544,9 @@ gulp.task('clean', gulp.series(
 ));
 
 gulp.task('build', gulp.series(
-  gulp.parallel('files:build', 'styles:build')
+  gulp.parallel('styles', 'scripts'),
+  'files'
 ));
-
-
 
 gulp.task('watch', gulp.parallel(
   'styles:watch',
@@ -557,10 +556,9 @@ gulp.task('watch', gulp.parallel(
 gulp.task('dev', gulp.series(
   'clean',
   'build',
-  //'server',
   gulp.parallel(
-    'server',
-    'watch'
+    'server'
+    //'watch'
   )
 ));
 
