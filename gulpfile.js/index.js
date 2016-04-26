@@ -289,12 +289,12 @@ gulp.task('styles:css', function () {
             return resolve.sync(id, {basedir: basedir});
           }
         }),
+        // todo: резолвинг url'ов
         require('postcss-url')({
           url: function () {
             console.log(arguments);
           }
         })
-        // todo: резолвинг url'ов
         // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы,
       ]
     }))
