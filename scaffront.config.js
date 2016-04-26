@@ -55,7 +55,7 @@ tasks.scripts.clean = tasks.scripts.dest;
 tasks.scripts.webpack = {
   output: {
     path: path.resolve('./dist/frontend/js'),
-    publicPath: '/js/',
+    publicPath: '/js/', // нужен для require.ensure
   },
   resolve: {
     root: [path.resolve('./app/frontend')]
