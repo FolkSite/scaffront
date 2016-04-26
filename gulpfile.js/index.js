@@ -47,7 +47,8 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('dev', config.servers.dev);
-  server.watch('dist/frontend/**/*.*')
+  //server.watch('dist/frontend/**/*.*')
+  server.watch(__.glob(config.tasks.dest, '*.*', true))
     .on('add', server.reload)
     .on('change', server.reload)
     .on('unlink', server.reload)
@@ -332,7 +333,7 @@ gulp.task('styles:css:build', function () {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(config.tasks.styles.dest)
+    .pipe(gulp.dest(config.tasks.styles.dest))
   ;
 
 /*
@@ -404,7 +405,7 @@ gulp.task('styles:scss:build', function () {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(config.tasks.styles.dest)
+    .pipe(gulp.dest(config.tasks.styles.dest))
   ;
 });
 
@@ -439,15 +440,11 @@ gulp.task('styles:watch', gulp.parallel(
 ));
 
 gulp.task('styles:build', gulp.series(
-  //gulp.parallel('styles:css:build'/*, 'styles:scss:build'*/),
-  function (cb) {
-    cb();
-  }
+  gulp.parallel('styles:css:build', 'styles:scss:build')
+  //,function (cb) {
+  //  cb();
+  //}
 ));
-
-gulp.task('styles:dist', gulp.series('styles:build', /*'styles:scss:build',*/ function (cb) {
-  cb();
-}));
 
 gulp.task('styles:clean', function () {
   return del(config.tasks.styles.clean, {read: false});
