@@ -47,7 +47,6 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('server', config.server);
-  //server.watch('dist/frontend/**/*.*')
   server.watch(__.glob(config.tasks.dest, '*.*', true))
     .on('add', server.reload)
     .on('change', server.reload)
