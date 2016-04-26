@@ -364,11 +364,6 @@ gulp.task('styles:watch', function () {
 });
 //- //Simple CSS styles -//
 
-gulp.task('styles:watch', gulp.parallel(
-  'styles:css:watch'
-  //, 'styles:scss:watch'
-));
-
 gulp.task('styles', gulp.series(
   gulp.parallel('styles:css', 'styles:scss')
   //,function (cb) {
