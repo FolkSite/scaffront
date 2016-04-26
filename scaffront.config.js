@@ -22,6 +22,29 @@ tasks.src  = 'app/frontend';
 tasks.root = tasks.src;
 tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
+tasks.files      = {};
+tasks.files.root = path.join(tasks.src, 'root');
+tasks.files.dest  = tasks.dest;
+// todo копировать также всё из js/css, кроме .js/.css/.scss
+tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
+/*
+ хитрая хрень:
+ - из рутовой директории матчит всё;
+ - из директории скриптов матчит всё, кроме, собссна, скриптов;
+ - из диретории стилей матчит всё, кроме этих самых стилей
+ И скрипты, и стили, обрабатываются отдельными тасками.
+ */
+
+var filesGlob = [
+  'app/frontend/root/**/*.*',
+  'app/frontend/{js,css}/**/*.*',
+  '!app/frontend/js/**/*.@(js)',
+  '!app/frontend/css/**/*.@(css|scss)'
+];
+tasks.files.src   = filesGlob;
+tasks.files.watch = filesGlob;
+tasks.files.clean = __.glob(tasks.files.dest, ['*.*'], true);
+
 tasks.scripts       = {};
 tasks.scripts.root  = path.join(tasks.src, 'js');
 tasks.scripts.dest  = path.join(tasks.dest, 'js');
@@ -40,18 +63,6 @@ tasks.styles.css.watch  = __.glob(tasks.styles.root, ['*.css'], true);
 tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
-
-tasks.files      = {};
-tasks.files.root = path.join(tasks.src, 'root');
-tasks.files.dest  = tasks.dest;
-// todo копировать также всё из js/css, кроме .js/.css/.scss
-tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
-//tasks.files.src   = [
-//  path.join(tasks.root, '{js/}')
-//];
-tasks.files.watch = __.glob(tasks.files.root, ['*.*'], true);
-// todo исключать пути, а не расширения
-tasks.files.clean = __.glob(tasks.files.dest, ['*.*', '!*.js', '!*.css'], true);
 
 let server = {
   ui:        false,
