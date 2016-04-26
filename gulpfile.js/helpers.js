@@ -9,6 +9,7 @@ const browserSync    = require('browser-sync');
 var __ = {};
 
 __.noop = function noop () {};
+__.noopTask = function noopTask (cb) { cb(null) };
 
 var bowerPath = (bowerDirectory) ? bowerDirectory.sync() : '';
 __.bower = {

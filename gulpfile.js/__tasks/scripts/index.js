@@ -16,9 +16,9 @@ var _                 = require('lodash'),
     vinylBuffer       = require('vinyl-buffer')
   ;
 
-var Config         = require('../../_config').scripts,
-    BowerConfig    = require('../../_config').bower,
-    ServerConfig   = require('../../_config').server,
+var Config         = require('../../__config/_config').scripts,
+    BowerConfig    = require('../../__config/_config').bower,
+    ServerConfig   = require('../../__config/_config').server,
     ScriptsClasses = require('./classes');
 
 

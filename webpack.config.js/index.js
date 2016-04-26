@@ -1,6 +1,6 @@
 'use strict';
 
-const envs = require('../scaffront.env.js');
+const config = require('../scaffront.config.js');
 const fs   = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -15,17 +15,17 @@ let entries = fs.readdirSync(path.join(context, 'js')).reduce(function (all, fil
   return all;
 }, {});
 
-let config = {
+let wpConfig = {
   context: context, /* ignored in gulp task */
   entry: entries, /* ignored in gulp task */
 
-  //profile: !envs.isProd,
-  //devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map', /* ignored in gulp task */
+  //profile: !config.env.isProd,
+  //devtool: !config.env.isProd ? '#module-cheap-inline-source-map' : '#source-map', /* ignored in gulp task */
 
   output: {
     path: path.resolve('./dist/frontend/js'), /* ignored in gulp task */
     publicPath: '/js/',
-    //filename: !envs.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
+    //filename: !config.env.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
     filename: '[name].js',
     library: '[name]',
     chunkFilename: '[id].js',
@@ -45,8 +45,8 @@ let config = {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.EnvironmentPlugin(Object.keys(process.env)),
-    new webpack.DefinePlugin(Object.keys(envs).reduce((_envs, env) => {
-      _envs[env] = JSON.stringify(envs[env]);
+    new webpack.DefinePlugin(Object.keys(config.env).reduce((_envs, env) => {
+      _envs[env] = JSON.stringify(config[env]);
 
       return _envs;
     }, {})),
@@ -84,4 +84,4 @@ let config = {
   }
 };
 
-module.exports = config;
+module.exports = wpConfig;

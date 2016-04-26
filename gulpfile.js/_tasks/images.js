@@ -23,7 +23,7 @@ var server       = null,
     serverUtils  = config.server.utils;
 
 
-var _config      = require('../_config'),
+var _config      = require('../__config/_config'),
     Config       = _config.images.config,
     ServerConfig = _config.server,
     CopierUtils  = _config.copier.utils;

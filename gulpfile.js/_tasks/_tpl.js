@@ -16,7 +16,7 @@ var _                = require('lodash'),
   ;
 
 var server       = null,
-    config       = require('../_config'),
+    config       = require('../__config/_config'),
     _tplConfig  = config._tpl.config,
     copierUtils  = config.copier.utils,
     serverConfig = config.server.config,

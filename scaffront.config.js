@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * It will be used in your frontend's scripts as a global variables
  * and in gulp tasks.
@@ -38,9 +40,9 @@ tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
-tasks.files = {};
+tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
-// todo копировать также всё из js/css, кроме .js/.css
+// todo копировать также всё из js/css, кроме .js/.css/.scss
 tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
 tasks.files.dest  = tasks.dest;
 tasks.files.watch = __.glob(tasks.files.root, ['*.*'], true);
@@ -57,9 +59,9 @@ let server = {
   startPath: '/',
   port:      (env.isDev) ? 1313 : 13666,
   server:    {
-    index:   'index.html',
+    index:     'index.html',
     directory: false,
-    baseDir: tasks.dest
+    baseDir:   tasks.dest
   }
 };
 

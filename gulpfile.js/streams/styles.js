@@ -1,7 +1,7 @@
 const $        = require('gulp-load-plugins')();
 const _        = require('lodash');
 const __       = require('../helpers');
-const envs     = require('../../scaffront.env.js');
+const config   = require('../../scaffront.config.js');
 const combiner = require('stream-combiner2').obj;
 
 
