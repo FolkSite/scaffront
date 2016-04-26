@@ -14,9 +14,7 @@ streams.css = function (options) {
     $.sourcemaps.init({
       loadMaps: true
     }),
-    $.postcss([
-      require('postcss-import')
-    ])
+    $.if(options.postcss, $.postcss(options.postcss))
   );
 };
 

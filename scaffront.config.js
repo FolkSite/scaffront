@@ -24,8 +24,9 @@ tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/producti
 
 tasks.scripts       = {};
 tasks.scripts.root  = path.join(tasks.src, 'js');
-tasks.scripts.src   = __.glob(tasks.scripts.root, ['*.js', '!_*.js']);
 tasks.scripts.dest  = path.join(tasks.dest, 'js');
+tasks.scripts.src   = __.glob(tasks.scripts.root, ['*.js']);
+// tasks.scripts.watch - вотчер не нужен, потому что js-файлы вотчит webpack напрямую
 tasks.scripts.clean = tasks.scripts.dest;
 
 tasks.styles       = {};
@@ -34,17 +35,17 @@ tasks.styles.dest  = path.join(tasks.dest, 'css');
 tasks.styles.clean = tasks.styles.dest;
 
 tasks.styles.css        = {};
-tasks.styles.css.src    = __.glob(tasks.styles.root, ['*.css', '!_*.css']);
+tasks.styles.css.src    = __.glob(tasks.styles.root, ['*.css']);
 tasks.styles.css.watch  = __.glob(tasks.styles.root, ['*.css'], true);
 tasks.styles.scss       = {};
-tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
+tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
+tasks.files.dest  = tasks.dest;
 // todo копировать также всё из js/css, кроме .js/.css/.scss
 tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
-tasks.files.dest  = tasks.dest;
 tasks.files.watch = __.glob(tasks.files.root, ['*.*'], true);
 // todo исключать пути, а не расширения
 tasks.files.clean = __.glob(tasks.files.dest, ['*.*', '!*.js', '!*.css'], true);

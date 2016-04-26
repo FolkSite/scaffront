@@ -254,6 +254,7 @@ var postCssProcessorsDist = [
   })
 ];
 
+const resolve = require('node-resolve');
 gulp.task('styles:css', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
@@ -270,7 +271,20 @@ gulp.task('styles:css', function () {
         message: err.message
       }))
     }))
-    .pipe(streams.styles.css())
+    .pipe(streams.styles.css({
+      postcss: [
+        require('postcss-import')({
+          root: path.join(process.cwd(), config.tasks.styles.root),
+          resolve: function (id, basedir, importOptions) {
+            console.log('id, basedir', id, basedir);
+            let resolved = resolve(id, {basedir: basedir});
+            console.log('resolved', resolved);
+
+            return resolved;
+          }
+        })
+      ]
+    }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -303,21 +317,15 @@ gulp.task('styles:css', function () {
   //  }),
   //  // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
   //  // и потом, если в потоке они отсутствуют, добавляет их
-  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
-  //  // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
-  //  // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
-  //  // забыть об удалённых файлах. $.remember('css'),
-  //  // инклюдим файлы
-  //  // $.include(),
-  //  // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-  //  // названию файла и содержимому)
-  //  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-  //  // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-  //  $.cached('css'),
-  //  $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
-  //  postCssTasksForCss,
-  //  gulp.dest(options.dist)
-  //).on('error', $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
+  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые
+  // файлы, // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
+  // // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember //
+  // забыть об удалённых файлах. $.remember('css'), // инклюдим файлы // $.include(), // При повторном запуске таска
+  // выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по // названию файла и содержимому) //
+  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью // читать файл. Ещё since криво
+  // работает с ранее удалёнными и только что восстановленными через ctrl+z файлами. $.cached('css'),
+  // $.if(config.env.isDev, $.debug({title: 'CSS style:'})), postCssTasksForCss, gulp.dest(options.dist) ).on('error',
+  // $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
 });
 
 gulp.task('styles:scss', function () {
