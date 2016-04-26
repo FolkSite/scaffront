@@ -270,6 +270,7 @@ gulp.task('styles:css', function () {
       }))
     }))
     .pipe(streams.styles.css())
+    .pipe($.if(config.isDev, $.debug({title: 'CSS file:'})))
     .pipe($.if(
       envs.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
@@ -329,6 +330,7 @@ gulp.task('styles:scss', function () {
       }))
     }))
     .pipe(streams.styles.scss())
+    .pipe($.if(config.isDev, $.debug({title: 'SCSS file:'})))
     .pipe($.if(
       envs.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
@@ -353,11 +355,11 @@ gulp.task('styles:watch', function () {
   };
 
   gulp
-    .watch(config.tasks.styles.css, gulp.series('styles:css'))
+    .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
     .on('unlink', onUnlink)
   ;
   gulp
-    .watch(config.tasks.styles.scss, gulp.series('styles:scss'))
+    .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
     .on('unlink', onUnlink)
   ;
 
