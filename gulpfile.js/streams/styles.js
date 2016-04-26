@@ -11,12 +11,6 @@ streams.css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   return combiner(
-    $.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'CSS',
-        message: err.message
-      }))
-    }),
     $.sourcemaps.init({
       loadMaps: true
     }),
@@ -30,12 +24,6 @@ streams.scss = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   return combiner(
-    $.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'SCSS',
-        message: err.message
-      }))
-    }),
     $.sourcemaps.init({
       loadMaps: true
     }),

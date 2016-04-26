@@ -27,6 +27,7 @@ config.tasks.scripts = {
 };
 
 config.tasks.styles = {};
+config.tasks.styles.clean = path.join(config.tasks.dest, 'css');
 config.tasks.styles.css = {
   src: __.glob(path.join(config.tasks.src, 'css'), ['*.css', '!_*.css']),
   dest: path.join(config.tasks.dest, 'css'),
@@ -55,7 +56,7 @@ config.servers = {
       baseDir: config.tasks.dest
     }
   },
-  prod: {
+  dist: {
     ui: false,
     open: false,
     //reloadDelay: 1000,

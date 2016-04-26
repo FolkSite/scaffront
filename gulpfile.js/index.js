@@ -323,17 +323,23 @@ gulp.task('styles:css:build', function () {
   };
 
   return gulp
-    .src(__.getGlob('app/frontend/css/', ['*.css', '!_*.css'], true), {
+    .src(config.tasks.styles.css.src, {
       //since: gulp.lastRun(options.taskName)
     })
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'CSS',
+        message: err.message
+      }))
+    }))
     .pipe(streams.styles.css())
     .pipe($.if(
       envs.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(gulp.dest('dist/frontend/css'))
-    ;
+    .pipe(config.tasks.styles.css.dest)
+  ;
 
   return combine(
     $.cached('styles'),
@@ -378,6 +384,32 @@ gulp.task('styles:css:build', function () {
   })));
 });
 
+gulp.task('styles:scss:build', function () {
+  var smOpts = {
+    sourceRoot: '/css/sources',
+    includeContent: true,
+  };
+
+  return gulp
+    .src(config.tasks.styles.scss.src, {
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'SCSS',
+        message: err.message
+      }))
+    }))
+    .pipe(streams.styles.scss())
+    .pipe($.if(
+      envs.isProd,
+      $.sourcemaps.write('.', smOpts), // во внешний файл
+      $.sourcemaps.write('', smOpts) // инлайн
+    ))
+    .pipe(config.tasks.styles.scss.dest)
+  ;
+});
+
 gulp.task('styles:css:watch', function () {
   var options = {
     basePath: 'app/frontend/css',
@@ -403,28 +435,6 @@ gulp.task('styles:css:watch', function () {
 });
 //- //Simple CSS styles -//
 
-//- SCSS styles -//
-gulp.task('styles:scss:build', function () {
-  var smOpts = {
-    sourceRoot: '/css/sources',
-    includeContent: true,
-  };
-
-  return gulp
-    .src(__.getGlob('app/frontend/css/', ['*.scss', '!_*.scss'], true), {
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe(streams.styles.scss())
-    .pipe($.if(
-      envs.isProd,
-      $.sourcemaps.write('.', smOpts), // во внешний файл
-      $.sourcemaps.write('', smOpts) // инлайн
-    ))
-    .pipe(gulp.dest('dist/frontend/css'))
-    ;
-});
-//- //SCSS styles -//
-
 gulp.task('styles:watch', gulp.parallel(
   'styles:css:watch'
   //, 'styles:scss:watch'
@@ -442,7 +452,7 @@ gulp.task('styles:dist', gulp.series('styles:build', /*'styles:scss:build',*/ fu
 }));
 
 gulp.task('styles:clean', function () {
-  return del(__.getGlob('dist/frontend/css', '*.css', true), {read: false});
+  return del(config.tasks.styles.clean, {read: false});
 });
 /** ========== //STYLES ========== **/
 
@@ -502,6 +512,12 @@ let webpackTask = function webpackTask (options) {
       .src(options.src, {
         //since: gulp.lastRun(options.taskName)
       })
+      .pipe($.plumber({
+        errorHandler: $.notify.onError(err => ({
+          title:   'Webpack',
+          message: err.message
+        }))
+      }))
       .pipe(streams.scripts.webpack(extend(true, config, options), function done(err, stats) {
         firstBuildReady = true;
 

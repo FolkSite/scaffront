@@ -25,12 +25,6 @@ streams.webpack = function (options, cb) {
   cb = (_.isFunction(cb)) ? cb : __.noop;
 
   return combiner(
-    $.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'Webpack',
-        message: err.message
-      }))
-    }),
     named(),
     webpackStream(options, null, cb)
   );
