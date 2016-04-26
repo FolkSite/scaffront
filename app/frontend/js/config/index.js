@@ -2,7 +2,7 @@ const config = {
   apiServer: 'https://something.tld',
   db: {
     user: 'root',
-    pass: ''
+    pass: 'password'
   }
 };
 

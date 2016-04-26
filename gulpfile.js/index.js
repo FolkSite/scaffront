@@ -450,7 +450,6 @@ let webpackTask = function webpackTask (options) {
         gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
           colors: true
         }));
-
       }))
       //.pipe($.sourcemaps.init({loadMaps: true}))
       //.pipe(through(function (file, enc, cb) {
@@ -464,6 +463,7 @@ let webpackTask = function webpackTask (options) {
       //  $.sourcemaps.write('.', smOpts), // во внешний файл
       //  $.sourcemaps.write('', smOpts) // инлайн
       //))
+      .pipe($.if(config.isDev, $.debug({title: 'Script:'})))
       .pipe(gulp.dest(options.dest))
       .on('data', function() {
         if (firstBuildReady) {
@@ -478,7 +478,7 @@ let webpackConfigRequired = {
   src: config.tasks.scripts.src,
   dest: config.tasks.scripts.dest,
 
-  profile: !envs.isProd,
+  //profile: !envs.isProd,
   devtool: !envs.isProd ? '#module-cheap-inline-source-map' : '#source-map'
 };
 
@@ -493,32 +493,31 @@ gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
 gulp.task('scripts:clean', function () {
   return del(config.tasks.scripts.clean, {read: false});
 });
-
 /** ========== //SCRIPTS ========== **/
-
-
-
-
-
-
-
-
-
-
-
-
   //var imgSrc = 'src/img/**';
   //var imgDest = 'build/img';
-  //
-  //// Minify any new images
   //gulp.task('images', function() {
-  //
-  //  // Add the newer pipe to pass through newer images only
-  //  return gulp.src(imgSrc)
+  //  return gulp
+  //    .src(imgSrc)
   //    .pipe($.newer(imgDest))
-  //    .pipe($.imagemin())
+  //    .pipe($.imagemin({
+  //      optimizationLevel: 2, // png
+  //      interlaced: true,     // gif
+  //      progressive: true,    // jpg
+  //      multipass: true,      // svg
+  //      svgoPlugins: [
+  //        { removeViewBox: false },               // don't remove the viewbox atribute from the SVG
+  //        { removeUselessStrokeAndFill: false },  // don't remove Useless Strokes and Fills
+  //        { removeEmptyAttrs: false }             // don't remove Empty Attributes from the SVG
+  //      ],
+  //      use: [
+  //        PngQuant({
+  //          quality: '80-90',
+  //          speed: 4
+  //        })
+  //      ]
+  //    }))
   //    .pipe(gulp.dest(imgDest));
-  //
   //});
 
 gulp.task('clean', gulp.series(
@@ -535,6 +534,7 @@ gulp.task('build', gulp.series(
 ));
 
 gulp.task('watch', gulp.parallel(
+  'scripts:watch',
   'styles:watch',
   'files:watch'
 ));
@@ -543,8 +543,8 @@ gulp.task('dev', gulp.series(
   'clean',
   'build',
   gulp.parallel(
+    'watch',
     'server'
-    //'watch'
   )
 ));
 
