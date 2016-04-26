@@ -45,36 +45,19 @@ config.tasks.files = {
   clean: __.glob(path.join(config.tasks.dest), ['*.*', '!*.js', '!*.css'], true)
 };
 
-config.servers = {
-  dev: {
-    ui: false,
-    open: false,
-    //reloadDelay: 1000,
-    //reloadDebounce: 1000,
-    ghostMode: false,
+config.server = {
+  ui: false,
+  open: false,
+  //reloadDelay: 1000,
+  //reloadDebounce: 1000,
+  ghostMode: false,
 
-    startPath: '/',
-    port: 1313,
-    server: {
-      index: 'index.html',
-      //directory: true,
-      baseDir: config.tasks.dest
-    }
-  },
-  dist: {
-    ui: false,
-    open: false,
-    //reloadDelay: 1000,
-    //reloadDebounce: 1000,
-    ghostMode: false,
-
-    startPath: '/',
-    port: 13666,
-    server: {
-      index: 'index.html',
-      //directory: true,
-      baseDir: config.tasks.dest
-    }
+  startPath: '/',
+  port: (config.isDev) ? 1313 : 13666,
+  server: {
+    index: 'index.html',
+    //directory: true,
+    baseDir: config.tasks.dest
   }
 };
 

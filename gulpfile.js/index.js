@@ -46,7 +46,7 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
-  var server = __.server.run('dev', config.servers.dev);
+  var server = __.server.run('server', config.server);
   //server.watch('dist/frontend/**/*.*')
   server.watch(__.glob(config.tasks.dest, '*.*', true))
     .on('add', server.reload)
@@ -59,7 +59,7 @@ gulp.task('server', function () {
 /** ========== ROOT FILES ========== **/
 gulp.task('root-files:build', function () {
   var options = {
-    src: __.getGlob('app/frontend/root', '*.*', true),
+    src: __.glob('app/frontend/root', '*.*', true),
     dist: 'dist/frontend'
   };
 
