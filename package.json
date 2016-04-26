@@ -154,6 +154,7 @@
     "postcss-single-charset": "^1.0.0",
     "postcss-unmq": "^1.0.2",
     "postcss-unroot": "^1.0.2",
+    "postcss-url": "^5.1.1",
     "postcss-vmin": "^2.0.0",
     "postcss-will-change": "^1.1.0",
     "remapify": "^2.1.0",

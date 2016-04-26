@@ -274,6 +274,7 @@ gulp.task('styles:css', function () {
     .src(config.tasks.styles.css.src, {
       //since: gulp.lastRun(options.taskName)
     })
+    // todo: инкрементальность
     .pipe($.plumber({
       errorHandler: $.notify.onError(err => ({
         title:   'CSS',
@@ -286,6 +287,11 @@ gulp.task('styles:css', function () {
           root: path.join(process.cwd(), config.tasks.root),
           resolve: function (id, basedir, importOptions) {
             return resolve.sync(id, {basedir: basedir});
+          }
+        }),
+        require('postcss-url')({
+          url: function () {
+            console.log(arguments);
           }
         })
         // todo: резолвинг url'ов

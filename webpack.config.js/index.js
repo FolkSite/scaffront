@@ -1,8 +1,9 @@
 'use strict';
 
-const config = require('../scaffront.config.js');
-const fs   = require('fs');
-const path = require('path');
+const config  = require('../scaffront.config.js');
+const fs      = require('fs');
+const path    = require('path');
+const extend  = require('extend');
 const webpack = require('webpack');
 
 // get all entries from './app/frontend/js/'
@@ -19,12 +20,7 @@ let wpConfig = {
   context: context, /* ignored in gulp task */
   entry: entries, /* ignored in gulp task */
 
-  //profile: !config.env.isProd,
-  //devtool: !config.env.isProd ? '#module-cheap-inline-source-map' : '#source-map', /* ignored in gulp task */
-
   output: {
-    path: path.resolve('./dist/frontend/js'), /* ignored in gulp task */
-    publicPath: '/js/',
     //filename: !config.env.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
     filename: '[name].js',
     library: '[name]',
@@ -33,8 +29,7 @@ let wpConfig = {
 
   resolve: {
     modulesDirectories: ['node_modules', 'bower_components'],
-    extensions: ['', '.js'],
-    root: [path.resolve('./app/frontend')] /* ignored in gulp task */
+    extensions: ['', '.js']
   },
 
   externals: {
@@ -83,5 +78,7 @@ let wpConfig = {
     extensions: ['', '.js']
   }
 };
+
+wpConfig = extend(true, {}, wpConfig, config.tasks.scripts.webpack);
 
 module.exports = wpConfig;

@@ -51,6 +51,16 @@ tasks.scripts.src   = __.glob(tasks.scripts.root, ['*.js', '!_*.js']);
 // tasks.scripts.watch - вотчер не нужен, потому что js-файлы вотчит webpack напрямую
 tasks.scripts.clean = tasks.scripts.dest;
 
+tasks.scripts.webpack = {
+  output: {
+    path: path.resolve('./dist/frontend/js'),
+    publicPath: '/js/',
+  },
+  resolve: {
+    root: [path.resolve('./app/frontend')]
+  }
+};
+
 tasks.styles       = {};
 tasks.styles.root  = path.join(tasks.src, 'css');
 tasks.styles.dest  = path.join(tasks.dest, 'css');
