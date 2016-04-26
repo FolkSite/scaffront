@@ -340,6 +340,7 @@ gulp.task('styles:scss', function () {
     .src(config.tasks.styles.scss.src, {
       //since: gulp.lastRun(options.taskName)
     })
+    .pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
     .pipe($.plumber({
       errorHandler: $.notify.onError(err => ({
         title:   'SCSS',
@@ -360,15 +361,15 @@ gulp.task('styles:scss', function () {
 gulp.task('styles:watch', function () {
   gulp
     .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
-    .on('unlink', function (filepath) {
-      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
-    })
+    //.on('unlink', function (filepath) {
+    //  onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+    //})
   ;
   gulp
     .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
-    .on('unlink', function (filepath) {
-      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
-    })
+    //.on('unlink', function (filepath) {
+    //  onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+    //})
   ;
 
 });
