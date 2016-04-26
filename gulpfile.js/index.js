@@ -23,8 +23,6 @@ var noopTask = function noopTask (cb) { cb(null) };
  * @returns {string}
  */
 var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir) {
-  'use strict';
-
   filePath  = __.preparePath(filePath, {startSlash: true, trailingSlash: false});
   baseDir   = __.preparePath(baseDir, {startSlash: true, trailingSlash: true});
   targetDir = __.preparePath(targetDir, {startSlash: true, trailingSlash: true});
@@ -47,7 +45,7 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('server', config.server);
-  server.watch(__.glob(config.tasks.dest, '*.*', true))
+  server.watch(__.glob(config.server.server.baseDir, '*.*', true))
     .on('add', server.reload)
     .on('change', server.reload)
     .on('unlink', server.reload)
@@ -91,8 +89,7 @@ gulp.task('files:watch', function () {
         delete $.cached.caches['files'][file];
       }
 
-      // todo: пути захардкожены. нинада так.
-      file = resolveTargetFile(filepath, path.join(config.tasks.src, 'root'), path.join(config.tasks.dest));
+      file = resolveTargetFile(filepath, config.tasks.files.root, config.tasks.dest);
       del.sync(file, {read: false});
     })
   ;
