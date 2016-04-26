@@ -7,6 +7,7 @@
 
 const __   = require('./gulpfile.js/helpers');
 const path = require('path');
+const fs   = require('fs');
 
 let env = {
   NODE_ENV: process.env.NODE_ENV,
@@ -58,7 +59,18 @@ tasks.scripts.webpack = {
   },
   resolve: {
     root: [path.resolve('./app/frontend')]
-  }
+  },
+
+  // опции context и request будут подменяться в таске.
+  // здесь они нужны, чтобы можно было запускать вебпак из консоли
+  context: path.resolve('./app/frontend/'),
+  entries: fs.readdirSync(path.join(context, 'js')).reduce(function (all, file) {
+    if (/\.js$/.test(file) && !/^_/.test(file)) {
+      all[path.basename(file, '.js')] = './js/'+ file;
+    }
+
+    return all;
+  }, {})
 };
 
 tasks.styles       = {};
