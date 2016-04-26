@@ -3,10 +3,10 @@
  * and in gulp tasks.
  */
 
-const __ = require('./gulpfile.js/helpers');
+const __   = require('./gulpfile.js/helpers');
 const path = require('path');
 
-const config = {
+let env = {
   NODE_ENV: process.env.NODE_ENV,
   mode:     process.env.NODE_ENV || 'development',
   isDev:    process.env.NODE_ENV == 'development' || !process.env.NODE_ENV,
@@ -14,55 +14,60 @@ const config = {
   debug:    process.env.DEBUG == 'true'
 };
 
+let tasks = {};
 
-config.tasks = {};
+tasks.src  = 'app/frontend';
+tasks.root = tasks.src;
+tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
-config.tasks.src = 'app/frontend';
-config.tasks.dest = (config.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
+tasks.scripts       = {};
+tasks.scripts.root  = path.join(tasks.src, 'js');
+tasks.scripts.src   = __.glob(tasks.scripts.root, ['*.js', '!_*.js']);
+tasks.scripts.dest  = path.join(tasks.dest, 'js');
+tasks.scripts.clean = tasks.scripts.dest;
 
-config.tasks.scripts = {
-  src: __.glob(path.join(config.tasks.src, 'js'), ['*.js', '!_*.js']),
-  dest: path.join(config.tasks.dest, 'js'),
-  clean: path.join(config.tasks.dest, 'js')
-};
+tasks.styles       = {};
+tasks.styles.root  = path.join(tasks.src, 'css');
+tasks.styles.dest  = path.join(tasks.dest, 'css');
+tasks.styles.clean = tasks.styles.dest;
 
-config.tasks.styles = {};
-config.tasks.styles.clean = path.join(config.tasks.dest, 'css');
-config.tasks.styles.dest = path.join(config.tasks.dest, 'css');
-config.tasks.styles.css = {
-  src: __.glob(path.join(config.tasks.src, 'css'), ['*.css', '!_*.css']),
-  watch: __.glob(path.join(config.tasks.src, 'css'), ['*.css'], true)
-};
-config.tasks.styles.scss = {
-  src: __.glob(path.join(config.tasks.src, 'css'), ['*.scss', '!_*.scss']),
-  watch: __.glob(path.join(config.tasks.src, 'css'), ['*.scss'], true)
-};
+tasks.styles.css        = {};
+tasks.styles.css.src    = __.glob(tasks.styles.root, ['*.css', '!_*.css']);
+tasks.styles.css.watch  = __.glob(tasks.styles.root, ['*.css'], true);
+tasks.styles.scss       = {};
+tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
+tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
-config.tasks.files = {
-  // todo копировать также из js/css всё, кроме .js/.css
-  src: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
-  dest: config.tasks.dest,
-  watch: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
-  // todo исключать пути, а не расширения
-  clean: __.glob(path.join(config.tasks.dest), ['*.*', '!*.js', '!*.css'], true)
-};
+tasks.files = {};
+tasks.files.root = path.join(tasks.src, 'root');
+// todo копировать также всё из js/css, кроме .js/.css
+tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
+tasks.files.dest  = tasks.dest;
+tasks.files.watch = __.glob(tasks.files.root, ['*.*'], true);
+// todo исключать пути, а не расширения
+tasks.files.clean = __.glob(tasks.files.dest, ['*.*', '!*.js', '!*.css'], true);
 
-config.server = {
-  ui: false,
-  open: false,
+let server = {
+  ui:        false,
+  open:      false,
   //reloadDelay: 1000,
   //reloadDebounce: 1000,
   ghostMode: false,
 
   startPath: '/',
-  port: (config.isDev) ? 1313 : 13666,
-  server: {
-    index: 'index.html',
-    //directory: true,
-    baseDir: config.tasks.dest
+  port:      (env.isDev) ? 1313 : 13666,
+  server:    {
+    index:   'index.html',
+    directory: false,
+    baseDir: tasks.dest
   }
 };
 
 //console.log('config', config);
 
-module.exports = config;
+module.exports = {
+  server: server,
+  tasks:  tasks,
+  env:    env,
+  envs:   env
+};
