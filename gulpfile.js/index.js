@@ -32,6 +32,12 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
   return targetFile;
 };
 
+/**
+ * @param {string} filepath
+ * @param {string} baseDir
+ * @param {string} targetDir
+ * @param {string} [cacheKey]
+ */
 var onUnlink = function onUnlink (filepath, baseDir, targetDir, cacheKey) {
   var file = path.resolve(filepath);
   if (cacheKey && $.cached.caches[cacheKey]) {
@@ -43,10 +49,10 @@ var onUnlink = function onUnlink (filepath, baseDir, targetDir, cacheKey) {
   del.sync(file, {read: false});
 };
 
-//if (!config.env.isDev) {
-//  require('trace');
-//  require('clarify');
-//}
+if (!config.env.isDev) {
+  require('trace');
+  require('clarify');
+}
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
@@ -254,7 +260,7 @@ var postCssProcessorsDist = [
   })
 ];
 
-const resolve = require('node-resolve');
+const resolve = require('resolve');
 gulp.task('styles:css', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
@@ -274,13 +280,9 @@ gulp.task('styles:css', function () {
     .pipe(streams.styles.css({
       postcss: [
         require('postcss-import')({
-          root: path.join(process.cwd(), config.tasks.styles.root),
+          root: path.join(process.cwd(), config.tasks.root),
           resolve: function (id, basedir, importOptions) {
-            console.log('id, basedir', id, basedir);
-            let resolved = resolve(id, {basedir: basedir});
-            console.log('resolved', resolved);
-
-            return resolved;
+            return resolve.sync(id, {basedir: basedir});
           }
         })
       ]

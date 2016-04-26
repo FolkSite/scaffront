@@ -10,12 +10,17 @@ var streams = {};
 streams.css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  return combiner(
+  var stream = combiner(
     $.sourcemaps.init({
       loadMaps: true
-    }),
-    $.if(options.postcss, $.postcss(options.postcss))
+    })
   );
+
+  if (options.postcss) {
+    stream = combiner(stream, $.postcss(options.postcss))
+  }
+
+  return stream;
 };
 
 streams.scss = function (options) {
