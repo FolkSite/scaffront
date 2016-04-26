@@ -32,6 +32,17 @@ var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir
   return targetFile;
 };
 
+var onUnlink = function onUnlink (filepath, baseDir, targetDir, cacheKey) {
+  var file = path.resolve(filepath);
+  if (cacheKey && $.cached.caches[cacheKey]) {
+    delete $.cached.caches[cacheKey][file];
+  }
+
+  file = resolveTargetFile(filepath, config.tasks.files.root, config.tasks.dest);
+  file = path.join(process.cwd(), file);
+  del.sync(file, {read: false});
+};
+
 //if (!config.env.isDev) {
 //  require('trace');
 //  require('clarify');
@@ -79,14 +90,7 @@ gulp.task('files:watch', function () {
   gulp
     .watch(config.tasks.files.watch, gulp.series('files'))
     .on('unlink', function (filepath) {
-      var file = path.resolve(filepath);
-      if ($.cached.caches['files']) {
-        delete $.cached.caches['files'][file];
-      }
-
-      file = resolveTargetFile(filepath, config.tasks.files.root, config.tasks.dest);
-      file = path.join(process.cwd(), file);
-      del.sync(file, {read: false});
+      onUnlink(filepath, config.tasks.files.root, config.tasks.dest, 'files');
     })
   ;
 });
@@ -299,15 +303,21 @@ gulp.task('styles:css', function () {
   //  }),
   //  // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
   //  // и потом, если в потоке они отсутствуют, добавляет их
-  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые
-  // файлы, // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
-  // // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember //
-  // забыть об удалённых файлах. $.remember('css'),  // инклюдим файлы //$.include(),  // При повторном запуске таска
-  // выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по // названию файла и содержимому)
-  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью // читать файл. Ещё since криво
-  // работает с ранее удалёнными и только что восстановленными через ctrl+z файлами. $.cached('css'),
-  // $.if(config.env.isDev, $.debug({title: 'CSS style:'})),  postCssTasksForCss,  gulp.dest(options.dist)
-  // ).on('error', $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
+  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
+  //  // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
+  //  // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
+  //  // забыть об удалённых файлах. $.remember('css'),
+  //  // инклюдим файлы
+  //  // $.include(),
+  //  // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+  //  // названию файла и содержимому)
+  //  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+  //  // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+  //  $.cached('css'),
+  //  $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
+  //  postCssTasksForCss,
+  //  gulp.dest(options.dist)
+  //).on('error', $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
 });
 
 gulp.task('styles:scss', function () {
@@ -338,31 +348,20 @@ gulp.task('styles:scss', function () {
 });
 
 gulp.task('styles:watch', function () {
-  // todo
-  var onUnlink = function (filepath) {
-    var file = path.resolve(filepath);
-    if ($.cached.caches['css']) {
-      delete $.cached.caches['css'][file];
-    }
-
-    var targetFile = resolveTargetFile(filepath, options.basePath, options.targetPath);
-
-    if (__.isFile(targetFile)) {
-      del.sync(path.join(process.cwd(), targetFile));
-    }
-  };
-
   gulp
     .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
-    .on('unlink', onUnlink)
+    .on('unlink', function (filepath) {
+      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+    })
   ;
   gulp
     .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
-    .on('unlink', onUnlink)
+    .on('unlink', function (filepath) {
+      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+    })
   ;
 
 });
-//- //Simple CSS styles -//
 
 gulp.task('styles', gulp.series(
   gulp.parallel('styles:css', 'styles:scss')
@@ -526,7 +525,10 @@ gulp.task('clean', gulp.series(
 ));
 
 gulp.task('build', gulp.series(
-  gulp.parallel('styles', 'scripts'),
+  gulp.parallel(
+    'styles',
+    'scripts'
+  ),
   'files'
 ));
 
