@@ -90,6 +90,10 @@ gulp.task('files:watch', function () {
       if ($.cached.caches['files']) {
         delete $.cached.caches['files'][file];
       }
+
+      // todo: пути захардкожены. нинада так.
+      file = resolveTargetFile(filepath, path.join(config.tasks.src, 'root'), path.join(config.tasks.dest));
+      del.sync(file, {read: false});
     })
   ;
 });

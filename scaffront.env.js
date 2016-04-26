@@ -39,6 +39,7 @@ config.tasks.styles.scss = {
 };
 
 config.tasks.files = {
+  // todo копировать также из js/css всё, кроме .js/.css
   src: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
   dest: config.tasks.dest,
   watch: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
