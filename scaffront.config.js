@@ -46,6 +46,9 @@ tasks.files.root = path.join(tasks.src, 'root');
 tasks.files.dest  = tasks.dest;
 // todo копировать также всё из js/css, кроме .js/.css/.scss
 tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
+//tasks.files.src   = [
+//  path.join(tasks.root, '{js/}')
+//];
 tasks.files.watch = __.glob(tasks.files.root, ['*.*'], true);
 // todo исключать пути, а не расширения
 tasks.files.clean = __.glob(tasks.files.dest, ['*.*', '!*.js', '!*.css'], true);
