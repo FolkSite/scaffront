@@ -39,9 +39,10 @@ config.tasks.styles.scss = {
 };
 
 config.tasks.files = {
-  src: __.glob(config.tasks.src, ['*.*', '!*.css', '!*.scss', '!*.js', '!*.scss'], true),
+  src: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
   dest: config.tasks.dest,
-  watch: __.glob(config.tasks.src, ['!*.css', '!*.scss', '!*.js', '!*.scss'], true),
+  watch: __.glob(path.join(config.tasks.src, 'root'), ['*.*'], true),
+  // todo исключать пути, а не расширения
   clean: __.glob(path.join(config.tasks.dest), ['*.*', '!*.js', '!*.css'], true)
 };
 
