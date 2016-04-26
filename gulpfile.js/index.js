@@ -55,15 +55,10 @@ gulp.task('server', function () {
 });
 /** ========== //SERVER ========== **/
 
-/** ========== ROOT FILES ========== **/
-gulp.task('root-files:build', function () {
-  var options = {
-    src: __.glob('app/frontend/root', '*.*', true),
-    dist: 'dist/frontend'
-  };
-
+/** ========== FILES ========== **/
+gulp.task('files:build', function () {
   return combiner(
-    gulp.src(options.src, {
+    gulp.src(config.tasks.files.src, {
       // При повторном запуске таска (например, через watch) выбирает только те файлы,
       // которые изменились с заданной даты (сравнивает по дате модификации mtime)
       //since: gulp.lastRun(options.taskName)
@@ -77,17 +72,17 @@ gulp.task('root-files:build', function () {
     // если в целевой директории такие файлы уже есть, то не пропускает их.
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-    $.newer(options.dist),
-    $.if(config.env.isDev, $.debug({title: 'Root file:'})),
+    $.newer(config.tasks.files.dest),
+    //$.if(config.env.isDev, $.debug({title: 'Root file:'})),
 
-    gulp.dest(options.dist)
+    gulp.dest(config.tasks.files.dest)
   ).on('error', $.notify.onError(err => ({
     title: 'Copy root files',
     message: err.message
   })));
 });
 
-gulp.task('root-files:watch', function () {
+gulp.task('files:watch', function () {
   gulp
     .watch(__.getGlob('app/frontend'), gulp.series('root-files:build'))
     .on('unlink', function (filepath) {
@@ -99,63 +94,10 @@ gulp.task('root-files:watch', function () {
   ;
 });
 
-gulp.task('root-files:dist', gulp.series('root-files:build', function (cb) {
-  cb();
-}));
-
-gulp.task('root-files:clean', noopTask);
-/** ========== //ROOT FILES ========== **/
-
-/** ========== ASSETS ========== **/
-//gulp.task('root-files:build', function () {
-//  var options = {
-//    src: __.getGlob('app/frontend/root', '*.*', true),
-//    dist: 'dist/frontend'
-//  };
-//
-//  return combiner(
-//    gulp.src(options.src, {
-//      // При повторном запуске таска (например, через watch) выбирает только те файлы,
-//      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
-//      //since: gulp.lastRun(options.taskName)
-//    }),
-//    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-//    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-//    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-//    $.cached('root-files'),
-//
-//    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
-//    // если в целевой директории такие файлы уже есть, то не пропускает их.
-//    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
-//    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-//    $.newer(options.dist),
-//    $.if(config.env.isDev, $.debug({title: 'Root file:'})),
-//
-//    gulp.dest(options.dist)
-//  ).on('error', $.notify.onError(err => ({
-//    title: 'Copy root files',
-//    message: err.message
-//  })));
-//});
-//
-//gulp.task('root-files:watch', function () {
-//  gulp
-//    .watch(__.getGlob('app/frontend'), gulp.series('root-files:build'))
-//    .on('unlink', function (filepath) {
-//      var file = path.resolve(filepath);
-//      if ($.cached.caches['root-files']) {
-//        delete $.cached.caches['root-files'][file];
-//      }
-//    })
-//  ;
-//});
-//
-//gulp.task('root-files:dist', gulp.series('root-files:build', function (cb) {
-//  cb();
-//}));
-//
-//gulp.task('root-files:clean', noopTask);
-/** ========== //ROOT FILES ========== **/
+gulp.task('files:clean', function () {
+  return del(config.tasks.files.clean, {read: false});
+});
+/** ========== //FILES ========== **/
 
 /** ========== STYLES ========== **/
 
@@ -562,7 +504,7 @@ gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
   }
 })));
 
-gulp.task('scripts:cleaner', function () {
+gulp.task('scripts:clean', function () {
   return del(config.tasks.scripts.clean, {read: false});
 });
 
@@ -593,19 +535,23 @@ gulp.task('scripts:cleaner', function () {
   //
   //});
 
-gulp.task('clean', function() {
-  return del('dist/frontend', {read: false});
-});
+gulp.task('clean', gulp.series(
+  gulp.parallel(
+    'files:clean',
+    'styles:clean',
+    'scripts:clean'
+  )
+));
 
 gulp.task('build', gulp.series(
-  gulp.parallel('root-files:build', 'styles:build')
+  gulp.parallel('files:build', 'styles:build')
 ));
 
 
 
 gulp.task('watch', gulp.parallel(
   'styles:watch',
-  'root-files:watch'
+  'files:watch'
 ));
 
 gulp.task('dev', gulp.series(

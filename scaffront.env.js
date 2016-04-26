@@ -39,7 +39,7 @@ config.tasks.styles.scss = {
 };
 
 config.tasks.files = {
-  src: __.glob(config.tasks.src, ['!*.css', '!*.scss', '!*.js', '!*.scss'], true),
+  src: __.glob(config.tasks.src, ['*.*', '!*.css', '!*.scss', '!*.js', '!*.scss'], true),
   dest: config.tasks.dest,
   watch: __.glob(config.tasks.src, ['!*.css', '!*.scss', '!*.js', '!*.scss'], true),
   clean: __.glob(path.join(config.tasks.dest), ['*.*', '!*.js', '!*.css'], true)
