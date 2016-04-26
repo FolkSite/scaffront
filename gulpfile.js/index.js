@@ -288,7 +288,8 @@ gulp.task('styles:css', function () {
             return resolve.sync(id, {basedir: basedir});
           }
         })
-        // todo: минификация, фоллбеки, полифиллы
+        // todo: резолвинг url'ов
+        // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы,
       ]
     }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
