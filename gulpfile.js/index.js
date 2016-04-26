@@ -73,7 +73,7 @@ gulp.task('files', function () {
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
     $.newer(config.tasks.files.dest),
-    //$.if(config.env.isDev, $.debug({title: 'Root file:'})),
+    $.if(config.isDev, $.debug({title: 'Root file:'})),
 
     gulp.dest(config.tasks.files.dest)
   ).on('error', $.notify.onError(err => ({
@@ -225,7 +225,8 @@ var postCssProcessorsDist = [
   require('cssnano')({
     autoprefixer: {
       browsers: browsers,
-      cascade: false
+      cascade:  false,
+      remove:   true
     },
     calc: {},
     colormin: {legacy : false},
@@ -300,28 +301,15 @@ gulp.task('styles:css', function () {
   //  }),
   //  // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
   //  // и потом, если в потоке они отсутствуют, добавляет их
-  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
-  //  // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
-  //  // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
-  //  // забыть об удалённых файлах. $.remember('css'),
-  //
-  //  // инклюдим файлы
-  //  //$.include(),
-  //
-  //  // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-  //  // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-  //  // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-  //  $.cached('css'),
-  //
-  //  $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
-  //
-  //  postCssTasksForCss,
-  //
-  //  gulp.dest(options.dist)
-  //).on('error', $.notify.onError(err => ({
-  //  title: 'CSS styles',
-  //  message: err.message
-  //})));
+  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые
+  // файлы, // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
+  // // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember //
+  // забыть об удалённых файлах. $.remember('css'),  // инклюдим файлы //$.include(),  // При повторном запуске таска
+  // выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по // названию файла и содержимому)
+  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью // читать файл. Ещё since криво
+  // работает с ранее удалёнными и только что восстановленными через ctrl+z файлами. $.cached('css'),
+  // $.if(config.env.isDev, $.debug({title: 'CSS style:'})),  postCssTasksForCss,  gulp.dest(options.dist)
+  // ).on('error', $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
 });
 
 gulp.task('styles:scss', function () {
@@ -350,26 +338,27 @@ gulp.task('styles:scss', function () {
   ;
 });
 
-gulp.task('styles:css:watch', function () {
-  var options = {
-    basePath: 'app/frontend/css',
-    targetPath: 'dist/frontend/css'
+gulp.task('styles:watch', function () {
+  var onUnlink = function (filepath) {
+    var file = path.resolve(filepath);
+    if ($.cached.caches['css']) {
+      delete $.cached.caches['css'][file];
+    }
+
+    var targetFile = resolveTargetFile(filepath, options.basePath, options.targetPath);
+
+    if (__.isFile(targetFile)) {
+      del.sync(path.join(process.cwd(), targetFile));
+    }
   };
 
   gulp
-    .watch(__.getGlob(options.basePath, '*.css', true), gulp.series('styles:css:build'))
-    .on('unlink', function (filepath) {
-      var file = path.resolve(filepath);
-      if ($.cached.caches['css']) {
-        delete $.cached.caches['css'][file];
-      }
-
-      var targetFile = resolveTargetFile(filepath, options.basePath, options.targetPath);
-
-      if (__.isFile(targetFile)) {
-        del.sync(path.join(process.cwd(), targetFile));
-      }
-    })
+    .watch(config.tasks.styles.css, gulp.series('styles:css'))
+    .on('unlink', onUnlink)
+  ;
+  gulp
+    .watch(config.tasks.styles.scss, gulp.series('styles:scss'))
+    .on('unlink', onUnlink)
   ;
 
 });
