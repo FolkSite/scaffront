@@ -28,14 +28,13 @@ config.tasks.scripts = {
 
 config.tasks.styles = {};
 config.tasks.styles.clean = path.join(config.tasks.dest, 'css');
+config.tasks.styles.dest = path.join(config.tasks.dest, 'css');
 config.tasks.styles.css = {
   src: __.glob(path.join(config.tasks.src, 'css'), ['*.css', '!_*.css']),
-  dest: path.join(config.tasks.dest, 'css'),
   watch: __.glob(path.join(config.tasks.src, 'css'), ['*.css'], true)
 };
 config.tasks.styles.scss = {
   src: __.glob(path.join(config.tasks.src, 'css'), ['*.scss', '!_*.scss']),
-  dest: path.join(config.tasks.dest, 'css'),
   watch: __.glob(path.join(config.tasks.src, 'css'), ['*.scss'], true)
 };
 

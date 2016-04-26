@@ -310,13 +310,7 @@ var postCssProcessorsDist = [
   })
 ];
 
-//- Simple CSS styles -//
 gulp.task('styles:css:build', function () {
-  /*
-   Описание $.remember, $.cached здесь:
-   https://youtu.be/uYZPNrT-e-8?t=240
-   */
-
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
@@ -338,50 +332,54 @@ gulp.task('styles:css:build', function () {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(config.tasks.styles.css.dest)
+    .pipe(config.tasks.styles.dest)
   ;
 
-  return combine(
-    $.cached('styles'),
-
-    $.if(config.env.isDev, $.debug({title: 'Style:'})),
-
-    gulp.dest(options.dist)
-  )
-    .on('error', $.notify.onError(err => ({
-      title: 'CSS styles',
-      message: err.message
-    })));
-
-
-  return combiner(
-    gulp.src(options.src, {
-      //since: gulp.lastRun(options.taskName)
-    }),
-    // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
-    // и потом, если в потоке они отсутствуют, добавляет их
-    // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
-    // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
-    // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
-    // забыть об удалённых файлах. $.remember('css'),
-
-    // инклюдим файлы
-    //$.include(),
-
-    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-    // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    $.cached('css'),
-
-    $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
-
-    postCssTasksForCss,
-
-    gulp.dest(options.dist)
-  ).on('error', $.notify.onError(err => ({
-    title: 'CSS styles',
-    message: err.message
-  })));
+/*
+   Описание $.remember, $.cached здесь:
+   https://youtu.be/uYZPNrT-e-8?t=240
+*/
+  //return combine(
+  //  $.cached('styles'),
+  //
+  //  $.if(config.env.isDev, $.debug({title: 'Style:'})),
+  //
+  //  gulp.dest(options.dist)
+  //)
+  //  .on('error', $.notify.onError(err => ({
+  //    title: 'CSS styles',
+  //    message: err.message
+  //  })));
+  //
+  //
+  //return combiner(
+  //  gulp.src(options.src, {
+  //    //since: gulp.lastRun(options.taskName)
+  //  }),
+  //  // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
+  //  // и потом, если в потоке они отсутствуют, добавляет их
+  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые файлы,
+  //  // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
+  //  // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember
+  //  // забыть об удалённых файлах. $.remember('css'),
+  //
+  //  // инклюдим файлы
+  //  //$.include(),
+  //
+  //  // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+  //  // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+  //  // читать файл. Ещё since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+  //  $.cached('css'),
+  //
+  //  $.if(config.env.isDev, $.debug({title: 'CSS style:'})),
+  //
+  //  postCssTasksForCss,
+  //
+  //  gulp.dest(options.dist)
+  //).on('error', $.notify.onError(err => ({
+  //  title: 'CSS styles',
+  //  message: err.message
+  //})));
 });
 
 gulp.task('styles:scss:build', function () {
@@ -406,7 +404,7 @@ gulp.task('styles:scss:build', function () {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(config.tasks.styles.scss.dest)
+    .pipe(config.tasks.styles.dest)
   ;
 });
 
