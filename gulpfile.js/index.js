@@ -73,7 +73,7 @@ gulp.task('files', function () {
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
     $.newer(config.tasks.files.dest),
-    $.if(config.isDev, $.debug({title: 'Root file:'})),
+    $.if(config.isDev, $.debug({title: 'File:'})),
 
     gulp.dest(config.tasks.files.dest)
   ).on('error', $.notify.onError(err => ({
@@ -270,7 +270,7 @@ gulp.task('styles:css', function () {
       }))
     }))
     .pipe(streams.styles.css())
-    .pipe($.if(config.isDev, $.debug({title: 'CSS file:'})))
+    .pipe($.if(config.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       envs.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
@@ -330,7 +330,7 @@ gulp.task('styles:scss', function () {
       }))
     }))
     .pipe(streams.styles.scss())
-    .pipe($.if(config.isDev, $.debug({title: 'SCSS file:'})))
+    .pipe($.if(config.isDev, $.debug({title: 'SCSS:'})))
     .pipe($.if(
       envs.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
