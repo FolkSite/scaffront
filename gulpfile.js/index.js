@@ -279,13 +279,12 @@ gulp.task('styles:css', function () {
     }))
     .pipe(streams.styles.css({
       postcss: [
-        require('postcss-import')
-        //({
-        //  root: path.join(process.cwd(), config.tasks.root),
-        //  resolve: function (id, basedir, importOptions) {
-        //    return resolve.sync(id, {basedir: basedir});
-        //  }
-        //})
+        require('postcss-import')({
+          root: path.join(process.cwd(), config.tasks.root),
+          resolve: function (id, basedir, importOptions) {
+            return resolve.sync(id, {basedir: basedir});
+          }
+        })
       ]
     }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
