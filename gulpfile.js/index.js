@@ -417,7 +417,6 @@ let webpackTask = function webpackTask (options) {
       }));
     }
 
-
     //- Stream -//
 
     let firstBuildReady = false;
@@ -490,6 +489,10 @@ gulp.task('scripts:clean', function () {
   return del(config.tasks.scripts.clean, {read: false});
 });
 /** ========== //SCRIPTS ========== **/
+
+
+
+
   //var imgSrc = 'src/img/**';
   //var imgDest = 'build/img';
   //gulp.task('images', function() {
@@ -549,15 +552,6 @@ gulp.task('dev', gulp.series(
 
 
 
-
-
-
-
-
-
-
-//
-//return;
 //
 //
 //// https://makeomatic.ru/blog/2014/12/06/Tips_and_Tricks/
