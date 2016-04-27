@@ -291,9 +291,14 @@ gulp.task('styles:css', function () {
         }),
         // todo: резолвинг url'ов
         require('postcss-url')({
-          url: function () {
-            console.log(arguments);
-          }
+          //url: function (url, decl, from, dirname, to, options, result) {
+          //  console.log('url', url);
+          //  console.log('from', from);
+          //  console.log('dirname', dirname);
+          //  console.log('to', to);
+          //  console.log('options', options);
+          //  console.log('result', result);
+          //}
         })
         // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы,
       ]
