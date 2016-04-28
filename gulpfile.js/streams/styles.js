@@ -63,20 +63,11 @@ streams.scss = function (options) {
           url = url.getValue();
           filepath = filepath.getValue();
 
-          if (!isUrl(url)) {
-            if (path.isAbsolute(url)) {
-              url = path.join(process.cwd(), url);
-            } else {
-              url = resolve.sync(url, {
-                basedir:         path.dirname(filepath),
-                moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
-              });
-            }
-          }
+          url = __.nodeResolve(url, path.dirname(filepath));
 
           done(new sass.types.String('url('+ url +')'));
-        },
-      },
+        }
+      }
     })
   );
 };

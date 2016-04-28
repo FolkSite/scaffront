@@ -3,8 +3,11 @@ const _              = require('lodash');
 const fs             = require('fs');
 const path           = require('path');
 const crypto         = require('crypto');
+const isUrl          = require('is-url');
+const resolve        = require('resolve');
 const bowerDirectory = require('bower-directory');
 const browserSync    = require('browser-sync');
+
 
 var __ = {};
 
@@ -12,10 +15,9 @@ __.noop = function noop () {};
 __.noopTask = function noopTask (cb) { cb(null) };
 
 var bowerPath = (bowerDirectory) ? bowerDirectory.sync() : '';
-__.bower = {
-  path: bowerPath,
-  pathRelative: path.relative(process.cwd(), bowerPath)
-};
+__.bower = {};
+__.bower.path = bowerPath;
+__.bower.pathRelative = (bowerPath) ? path.relative(process.cwd(), bowerPath) : void 0;
 
 /**
  * @param {string} [directory]
@@ -31,6 +33,43 @@ __.getPackagePath = function getPackagePath (directory) {
  */
 __.getBowerPath = function getBowerPath (directory) {
   return path.join(__.bower.pathRelative, directory || '');
+};
+
+/**
+ * @param {*} anything
+ */
+__.getArray = function getArray (anything) {
+  if (!_.isUndefined(anything)) {
+    return (_.isArray(anything)) ? anything : [anything];
+  }
+
+  return [];
+};
+
+/**
+ * @param {string} url
+ * @param {string} basedir
+ * @param {string|string[]} [customModuleDirectories]
+ * @returns {*}
+ */
+__.nodeResolve = function nodeResolve(url, basedir, customModuleDirectories) {
+  if (isUrl(url)) { return url; }
+
+  if (path.isAbsolute(url)) {
+    return path.join(process.cwd(), url);
+  }
+
+  customModuleDirectories = __.getArray(customModuleDirectories);
+
+  var moduleDirectory = __.bower.pathRelative
+    ? ['node_modules', __.bower.pathRelative]
+    : ['node_modules'];
+  moduleDirectory     = moduleDirectory.concat(customModuleDirectories);
+
+  return resolve.sync(url, {
+    basedir: basedir,
+    moduleDirectory: moduleDirectory
+  });
 };
 
 /**
@@ -339,17 +378,6 @@ __.stringify = function stringify (obj) {
   }
 
   return string.join(',');
-};
-
-/**
- * @param {*} anything
- */
-__.getArray = function getArray (anything) {
-  if (!_.isUndefined(anything)) {
-    return (_.isArray(anything)) ? anything : [anything];
-  }
-
-  return [];
 };
 
 /**

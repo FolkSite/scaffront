@@ -12,7 +12,6 @@ const extend         = require('extend');
 const postcss        = require('postcss');
 const combiner       = require('stream-combiner2').obj;
 const resolve        = require('resolve');
-const bowerDirectory = require('bower-directory').sync();
 
 const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
@@ -293,31 +292,13 @@ gulp.task('styles:css', function () {
         require('postcss-import')({
           //root: path.join(process.cwd(), config.tasks.root),
           resolve: function (module, basedir, importOptions) {
-            if (isUrl(module)) { return module; }
-
-            if (path.isAbsolute(module)) {
-              return path.join(process.cwd(), module);
-            }
-
-            return resolve.sync(module, {
-              basedir: basedir,
-              moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
-            });
+            return __.nodeResolve(module, basedir);
           },
           transform: function(css, filepath, options) {
             return postcss([
               require('postcss-url')({
                 url: function (url, decl, from, dirname, to, options, result) {
-                  if (isUrl(url)) { return url; }
-
-                  if (path.isAbsolute(url)) {
-                    return path.join(process.cwd(), url);
-                  }
-
-                  return resolve.sync(url, {
-                    basedir: path.dirname(filepath),
-                    moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
-                  });
+                  return __.nodeResolve(url, path.dirname(filepath));
                 }
               })
             ])
