@@ -42,68 +42,41 @@ streams.scss = function (options) {
       importOnce: {
         index: true,
         css: true,
-        bower: false
+        bower: false,
+        /**
+         * @param {string} filename
+         * @param {string} contents
+         * @returns {string}
+         */
+        transformContent: function (filename, contents) {
+          return [
+            '$__filepath: unquote("'+ filename +'");',
+            '@function url($url: null, $args...) {',
+            '  @return __url($__filepath, $url);',
+            '}',
+            contents
+          ].join('\n');
+        }
       },
       functions: {
-        //'url($url)': function(url, done) {
-        //
-        //  console.log('url', url.getValue());
-        //  console.log('this', this);
-        //  console.log('this.options', this.options);
-        //  //console.log(this.options.stats);
-        //  //console.log(this.options.context);
-        //
-        //  console.log('=================');
-        //
-        //  done(new sass.types.String(url.getValue()));
-        //
-        //  //processor.image_url(filename.getValue(), function(url) {
-        //  //  if(!only_path.getValue()) url = 'url(\'' + url + '\')';
-        //  //  done(new sass.types.String(url));
-        //  //});
-        //},
         '__url($filepath, $url)': function(filepath, url, done) {
-
-          //console.log('filepath', filepath.getValue());
-          //console.log('url', url.getValue());
-          //console.log('this', this);
-          //console.log('this.options', this.options);
-          //console.log(this.options.stats);
-          //console.log(this.options.context);
-
-          console.log('=================');
-
           url = url.getValue();
+          filepath = filepath.getValue();
 
-          if (isUrl(url)) { return url; }
-
-          if (path.isAbsolute(filepath)) {
-            return path.join(process.cwd(), filepath);
+          if (!isUrl(url)) {
+            if (path.isAbsolute(url)) {
+              url = path.join(process.cwd(), url);
+            } else {
+              url = resolve.sync(url, {
+                basedir:         path.dirname(filepath),
+                moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
+              });
+            }
           }
 
-          url = resolve.sync(url, {
-            basedir:         path.dirname(filepath),
-            moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
-          });
-
-
           done(new sass.types.String('url('+ url +')'));
-
-          //processor.image_url(filepath.getValue(), function(url) {
-          //  if(!only_path.getValue()) url = 'url(\'' + url + '\')';
-          //  done(new sass.types.String(url));
-          //});
         },
       },
-      //functions: assetFunctions({
-      //  images_path: (global.isProduction) ? 'dist/i' : 'app/images/inline',
-      //  images_dir:  (global.isProduction) ? 'dist/i' : 'app/images/inline',
-      //  http_images_path: '/i',
-      //  http_generated_images_path: '/i',
-      //}),
-      //sourceMap: './',
-      //sourceMapContents: true,
-      //omitSourceMapUrl: true
     })
   );
 };

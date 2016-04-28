@@ -310,8 +310,8 @@ gulp.task('styles:css', function () {
                 url: function (url, decl, from, dirname, to, options, result) {
                   if (isUrl(url)) { return url; }
 
-                  if (path.isAbsolute(filepath)) {
-                    return path.join(process.cwd(), filepath);
+                  if (path.isAbsolute(url)) {
+                    return path.join(process.cwd(), url);
                   }
 
                   return resolve.sync(url, {
