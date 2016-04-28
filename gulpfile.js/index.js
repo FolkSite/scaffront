@@ -1,19 +1,20 @@
 'use strict';
 
-const _        = require('lodash');
-const __       = require('./helpers');
-const $        = require('gulp-load-plugins')();
-const gulp     = require('gulp');
-const del      = require('del');
-const path     = require('path');
-const merge    = require('merge-stream');
-const isUrl    = require('is-url');
-const extend   = require('extend');
-const postcss  = require('postcss');
-const combiner = require('stream-combiner2').obj;
+const _              = require('lodash');
+const __             = require('./helpers');
+const $              = require('gulp-load-plugins')();
+const gulp           = require('gulp');
+const del            = require('del');
+const path           = require('path');
+const merge          = require('merge-stream');
+const isUrl          = require('is-url');
+const extend         = require('extend');
+const postcss        = require('postcss');
+const combiner       = require('stream-combiner2').obj;
+const bowerDirectory = require('bower-directory').sync();
 
-const config   = require('../scaffront.config.js');
-const streams  = require('./streams');
+const config         = require('../scaffront.config.js');
+const streams        = require('./streams');
 
 /**
  * @param {string} filePath
@@ -299,7 +300,7 @@ gulp.task('styles:css', function () {
 
             return resolve.sync(module, {
               basedir: basedir,
-              moduleDirectory: ['node_modules', 'bower_components']
+              moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
             });
           },
           transform: function(css, filepath, options) {
@@ -312,7 +313,10 @@ gulp.task('styles:css', function () {
                     return path.join(process.cwd(), filepath);
                   }
 
-                  return resolve.sync(url, {basedir: path.dirname(filepath)});
+                  return resolve.sync(url, {
+                    basedir: path.dirname(filepath),
+                    moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
+                  });
                 }
               })
             ])

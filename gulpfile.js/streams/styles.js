@@ -5,7 +5,6 @@ const sass     = require('node-sass');
 const config   = require('../../scaffront.config.js');
 const combiner = require('stream-combiner2').obj;
 
-
 var streams = {};
 
 streams.css = function (options) {
