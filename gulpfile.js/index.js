@@ -308,9 +308,9 @@ gulp.task('styles:css', function () {
               });
           },
         }),
-        require('postcss-copy-assets')({
-          base: config.tasks.styles.dest
-        })
+        //require('postcss-copy-assets')({
+        //  base: config.tasks.styles.dest
+        //})
         // todo: резолвинг url'ов, копирование файлов
         // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
       ]
