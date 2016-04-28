@@ -1,9 +1,15 @@
-const $        = require('gulp-load-plugins')();
-const _        = require('lodash');
-const __       = require('../helpers');
-const sass     = require('node-sass');
-const config   = require('../../scaffront.config.js');
-const combiner = require('stream-combiner2').obj;
+'use strict';
+
+const $              = require('gulp-load-plugins')();
+const _              = require('lodash');
+const __             = require('../helpers');
+const sass           = require('node-sass');
+const config         = require('../../scaffront.config.js');
+const combiner       = require('stream-combiner2').obj;
+const path           = require('path');
+const isUrl          = require('is-url');
+const resolve        = require('resolve');
+const bowerDirectory = require('bower-directory').sync();
 
 var streams = {};
 
@@ -32,26 +38,58 @@ streams.scss = function (options) {
     }),
     $.sass({
       precision: 10,
-      //importer: require('node-sass-import-once'),
-      //importOnce: {
-      //  index: true,
-      //  css: true,
-      //  bower: false
-      //},
+      importer: require('node-sass-import-once'),
+      importOnce: {
+        index: true,
+        css: true,
+        bower: false
+      },
       functions: {
-        'url($url)': function(url, done) {
+        //'url($url)': function(url, done) {
+        //
+        //  console.log('url', url.getValue());
+        //  console.log('this', this);
+        //  console.log('this.options', this.options);
+        //  //console.log(this.options.stats);
+        //  //console.log(this.options.context);
+        //
+        //  console.log('=================');
+        //
+        //  done(new sass.types.String(url.getValue()));
+        //
+        //  //processor.image_url(filename.getValue(), function(url) {
+        //  //  if(!only_path.getValue()) url = 'url(\'' + url + '\')';
+        //  //  done(new sass.types.String(url));
+        //  //});
+        //},
+        '__url($filepath, $url)': function(filepath, url, done) {
 
-          console.log('url', url.getValue());
-          console.log('this', this);
-          console.log('this.options', this.options);
+          //console.log('filepath', filepath.getValue());
+          //console.log('url', url.getValue());
+          //console.log('this', this);
+          //console.log('this.options', this.options);
           //console.log(this.options.stats);
           //console.log(this.options.context);
 
           console.log('=================');
-          
-          done(new sass.types.String(url.getValue()));
-          
-          //processor.image_url(filename.getValue(), function(url) {
+
+          url = url.getValue();
+
+          if (isUrl(url)) { return url; }
+
+          if (path.isAbsolute(filepath)) {
+            return path.join(process.cwd(), filepath);
+          }
+
+          url = resolve.sync(url, {
+            basedir:         path.dirname(filepath),
+            moduleDirectory: bowerDirectory ? ['node_modules', bowerDirectory] : ['node_modules']
+          });
+
+
+          done(new sass.types.String('url('+ url +')'));
+
+          //processor.image_url(filepath.getValue(), function(url) {
           //  if(!only_path.getValue()) url = 'url(\'' + url + '\')';
           //  done(new sass.types.String(url));
           //});

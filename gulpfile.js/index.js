@@ -11,6 +11,7 @@ const isUrl          = require('is-url');
 const extend         = require('extend');
 const postcss        = require('postcss');
 const combiner       = require('stream-combiner2').obj;
+const resolve        = require('resolve');
 const bowerDirectory = require('bower-directory').sync();
 
 const config         = require('../scaffront.config.js');
@@ -269,7 +270,7 @@ var postCssProcessorsDist = [
   })
 ];
 
-const resolve = require('resolve');
+
 gulp.task('styles:css', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
