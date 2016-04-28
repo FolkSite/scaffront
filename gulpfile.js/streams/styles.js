@@ -7,9 +7,7 @@ const sass           = require('node-sass');
 const config         = require('../../scaffront.config.js');
 const combiner       = require('stream-combiner2').obj;
 const path           = require('path');
-const isUrl          = require('is-url');
 const resolve        = require('resolve');
-const bowerDirectory = require('bower-directory').sync();
 
 var streams = {};
 
