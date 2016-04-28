@@ -66,10 +66,14 @@ __.nodeResolve = function nodeResolve(url, basedir, customModuleDirectories) {
     : ['node_modules'];
   moduleDirectory     = moduleDirectory.concat(customModuleDirectories);
 
-  return resolve.sync(url, {
+  url = resolve.sync(url, {
     basedir: basedir,
     moduleDirectory: moduleDirectory
   });
+
+  //url = path.relative(process.cwd(), url);
+
+  return url;
 };
 
 /**

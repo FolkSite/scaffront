@@ -112,6 +112,7 @@
     "postcss": "^5.0.19",
     "postcss-browser-reporter": "^0.4.0",
     "postcss-color-rgba-fallback": "^2.2.0",
+    "postcss-copy-assets": "^0.3.0",
     "postcss-easings": "^0.3.0",
     "postcss-filter-gradient": "^0.2.4",
     "postcss-focus": "^1.0.0",
