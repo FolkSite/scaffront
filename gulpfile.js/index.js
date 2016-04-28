@@ -49,7 +49,7 @@ var onUnlink = function onUnlink (filepath, baseDir, targetDir, cacheKey) {
   del.sync(file, {read: false});
 };
 
-if (!config.env.isDev) {
+if (config.env.isDev) {
   require('trace');
   require('clarify');
 }
