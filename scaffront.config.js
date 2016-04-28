@@ -64,14 +64,15 @@ tasks.scripts.webpack = {
   // опции context и request будут подменяться в таске.
   // здесь они нужны, чтобы можно было запускать вебпак из консоли
   context: path.resolve('./app/frontend/'),
-  entries: fs.readdirSync(path.join(path.resolve('./app/frontend/'), 'js'))
-             .reduce(function (all, file) {
-               if (/\.js$/.test(file) && !/^_/.test(file)) {
-                 all[path.basename(file, '.js')] = './js/'+ file;
-               }
+  entries: fs
+   .readdirSync(path.join(path.resolve('./app/frontend/'), 'js'))
+   .reduce(function (all, file) {
+     if (/\.js$/.test(file) && !/^_/.test(file)) {
+       all[path.basename(file, '.js')] = './js/'+ file;
+     }
 
-               return all;
-             }, {})
+     return all;
+   }, {})
 };
 
 tasks.styles       = {};

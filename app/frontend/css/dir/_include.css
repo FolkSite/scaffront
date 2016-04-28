@@ -1,12 +1,13 @@
-@import '../_include2.css';
+@import '/app/frontend/css/_include2.css';
 
 p {
     font-size: 20px;
     color: #ff0000;
 }
 
-/*
 body {
     background: url(../../images/bg.jpg);
 }
-*/
+.qwe {
+    background: url(https://yandex.ru/images/today?size=1920x1080);
+}

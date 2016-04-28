@@ -7,7 +7,9 @@ const gulp     = require('gulp');
 const del      = require('del');
 const path     = require('path');
 const merge    = require('merge-stream');
+const isUrl    = require('is-url');
 const extend   = require('extend');
+const postcss  = require('postcss');
 const combiner = require('stream-combiner2').obj;
 
 const config   = require('../scaffront.config.js');
@@ -131,7 +133,10 @@ gulp.task('files:clean', function () {
 
  Сообщения об ошибках "компиляции", как в SCSS (body:before)
  https://github.com/postcss/postcss-browser-reporter
- require('postcss-browser-reporter')
+ require('postcss-browser-reporter')({
+  selector: 'html:before'
+ }),
+
 
  Ещё один месседжер:
  https://github.com/postcss/postcss-reporter
@@ -284,23 +289,38 @@ gulp.task('styles:css', function () {
     .pipe(streams.styles.css({
       postcss: [
         require('postcss-import')({
-          root: path.join(process.cwd(), config.tasks.root),
-          resolve: function (id, basedir, importOptions) {
-            return resolve.sync(id, {basedir: basedir});
-          }
+          //root: path.join(process.cwd(), config.tasks.root),
+          resolve: function (module, basedir, importOptions) {
+            if (isUrl(module)) { return module; }
+
+            if (path.isAbsolute(module)) {
+              return path.join(process.cwd(), module);
+            }
+
+            return resolve.sync(module, {basedir: basedir});
+          },
+          transform: function(css, filepath, options) {
+            return postcss([
+              require('postcss-url')({
+                url: function (url, decl, from, dirname, to, options, result) {
+                  if (isUrl(url)) { return url; }
+
+                  if (path.isAbsolute(filepath)) {
+                    return path.join(process.cwd(), filepath);
+                  }
+
+                  return resolve.sync(url, {basedir: path.dirname(filepath)});
+                }
+              })
+            ])
+              .process(css)
+              .then(function(result) {
+                return result.css;
+              });
+          },
         }),
         // todo: резолвинг url'ов
-        require('postcss-url')({
-          //url: function (url, decl, from, dirname, to, options, result) {
-          //  console.log('url', url);
-          //  console.log('from', from);
-          //  console.log('dirname', dirname);
-          //  console.log('to', to);
-          //  console.log('options', options);
-          //  console.log('result', result);
-          //}
-        })
-        // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы,
+        // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
       ]
     }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
