@@ -1,6 +1,9 @@
+@import '../dir/include.scss';
+
 body {
-  background: url(../../images/bg.jpg);
+  background: url('../../images/bg.jpg');
 }
+
 
 $support-for: (
   chrome:  -4,

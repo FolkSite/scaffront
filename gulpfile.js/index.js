@@ -297,7 +297,10 @@ gulp.task('styles:css', function () {
               return path.join(process.cwd(), module);
             }
 
-            return resolve.sync(module, {basedir: basedir});
+            return resolve.sync(module, {
+              basedir: basedir,
+              moduleDirectory: ['node_modules', 'bower_components']
+            });
           },
           transform: function(css, filepath, options) {
             return postcss([
