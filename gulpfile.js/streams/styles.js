@@ -15,6 +15,8 @@ var streams = {};
 streams.css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
+  var assets = {};
+
   var stream = combiner(
     $.sourcemaps.init({
       loadMaps: true
@@ -29,6 +31,17 @@ streams.css = function (options) {
           return postcss([
             require('postcss-url')({
               url: function (url, decl, from, dirname, to, options, result) {
+                console.log('from', from);
+                console.log('dirname', dirname);
+                console.log('to', to);
+                console.log('options', options);
+                console.log('result', result);
+
+                //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
+                //
+                //assets[file] = assets[file] || [];
+                //assets[file].push(url);
+
                 return __.nodeResolve(url, path.dirname(filepath));
               }
             })
@@ -37,8 +50,8 @@ streams.css = function (options) {
             .then(function(result) {
               return result.css;
             });
-        },
-      }),
+        }
+      })
     ])
   );
 
