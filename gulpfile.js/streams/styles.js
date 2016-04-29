@@ -29,9 +29,13 @@ streams.css = function (options) {
           return __.nodeResolve(module, basedir);
         },
         transform: function(css, filepath, options) {
+          console.log('filepath', filepath);
+          console.log('options', options);
+
           return postcss([
             require('postcss-url')({
               url: function (url, decl, from, dirname, to, options, result) {
+                console.log('url', url);
                 console.log('from', from);
                 console.log('dirname', dirname);
                 console.log('to', to);
