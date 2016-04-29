@@ -298,8 +298,11 @@ gulp.task('styles:css', function () {
       ]
     }))
     .pipe(through(function(file, enc, callback) {
+      console.log('file.path', file.path);
       console.log('file.assets', file.assets);
-      console.log('file.postcssProcessor', file.postcssProcessor);
+      console.log('file.postcssRoot', file.postcssRoot);
+      console.log('file.css', file.css);
+      console.log('file.css', Object.getPrototypeOf(file.css));
       callback(null, file);
     }, function (callback) {
       callback();

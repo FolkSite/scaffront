@@ -176,6 +176,17 @@ streams.css = function (options) {
             }
           }),
           // и вот здесь можно подключать остальные плагины
+          postcss.plugin('postcss-remove', function (opts) {
+            opts = opts || {};
+
+            return function (css, result) {
+              file.css = css;
+
+              css.walkDecls(filter, function (decl) {
+                decl.remove();
+              });
+            };
+          })
         ])
           .process(file.contents, opts)
           .then(function postcssHandleResult (result) {
@@ -183,6 +194,8 @@ streams.css = function (options) {
             var warnings = result.warnings().join('\n');
 
             file.contents = new Buffer(result.css);
+            file.assets = Object.keys(assets[entryFilepath] || []);
+            file.postcssRoot = result.root;
 
             // Apply source map to the chain
             if (file.sourceMap) {
@@ -197,9 +210,6 @@ streams.css = function (options) {
             if (warnings) {
               gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
             }
-
-            file.assets = Object.keys(assets[entryFilepath] || []);
-            file.postcssProcessor = postcssProcessor;
 
             setImmediate(function () {
               callback(null, file)
