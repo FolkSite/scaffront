@@ -80,9 +80,10 @@ __.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories, si
     : ['node_modules'];
   moduleDirectory     = moduleDirectory.concat(customModuleDirectories);
 
+  var tmp;
   if (silence) {
     try {
-      var tmp = resolve.sync(url, {
+      tmp = resolve.sync(url, {
         basedir:         basedir,
         moduleDirectory: moduleDirectory
       });

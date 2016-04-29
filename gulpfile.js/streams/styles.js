@@ -198,9 +198,6 @@ streams.css = function (options) {
               gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
             }
 
-            //console.log('assets', assets);
-            //console.log('assets[entryFilepath]', Object.keys(assets[entryFilepath] || []));
-
             file.assets = Object.keys(assets[entryFilepath] || []);
             file.postcssProcessor = postcssProcessor;
 
