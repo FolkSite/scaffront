@@ -1,17 +1,18 @@
 'use strict';
 
+const $              = require('gulp-load-plugins')();
 const _              = require('lodash');
 const __             = require('./helpers');
-const $              = require('gulp-load-plugins')();
-const gulp           = require('gulp');
 const del            = require('del');
 const path           = require('path');
-const merge          = require('merge-stream');
+const gulp           = require('gulp');
+const gutil          = require('gulp-util');
 const isUrl          = require('is-url');
+const merge          = require('merge-stream');
 const extend         = require('extend');
+const resolve        = require('resolve');
 const postcss        = require('postcss');
 const combiner       = require('stream-combiner2').obj;
-const resolve        = require('resolve');
 
 const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
