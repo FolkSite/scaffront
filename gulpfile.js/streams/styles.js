@@ -17,6 +17,15 @@ const applySourceMap = require('vinyl-sourcemaps-apply');
 
 var streams = {};
 
+function isUrlShouldBeIgnored(url) {
+  return url[0] === "/" ||
+    url[0] === "#" ||
+    url.indexOf("data:") === 0 ||
+    isUrl(url) ||
+    /^[a-z]+:\/\//.test(url)
+}
+
+
 /**
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
@@ -28,11 +37,16 @@ var rebaseAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      url = __.nodeResolve(url, path.dirname(filepath));
-      if (!isUrl(url)) {
-        url = path.relative(process.cwd(), url);
-        assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-        assetsStorage[entryFilepath][url] = url;
+      var tmp = url;
+      if (!isUrlShouldBeIgnored(url)) {
+        tmp = __.nodeResolve(url, path.dirname(filepath), true);
+
+        if (!__.nodeResolve.lastError) {
+          url = tmp;
+          url = path.relative(process.cwd(), url);
+          assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
+          assetsStorage[entryFilepath][url] = url;
+        }
       }
 
       return url;
@@ -56,23 +70,23 @@ streams._css = function (options) {
           return __.nodeResolve(module, basedir);
         },
         transform: function(css, filepath, options) {
-          console.log('filepath', filepath);
-          console.log('options', options);
+          //console.log('filepath', filepath);
+          //console.log('options', options);
 
           return postcss([
             require('postcss-url')({
               url: function (url, decl, from, dirname, to, options, result) {
-                console.log('url', url);
-                console.log('from', from);
-                console.log('dirname', dirname);
-                console.log('to', to);
-                console.log('options', options);
+                //console.log('url', url);
+                //console.log('from', from);
+                //console.log('dirname', dirname);
+                //console.log('to', to);
+                //console.log('options', options);
 
                 url = __.nodeResolve(url, path.dirname(filepath));
 
                 //url = path.relative(process.cwd(), url);
                 //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-                //
+
                 //assets[file] = assets[file] || [];
                 //assets[file].push(url);
 
@@ -140,7 +154,7 @@ streams.css = function (options) {
 
         var entryFilepath = path.join(file.base, file.stem);
 
-        postcss([
+        var postcssProcessor = postcss([
           // сперва сохраним все ассеты для точки входа
           rebaseAssetsPlugin(assets, entryFilepath),
           // импортируем вложенные css-ки
@@ -184,6 +198,12 @@ streams.css = function (options) {
               gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
             }
 
+            //console.log('assets', assets);
+            //console.log('assets[entryFilepath]', Object.keys(assets[entryFilepath] || []));
+
+            file.assets = Object.keys(assets[entryFilepath] || []);
+            file.postcssProcessor = postcssProcessor;
+
             setImmediate(function () {
               callback(null, file)
             })
@@ -197,7 +217,7 @@ streams.css = function (options) {
         //  path: process.cwd() + '/manifest.json'
         //});
         //this.push(manifest);
-        console.log('assets', assets);
+        //console.log('assets', assets);
         callback();
       }
     )

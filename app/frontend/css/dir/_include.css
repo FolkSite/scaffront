@@ -6,7 +6,10 @@ p {
 }
 
 body {
-    background: url(../../images/bg.jpg);
+    background: url(../../images/bg3.jpg);
+}
+.body {
+    background: url(../../images/bg2.jpg);
 }
 .qwe {
     background: url(https://yandex.ru/images/today?size=1920x1080);

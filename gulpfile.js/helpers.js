@@ -50,11 +50,24 @@ __.getArray = function getArray (anything) {
  * @param {string} url
  * @param {string} basedir
  * @param {string|string[]} [customModuleDirectories]
+ * @param {boolean} [silence]
  * @returns {*}
  */
-__.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories) {
-  console.log('nodeResolve url', url);
+__.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories, silence) {
   if (isUrl(url)) { return url; }
+
+  if (arguments.length == 2) {
+    silence = false;
+    customModuleDirectories = '';
+  }
+  if (arguments.length == 3) {
+    if (!_.isString(customModuleDirectories) && !_.isArray(customModuleDirectories)) {
+      silence = customModuleDirectories;
+      customModuleDirectories = '';
+    } else {
+      silence = false;
+    }
+  }
 
   if (path.isAbsolute(url)) {
     return path.join(process.cwd(), url);
@@ -67,10 +80,24 @@ __.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories) {
     : ['node_modules'];
   moduleDirectory     = moduleDirectory.concat(customModuleDirectories);
 
-  url = resolve.sync(url, {
-    basedir: basedir,
-    moduleDirectory: moduleDirectory
-  });
+  if (silence) {
+    try {
+      var tmp = resolve.sync(url, {
+        basedir:         basedir,
+        moduleDirectory: moduleDirectory
+      });
+      url = tmp;
+      __.nodeResolve.lastError = null;
+    } catch (e) {
+      __.nodeResolve.lastError = e;
+    }
+  } else {
+    __.nodeResolve.lastError = null;
+    url = resolve.sync(url, {
+      basedir:         basedir,
+      moduleDirectory: moduleDirectory
+    });
+  }
 
   //url = path.relative(process.cwd(), url);
 

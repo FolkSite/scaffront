@@ -297,6 +297,13 @@ gulp.task('styles:css', function () {
         // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
       ]
     }))
+    .pipe(through(function(file, enc, callback) {
+      console.log('file.assets', file.assets);
+      console.log('file.postcssProcessor', file.postcssProcessor);
+      callback(null, file);
+    }, function (callback) {
+      callback();
+    }))
     .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
