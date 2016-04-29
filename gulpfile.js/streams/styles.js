@@ -1,14 +1,15 @@
 'use strict';
 
-const $              = require('gulp-load-plugins')();
-const _              = require('lodash');
-const __             = require('../helpers');
-const sass           = require('node-sass');
-const config         = require('../../scaffront.config.js');
-const combiner       = require('stream-combiner2').obj;
-const path           = require('path');
-const resolve        = require('resolve');
-const through2       = require('through2').obj;
+const $        = require('gulp-load-plugins')();
+const _        = require('lodash');
+const __       = require('../helpers');
+const sass     = require('node-sass');
+const config   = require('../../scaffront.config.js');
+const path     = require('path');
+const postcss  = require('postcss');
+const resolve  = require('resolve');
+const combiner = require('stream-combiner2').obj;
+const through2 = require('through2').obj;
 
 var streams = {};
 
