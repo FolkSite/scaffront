@@ -14,9 +14,24 @@ const through2 = require('through2').obj;
 
 var streams = {};
 
-var rebaseAssets = function () {
+var cssAssets = postcss.plugin('gulp-post-css-assets', function (filter, postcssPlugin) {
 
-};
+  return function (css, result) {
+    console.log(css, result, 'css, result');
+
+    if (typeof filter !== 'string' && !Array.isArray(filter)) {
+      throw new TypeError('The filter parameter must be a glob string or an array of glob strings!');
+    }
+
+    if (typeof postcssPlugin !== 'function') {
+      throw new TypeError('The postcssPlugin parameter must be a function!');
+    }
+
+    if (multimatch(css.source.input.file, filter).length === 0) {
+      return postcssPlugin(css, result);
+    }
+  };
+});
 
 streams._css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
@@ -126,6 +141,8 @@ streams.css = function (options) {
                     //console.log('to', to);
                     //console.log('options', options);
 
+                    console.log('url', url);
+
                     url = __.nodeResolve(url, path.dirname(filepath));
                     url = path.relative(process.cwd(), url);
 
@@ -175,42 +192,43 @@ streams.css = function (options) {
       }
     )
     //$.postcss([
-      //require('postcss-import')({
-      //  //root: path.join(process.cwd(), config.tasks.root),
-      //  resolve: function (module, basedir, importOptions) {
-      //    return __.nodeResolve(module, basedir);
-      //  },
-      //  transform: function(css, filepath, options) {
-      //    console.log('filepath', filepath);
-      //    console.log('options', options);
-      //
-      //    return postcss([
-      //      require('postcss-url')({
-      //        url: function (url, decl, from, dirname, to, options, result) {
-      //          console.log('url', url);
-      //          console.log('from', from);
-      //          console.log('dirname', dirname);
-      //          console.log('to', to);
-      //          console.log('options', options);
-      //
-      //          url = __.nodeResolve(url, path.dirname(filepath));
-      //
-      //          //url = path.relative(process.cwd(), url);
-      //          //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-      //          //
-      //          //assets[file] = assets[file] || [];
-      //          //assets[file].push(url);
-      //
-      //          return url;
-      //        }
-      //      })
-      //    ])
-      //      .process(css)
-      //      .then(function(result) {
-      //        return result.css;
-      //      });
-      //  }
-      //})
+    //  require('postcss-import')({
+    //    //root: path.join(process.cwd(), config.tasks.root),
+    //    resolve: function (module, basedir, importOptions) {
+    //      return __.nodeResolve(module, basedir);
+    //    },
+    //    transform: function(css, filepath, options) {
+    //      console.log('css', css);
+    //      console.log('filepath', filepath);
+    //      console.log('options', options);
+    //
+    //      return postcss([
+    //        require('postcss-url')({
+    //          url: function (url, decl, from, dirname, to, options, result) {
+    //            //console.log('url', url);
+    //            //console.log('from', from);
+    //            //console.log('dirname', dirname);
+    //            //console.log('to', to);
+    //            //console.log('options', options);
+    //
+    //            url = __.nodeResolve(url, path.dirname(filepath));
+    //
+    //            //url = path.relative(process.cwd(), url);
+    //            //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
+    //            //
+    //            //assets[file] = assets[file] || [];
+    //            //assets[file].push(url);
+    //
+    //            return url;
+    //          }
+    //        })
+    //      ])
+    //        .process(css)
+    //        .then(function(result) {
+    //          return result.css;
+    //        });
+    //    }
+    //  })
     //])
   );
 
