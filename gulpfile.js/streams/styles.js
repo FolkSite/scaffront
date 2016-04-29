@@ -31,8 +31,8 @@ var rebaseAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
       url = __.nodeResolve(url, path.dirname(filepath));
       if (!isUrl(url)) {
         url = path.relative(process.cwd(), url);
-        assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || [];
-        assetsStorage[entryFilepath].push(url);
+        assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
+        assetsStorage[entryFilepath][url] = url;
       }
 
       return url;
@@ -153,14 +153,15 @@ streams.css = function (options) {
             transform: function(css, filepath, options) {
               return postcss([
                 // теперь сохраним все аасеты из импортируемых файлов
-                rebaseAssetsPlugin(assets, entryFilepath, filepath),
+                rebaseAssetsPlugin(assets, entryFilepath, filepath)
               ])
                 .process(css)
                 .then(function(result) {
                   return result.css;
                 });
             }
-          })
+          }),
+          // и вот здесь можно подключать остальные плагины
         ])
           .process(file.contents, opts)
           .then(function postcssHandleResult (result) {
