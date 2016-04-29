@@ -71,7 +71,7 @@ __.nodeResolve = function nodeResolve(url, basedir, customModuleDirectories) {
     moduleDirectory: moduleDirectory
   });
 
-  url = path.relative(process.cwd(), url);
+  //url = path.relative(process.cwd(), url);
 
   return url;
 };

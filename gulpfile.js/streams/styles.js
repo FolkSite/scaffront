@@ -40,14 +40,16 @@ streams.css = function (options) {
                 console.log('dirname', dirname);
                 console.log('to', to);
                 console.log('options', options);
-                console.log('result', result);
 
+                url = __.nodeResolve(url, path.dirname(filepath));
+
+                //url = path.relative(process.cwd(), url);
                 //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
                 //
                 //assets[file] = assets[file] || [];
                 //assets[file].push(url);
 
-                return __.nodeResolve(url, path.dirname(filepath));
+                return url;
               }
             })
           ])
@@ -110,6 +112,8 @@ streams.scss = function (options) {
 
             assets[file] = assets[file] || [];
             assets[file].push(url);
+
+            url = path.relative(process.cwd(), url);
           }
 
           done(new sass.types.String('url('+ url +')'));
