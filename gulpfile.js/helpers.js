@@ -52,7 +52,8 @@ __.getArray = function getArray (anything) {
  * @param {string|string[]} [customModuleDirectories]
  * @returns {*}
  */
-__.nodeResolve = function nodeResolve(url, basedir, customModuleDirectories) {
+__.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories) {
+  console.log('nodeResolve url', url);
   if (isUrl(url)) { return url; }
 
   if (path.isAbsolute(url)) {

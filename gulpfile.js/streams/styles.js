@@ -5,33 +5,40 @@ const _        = require('lodash');
 const __       = require('../helpers');
 const sass     = require('node-sass');
 const path     = require('path');
+const isUrl    = require('is-url');
 const gutil    = require('gulp-util');
 const config   = require('../../scaffront.config.js');
+const extend   = require('extend');
 const postcss  = require('postcss');
 const resolve  = require('resolve');
 const combiner = require('stream-combiner2').obj;
 const through2 = require('through2').obj;
+const applySourceMap = require('vinyl-sourcemaps-apply');
 
 var streams = {};
 
-var cssAssets = postcss.plugin('gulp-post-css-assets', function (filter, postcssPlugin) {
+/**
+ * @param {{}} assetsStorage Объект
+ * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+ * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
+ * @returns {string}
+ */
+var rebaseAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
+  filepath = (!filepath) ? entryFilepath : filepath;
 
-  return function (css, result) {
-    console.log(css, result, 'css, result');
+  return require('postcss-url')({
+    url: function (url, decl, from, dirname, to, options, result) {
+      url = __.nodeResolve(url, path.dirname(filepath));
+      if (!isUrl(url)) {
+        url = path.relative(process.cwd(), url);
+        assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || [];
+        assetsStorage[entryFilepath].push(url);
+      }
 
-    if (typeof filter !== 'string' && !Array.isArray(filter)) {
-      throw new TypeError('The filter parameter must be a glob string or an array of glob strings!');
+      return url;
     }
-
-    if (typeof postcssPlugin !== 'function') {
-      throw new TypeError('The postcssPlugin parameter must be a function!');
-    }
-
-    if (multimatch(css.source.input.file, filter).length === 0) {
-      return postcssPlugin(css, result);
-    }
-  };
-});
+  })
+};
 
 streams._css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
@@ -111,6 +118,7 @@ streams.css = function (options) {
       loadMaps: true
     }),
     through2(
+      // пропускаем каждую точку входа через свой поток-трансформер
       function(file, enc, callback) {
         if (file.isNull()) {
           return cb(null, file)
@@ -120,38 +128,32 @@ streams.css = function (options) {
           return handleError(callback)('Streams are not supported!');
         }
 
+        var opts = { map: false };
+        opts = extend({}, opts, options);
+
+        if (file.sourceMap) {
+          opts.map = { annotation: false };
+        }
+
+        opts.from = file.path;
+        opts.to = opts.to || file.path;
+
         var entryFilepath = path.join(file.base, file.stem);
-        //console.log('entryFilepath', entryFilepath);
 
         postcss([
+          // сперва сохраним все ассеты для точки входа
+          rebaseAssetsPlugin(assets, entryFilepath),
+          // импортируем вложенные css-ки
           require('postcss-import')({
-            //root: path.join(process.cwd(), config.tasks.root),
+            // резолвим пути по стандарному для node.js алгоритму
             resolve: function (module, basedir, importOptions) {
               return __.nodeResolve(module, basedir);
             },
+            // каждый импортированный файл тоже надо пропустить через postcss
             transform: function(css, filepath, options) {
-              //console.log('options', options);
-
               return postcss([
-                require('postcss-url')({
-                  url: function (url, decl, from, dirname, to, options, result) {
-                    //console.log('url', url);
-                    //console.log('from', from);
-                    //console.log('dirname', dirname);
-                    //console.log('to', to);
-                    //console.log('options', options);
-
-                    console.log('url', url);
-
-                    url = __.nodeResolve(url, path.dirname(filepath));
-                    url = path.relative(process.cwd(), url);
-
-                    assets[entryFilepath] = assets[entryFilepath] || [];
-                    assets[entryFilepath].push(url);
-
-                    return url;
-                  }
-                })
+                // теперь сохраним все аасеты из импортируемых файлов
+                rebaseAssetsPlugin(assets, entryFilepath, filepath),
               ])
                 .process(css)
                 .then(function(result) {
@@ -160,15 +162,22 @@ streams.css = function (options) {
             }
           })
         ])
-          .process(file.contents, {
-            from: file.path,
-            to:   file.path
-          })
+          .process(file.contents, opts)
           .then(function postcssHandleResult (result) {
             var map;
             var warnings = result.warnings().join('\n');
 
             file.contents = new Buffer(result.css);
+
+            // Apply source map to the chain
+            if (file.sourceMap) {
+              map = result.map.toJSON();
+              map.file = file.relative;
+              map.sources = [].map.call(map.sources, function (source) {
+                return path.join(path.dirname(file.relative), source)
+              });
+              applySourceMap(file, map)
+            }
 
             if (warnings) {
               gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
