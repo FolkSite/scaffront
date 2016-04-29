@@ -13,6 +13,10 @@ const through2 = require('through2').obj;
 
 var streams = {};
 
+var rebaseAssets = function () {
+
+};
+
 streams.css = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 

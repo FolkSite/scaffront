@@ -7,4 +7,5 @@
     aspect-ratio: '16:9';
     display: hidden;
     float:left;
+    background: url('../images/bg.jpg');
 }
