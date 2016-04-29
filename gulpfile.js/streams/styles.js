@@ -8,6 +8,7 @@ const config         = require('../../scaffront.config.js');
 const combiner       = require('stream-combiner2').obj;
 const path           = require('path');
 const resolve        = require('resolve');
+const through2       = require('through2').obj;
 
 var streams = {};
 
@@ -17,18 +18,37 @@ streams.css = function (options) {
   var stream = combiner(
     $.sourcemaps.init({
       loadMaps: true
-    })
+    }),
+    $.postcss([
+      require('postcss-import')({
+        //root: path.join(process.cwd(), config.tasks.root),
+        resolve: function (module, basedir, importOptions) {
+          return __.nodeResolve(module, basedir);
+        },
+        transform: function(css, filepath, options) {
+          return postcss([
+            require('postcss-url')({
+              url: function (url, decl, from, dirname, to, options, result) {
+                return __.nodeResolve(url, path.dirname(filepath));
+              }
+            })
+          ])
+            .process(css)
+            .then(function(result) {
+              return result.css;
+            });
+        },
+      }),
+    ])
   );
-
-  if (options.postcss) {
-    stream = combiner(stream, $.postcss(options.postcss))
-  }
 
   return stream;
 };
 
 streams.scss = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
+
+  var assets = {};
 
   return combiner(
     $.sourcemaps.init({
@@ -49,7 +69,7 @@ streams.scss = function (options) {
         transformContent: function (filename, contents) {
           return [
             '$__filepath: unquote("'+ filename +'");',
-            '@function url($url: null, $args...) {',
+            '@function url($url: null) {',
             '  @return __url($__filepath, $url);',
             '}',
             contents
@@ -61,12 +81,42 @@ streams.scss = function (options) {
           url = url.getValue();
           filepath = filepath.getValue();
 
-          url = __.nodeResolve(url, path.dirname(filepath));
+          if (!url) {
+            url = '""';
+          } else {
+            url = __.nodeResolve(url, path.dirname(filepath));
+
+            let file = this.options.file;
+
+            file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
+
+            assets[file] = assets[file] || [];
+            assets[file].push(url);
+          }
 
           done(new sass.types.String('url('+ url +')'));
         }
       }
-    })
+    }),
+    through2(
+      function(file, enc, callback) {
+        var filepath = path.join(file.base, file.stem);
+
+        file.assets = assets[filepath];
+        callback(null, file);
+      },
+      function(callback) {
+        //let manifest = new File({
+        //  // cwd base path contents
+        //  contents: new Buffer(JSON.stringify(mtimes)),
+        //  base: process.cwd(),
+        //  path: process.cwd() + '/manifest.json'
+        //});
+        //this.push(manifest);
+        console.log('assets', assets);
+        callback();
+      }
+    )
   );
 };
 

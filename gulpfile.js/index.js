@@ -289,25 +289,6 @@ gulp.task('styles:css', function () {
     }))
     .pipe(streams.styles.css({
       postcss: [
-        require('postcss-import')({
-          //root: path.join(process.cwd(), config.tasks.root),
-          resolve: function (module, basedir, importOptions) {
-            return __.nodeResolve(module, basedir);
-          },
-          transform: function(css, filepath, options) {
-            return postcss([
-              require('postcss-url')({
-                url: function (url, decl, from, dirname, to, options, result) {
-                  return __.nodeResolve(url, path.dirname(filepath));
-                }
-              })
-            ])
-              .process(css)
-              .then(function(result) {
-                return result.css;
-              });
-          },
-        }),
         //require('postcss-copy-assets')({
         //  base: config.tasks.styles.dest
         //})

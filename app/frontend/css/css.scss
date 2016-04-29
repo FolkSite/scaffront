@@ -4,6 +4,7 @@
 @import 'dir/_include.scss';
 
 p {
+  background: url('');
   background-color: $base-selection-background;
 
   & + & {
