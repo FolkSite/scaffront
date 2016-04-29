@@ -27,6 +27,29 @@ function isUrlShouldBeIgnored(url) {
 
 
 /**
+ * @param {string} url
+ * @param {{}} assetsStorage Объект
+ * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+ * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
+ * @returns {string}
+ */
+var rebaseAsset = function (url, assetsStorage, entryFilepath, filepath) {
+  var tmp = url;
+  if (!isUrlShouldBeIgnored(url)) {
+    tmp = __.nodeResolve(url, path.dirname(filepath), true);
+
+    if (!__.nodeResolve.lastError) {
+      url = tmp;
+      url = path.relative(process.cwd(), url);
+      assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
+      assetsStorage[entryFilepath][url] = url;
+    }
+  }
+
+  return url;
+};
+
+/**
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
@@ -37,19 +60,7 @@ var rebaseAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      var tmp = url;
-      if (!isUrlShouldBeIgnored(url)) {
-        tmp = __.nodeResolve(url, path.dirname(filepath), true);
-
-        if (!__.nodeResolve.lastError) {
-          url = tmp;
-          url = path.relative(process.cwd(), url);
-          assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-          assetsStorage[entryFilepath][url] = url;
-        }
-      }
-
-      return url;
+      return rebaseAsset(url, assetsStorage, entryFilepath, filepath);
     }
   })
 };
@@ -154,7 +165,7 @@ streams.css = function (options) {
 
         var entryFilepath = path.join(file.base, file.stem);
 
-        var postcssProcessor = postcss([
+        postcss([
           // сперва сохраним все ассеты для точки входа
           rebaseAssetsPlugin(assets, entryFilepath),
           // импортируем вложенные css-ки
@@ -176,17 +187,13 @@ streams.css = function (options) {
             }
           }),
           // и вот здесь можно подключать остальные плагины
-          postcss.plugin('postcss-remove', function (opts) {
-            opts = opts || {};
-
-            return function (css, result) {
-              file.css = css;
-
-              css.walkDecls(filter, function (decl) {
-                decl.remove();
-              });
-            };
-          })
+          //postcss.plugin('postcss-remove', function (opts) {
+          //  opts = opts || {};
+          //
+          //  return function (css, result) {
+          //    file.css = css;
+          //  };
+          //})()
         ])
           .process(file.contents, opts)
           .then(function postcssHandleResult (result) {
@@ -195,6 +202,7 @@ streams.css = function (options) {
 
             file.contents = new Buffer(result.css);
             file.assets = Object.keys(assets[entryFilepath] || []);
+            file.postcssResult = result;
             file.postcssRoot = result.root;
 
             // Apply source map to the chain
@@ -307,10 +315,22 @@ streams.scss = function (options) {
         '__url($filepath, $url)': function(filepath, url, done) {
           url = url.getValue();
           filepath = filepath.getValue();
+          var tmp = url;
 
           if (!url) {
             url = '""';
           } else {
+            if (!isUrlShouldBeIgnored(url)) {
+              tmp = __.nodeResolve(url, path.dirname(filepath), true);
+
+              if (!__.nodeResolve.lastError) {
+                url = tmp;
+                url = path.relative(process.cwd(), url);
+                assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
+                assetsStorage[entryFilepath][url] = url;
+              }
+            }
+
             url = __.nodeResolve(url, path.dirname(filepath));
 
             let file = this.options.file;

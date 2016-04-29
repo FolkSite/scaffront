@@ -300,9 +300,10 @@ gulp.task('styles:css', function () {
     .pipe(through(function(file, enc, callback) {
       console.log('file.path', file.path);
       console.log('file.assets', file.assets);
-      console.log('file.postcssRoot', file.postcssRoot);
-      console.log('file.css', file.css);
-      console.log('file.css', Object.getPrototypeOf(file.css));
+      console.log('file.postcssResult', file.postcssResult);
+      //console.log('file.css', file.css || null);
+      //console.log('file.css', Object.getPrototypeOf(file.css || null));
+
       callback(null, file);
     }, function (callback) {
       callback();
