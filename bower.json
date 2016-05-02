@@ -144,7 +144,8 @@
     "visibilityjs": "*",
     "ion.rangeSlider": "*",
     "ion-checkradio": "*",
-    "turntable": "git://github.com/PolarNotion/turntable.git"
+    "turntable": "git://github.com/PolarNotion/turntable.git",
+    "lazy-progressive-enhancement": "git://github.com/tvler/lazy-progressive-enhancement.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
