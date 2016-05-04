@@ -42,12 +42,14 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
     if (!__.nodeResolve.lastError) {
       url = tmp;
       url = path.relative(process.cwd(), url);
+
       assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
       assetsStorage[entryFilepath][url] = url;
 
       if (_.isFunction(assetsResolver)) {
         tmp = assetsResolver(url, entryFilepath);
         url = (tmp) ? tmp : url;
+        assetsStorage[entryFilepath][url] = url;
       }
     }
   }
@@ -143,7 +145,7 @@ streams.cssCompile = function (options) {
           var warnings = result.warnings().join('\n');
 
           file.contents = new Buffer(result.css);
-          file.assets = Object.keys(assets[entryFilepath] || []);
+          file.assets = assets[entryFilepath] || {};
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -177,10 +179,8 @@ streams.scssCompile = function (options) {
 
   return combiner(
     through2(function(file, enc, callback) {
-      console.log(c.blue('through2 entry file.path'), file.path);
-
       var __filepath = `$__filepath: unquote("${file.path}");`;
-      var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
+      var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, `$1\n${__filepath}`);
 
       contents = `
         ${__filepath}
@@ -210,13 +210,7 @@ streams.scssCompile = function (options) {
           var __filepath = `$__filepath: unquote("${filepath}");`;
           contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
 
-          return `
-            ${__filepath}
-            //@function url($url: null) {
-            //  @return __url($__filepath, $url);
-            //}
-            ${contents}
-          `;
+          return `${__filepath}\n${contents}`;
         }
       },
       functions: {
@@ -237,7 +231,7 @@ streams.scssCompile = function (options) {
       }
     }),
     through2(function(file, enc, callback) {
-      file.assets = Object.keys(assets[file.path] || []);
+      file.assets = assets[file.path] || {};
       callback(null, file);
     })
   );
