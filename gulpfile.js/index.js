@@ -289,22 +289,17 @@ gulp.task('styles:css', function () {
       }))
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe(streams.styles.css())
+    .pipe(streams.styles.cssCompile())
     // todo: резолвинг url'ов, копирование файлов
     // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
 
     .pipe(through(function(file, enc, callback) {
       console.log('file.path', file.path);
       console.log('file.assets', file.assets);
-      console.log('file.postcssResult', file.postcssResult);
-      //console.log('file.css', file.css || null);
-      //console.log('file.css', Object.getPrototypeOf(file.css || null));
 
       callback(null, file);
-    }, function (callback) {
-      callback();
     }))
-    .pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
+    //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
@@ -364,8 +359,14 @@ gulp.task('styles:scss', function () {
         message: err.message
       }))
     }))
-    .pipe(streams.styles.scss())
-    .pipe($.if(config.env.isDev, $.debug({title: 'SCSS:'})))
+    .pipe(streams.styles.scssCompile())
+    .pipe(through(function(file, enc, callback) {
+      console.log('file.path', file.path);
+      console.log('file.assets', file.assets);
+
+      callback(null, file);
+    }))
+    //.pipe($.if(config.env.isDev, $.debug({title: 'SCSS:'})))
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл

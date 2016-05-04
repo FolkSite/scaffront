@@ -80,7 +80,7 @@ function handleError (cb) {
   };
 }
 
-streams.css = function (options) {
+streams.cssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   var assets = {};
@@ -136,8 +136,8 @@ streams.css = function (options) {
 
           file.contents = new Buffer(result.css);
           file.assets = Object.keys(assets[entryFilepath] || []);
-          file.postcssResult = result;
-          file.postcssRoot = result.root;
+          //file.postcssResult = result;
+          //file.postcssRoot = result.root;
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -161,7 +161,7 @@ streams.css = function (options) {
   );
 };
 
-streams.scss = function (options) {
+streams.scssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   var assets = {};
