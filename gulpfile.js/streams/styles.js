@@ -179,13 +179,17 @@ streams.scssCompile = function (options) {
     through2(function(file, enc, callback) {
       console.log(c.blue('through2 entry file.path'), file.path);
 
-      var contents = `
-        $__filepath: unquote("${file.path}");
+      var __filepath = `$__filepath: unquote("${filename}");`;
+      var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
+
+      contents = `
+        ${__filepath}
         @function url($url: null) {
-          @return __url("$__filepath", $url);
+          @return __url($__filepath, $url);
         }
-        ${file.contents.toString()}
+        ${contents}
       `;
+
       file.contents = Buffer.from(contents);
 
       //var filepath = path.join(file.base, file.stem);
@@ -210,9 +214,11 @@ streams.scssCompile = function (options) {
          * @returns {string}
          */
         transformContent: function (filename, contents) {
-          //contents.replace();
+          var __filepath = `$__filepath: unquote("${filename}");`;
+          contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
+
           return `
-            $__filepath: unquote("${filename}");
+            ${__filepath}
             @function url($url: null) {
               @return __url($__filepath, $url);
             }
