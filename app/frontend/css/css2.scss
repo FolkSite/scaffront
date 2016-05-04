@@ -1,0 +1,15 @@
+// http://habrahabr.ru/post/220295/
+
+@import 'css/vars';
+@import 'dir/_include.scss';
+
+p {
+  background: url('');
+  background-color: $base-selection-background;
+
+  & + & {
+    margin-top: 30px;
+    font-style: normal;
+  }
+}
+

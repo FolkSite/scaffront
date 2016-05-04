@@ -288,15 +288,10 @@ gulp.task('styles:css', function () {
         message: err.message
       }))
     }))
-    .pipe(streams.styles.css({
-      postcss: [
-        //require('postcss-copy-assets')({
-        //  base: config.tasks.styles.dest
-        //})
-        // todo: резолвинг url'ов, копирование файлов
-        // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
-      ]
-    }))
+    .pipe(streams.styles.css())
+    // todo: резолвинг url'ов, копирование файлов
+    // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
+
     .pipe(through(function(file, enc, callback) {
       console.log('file.path', file.path);
       console.log('file.assets', file.assets);

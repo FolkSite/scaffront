@@ -5,6 +5,7 @@ const _        = require('lodash');
 const __       = require('../helpers');
 const sass     = require('node-sass');
 const path     = require('path');
+const gulp     = require('gulp');
 const isUrl    = require('is-url');
 const gutil    = require('gulp-util');
 const config   = require('../../scaffront.config.js');
@@ -33,7 +34,7 @@ function isUrlShouldBeIgnored(url) {
  * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
  * @returns {string}
  */
-var rebaseAsset = function (url, assetsStorage, entryFilepath, filepath) {
+var resolveAssets = function (url, assetsStorage, entryFilepath, filepath) {
   var tmp = url;
   if (!isUrlShouldBeIgnored(url)) {
     tmp = __.nodeResolve(url, path.dirname(filepath), true);
@@ -52,71 +53,18 @@ var rebaseAsset = function (url, assetsStorage, entryFilepath, filepath) {
 /**
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
+ * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
  * @returns {string}
  */
-var rebaseAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
+var resolveAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      return rebaseAsset(url, assetsStorage, entryFilepath, filepath);
+      return resolveAssets(url, assetsStorage, entryFilepath, filepath);
     }
   })
 };
-
-streams._css = function (options) {
-  options = (_.isPlainObject(options)) ? options : {};
-
-  var assets = {};
-
-  var stream = combiner(
-    $.sourcemaps.init({
-      loadMaps: true
-    }),
-    $.postcss([
-      require('postcss-import')({
-        //root: path.join(process.cwd(), config.tasks.root),
-        resolve: function (module, basedir, importOptions) {
-          return __.nodeResolve(module, basedir);
-        },
-        transform: function(css, filepath, options) {
-          //console.log('filepath', filepath);
-          //console.log('options', options);
-
-          return postcss([
-            require('postcss-url')({
-              url: function (url, decl, from, dirname, to, options, result) {
-                //console.log('url', url);
-                //console.log('from', from);
-                //console.log('dirname', dirname);
-                //console.log('to', to);
-                //console.log('options', options);
-
-                url = __.nodeResolve(url, path.dirname(filepath));
-
-                //url = path.relative(process.cwd(), url);
-                //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-
-                //assets[file] = assets[file] || [];
-                //assets[file].push(url);
-
-                return url;
-              }
-            })
-          ])
-            .process(css)
-            .then(function(result) {
-              return result.css;
-            });
-        }
-      })
-    ])
-  );
-
-  return stream;
-};
-
 
 function handleError (cb) {
   return function (error) {
@@ -138,146 +86,80 @@ streams.css = function (options) {
 
   var assets = {};
 
-  var stream = combiner(
-    $.sourcemaps.init({
-      loadMaps: true
-    }),
-    through2(
-      // пропускаем каждую точку входа через свой поток-трансформер
-      function(file, enc, callback) {
-        if (file.isNull()) {
-          return cb(null, file)
-        }
-
-        if (file.isStream()) {
-          return handleError(callback)('Streams are not supported!');
-        }
-
-        var opts = { map: false };
-        opts = extend({}, opts, options);
-
-        if (file.sourceMap) {
-          opts.map = { annotation: false };
-        }
-
-        opts.from = file.path;
-        opts.to = opts.to || file.path;
-
-        var entryFilepath = path.join(file.base, file.stem);
-
-        postcss([
-          // сперва сохраним все ассеты для точки входа
-          rebaseAssetsPlugin(assets, entryFilepath),
-          // импортируем вложенные css-ки
-          require('postcss-import')({
-            // резолвим пути по стандарному для node.js алгоритму
-            resolve: function (module, basedir, importOptions) {
-              return __.nodeResolve(module, basedir);
-            },
-            // каждый импортированный файл тоже надо пропустить через postcss
-            transform: function(css, filepath, options) {
-              return postcss([
-                // теперь сохраним все аасеты из импортируемых файлов
-                rebaseAssetsPlugin(assets, entryFilepath, filepath)
-              ])
-                .process(css)
-                .then(function(result) {
-                  return result.css;
-                });
-            }
-          }),
-          // и вот здесь можно подключать остальные плагины
-          //postcss.plugin('postcss-remove', function (opts) {
-          //  opts = opts || {};
-          //
-          //  return function (css, result) {
-          //    file.css = css;
-          //  };
-          //})()
-        ])
-          .process(file.contents, opts)
-          .then(function postcssHandleResult (result) {
-            var map;
-            var warnings = result.warnings().join('\n');
-
-            file.contents = new Buffer(result.css);
-            file.assets = Object.keys(assets[entryFilepath] || []);
-            file.postcssResult = result;
-            file.postcssRoot = result.root;
-
-            // Apply source map to the chain
-            if (file.sourceMap) {
-              map = result.map.toJSON();
-              map.file = file.relative;
-              map.sources = [].map.call(map.sources, function (source) {
-                return path.join(path.dirname(file.relative), source)
-              });
-              applySourceMap(file, map)
-            }
-
-            if (warnings) {
-              gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
-            }
-
-            setImmediate(function () {
-              callback(null, file)
-            })
-          }, handleError(callback));
-      },
-      function(callback) {
-        //let manifest = new File({
-        //  // cwd base path contents
-        //  contents: new Buffer(JSON.stringify(mtimes)),
-        //  base: process.cwd(),
-        //  path: process.cwd() + '/manifest.json'
-        //});
-        //this.push(manifest);
-        //console.log('assets', assets);
-        callback();
+  return combiner(
+    // пропускаем каждую точку входа через свой поток-трансформер
+    through2(function(file, enc, callback) {
+      if (file.isNull()) {
+        return cb(null, file)
       }
-    )
-    //$.postcss([
-    //  require('postcss-import')({
-    //    //root: path.join(process.cwd(), config.tasks.root),
-    //    resolve: function (module, basedir, importOptions) {
-    //      return __.nodeResolve(module, basedir);
-    //    },
-    //    transform: function(css, filepath, options) {
-    //      console.log('css', css);
-    //      console.log('filepath', filepath);
-    //      console.log('options', options);
-    //
-    //      return postcss([
-    //        require('postcss-url')({
-    //          url: function (url, decl, from, dirname, to, options, result) {
-    //            //console.log('url', url);
-    //            //console.log('from', from);
-    //            //console.log('dirname', dirname);
-    //            //console.log('to', to);
-    //            //console.log('options', options);
-    //
-    //            url = __.nodeResolve(url, path.dirname(filepath));
-    //
-    //            //url = path.relative(process.cwd(), url);
-    //            //file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-    //            //
-    //            //assets[file] = assets[file] || [];
-    //            //assets[file].push(url);
-    //
-    //            return url;
-    //          }
-    //        })
-    //      ])
-    //        .process(css)
-    //        .then(function(result) {
-    //          return result.css;
-    //        });
-    //    }
-    //  })
-    //])
-  );
 
-  return stream;
+      if (file.isStream()) {
+        return handleError(callback)('Streams are not supported!');
+      }
+
+      var opts = { map: false };
+
+      if (file.sourceMap) {
+        opts.map = { annotation: false };
+      }
+
+      opts.from = file.path;
+      opts.to = opts.to || file.path;
+
+      var entryFilepath = path.join(file.base, file.stem);
+
+      postcss([
+        // сперва сохраним все ассеты для точки входа
+        resolveAssetsPlugin(assets, entryFilepath),
+        // импортируем вложенные css-ки
+        require('postcss-import')({
+          // резолвим пути по стандарному для node.js алгоритму
+          resolve: function (module, basedir, importOptions) {
+            return __.nodeResolve(module, basedir);
+          },
+          // каждый импортированный файл тоже надо пропустить через postcss
+          transform: function(css, filepath, options) {
+            return postcss([
+              // теперь сохраним все ассеты из импортируемых файлов
+              resolveAssetsPlugin(assets, entryFilepath, filepath)
+            ])
+              .process(css)
+              .then(function(result) {
+                return result.css;
+              });
+          }
+        })
+      ])
+        .process(file.contents, opts)
+        .then(function postcssHandleResult (result) {
+          var map;
+          var warnings = result.warnings().join('\n');
+
+          file.contents = new Buffer(result.css);
+          file.assets = Object.keys(assets[entryFilepath] || []);
+          file.postcssResult = result;
+          file.postcssRoot = result.root;
+
+          // Apply source map to the chain
+          if (file.sourceMap) {
+            map = result.map.toJSON();
+            map.file = file.relative;
+            map.sources = [].map.call(map.sources, function (source) {
+              return path.join(path.dirname(file.relative), source)
+            });
+            applySourceMap(file, map)
+          }
+
+          if (warnings) {
+            gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
+          }
+
+          setImmediate(function () {
+            callback(null, file)
+          })
+        }, handleError(callback));
+    })
+  );
 };
 
 streams.scss = function (options) {
@@ -286,9 +168,6 @@ streams.scss = function (options) {
   var assets = {};
 
   return combiner(
-    $.sourcemaps.init({
-      loadMaps: true
-    }),
     $.sass({
       precision: 10,
       importer: require('node-sass-import-once'),
@@ -315,57 +194,25 @@ streams.scss = function (options) {
         '__url($filepath, $url)': function(filepath, url, done) {
           url = url.getValue();
           filepath = filepath.getValue();
-          var tmp = url;
-
           if (!url) {
             url = '""';
           } else {
-            if (!isUrlShouldBeIgnored(url)) {
-              tmp = __.nodeResolve(url, path.dirname(filepath), true);
-
-              if (!__.nodeResolve.lastError) {
-                url = tmp;
-                url = path.relative(process.cwd(), url);
-                assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-                assetsStorage[entryFilepath][url] = url;
-              }
-            }
-
-            url = __.nodeResolve(url, path.dirname(filepath));
-
             let file = this.options.file;
+            file = gutil.replaceExtension(file, '.css');
 
-            file = path.join(path.dirname(file), path.basename(file, path.extname(file)));
-
-            assets[file] = assets[file] || [];
-            assets[file].push(url);
-
-            url = path.relative(process.cwd(), url);
+            url = resolveAssets(url, assets, file, filepath);
           }
 
           done(new sass.types.String('url('+ url +')'));
         }
       }
     }),
-    through2(
-      function(file, enc, callback) {
-        var filepath = path.join(file.base, file.stem);
+    through2(function(file, enc, callback) {
+      var filepath = path.join(file.base, file.stem);
 
-        file.assets = assets[filepath];
-        callback(null, file);
-      },
-      function(callback) {
-        //let manifest = new File({
-        //  // cwd base path contents
-        //  contents: new Buffer(JSON.stringify(mtimes)),
-        //  base: process.cwd(),
-        //  path: process.cwd() + '/manifest.json'
-        //});
-        //this.push(manifest);
-        console.log('assets', assets);
-        callback();
-      }
-    )
+      file.assets = Object.keys(assets[filepath] || []);
+      callback(null, file);
+    })
   );
 };
 
