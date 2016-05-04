@@ -216,10 +216,10 @@ streams.scssCompile = function (options) {
     through2(function(file, enc, callback) {
       var filepath = path.join(file.base, file.stem);
 
-      console.log('filepath', file.path);
-      console.log('assets', assets);
+      //console.log('filepath', file.path);
+      //console.log('assets', assets);
 
-      file.assets = Object.keys(assets[filepath] || []);
+      file.assets = Object.keys(assets[file.path] || []);
       callback(null, file);
     })
   );
