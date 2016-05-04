@@ -25,7 +25,7 @@ tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/producti
 
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
-tasks.files.dest  = tasks.dest;
+tasks.files.dest = tasks.dest;
 //tasks.files.src   = __.glob(tasks.files.root, ['*.*'], true);
 
 /*
