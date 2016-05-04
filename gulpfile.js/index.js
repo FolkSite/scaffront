@@ -270,10 +270,19 @@ var postCssProcessorsDist = [
   })
 ];
 
-var c = require('chalk');
-var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, pathes) {
+/**
+ * @param {string} url
+ * @param {{}} paths
+ * @param {{}} paths.entry
+ * @returns {*}
+ */
+var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, paths) {
+  var tmp;
 
-  console.log(c.blue('resolveStylesAssetsUrls'), url, pathes);
+  if (_.isFunction(config.tasks.styles.resolveAssetsUrl)) {
+    tmp = config.tasks.styles.resolveAssetsUrl(url, paths);
+    url = (tmp) ? tmp : url;
+  }
 
   return url;
 };
@@ -303,7 +312,6 @@ gulp.task('styles:css', function () {
     // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
 
     .pipe(through(function(file, enc, callback) {
-      console.log('file.path', file.path);
       console.log('file.assets', file.assets);
 
       callback(null, file);
@@ -373,7 +381,6 @@ gulp.task('styles:scss', function () {
       resolveAssetsUrl: resolveStylesAssetsUrls
     }))
     .pipe(through(function(file, enc, callback) {
-      console.log('file.path', file.path);
       console.log('file.assets', file.assets);
 
       callback(null, file);

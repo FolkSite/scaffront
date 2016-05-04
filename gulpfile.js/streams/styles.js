@@ -102,7 +102,7 @@ streams.cssCompile = function (options) {
     // пропускаем каждую точку входа через свой поток-трансформер
     through2(function(file, enc, callback) {
       if (file.isNull()) {
-        return cb(null, file)
+        return cb(null, file);
       }
 
       if (file.isStream()) {
@@ -192,6 +192,7 @@ streams.scssCompile = function (options) {
       `;
 
       file.contents = Buffer.from(contents);
+      file.scssExt = path.extname(file.path);
       callback(null, file);
     }),
     $.sass({
@@ -216,7 +217,7 @@ streams.scssCompile = function (options) {
       },
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
-          url = url.getValue();
+          url      = url.getValue();
           filepath = filepath.getValue();
 
           if (!url) {
@@ -232,7 +233,7 @@ streams.scssCompile = function (options) {
       }
     }),
     through2(function(file, enc, callback) {
-      file.assets = assets[file.path] || {};
+      file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
       callback(null, file);
     })
   );
