@@ -288,6 +288,7 @@ gulp.task('styles:css', function () {
         message: err.message
       }))
     }))
+    .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.css())
     // todo: резолвинг url'ов, копирование файлов
     // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы

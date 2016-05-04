@@ -26,7 +26,6 @@ function isUrlShouldBeIgnored(url) {
     /^[a-z]+:\/\//.test(url)
 }
 
-
 /**
  * @param {string} url
  * @param {{}} assetsStorage Объект
