@@ -270,7 +270,9 @@ var postCssProcessorsDist = [
   })
 ];
 
-var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (filepath, url) {
+var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url) {
+  console.log('resolveStylesAssetsUrls', url);
+
   return url;
 };
 
@@ -364,6 +366,7 @@ gulp.task('styles:scss', function () {
         message: err.message
       }))
     }))
+    .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
       resolveAssetsUrl: resolveStylesAssetsUrls
     }))

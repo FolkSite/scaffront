@@ -46,7 +46,7 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
       assetsStorage[entryFilepath][url] = url;
 
       if (_.isFunction(assetsResolver)) {
-        tmp = assetsResolver(url, entryFilepath);
+        tmp = assetsResolver(url);
         url = (tmp) ? tmp : url;
       }
     }
@@ -117,7 +117,7 @@ streams.cssCompile = function (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        resolveAssetsPlugin(assets, entryFilepath, assetsResolver),
+        resolveAssetsPlugin(assets, entryFilepath, entryFilepath, assetsResolver),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
@@ -215,6 +215,9 @@ streams.scssCompile = function (options) {
     }),
     through2(function(file, enc, callback) {
       var filepath = path.join(file.base, file.stem);
+
+      console.log('filepath', filepath);
+      console.log('assets', assets);
 
       file.assets = Object.keys(assets[filepath] || []);
       callback(null, file);
