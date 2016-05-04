@@ -1,7 +1,7 @@
 // http://habrahabr.ru/post/220295/
 
 @import 'css/vars';
-@import 'dir/_include.scss';
+//@import 'dir/dir2/include';
 
 p {
   background: url('');
@@ -13,3 +13,6 @@ p {
   }
 }
 
+body.qwe {
+  background: url('../images/bg2.jpg');
+}

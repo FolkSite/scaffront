@@ -270,7 +270,7 @@ var postCssProcessorsDist = [
   })
 ];
 
-var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url) {
+var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, filepath) {
   console.log('resolveStylesAssetsUrls', url);
 
   return url;

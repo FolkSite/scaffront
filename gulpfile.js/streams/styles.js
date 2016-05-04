@@ -46,7 +46,7 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
       assetsStorage[entryFilepath][url] = url;
 
       if (_.isFunction(assetsResolver)) {
-        tmp = assetsResolver(url);
+        tmp = assetsResolver(url, entryFilepath);
         url = (tmp) ? tmp : url;
       }
     }
@@ -167,6 +167,8 @@ streams.cssCompile = function (options) {
   );
 };
 
+var c = require('chalk');
+
 streams.scssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
@@ -174,8 +176,29 @@ streams.scssCompile = function (options) {
   var assets = {};
 
   return combiner(
+    through2(function(file, enc, callback) {
+      console.log(c.blue('through2 entry file.path'), file.path);
+
+      var contents = `
+        $__filepath: unquote("${file.path}");
+        @function url($url: null) {
+          @return __url("$__filepath", $url);
+        }
+        ${file.contents.toString()}
+      `;
+      file.contents = Buffer.from(contents);
+
+      //var filepath = path.join(file.base, file.stem);
+      //
+      ////console.log('filepath', file.path);
+      ////console.log('assets', assets);
+      //
+      //file.assets = Object.keys(assets[file.path] || []);
+      callback(null, file);
+    }),
     $.sass({
       precision: 10,
+      quiet: true,
       importer: require('node-sass-import-once'),
       importOnce: {
         index: true,
@@ -187,25 +210,27 @@ streams.scssCompile = function (options) {
          * @returns {string}
          */
         transformContent: function (filename, contents) {
-          return [
-            '$__filepath: unquote("'+ filename +'");',
-            '@function url($url: null) {',
-            '  @return __url($__filepath, $url);',
-            '}',
-            contents
-          ].join('\n');
+          //contents.replace();
+          return `
+            $__filepath: unquote("${filename}");
+            @function url($url: null) {
+              @return __url($__filepath, $url);
+            }
+            ${contents}
+          `;
         }
       },
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
           url = url.getValue();
           filepath = filepath.getValue();
+          console.log(c.green('__url'), filepath, url);
+
           if (!url) {
             url = '""';
           } else {
             let file = this.options.file;
             file = gutil.replaceExtension(file, '.css');
-
             url = resolveAssets(url, assets, file, filepath, assetsResolver);
           }
 
@@ -214,11 +239,6 @@ streams.scssCompile = function (options) {
       }
     }),
     through2(function(file, enc, callback) {
-      var filepath = path.join(file.base, file.stem);
-
-      //console.log('filepath', file.path);
-      //console.log('assets', assets);
-
       file.assets = Object.keys(assets[file.path] || []);
       callback(null, file);
     })
