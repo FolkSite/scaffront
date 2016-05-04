@@ -31,9 +31,10 @@ function isUrlShouldBeIgnored(url) {
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
+ * @param {function} [assetsResolver]
  * @returns {string}
  */
-var resolveAssets = function (url, assetsStorage, entryFilepath, filepath) {
+var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, assetsResolver) {
   var tmp = url;
   if (!isUrlShouldBeIgnored(url)) {
     tmp = __.nodeResolve(url, path.dirname(filepath), true);
@@ -43,6 +44,11 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath) {
       url = path.relative(process.cwd(), url);
       assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
       assetsStorage[entryFilepath][url] = url;
+
+      if (_.isFunction(assetsResolver)) {
+        tmp = assetsResolver(url, entryFilepath);
+        url = (tmp) ? tmp : url;
+      }
     }
   }
 
@@ -53,14 +59,15 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath) {
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
+ * @param {function} [assetsResolver]
  * @returns {string}
  */
-var resolveAssetsPlugin = function (assetsStorage, entryFilepath, filepath) {
+var resolveAssetsPlugin = function (assetsStorage, entryFilepath, filepath, assetsResolver) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      return resolveAssets(url, assetsStorage, entryFilepath, filepath);
+      return resolveAssets(url, assetsStorage, entryFilepath, filepath, assetsResolver || null);
     }
   })
 };
@@ -83,6 +90,7 @@ function handleError (cb) {
 streams.cssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
+  var assetsResolver = (_.isFunction(options.resolveAssetsUrl)) ? options.resolveAssetsUrl : __.noop;
   var assets = {};
 
   return combiner(
@@ -109,7 +117,7 @@ streams.cssCompile = function (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        resolveAssetsPlugin(assets, entryFilepath),
+        resolveAssetsPlugin(assets, entryFilepath, assetsResolver),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
@@ -120,7 +128,7 @@ streams.cssCompile = function (options) {
           transform: function(css, filepath, options) {
             return postcss([
               // теперь сохраним все ассеты из импортируемых файлов
-              resolveAssetsPlugin(assets, entryFilepath, filepath)
+              resolveAssetsPlugin(assets, entryFilepath, filepath, assetsResolver)
             ])
               .process(css)
               .then(function(result) {
@@ -136,8 +144,6 @@ streams.cssCompile = function (options) {
 
           file.contents = new Buffer(result.css);
           file.assets = Object.keys(assets[entryFilepath] || []);
-          //file.postcssResult = result;
-          //file.postcssRoot = result.root;
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -164,6 +170,7 @@ streams.cssCompile = function (options) {
 streams.scssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
+  var assetsResolver = (_.isFunction(options.resolveAssetsUrl)) ? options.resolveAssetsUrl : __.noop;
   var assets = {};
 
   return combiner(
@@ -199,7 +206,7 @@ streams.scssCompile = function (options) {
             let file = this.options.file;
             file = gutil.replaceExtension(file, '.css');
 
-            url = resolveAssets(url, assets, file, filepath);
+            url = resolveAssets(url, assets, file, filepath, assetsResolver);
           }
 
           done(new sass.types.String('url('+ url +')'));
