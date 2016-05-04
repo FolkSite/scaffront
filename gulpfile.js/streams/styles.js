@@ -179,7 +179,7 @@ streams.scssCompile = function (options) {
     through2(function(file, enc, callback) {
       console.log(c.blue('through2 entry file.path'), file.path);
 
-      var __filepath = `$__filepath: unquote("${filename}");`;
+      var __filepath = `$__filepath: unquote("${file.path}");`;
       var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
 
       contents = `
@@ -209,12 +209,12 @@ streams.scssCompile = function (options) {
         css: true,
         bower: false,
         /**
-         * @param {string} filename
+         * @param {string} filepath
          * @param {string} contents
          * @returns {string}
          */
-        transformContent: function (filename, contents) {
-          var __filepath = `$__filepath: unquote("${filename}");`;
+        transformContent: function (filepath, contents) {
+          var __filepath = `$__filepath: unquote("${filepath}");`;
           contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
 
           return `
