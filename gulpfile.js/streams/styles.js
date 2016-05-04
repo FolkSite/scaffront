@@ -31,28 +31,29 @@ function isUrlShouldBeIgnored(url) {
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [assetsResolver]
+ * @param {function} [assetsUrlRebaser]
  * @returns {string}
  */
-var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, assetsResolver) {
+var rebaseAssetsUrl = function (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
   var tmp = url;
   if (!isUrlShouldBeIgnored(url)) {
     tmp = __.nodeResolve(url, path.dirname(filepath), true);
 
     if (!__.nodeResolve.lastError) {
-      url = tmp;
-      url = path.relative(process.cwd(), url);
+      let resolvedUrl = tmp;
+      resolvedUrl = resolvedUrl.relative(process.cwd(), resolvedUrl);
 
       assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-      assetsStorage[entryFilepath][url] = url;
+      assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
 
-      if (_.isFunction(assetsResolver)) {
-        tmp = assetsResolver(url, {
-          entryFile: path.relative(process.cwd(), entryFilepath),
-          sourceFile: path.relative(process.cwd(), filepath)
+      if (_.isFunction(assetsUrlRebaser)) {
+        let rebasedUrl = assetsUrlRebaser(resolvedUrl, {
+          entryFile: resolvedUrl.relative(process.cwd(), entryFilepath),
+          sourceFile: resolvedUrl.relative(process.cwd(), filepath)
         });
-        url = (tmp) ? tmp : url;
-        assetsStorage[entryFilepath][url] = url;
+        rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
+
+        assetsStorage[entryFilepath][resolvedUrl] = rebasedUrl;
       }
     }
   }
@@ -67,12 +68,12 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
  * @param {function} [assetsResolver]
  * @returns {string}
  */
-var resolveAssetsPlugin = function (assetsStorage, entryFilepath, filepath, assetsResolver) {
+var rebaseAssetsUrlPlugin = function (assetsStorage, entryFilepath, filepath, assetsResolver) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      return resolveAssets(url, assetsStorage, entryFilepath, filepath, assetsResolver || null);
+      return rebaseAssetsUrl(url, assetsStorage, entryFilepath, filepath, assetsResolver || null);
     }
   })
 };
@@ -95,7 +96,7 @@ function handleError (cb) {
 streams.cssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  var assetsResolver = (_.isFunction(options.resolveAssetsUrl)) ? options.resolveAssetsUrl : __.noop;
+  var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
   return combiner(
@@ -122,7 +123,7 @@ streams.cssCompile = function (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        resolveAssetsPlugin(assets, entryFilepath, entryFilepath, assetsResolver),
+        rebaseAssetsUrlPlugin(assets, entryFilepath, entryFilepath, assetsUrlRebaser),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
@@ -133,7 +134,7 @@ streams.cssCompile = function (options) {
           transform: function(css, filepath, options) {
             return postcss([
               // теперь сохраним все ассеты из импортируемых файлов
-              resolveAssetsPlugin(assets, entryFilepath, filepath, assetsResolver)
+              rebaseAssetsUrlPlugin(assets, entryFilepath, filepath, assetsUrlRebaser)
             ])
               .process(css)
               .then(function(result) {
@@ -175,7 +176,7 @@ streams.cssCompile = function (options) {
 streams.scssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  var assetsResolver = (_.isFunction(options.resolveAssetsUrl)) ? options.resolveAssetsUrl : __.noop;
+  var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
   return combiner(
@@ -225,7 +226,7 @@ streams.scssCompile = function (options) {
           } else {
             let file = this.options.file;
             //file = gutil.replaceExtension(file, '.scss');
-            url = resolveAssets(url, assets, file, filepath, assetsResolver);
+            url = rebaseAssetsUrl(url, assets, file, filepath, assetsUrlRebaser);
           }
 
           done(new sass.types.String('url("'+ url +'")'));

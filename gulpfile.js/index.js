@@ -270,24 +270,6 @@ var postCssProcessorsDist = [
   })
 ];
 
-/**
- * @param {string} url
- * @param {{}} paths
- * @param {string} paths.entryFile
- * @param {string} paths.sourceFile
- * @returns {string}
- */
-var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, paths) {
-  var tmp;
-
-  if (_.isFunction(config.tasks.styles.resolveAssetsUrl)) {
-    tmp = config.tasks.styles.resolveAssetsUrl(url, paths);
-    url = (tmp) ? tmp : url;
-  }
-
-  return url;
-};
-
 gulp.task('styles:css', function () {
   var smOpts = {
     sourceRoot: '/css/sources',
@@ -307,7 +289,7 @@ gulp.task('styles:css', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
-      resolveAssetsUrl: resolveStylesAssetsUrls
+      assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
     // todo: резолвинг url'ов, копирование файлов
     // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
@@ -379,7 +361,7 @@ gulp.task('styles:scss', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
-      resolveAssetsUrl: resolveStylesAssetsUrls
+      assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
     .pipe(through(function(file, enc, callback) {
       console.log('file.assets', file.assets);

@@ -88,16 +88,27 @@ tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
 /**
- * @param {string} url
+ * @param {string} resolvedUrl
  * @param {{}} paths
  * @param {string} paths.entryFile
  * @param {string} paths.sourceFile
  * @returns {string}
  */
-tasks.styles.resolveAssetsUrl = function (url, paths) {
-  console.log('url', url);
-  console.log('paths', paths);
-  return url;
+tasks.styles.assetsUrlRebaser = function (resolvedUrl, paths) {
+  var root = path.join('/', tasks.root, '/');
+  var dest = path.join('/', tasks.dest, '/');
+  var _url = path.join('/', resolvedUrl, '/');
+
+
+
+  //if (_url.indexOf(root) >= 0) {
+  //  _url.replace(new RegExp(`^${root}`), '');
+  //}
+  //
+  //
+  //console.log('resolvedUrl', resolvedUrl);
+  //console.log('paths', paths);
+  //return resolvedUrl;
 };
 
 
