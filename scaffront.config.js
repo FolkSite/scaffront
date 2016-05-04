@@ -90,8 +90,8 @@ tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 /**
  * @param {string} url
  * @param {{}} paths
- * @param {string} paths.entryFilepath
- * @param {string} paths.sourceFilepath
+ * @param {string} paths.entryFile
+ * @param {string} paths.sourceFile
  * @returns {string}
  */
 tasks.styles.resolveAssetsUrl = function (url, paths) {

@@ -48,8 +48,8 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
 
       if (_.isFunction(assetsResolver)) {
         tmp = assetsResolver(url, {
-          entryFilepath: entryFilepath,
-          sourceFilepath: filepath
+          entryFile: path.relative(process.cwd(), entryFilepath),
+          sourceFile: path.relative(process.cwd(), filepath)
         });
         url = (tmp) ? tmp : url;
         assetsStorage[entryFilepath][url] = url;
