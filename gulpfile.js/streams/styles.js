@@ -18,7 +18,7 @@ const applySourceMap = require('vinyl-sourcemaps-apply');
 
 var streams = {};
 
-function isUrlShouldBeIgnored(url) {
+function isUrlShouldBeIgnored (url) {
   return url[0] === "/" ||
     url[0] === "#" ||
     url.indexOf("data:") === 0 ||
@@ -34,7 +34,7 @@ function isUrlShouldBeIgnored(url) {
  * @param {function} [assetsUrlRebaser]
  * @returns {string}
  */
-var rebaseAssetsUrl = function (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
+var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
   let rebasedUrl = url;
 
   if (!isUrlShouldBeIgnored(url)) {
@@ -68,7 +68,7 @@ var rebaseAssetsUrl = function (url, assetsStorage, entryFilepath, filepath, ass
  * @param {function} [assetsResolver]
  * @returns {string}
  */
-var rebaseAssetsUrlPlugin = function (assetsStorage, entryFilepath, filepath, assetsResolver) {
+var rebaseAssetsUrlPlugin = function rebaseAssetsUrlPlugin (assetsStorage, entryFilepath, filepath, assetsResolver) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
@@ -93,7 +93,7 @@ function handleError (cb) {
   };
 }
 
-streams.cssCompile = function (options) {
+streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
@@ -173,7 +173,7 @@ streams.cssCompile = function (options) {
   );
 };
 
-streams.scssCompile = function (options) {
+streams.scssCompile = function scssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
@@ -224,9 +224,7 @@ streams.scssCompile = function (options) {
           if (!url) {
             url = '';
           } else {
-            let file = this.options.file;
-            //file = gutil.replaceExtension(file, '.scss');
-            url = rebaseAssetsUrl(url, assets, file, filepath, assetsUrlRebaser);
+            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, assetsUrlRebaser);
           }
 
           done(new sass.types.String('url("'+ url +'")'));
@@ -238,6 +236,12 @@ streams.scssCompile = function (options) {
       callback(null, file);
     })
   );
+};
+
+streams.dist = function (options) {
+  options = (_.isPlainObject(options)) ? options : {};
+
+
 };
 
 module.exports = streams;
