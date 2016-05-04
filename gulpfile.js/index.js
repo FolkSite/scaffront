@@ -292,7 +292,7 @@ gulp.task('styles:css', function () {
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
     // todo: резолвинг url'ов, копирование файлов
-    // todo: минификация, спрайты, минификация изображений, svg, шрифты, фоллбеки, полифиллы
+    // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
 
     .pipe(through(function(file, enc, callback) {
       console.log('file.assets', file.assets);
