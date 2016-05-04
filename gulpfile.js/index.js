@@ -270,8 +270,10 @@ var postCssProcessorsDist = [
   })
 ];
 
-var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, filepath) {
-  console.log('resolveStylesAssetsUrls', url);
+var c = require('chalk');
+var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, pathes) {
+
+  console.log(c.blue('resolveStylesAssetsUrls'), url, pathes);
 
   return url;
 };

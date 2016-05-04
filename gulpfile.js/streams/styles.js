@@ -1,19 +1,19 @@
 'use strict';
 
-const $        = require('gulp-load-plugins')();
-const _        = require('lodash');
-const __       = require('../helpers');
-const sass     = require('node-sass');
-const path     = require('path');
-const gulp     = require('gulp');
-const isUrl    = require('is-url');
-const gutil    = require('gulp-util');
-const config   = require('../../scaffront.config.js');
-const extend   = require('extend');
-const postcss  = require('postcss');
-const resolve  = require('resolve');
-const combiner = require('stream-combiner2').obj;
-const through2 = require('through2').obj;
+const $              = require('gulp-load-plugins')();
+const _              = require('lodash');
+const __             = require('../helpers');
+const sass           = require('node-sass');
+const path           = require('path');
+const gulp           = require('gulp');
+const isUrl          = require('is-url');
+const gutil          = require('gulp-util');
+const config         = require('../../scaffront.config.js');
+const extend         = require('extend');
+const postcss        = require('postcss');
+const resolve        = require('resolve');
+const combiner       = require('stream-combiner2').obj;
+const through2       = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 
 var streams = {};
@@ -47,7 +47,10 @@ var resolveAssets = function (url, assetsStorage, entryFilepath, filepath, asset
       assetsStorage[entryFilepath][url] = url;
 
       if (_.isFunction(assetsResolver)) {
-        tmp = assetsResolver(url, entryFilepath);
+        tmp = assetsResolver(url, {
+          entryFilepath: entryFilepath,
+          sourceFilepath: filepath
+        });
         url = (tmp) ? tmp : url;
         assetsStorage[entryFilepath][url] = url;
       }
@@ -152,9 +155,9 @@ streams.cssCompile = function (options) {
             map = result.map.toJSON();
             map.file = file.relative;
             map.sources = [].map.call(map.sources, function (source) {
-              return path.join(path.dirname(file.relative), source)
+              return path.join(path.dirname(file.relative), source);
             });
-            applySourceMap(file, map)
+            applySourceMap(file, map);
           }
 
           if (warnings) {
@@ -168,8 +171,6 @@ streams.cssCompile = function (options) {
     })
   );
 };
-
-var c = require('chalk');
 
 streams.scssCompile = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
@@ -219,14 +220,14 @@ streams.scssCompile = function (options) {
           filepath = filepath.getValue();
 
           if (!url) {
-            url = '""';
+            url = '';
           } else {
             let file = this.options.file;
-            file = gutil.replaceExtension(file, '.css');
+            //file = gutil.replaceExtension(file, '.scss');
             url = resolveAssets(url, assets, file, filepath, assetsResolver);
           }
 
-          done(new sass.types.String('url('+ url +')'));
+          done(new sass.types.String('url("'+ url +'")'));
         }
       }
     }),
