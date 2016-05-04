@@ -99,9 +99,12 @@ tasks.styles.assetsUrlRebaser = function (resolvedUrl, paths) {
   var root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
   var url = __.preparePath(resolvedUrl, {startSlash: false, trailingSlash: false});
 
+  // если файл лежит внутри root-папки
   if (url.indexOf(root) === 0) {
+    // то заменяем `root`-путь на `dist`-путь
     rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
   } else {
+    // а если нет (например `bower_components` из корня), то переносим этот путь как есть
     rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
   }
 
