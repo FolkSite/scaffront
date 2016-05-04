@@ -87,6 +87,13 @@ tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
+/**
+ * @param {string} url
+ * @param {{}} paths
+ * @param {string} paths.entryFilepath
+ * @param {string} paths.sourceFilepath
+ * @returns {string}
+ */
 tasks.styles.resolveAssetsUrl = function (url, paths) {
   console.log('url', url);
   console.log('paths', paths);

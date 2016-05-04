@@ -273,8 +273,9 @@ var postCssProcessorsDist = [
 /**
  * @param {string} url
  * @param {{}} paths
- * @param {{}} paths.entry
- * @returns {*}
+ * @param {string} paths.entryFilepath
+ * @param {string} paths.sourceFilepath
+ * @returns {string}
  */
 var resolveStylesAssetsUrls = function resolveStylesAssetsUrls (url, paths) {
   var tmp;
