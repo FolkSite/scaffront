@@ -16,8 +16,6 @@ const combiner       = require('stream-combiner2').obj;
 const through2       = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 
-var streams = {};
-
 function isUrlShouldBeIgnored (url) {
   return url[0] === "/" ||
     url[0] === "#" ||
@@ -92,6 +90,8 @@ function handleError (cb) {
     })
   };
 }
+
+var streams = {};
 
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
