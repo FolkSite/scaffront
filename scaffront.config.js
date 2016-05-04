@@ -104,10 +104,10 @@ tasks.styles.assetsUrlRebaser = function (resolvedUrl, paths) {
     // то заменяем `root`-путь на `dist`-путь
     rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
   } else {
-    // а если нет (например `bower_components` из корня), то переносим этот путь как есть
+    // а если нет (например `bower_components` из корня), то переносим этот путь как есть внутрь `dist`
     rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
   }
-
+  // в конечном счёте, все файлы будут иметь абсолютные пути, относительно `dist`-директории
   return rebasedUrl;
 };
 
