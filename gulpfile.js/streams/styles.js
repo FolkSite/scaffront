@@ -191,13 +191,6 @@ streams.scssCompile = function (options) {
       `;
 
       file.contents = Buffer.from(contents);
-
-      //var filepath = path.join(file.base, file.stem);
-      //
-      ////console.log('filepath', file.path);
-      ////console.log('assets', assets);
-      //
-      //file.assets = Object.keys(assets[file.path] || []);
       callback(null, file);
     }),
     $.sass({
@@ -219,9 +212,9 @@ streams.scssCompile = function (options) {
 
           return `
             ${__filepath}
-            @function url($url: null) {
-              @return __url($__filepath, $url);
-            }
+            //@function url($url: null) {
+            //  @return __url($__filepath, $url);
+            //}
             ${contents}
           `;
         }
@@ -230,7 +223,6 @@ streams.scssCompile = function (options) {
         '__url($filepath, $url)': function(filepath, url, done) {
           url = url.getValue();
           filepath = filepath.getValue();
-          console.log(c.green('__url'), filepath, url);
 
           if (!url) {
             url = '""';
