@@ -95,20 +95,17 @@ tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
  * @returns {string}
  */
 tasks.styles.assetsUrlRebaser = function (resolvedUrl, paths) {
-  var root = path.join('/', tasks.root, '/');
-  var dest = path.join('/', tasks.dest, '/');
-  var _url = path.join('/', resolvedUrl, '/');
+  var rebasedUrl = resolvedUrl;
+  var root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
+  var url = __.preparePath(resolvedUrl, {startSlash: false, trailingSlash: false});
 
+  if (url.indexOf(root) === 0) {
+    rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
+  } else {
+    rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
+  }
 
-
-  //if (_url.indexOf(root) >= 0) {
-  //  _url.replace(new RegExp(`^${root}`), '');
-  //}
-  //
-  //
-  //console.log('resolvedUrl', resolvedUrl);
-  //console.log('paths', paths);
-  //return resolvedUrl;
+  return rebasedUrl;
 };
 
 

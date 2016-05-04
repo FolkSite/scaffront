@@ -35,21 +35,21 @@ function isUrlShouldBeIgnored(url) {
  * @returns {string}
  */
 var rebaseAssetsUrl = function (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
-  var tmp = url;
+  let rebasedUrl = url;
+
   if (!isUrlShouldBeIgnored(url)) {
-    tmp = __.nodeResolve(url, path.dirname(filepath), true);
+    let resolvedUrl = __.nodeResolve(url, path.dirname(filepath), true);
 
     if (!__.nodeResolve.lastError) {
-      let resolvedUrl = tmp;
-      resolvedUrl = resolvedUrl.relative(process.cwd(), resolvedUrl);
+      resolvedUrl = path.relative(process.cwd(), resolvedUrl);
 
       assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
       assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
 
       if (_.isFunction(assetsUrlRebaser)) {
-        let rebasedUrl = assetsUrlRebaser(resolvedUrl, {
-          entryFile: resolvedUrl.relative(process.cwd(), entryFilepath),
-          sourceFile: resolvedUrl.relative(process.cwd(), filepath)
+        rebasedUrl = assetsUrlRebaser(resolvedUrl, {
+          entryFile: path.relative(process.cwd(), entryFilepath),
+          sourceFile: path.relative(process.cwd(), filepath)
         });
         rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
 
@@ -58,7 +58,7 @@ var rebaseAssetsUrl = function (url, assetsStorage, entryFilepath, filepath, ass
     }
   }
 
-  return url;
+  return rebasedUrl;
 };
 
 /**
