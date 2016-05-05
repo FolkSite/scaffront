@@ -83,9 +83,9 @@ gulp.task('files', function () {
         message: err.message
       }))
     }))
-  //$.tap(function (file) {
+    //.pipe($.tap(function (file) {
     //  console.log('file', file.path);
-    //})
+    //}))
     // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
     // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
     // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
@@ -377,11 +377,28 @@ gulp.task('styles:scss', function () {
     }))
     .pipe(through(function(file, enc, callback) {
       console.log('file.path', file.path);
-      console.log('file.assets', file.assets);
+      //console.log('file.assets', file.assets);
+
+      Object.keys(file.assets).forEach(function (sourceFile) {
+        var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
+        var destPath = path.dirname(destFile);
+        destFile = path.basename(destFile);
+
+        gulp
+          .src(sourceFile)
+          .pipe($.newer(config.tasks.files.dest))
+          .pipe(through((function (newBasename) {
+            return function(file, enc, callback) {
+              file.basename = newBasename;
+              callback(null, file);
+            };
+          })(destFile)))
+          .pipe(gulp.dest(destPath));
+      });
+
 
       callback(null, file);
     }))
-    //.pipe($.if(config.env.isDev, $.debug({title: 'SCSS:'})))
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
