@@ -129,10 +129,17 @@ gulp.task('html', function () {
       }))
     }))
     .pipe(through(function(file, enc, callback) {
-      var locate = function(file, handle, regex) {
+      var locate = function(file) {
         var search, matches;
-        search = regex || new RegExp('(?:[\'\"](' + handle + '\/{2}[^\'\"]+))','g');
+        search = new RegExp('<[^>]+?(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm');
         matches = file.contents.toString().match(search);
+
+        matches = matches
+          .map(function (matched) {
+            return new RegExp('(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm').exec(matched)[3] || null;
+          })
+          .filter((matched) => !!matched);
+
         return matches || [];
       };
 
@@ -169,6 +176,8 @@ gulp.task('html', function () {
         var matches = locate(file, handle);
 
         console.log('matches', matches);
+
+        //__.nodeResolve(module, basedir)
 
         return file;
 
