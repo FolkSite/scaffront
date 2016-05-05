@@ -71,32 +71,35 @@ gulp.task('server', function () {
 
 /** ========== FILES ========== **/
 gulp.task('files', function () {
-  return combiner(
-    gulp.src(config.tasks.files.src, {
+  return gulp
+    .src(config.tasks.files.src, {
       // При повторном запуске таска (например, через watch) выбирает только те файлы,
       // которые изменились с заданной даты (сравнивает по дате модификации mtime)
       //since: gulp.lastRun(options.taskName)
-    }),
-    //$.tap(function (file) {
+    })
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'Copy files',
+        message: err.message
+      }))
+    }))
+  //$.tap(function (file) {
     //  console.log('file', file.path);
     //})
     // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
     // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
     // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    $.cached('files'),
+    .pipe($.cached('files'))
 
     // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
     // если в целевой директории такие файлы уже есть, то не пропускает их.
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-    $.newer(config.tasks.files.dest),
-    $.if(config.env.isDev, $.debug({title: 'File:'})),
+    .pipe($.newer(config.tasks.files.dest))
+    .pipe($.if(config.env.isDev, $.debug({title: 'File:'})))
 
-    gulp.dest(config.tasks.files.dest)
-  ).on('error', $.notify.onError(err => ({
-    title: 'Copy files',
-    message: err.message
-  })));
+    .pipe(gulp.dest(config.tasks.files.dest))
+  ;
 });
 
 gulp.task('files:watch', function () {
