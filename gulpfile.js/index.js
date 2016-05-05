@@ -354,13 +354,18 @@ gulp.task('styles:css', function () {
   // $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
 });
 
-gulp.task('styles:scss', function () {
+gulp.task('styles:scss', function (cb) {
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
   };
 
-  return gulp
+  setTimeout(function () {
+    cb()
+  }, 10000);
+
+  //return gulp
+  gulp
     .src(config.tasks.styles.scss.src, {
       //since: gulp.lastRun(options.taskName)
     })
@@ -379,14 +384,16 @@ gulp.task('styles:scss', function () {
       console.log('file.path', file.path);
       //console.log('file.assets', file.assets);
 
-      Object.keys(file.assets).forEach(function (sourceFile) {
+      var streams = require('merge-stream')();
+
+      Object.keys(file.assets).map(function (sourceFile) {
         var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
         var destPath = path.dirname(destFile);
         destFile = path.basename(destFile);
 
-        gulp
+        var stream = gulp
           .src(sourceFile)
-          .pipe($.newer(config.tasks.files.dest))
+          .pipe($.newer(destPath))
           .pipe(through((function (newBasename) {
             return function(file, enc, callback) {
               file.basename = newBasename;
@@ -394,10 +401,19 @@ gulp.task('styles:scss', function () {
             };
           })(destFile)))
           .pipe(gulp.dest(destPath));
+
+        streams.add(stream);
       });
 
+      //console.log('streams', streams);
+      //callback(null, file);
 
-      callback(null, file);
+      streams.on('end', function () {
+        console.log('end streams');
+        //callback(null, file);
+      })
+      ;
+
     }))
     .pipe($.if(
       config.env.isProd,
