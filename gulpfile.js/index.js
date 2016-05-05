@@ -291,7 +291,7 @@ gulp.task('styles:css', function () {
     .pipe(streams.styles.cssCompile({
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
-    // todo: резолвинг url'ов, копирование файлов
+    // todo: копирование файлов
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
 
     .pipe(through(function(file, enc, callback) {
@@ -306,6 +306,15 @@ gulp.task('styles:css', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.tasks.styles.dest))
+    .pipe(require('through2-reduce').obj(function (assets, file, index) {
+
+      return Object.assign(assets, file.assets);
+    }, {}))
+    .pipe(through(function (file, enc, cb) {
+      console.log('through', arguments);
+
+      cb();
+    }))
   ;
 
 /*
@@ -375,6 +384,15 @@ gulp.task('styles:scss', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.tasks.styles.dest))
+    .pipe(require('through2-reduce').obj(function (assets, file, index) {
+
+      return Object.assign(assets, file.assets);
+    }, {}))
+    .pipe(through(function (file, enc, cb) {
+      console.log('through', arguments);
+
+      cb();
+    }))
   ;
 });
 

@@ -133,6 +133,7 @@
     "stream-combiner2": "^1.1.1",
     "swig": "^1.4.2",
     "through2": "^2.0.1",
+    "through2-reduce": "^1.1.1",
     "trace": "^2.3.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-named": "^1.1.0",
