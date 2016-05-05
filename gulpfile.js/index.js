@@ -294,14 +294,8 @@ gulp.task('styles:css', function () {
     .pipe(streams.styles.cssCompile({
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
-    // todo: копирование файлов
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
-
-    .pipe(through(function(file, enc, callback) {
-      console.log('file.assets', file.assets);
-
-      callback(null, file);
-    }))
+    .pipe(streams.styles.copyAssets())
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -309,15 +303,6 @@ gulp.task('styles:css', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.tasks.styles.dest))
-    .pipe(require('through2-reduce').obj(function (assets, file, index) {
-
-      return Object.assign(assets, file.assets);
-    }, {}))
-    .pipe(through(function (file, enc, cb) {
-      console.log('through', arguments);
-
-      cb();
-    }))
   ;
 
 /*
@@ -380,71 +365,13 @@ gulp.task('styles:scss', function (cb) {
     .pipe(streams.styles.scssCompile({
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
-    .pipe(through(function(file, enc, callback) {
-      var assetsStreamsCount = 0;
-      var assetsStreamsCountEnded = 0;
-
-      var assetStreamCallback = function () {
-        assetsStreamsCountEnded++;
-        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
-
-        callback(null, file);
-      };
-
-      Object.keys(file.assets).forEach(function (sourceFile) {
-        var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
-        var destPath = path.dirname(destFile);
-        destFile = path.basename(destFile);
-
-        gulp
-          .src(sourceFile)
-          .pipe(through((function (newBasename) {
-            return function(file, enc, callback) {
-              file.basename = newBasename;
-              callback(null, file);
-            };
-          })(destFile)))
-          .pipe($.newer(destPath))
-          .pipe(gulp.dest(destPath))
-          .on('end', assetStreamCallback)
-        ;
-
-        assetsStreamsCount++;
-      });
-
-      //streams = combiner(streams);
-      //streams.pipe(through(function (_file, enc, cb) {
-      //  cb(null, _file);
-      //}, function (cb) {
-      //  callback(null, file);
-      //  cb();
-      //}))
-
-      //console.log('streams', streams);
-      //callback(null, file);
-
-      //streams.on('end', function () {
-      //  console.log('end streams');
-      //  //callback(null, file);
-      //})
-    ;
-
-    }))
+    .pipe(streams.styles.copyAssets())
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.tasks.styles.dest))
-    //.pipe(require('through2-reduce').obj(function (assets, file, index) {
-    //
-    //  return Object.assign(assets, file.assets);
-    //}, {}))
-    //.pipe(through(function (file, enc, cb) {
-    //  console.log('through', arguments);
-    //
-    //  cb();
-    //}))
   ;
 });
 

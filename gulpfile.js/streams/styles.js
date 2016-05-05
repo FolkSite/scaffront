@@ -13,7 +13,7 @@ const extend         = require('extend');
 const postcss        = require('postcss');
 const resolve        = require('resolve');
 const combiner       = require('stream-combiner2').obj;
-const through2       = require('through2').obj;
+const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 
 function isUrlShouldBeIgnored (url) {
@@ -101,7 +101,7 @@ streams.cssCompile = function cssCompile (options) {
 
   return combiner(
     // пропускаем каждую точку входа через свой поток-трансформер
-    through2(function(file, enc, callback) {
+    through(function(file, enc, callback) {
       if (file.isNull()) {
         return cb(null, file);
       }
@@ -180,7 +180,7 @@ streams.scssCompile = function scssCompile (options) {
   var assets = {};
 
   return combiner(
-    through2(function(file, enc, callback) {
+    through(function(file, enc, callback) {
       var __filepath = `$__filepath: unquote("${file.path}");`;
       var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, `$1\n${__filepath}`);
 
@@ -231,9 +231,48 @@ streams.scssCompile = function scssCompile (options) {
         }
       }
     }),
-    through2(function(file, enc, callback) {
+    through(function(file, enc, callback) {
       file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
       callback(null, file);
+    })
+  );
+};
+
+streams.copyAssets = function (options) {
+  options = (_.isPlainObject(options)) ? options : {};
+
+  return combiner(
+    through(function(file, enc, callback) {
+      var assetsStreamsCount = 0;
+      var assetsStreamsCountEnded = 0;
+
+      var assetStreamCallback = function () {
+        assetsStreamsCountEnded++;
+        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
+
+        callback(null, file);
+      };
+
+      Object.keys(file.assets).forEach(function (sourceFile) {
+        var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
+        var destPath = path.dirname(destFile);
+        destFile = path.basename(destFile);
+
+        gulp
+          .src(sourceFile)
+          .pipe(through((function (newBasename) {
+            return function(file, enc, callback) {
+              file.basename = newBasename;
+              callback(null, file);
+            };
+          })(destFile)))
+          .pipe($.newer(destPath))
+          .pipe(gulp.dest(destPath))
+          .on('end', assetStreamCallback)
+        ;
+
+        assetsStreamsCount++;
+      });
     })
   );
 };
