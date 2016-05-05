@@ -172,17 +172,21 @@ gulp.task('html', function () {
       pathsObject[config.tasks.root] = '/';
 
       file.dirname = path.dirname(file.path);
-      Object.keys(pathsObject).map(function(handle) {
-        var matches = locate(file, handle);
+      var matches = locate(file);
+      console.log('matches', matches);
+      matches.forEach(function (matched) {
+        // блин. пути со слешами!!
+        var resolved = __.nodeResolve(__.preparePath(matched, {startSlash: false}), file.dirname, true);
 
-        console.log('matches', matches);
+        console.log('resolved', !!__.nodeResolve.lastError, resolved);
 
-        //__.nodeResolve(module, basedir)
+        if (!__.nodeResolve.lastError) {
 
-        return file;
-
-        //return replace(file, matches, handle, pathsObject[handle]);
+        }
       });
+      //__.nodeResolve(module, basedir)
+
+      //return replace(file, matches, handle, pathsObject[handle]);
 
       //delete file.dirname;
       this.push(file);
