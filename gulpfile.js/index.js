@@ -170,14 +170,6 @@ gulp.task('files:clean', function () {
 
 
 var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
-var postCssProcessors = [
-  require('postcss-import')({
-    root: process.cwd(),
-    path: [],
-    //resolve: function (id, basedir, importOptions) { /*require.resolve(...);*/ }
-  })
-];
-var postCssTasksForCss = $.postcss(postCssProcessors);
 var postCssTasksForAnyStyles = $.postcss([
   require('postcss-pseudo-content-insert'),
   require('postcss-focus'),
