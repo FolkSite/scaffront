@@ -373,6 +373,7 @@ gulp.task('styles:scss', function () {
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
     .pipe(through(function(file, enc, callback) {
+      console.log('file.path', file.path);
       console.log('file.assets', file.assets);
 
       callback(null, file);
@@ -384,15 +385,15 @@ gulp.task('styles:scss', function () {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.tasks.styles.dest))
-    .pipe(require('through2-reduce').obj(function (assets, file, index) {
-
-      return Object.assign(assets, file.assets);
-    }, {}))
-    .pipe(through(function (file, enc, cb) {
-      console.log('through', arguments);
-
-      cb();
-    }))
+    //.pipe(require('through2-reduce').obj(function (assets, file, index) {
+    //
+    //  return Object.assign(assets, file.assets);
+    //}, {}))
+    //.pipe(through(function (file, enc, cb) {
+    //  console.log('through', arguments);
+    //
+    //  cb();
+    //}))
   ;
 });
 
