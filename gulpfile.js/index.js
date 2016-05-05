@@ -360,12 +360,12 @@ gulp.task('styles:scss', function (cb) {
     includeContent: true,
   };
 
-  setTimeout(function () {
-    cb()
-  }, 10000);
+  //setTimeout(function () {
+  //  cb()
+  //}, 10000);
 
   //return gulp
-  gulp
+  return gulp
     .src(config.tasks.styles.scss.src, {
       //since: gulp.lastRun(options.taskName)
     })
@@ -381,38 +381,53 @@ gulp.task('styles:scss', function (cb) {
       assetsUrlRebaser: config.tasks.styles.assetsUrlRebaser || null
     }))
     .pipe(through(function(file, enc, callback) {
-      console.log('file.path', file.path);
-      //console.log('file.assets', file.assets);
+      var assetsStreamsCount = 0;
+      var assetsStreamsCountEnded = 0;
 
-      var streams = require('merge-stream')();
+      var assetStreamCallback = function () {
+        assetsStreamsCountEnded++;
+        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
 
-      Object.keys(file.assets).map(function (sourceFile) {
+        callback(null, file);
+      };
+
+      Object.keys(file.assets).forEach(function (sourceFile) {
         var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
         var destPath = path.dirname(destFile);
         destFile = path.basename(destFile);
 
-        var stream = gulp
+        gulp
           .src(sourceFile)
-          .pipe($.newer(destPath))
           .pipe(through((function (newBasename) {
             return function(file, enc, callback) {
               file.basename = newBasename;
               callback(null, file);
             };
           })(destFile)))
-          .pipe(gulp.dest(destPath));
+          .pipe($.newer(destPath))
+          .pipe(gulp.dest(destPath))
+          .on('end', assetStreamCallback)
+        ;
 
-        streams.add(stream);
+        assetsStreamsCount++;
       });
+
+      //streams = combiner(streams);
+      //streams.pipe(through(function (_file, enc, cb) {
+      //  cb(null, _file);
+      //}, function (cb) {
+      //  callback(null, file);
+      //  cb();
+      //}))
 
       //console.log('streams', streams);
       //callback(null, file);
 
-      streams.on('end', function () {
-        console.log('end streams');
-        //callback(null, file);
-      })
-      ;
+      //streams.on('end', function () {
+      //  console.log('end streams');
+      //  //callback(null, file);
+      //})
+    ;
 
     }))
     .pipe($.if(
