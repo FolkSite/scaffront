@@ -114,6 +114,92 @@ gulp.task('files:watch', function () {
 gulp.task('files:clean', function () {
   return del(config.tasks.files.clean, {read: false});
 });
+
+gulp.task('html', function () {
+  return gulp
+    .src(__.glob(config.tasks.root, '*.html', true), {
+      // При повторном запуске таска (например, через watch) выбирает только те файлы,
+      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
+      //since: gulp.lastRun(options.taskName)
+    })
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'Html',
+        message: err.message
+      }))
+    }))
+    .pipe(through(function(file, enc, callback) {
+      var locate = function(file, handle, regex) {
+        var search, matches;
+        search = regex || new RegExp('(?:[\'\"](' + handle + '\/{2}[^\'\"]+))','g');
+        matches = file.contents.toString().match(search);
+        return matches || [];
+      };
+
+      var replace = function(file, matches, handle, pathling) {
+        var search = new RegExp(handle + '\\/{2}([^\'\"]+)','g');
+        var destiny = path.resolve(pathling);
+        var contents = file.contents.toString();
+        var asset, relative;
+
+        matches.forEach(function(match) {
+          asset = path.parse(path.join(destiny, search.exec(match)[1]));
+          relative = path.relative(file.dirname, destiny);
+          relative = path.join(relative, asset.base);
+          contents = contents.replace(match, '\"' + relative + '\"');
+          search.lastIndex = 0;
+        });
+
+        file.contents = Buffer(contents);
+      };
+
+      if (file.isNull()) {
+        callback();
+        return;
+      } else if (file.isStream()) {
+        callback(new $.gutil.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
+        return;
+      }
+
+      var pathsObject = {};
+      pathsObject[config.tasks.root] = '/';
+
+      file.dirname = path.dirname(file.path);
+      Object.keys(pathsObject).map(function(handle) {
+        var matches = locate(file, handle);
+
+        console.log('matches', matches);
+
+        return file;
+
+        //return replace(file, matches, handle, pathsObject[handle]);
+      });
+
+      //delete file.dirname;
+      this.push(file);
+      callback();
+
+    }))
+    //.pipe($.tap(function (file) {
+    //  console.log('file', file.path);
+    //}))
+    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+    //.pipe($.cached('files'))
+
+    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
+    // если в целевой директории такие файлы уже есть, то не пропускает их.
+    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
+    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
+    //.pipe($.newer(config.tasks.files.dest))
+    .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
+
+    .pipe(gulp.dest(config.tasks.dest))
+  ;
+});
+
+
 /** ========== //FILES ========== **/
 
 /** ========== STYLES ========== **/
