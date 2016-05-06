@@ -6,6 +6,7 @@
  */
 
 const __    = require('./gulpfile.js/helpers');
+const $     = require('gulp-load-plugins')();
 const fs    = require('fs');
 const path  = require('path');
 const isUrl = require('is-url');
@@ -45,6 +46,15 @@ tasks.resolver = function (module, basedir, entryBasedir) {
   if (isUrlShouldBeIgnored(module)) {
     return module;
   }
+
+  if (!path.isAbsolute(module)) {
+    module = './'+ module;
+  }
+
+  console.log($.util.colors.blue(`path.isAbsolute("${module}")`), path.isAbsolute(module));
+  console.log($.util.colors.blue(`path.join('./', "${module}")`), path.join('./', module));
+  console.log($.util.colors.green('module'), module);
+  console.log($.util.colors.green('basedir'), basedir);
 
   return __.resolve(module, {basedir: basedir});
 };
