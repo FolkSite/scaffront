@@ -100,8 +100,8 @@ streams.cssCompile = function cssCompile (options) {
     throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
   }
 
-  if (typeof options.rebaseAssetUrl != 'function') {
-    throw new Error('[scaffront][cssCompile] `rebaseAssetUrl` must be a function.');
+  if (typeof options.getTargetAsset != 'function') {
+    throw new Error('[scaffront][cssCompile] `getTargetAsset` must be a function.');
   }
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
@@ -189,8 +189,8 @@ streams.scssCompile = function scssCompile (options) {
     throw new Error('[scaffront][scssCompile] `resolver` must be a function.');
   }
 
-  if (typeof options.rebaseAssetUrl != 'function') {
-    throw new Error('[scaffront][scssCompile] `rebaseAssetUrl` must be a function.');
+  if (typeof options.getTargetAsset != 'function') {
+    throw new Error('[scaffront][scssCompile] `getTargetAsset` must be a function.');
   }
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;

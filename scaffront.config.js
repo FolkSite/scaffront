@@ -64,7 +64,7 @@ tasks.resolver = function (module, basedir, entryBasedir) {
  * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @returns {string}
  */
-tasks.rebaseAssetUrl = function (assetUrl, assetFilepath, entryFilepath, baseFilepath) {
+tasks.getTargetAsset = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
   let targetAssetUrl = assetUrl;
 
 
