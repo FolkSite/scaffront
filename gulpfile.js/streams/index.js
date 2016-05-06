@@ -31,15 +31,10 @@ streams.copyAssets = function (options) {
         callback(null, file);
       };
 
-      console.log('file.basename', file.basename);
-      console.log('file.assets', file.assets);
-
       Object.keys(file.assets).forEach(function (sourceFile) {
         var destPath = file.assets[sourceFile];
         var destFile = path.basename(destPath);
         destPath = path.dirname(destPath);
-
-        console.log('sourceFile', sourceFile);
 
         gulp
           .src(sourceFile)

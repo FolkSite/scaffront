@@ -43,12 +43,6 @@ function isUrlShouldBeIgnored (url) {
  * @return {string}
  */
 tasks.resolver = function (module, basedir, entryBasedir) {
-  console.log(
-    $.util.colors.magenta('resolver'),
-    $.util.colors.green(module),
-    basedir
-  );
-
   if (isUrlShouldBeIgnored(module)) {
     return module;
   }
@@ -57,23 +51,7 @@ tasks.resolver = function (module, basedir, entryBasedir) {
     module = './'+ module;
   }
 
-  var qs = module.match(/\?([^#]+)/);
-  qs = (qs) ? qs[1] || '' : '';
-  var hash = module.match(/#(.+)/);
-  hash = (hash) ? hash[1] || '' : '';
-
-  module = module.split('?')[0];
-
-  var resolved = __.resolve(module, {basedir: basedir});
-
-  console.log($.util.colors.blue('module'), module);
-  console.log($.util.colors.blue('qs'), qs);
-  console.log($.util.colors.blue('hash'), hash);
-  console.log($.util.colors.blue('resolved'), resolved);
-
-  if (resolved) {
-    resolved
-  }
+  module = module.split('?')[0]; // remove qs & hash
 
   return __.resolve(module, {basedir: basedir});
 };
@@ -102,6 +80,13 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
     url: assetUrl,
     path: assetFilepath
   };
+
+  var assetUrlQs = assetUrl.match(/\?([^#]+)/);
+  assetUrlQs = (assetUrlQs) ? '?'+ assetUrlQs[1] || '' : '';
+  var assetUrlHash = assetUrl.match(/#(.+)/);
+  assetUrlHash = (assetUrlHash) ? '#'+ assetUrlHash[1] || '' : '';
+
+  assetUrl = assetUrl.split('?')[0];
 
   root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
   root = path.relative(process.cwd(), root);
@@ -132,6 +117,8 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
     // url делаем соответствующим
     target.url = path.join('/', path.relative(dest, target.path));
   }
+
+  target.url = `${target.url}${assetUrlQs}${assetUrlHash}`;
 
   return target;
 };
