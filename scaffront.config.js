@@ -87,47 +87,29 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
 
   assetFilepath = path.relative(process.cwd(), assetFilepath);
 
-  //dest = __.preparePath(tasks.dest, {startSlash: false, trailingSlash: false});
-
   // если файл находится внутри папки-"источника" исходников (`root`-папка)
   if (assetFilepath.indexOf(root) === 0) {
-    // то перебазируем его в `dest`-папку
-    target.path = (function () {
-      // todo короче надо заменить в пути файла `root`-путь на `dest`-путь
-      // и вернуть путь от корня фс
-
-      var dirname = path.join(process.cwd(), dest);
-
-      assetFilepath = path.relative(process.cwd(), assetFilepath);
-
-      path.relative(path.join(process.cwd(), assetFilepath))
-
-      return dirname;
-    })();
-
-    target.path = path.join(process.cwd(), assetFilepath);
-    // и делаем url абсолютным относительно `dist`-папки (она же корень веб-сервера)
-    //target.url = ;
-
-
-    target.url = __.preparePath(path.relative(root, assetFilepath), {startSlash: true, trailingSlash: false});
-    target.path = path.join(process.cwd(), assetFilepath);
+    // то перебазируем его в `dest`-папку (она же корень веб-сервера)
+    target.path = path.join(process.cwd(), assetFilepath.replace(new RegExp(`^${root}`), dest));
+    target.url = path.join('/', path.relative(dest, target.path));
   } else
   // если нужный файл уже лежит в `dest`-папке
   if (assetFilepath.indexOf(dest) === 0) {
     // то просто делаем url абсолютным относительно `dest`-папки (она же корень веб-сервера)
-    target.url = __.preparePath(path.relative(root, assetFilepath), {startSlash: true, trailingSlash: false});
-    target.path = path.join(process.cwd(), assetFilepath);
+    //target.path = path.join(process.cwd(), assetFilepath);
+    target.path = assetFilepath;
+    target.url = path.join('/', path.relative(dest, target.path));
   }
   // если файл не лежит ни в `root`, ни в `dest` (например в `bower_components` в корне всего проекта)
   else {
     // то переносим весь его путь (без стартового `process.cwd()`) внутрь `dest`-папки
-    rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
-    //target.path = ;
+    target.path = path.join(process.cwd(), path.relative(process.cwd(), assetFilepath));
     // url делаем соответствующим
-    //target.url = ;
+    target.url = path.join('/', path.relative(dest, target.path));
   }
 
+  console.log($.util.colors.green('target.path'), target.path);
+  console.log($.util.colors.green('target.url'),  target.url);
 
   return target;
 
