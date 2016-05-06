@@ -43,12 +43,36 @@ function isUrlShouldBeIgnored (url) {
  * @return {string}
  */
 tasks.resolver = function (module, basedir, entryBasedir) {
+  console.log(
+    $.util.colors.magenta('resolver'),
+    $.util.colors.green(module),
+    basedir
+  );
+
   if (isUrlShouldBeIgnored(module)) {
     return module;
   }
 
   if (!path.isAbsolute(module)) {
     module = './'+ module;
+  }
+
+  var qs = module.match(/\?([^#]+)/);
+  qs = (qs) ? qs[1] || '' : '';
+  var hash = module.match(/#(.+)/);
+  hash = (hash) ? hash[1] || '' : '';
+
+  module = module.split('?')[0];
+
+  var resolved = __.resolve(module, {basedir: basedir});
+
+  console.log($.util.colors.blue('module'), module);
+  console.log($.util.colors.blue('qs'), qs);
+  console.log($.util.colors.blue('hash'), hash);
+  console.log($.util.colors.blue('resolved'), resolved);
+
+  if (resolved) {
+    resolved
   }
 
   return __.resolve(module, {basedir: basedir});

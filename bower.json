@@ -103,8 +103,7 @@
     "bootstrap-sass": "~3.3.6",
     "datetimepicker": "~2.4.5",
     "postal.js": "~1.0.7",
-    "PubSubJS": "~1.5.3",
-    "is_js": "~0.8.0",
+    "is_js": "~0.7.6",
     "javascript-state-machine": "~2.3.5",
     "jspath": "~0.3.2",
     "dragula.js": "~3.6.8",
@@ -117,12 +116,10 @@
     "jquery.sparkline": "git://github.com/gwatts/jquery.sparkline.git",
     "autosize": "*",
     "garlic": "https://github.com/guillaumepotier/garlic.js",
-    "perfnow-polyfill": "~1.0.0",
+    "perfnow-polyfill": "*",
     "flexibility": "*",
-    "IE8": "*",
     "polyfiller": "git://github.com/Polyfiller/polyfiller.git",
     "checkit": "*",
-    "keypather": "*",
     "expounder": "*",
     "skrollr": "*",
     "respond": "*",
@@ -138,9 +135,11 @@
     "scrollmagic": "*",
     "mailcheck": "*",
     "gridster": "git://github.com/ducksboard/gridster.js.git",
-    "popper.js": "*"
+    "popper.js": "*",
+    "font-awesome": "^4.6.2"
   },
   "resolutions": {
-    "jquery": ">=1.11.2"
+    "jquery": ">=1.11.2",
+    "lodash": "4.x"
   }
 }
