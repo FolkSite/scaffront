@@ -31,6 +31,14 @@ function isUrlShouldBeIgnored (url) {
 // * @param {function} [getTargetAsset]
 // * @returns {string}
 // */
+/**
+ * @param {{}} assetsStorage
+ * @param {string} url
+ * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+ * @param {string} baseFilepath Ипортируемый файл, у которого надо зарезолвить урлы
+ * @param {{resolver: function, getAssetTarget: function}} options
+ * @returns {string}
+ */
 var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryFilepath, baseFilepath, options) {
   var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
   var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
@@ -42,57 +50,19 @@ var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryF
   assetsStorage[assetFilepath] = assetTarget.path;
 
   return assetTarget.url;
-
-  //let rebasedUrl = url;
-  //
-  //if (!isUrlShouldBeIgnored(url)) {
-  //  let resolvedUrl = __.nodeResolve(url, path.dirname(filepath), true);
-  //
-  //  if (!__.nodeResolve.lastError) {
-  //    resolvedUrl = path.relative(process.cwd(), resolvedUrl);
-  //
-  //    assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-  //    assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
-  //
-  //    if (_.isFunction(getTargetAsset)) {
-  //      rebasedUrl = getTargetAsset(resolvedUrl, {
-  //        entryFile: path.relative(process.cwd(), entryFilepath),
-  //        sourceFile: path.relative(process.cwd(), filepath)
-  //      });
-  //      rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
-  //
-  //      assetsStorage[entryFilepath][resolvedUrl] = rebasedUrl;
-  //    }
-  //  }
-  //}
-  //
-  //return rebasedUrl;
 };
 
-///**
-// * @param {{}} assetsStorage Объект
-// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
-// * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
-// * @param {function} [assetsRebaser]
-// * @returns {string}
-// */
-var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, filepath, options) {
-
+/**
+ * @param {{}} assetsStorage
+ * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+ * @param {string} baseFilepath Импортируемый файл, у которого надо зарезолвить урлы
+ * @param {{resolver: function, getAssetTarget: function}} options
+ * @returns {string}
+ */
+var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, baseFilepath, options) {
   return require('postcss-url')({
     url: function (url) {
-      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, filepath, options);
-
-      ////assetUrl, assetFilepath, baseFilepath, entryFilepath
-      //var assetFilepath = options.resolver(url, path.dirname(filepath), path.dirname(entryFilepath));
-      //var assetTarget = options.getTargetAsset(url, assetFilepath, filepath, entryFilepath);
-      //
-      //if (!assetTarget.url || !assetTarget.path) {
-      //  throw new Error('[scaffront] `getTargetAsset` must return an object with `url` and `path` properties');
-      //}
-      //
-      //assetsStorage[assetFilepath] = assetTarget.path;
-      //
-      //return assetTarget.url;
+      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
     }
   })
 };
@@ -180,9 +150,6 @@ streams.cssCompile = function cssCompile (options) {
 
           file.contents = new Buffer(result.css);
           file.assets = assets;
-
-          console.log($.util.colors.blue('file.path'), file.path);
-          console.log($.util.colors.blue('file.assets'), file.assets);
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -277,9 +244,6 @@ streams.scssCompile = function scssCompile (options) {
     through(function(file, enc, callback) {
       file.assets = assets[$.util.replaceExtension(file.path, file.scssExt)] || {};
 
-      console.log($.util.colors.blue('file.path'), $.util.replaceExtension(file.path, file.scssExt));
-      console.log($.util.colors.blue('file.assets'), file.assets);
-
       callback(null, file);
     })
   );
@@ -287,8 +251,6 @@ streams.scssCompile = function scssCompile (options) {
 
 streams.copyAssets = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
-
-  console.log('copyAssets!');
 
   return combiner(
     through(function(file, enc, callback) {

@@ -189,7 +189,6 @@ gulp.task('html', function () {
 
         }
       });
-      //__.nodeResolve(module, basedir)
 
       //return replace(file, matches, handle, pathsObject[handle]);
 
@@ -388,11 +387,11 @@ gulp.task('styles:css', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
-      resolver:   config.tasks.resolver,
+      resolver:       config.tasks.resolver,
       getAssetTarget: config.tasks.getAssetTarget
     }))
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
-    //.pipe(streams.styles.copyAssets())
+    .pipe(streams.copyAssets())
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -442,11 +441,6 @@ gulp.task('styles:scss', function (cb) {
     includeContent: true,
   };
 
-  //setTimeout(function () {
-  //  cb()
-  //}, 10000);
-
-  //return gulp
   return gulp
     .src(config.tasks.styles.scss.src, {
       //since: gulp.lastRun(options.taskName)
@@ -460,7 +454,7 @@ gulp.task('styles:scss', function (cb) {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
-      resolver:   config.tasks.resolver,
+      resolver:       config.tasks.resolver,
       getAssetTarget: config.tasks.getAssetTarget
     }))
     //.pipe(streams.styles.copyAssets())
