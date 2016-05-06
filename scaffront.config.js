@@ -34,6 +34,8 @@ tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/producti
 tasks.resolveAsset = function (assetUrl, entryFilepath, baseFilepath) {
   let assetFilepath = __.resolve(assetUrl, {basedir: path.dirname(baseFilepath)});
 
+
+
   return assetFilepath;
 };
 

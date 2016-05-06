@@ -96,6 +96,14 @@ var streams = {};
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
+  if (typeof options.resolveAsset != 'function') {
+    throw new Error('[scaffront][cssCompile] `resolveAsset` must be a function.');
+  }
+
+  if (typeof options.rebaseAssetUrl != 'function') {
+    throw new Error('[scaffront][cssCompile] `rebaseAssetUrl` must be a function.');
+  }
+
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
@@ -174,7 +182,14 @@ streams.cssCompile = function cssCompile (options) {
 };
 
 streams.scssCompile = function scssCompile (options) {
-  options = (_.isPlainObject(options)) ? options : {};
+
+  if (typeof options.resolveAsset != 'function') {
+    throw new Error('[scaffront][scssCompile] `resolveAsset` must be a function.');
+  }
+
+  if (typeof options.rebaseAssetUrl != 'function') {
+    throw new Error('[scaffront][scssCompile] `rebaseAssetUrl` must be a function.');
+  }
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
