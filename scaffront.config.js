@@ -87,56 +87,29 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
 
   assetFilepath = path.relative(process.cwd(), assetFilepath);
 
+  // в данном случае делаем все url'ы абсолютными относительно `dest`-папки (она же корень веб-сервера)
+
   // если файл находится внутри папки-"источника" исходников (`root`-папка)
   if (assetFilepath.indexOf(root) === 0) {
-    // то перебазируем его в `dest`-папку (она же корень веб-сервера)
+    // то перебазируем его в `dest`-папку
     target.path = path.join(process.cwd(), assetFilepath.replace(new RegExp(`^${root}`), dest));
     target.url = path.join('/', path.relative(dest, target.path));
   } else
   // если нужный файл уже лежит в `dest`-папке
   if (assetFilepath.indexOf(dest) === 0) {
-    // то просто делаем url абсолютным относительно `dest`-папки (она же корень веб-сервера)
-    //target.path = path.join(process.cwd(), assetFilepath);
+    // то просто делаем url абсолютным относительно `dest`-папки
     target.path = assetFilepath;
     target.url = path.join('/', path.relative(dest, target.path));
   }
   // если файл не лежит ни в `root`, ни в `dest` (например в `bower_components` в корне всего проекта)
   else {
-    // то переносим весь его путь (без стартового `process.cwd()`) внутрь `dest`-папки
-    target.path = path.join(process.cwd(), path.relative(process.cwd(), assetFilepath));
+    // то переносим весь его путь (от `process.cwd()`) внутрь `dest`-папки
+    target.path = path.join(process.cwd(), dest, path.relative(process.cwd(), assetFilepath));
     // url делаем соответствующим
     target.url = path.join('/', path.relative(dest, target.path));
   }
 
-  console.log($.util.colors.green('target.path'), target.path);
-  console.log($.util.colors.green('target.url'),  target.url);
-
   return target;
-
-
-  let assetTargetUrl = assetUrl;
-
-  return {
-    url: assetTargetUrl,
-    path: assetFilepath
-  };
-
-
-
-  var rebasedUrl = resolvedUrl;
-  var root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
-  var url = __.preparePath(resolvedUrl, {startSlash: false, trailingSlash: false});
-
-  // если файл лежит внутри root-папки
-  if (url.indexOf(root) === 0) {
-    // то заменяем `root`-путь на `dist`-путь
-    rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
-  } else {
-    // а если нет (например `bower_components` из корня), то переносим этот путь как есть внутрь `dist`
-    rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
-  }
-  // в конечном счёте, все файлы будут иметь абсолютные пути, относительно `dist`-директории
-  return rebasedUrl;
 };
 
 tasks.files      = {};
