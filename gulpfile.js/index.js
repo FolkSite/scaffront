@@ -463,7 +463,7 @@ gulp.task('styles:scss', function (cb) {
       resolver:   config.tasks.resolver,
       rebaseAssetUrl: config.tasks.rebaseAssetUrl
     }))
-    .pipe(streams.styles.copyAssets())
+    //.pipe(streams.styles.copyAssets())
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл

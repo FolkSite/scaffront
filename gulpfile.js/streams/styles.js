@@ -96,7 +96,7 @@ var streams = {};
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  if (typeof options.resolveAsset != 'function') {
+  if (typeof options.resolver != 'function') {
     throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
   }
 
@@ -129,7 +129,7 @@ streams.cssCompile = function cssCompile (options) {
 
       //var entryFilepath = path.join(file.base, file.name);
       var entryFilepath = file.path;
-      console.log($.util.colors.blue('entryFilepath'), entryFilepath);
+      //console.log($.util.colors.blue('entryFilepath'), entryFilepath);
 
       postcss([
         // сперва сохраним все ассеты для точки входа
@@ -236,13 +236,13 @@ streams.scssCompile = function scssCompile (options) {
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
           url      = url.getValue();
-          filepath = filepath.getValue();
-
-          if (!url) {
-            url = '';
-          } else {
-            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, assetsUrlRebaser);
-          }
+          //filepath = filepath.getValue();
+          //
+          //if (!url) {
+          //  url = '';
+          //} else {
+          //  url = rebaseAssetsUrl(url, assets, this.options.file, filepath, assetsUrlRebaser);
+          //}
 
           done(new sass.types.String('url("'+ url +'")'));
         }

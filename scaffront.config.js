@@ -5,9 +5,10 @@
  * and in gulp tasks.
  */
 
-const __   = require('./gulpfile.js/helpers');
-const path = require('path');
-const fs   = require('fs');
+const __    = require('./gulpfile.js/helpers');
+const fs    = require('fs');
+const path  = require('path');
+const isUrl = require('is-url');
 
 let env = {
   NODE_ENV: process.env.NODE_ENV,
@@ -23,20 +24,33 @@ tasks.src  = 'app/frontend';
 tasks.root = tasks.src;
 tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
+function isUrlShouldBeIgnored (url) {
+  return url[0] === "/" ||
+    url[0] === "#" ||
+    url.indexOf("data:") === 0 ||
+    isUrl(url) ||
+    /^[a-z]+:\/\//.test(url)
+}
+
 /**
  * Функция должна вернуть абсолютный путь к файлу, исходя из месторасположения файла, в котором он был найден.
  *
  * @param {string} module Урл, как оно есть
  * @param {string} basedir Месторасположение файла, в котором этот урл был найден
- * @param {string} entryBasedir Месторасположение файла, в который проинклюдится файл из basedir (необходимо для css/scss/html)
+ * @param {string} entryBasedir Месторасположение файла, в который проинклюдится файл из basedir (необходимо для
+ *   css/scss/html)
  * @return {string}
  */
 tasks.resolver = function (module, basedir, entryBasedir) {
+  if (isUrlShouldBeIgnored(module)) {
+    return module;
+  }
+
   return __.resolve(module, {basedir: basedir});
 };
 
 /**
- * Функция должна вернуть новый урл, который попадёт в конечный `entryFilepath`-файл.
+ * Функция должна вернуть объект с новым урл и новым местоположением файла.
  * Здесь вы сами можете определить каким будет урл:
  *   - абсолютным;
  *   - относительным какой-то определённой директории из вашей конфигурации
@@ -55,7 +69,10 @@ tasks.rebaseAssetUrl = function (assetUrl, assetFilepath, entryFilepath, baseFil
 
 
 
-  return targetAssetUrl;
+  return {
+    url: targetAssetUrl,
+    path: assetFilepath
+  };
 };
 
 tasks.files      = {};
