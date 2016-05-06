@@ -29,10 +29,10 @@ function isUrlShouldBeIgnored (url) {
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [assetsUrlRebaser]
+ * @param {function} [getTargetAsset]
  * @returns {string}
  */
-var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
+var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepath, filepath, getTargetAsset) {
   let rebasedUrl = url;
 
   if (!isUrlShouldBeIgnored(url)) {
@@ -44,8 +44,8 @@ var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepat
       assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
       assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
 
-      if (_.isFunction(assetsUrlRebaser)) {
-        rebasedUrl = assetsUrlRebaser(resolvedUrl, {
+      if (_.isFunction(getTargetAsset)) {
+        rebasedUrl = getTargetAsset(resolvedUrl, {
           entryFile: path.relative(process.cwd(), entryFilepath),
           sourceFile: path.relative(process.cwd(), filepath)
         });
@@ -66,7 +66,7 @@ var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepat
  * @param {function} [assetsRebaser]
  * @returns {string}
  */
-var rebaseAssetsUrlPlugin = function rebaseAssetsUrlPlugin (assetsStorage, entryFilepath, filepath, assetsRebaser) {
+var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, filepath, assetsRebaser) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
@@ -104,7 +104,6 @@ streams.cssCompile = function cssCompile (options) {
     throw new Error('[scaffront][cssCompile] `getTargetAsset` must be a function.');
   }
 
-  var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
   return combiner(
@@ -141,16 +140,16 @@ streams.cssCompile = function cssCompile (options) {
             return options.resolver(module, basedir, path.dirname(entryFilepath));
           },
           // каждый импортированный файл тоже надо пропустить через postcss
-          //transform: function(css, filepath, options) {
-          //  return postcss([
-          //    // теперь сохраним все ассеты из импортируемых файлов
-          //    rebaseAssetsUrlPlugin(assets, entryFilepath, filepath, assetsUrlRebaser)
-          //  ])
-          //    .process(css)
-          //    .then(function(result) {
-          //      return result.css;
-          //    });
-          //}
+          transform: function(css, filepath, options) {
+            return postcss([
+              // теперь сохраним все ассеты из импортируемых файлов
+              getTargetAssetsPlugin(assets, entryFilepath, filepath, options.getTargetAsset)
+            ])
+              .process(css)
+              .then(function(result) {
+                return result.css;
+              });
+          }
         })
       ])
         .process(file.contents, opts)
@@ -159,7 +158,7 @@ streams.cssCompile = function cssCompile (options) {
           var warnings = result.warnings().join('\n');
 
           file.contents = new Buffer(result.css);
-          file.assets = assets[entryFilepath] || {};
+          file.assets = {};
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -236,13 +235,13 @@ streams.scssCompile = function scssCompile (options) {
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
           url      = url.getValue();
-          //filepath = filepath.getValue();
-          //
-          //if (!url) {
-          //  url = '';
-          //} else {
-          //  url = rebaseAssetsUrl(url, assets, this.options.file, filepath, assetsUrlRebaser);
-          //}
+          filepath = filepath.getValue();
+
+          if (!url) {
+            url = '';
+          } else {
+            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, options.getTargetAsset);
+          }
 
           done(new sass.types.String('url("'+ url +'")'));
         }
