@@ -51,11 +51,6 @@ tasks.resolver = function (module, basedir, entryBasedir) {
     module = './'+ module;
   }
 
-  console.log($.util.colors.blue(`path.isAbsolute("${module}")`), path.isAbsolute(module));
-  console.log($.util.colors.blue(`path.join('./', "${module}")`), path.join('./', module));
-  console.log($.util.colors.green('module'), module);
-  console.log($.util.colors.green('basedir'), basedir);
-
   return __.resolve(module, {basedir: basedir});
 };
 

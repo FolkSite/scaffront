@@ -2,6 +2,7 @@
 
 @import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
 @import './dir/dir2/_include2.css';
+@import '../../../bower_components/bxslider-4/dist/jquery.bxslider.css';
 
 .qwe {
     aspect-ratio: '16:9';
