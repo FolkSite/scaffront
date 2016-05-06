@@ -107,8 +107,6 @@ __.resolve = function resolve (url, opts) {
     resolved = '';
   }
 
-  console.log('resolved', resolved);
-
   return resolved;
 };
 

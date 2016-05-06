@@ -7,7 +7,6 @@ const sass           = require('node-sass');
 const path           = require('path');
 const gulp           = require('gulp');
 const isUrl          = require('is-url');
-const gutil          = require('gulp-util');
 const config         = require('../../scaffront.config.js');
 const extend         = require('extend');
 const postcss        = require('postcss');
@@ -36,8 +35,8 @@ var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryF
   var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
   var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
 
-  if (!assetTarget.url || !assetTarget.path) {
-    throw new Error('[scaffront] `getTargetAsset` must return a simple object with `url` and `path` properties');
+  if (!assetTarget) {
+    return url;
   }
 
   assetsStorage[assetFilepath] = assetTarget.path;
@@ -103,13 +102,13 @@ function handleError (cb) {
     var errorOptions = { fileName: file.path };
     if (error.name === 'CssSyntaxError') {
       error = error.message + error.showSourceCode();
-      errorOptions.showStack = false
+      errorOptions.showStack = false;
     }
     // Prevent stream’s unhandled exception from
     // being suppressed by Promise
     cb && setImmediate(function () {
-      cb(new gutil.PluginError('gulp-postcss', error))
-    })
+      cb(new $.util.PluginError('gulp-postcss', error));
+    });
   };
 }
 
@@ -182,8 +181,8 @@ streams.cssCompile = function cssCompile (options) {
           file.contents = new Buffer(result.css);
           file.assets = assets;
 
-          console.log('file.path', file.path);
-          console.log('file.assets', file.assets);
+          console.log($.util.colors.blue('file.path'), file.path);
+          console.log($.util.colors.blue('file.assets'), file.assets);
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -196,7 +195,7 @@ streams.cssCompile = function cssCompile (options) {
           }
 
           if (warnings) {
-            gutil.log('gulp-postcss:', file.relative + '\n' + warnings)
+            $.util.log('gulp-postcss:', file.relative + '\n' + warnings)
           }
 
           setImmediate(function () {
@@ -275,10 +274,10 @@ streams.scssCompile = function scssCompile (options) {
       }
     }),
     through(function(file, enc, callback) {
-      file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
+      file.assets = assets[$.util.replaceExtension(file.path, file.scssExt)] || {};
 
-      console.log('file.path', gutil.replaceExtension(file.path, file.scssExt));
-      console.log('file.assets', file.assets);
+      console.log($.util.colors.blue('file.path'), $.util.replaceExtension(file.path, file.scssExt));
+      console.log($.util.colors.blue('file.assets'), file.assets);
 
       callback(null, file);
     })
