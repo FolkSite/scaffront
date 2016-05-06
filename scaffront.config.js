@@ -89,7 +89,7 @@ tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
 
 /**
- * Функция должна вернуть путь к ассет-файлу
+ * Функция должна вернуть путь к ассет-файлу, исходя из url и файла, в котором он был найден.
  *
  * @param {string} assetUrl Урл, как оно есть
  * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
