@@ -87,6 +87,36 @@ tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
+
+/**
+ * Функция должна вернуть абсолютный (от корня фс) путь к ассет-файлу
+ *
+ * @param {string} assetUrl Урл, как оно есть
+ * @param {string} baseFilepath Файл, в котором это урл было найдено
+ * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
+ * @return {string}
+ */
+tasks.resolveAsset = function (assetUrl, baseFilepath, entryFilepath) {
+  let assetFilepath = assetUrl;
+
+  return assetFilepath;
+};
+
+/**
+ * Функция должна вернуть новый урл, который попадёт в конечный `entryFilepath`-файл
+ *
+ * @param {string} assetUrl Урл, как оно есть
+ * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `resolveAsset`-функции
+ * @param {string} baseFilepath Файл, в котором это урл было найдено
+ * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
+ * @returns {string}
+ */
+tasks.rebaseAssetUrl = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
+  let targetAssetUrl = assetUrl;
+
+  return targetAssetUrl;
+};
+
 /**
  * @param {string} resolvedUrl
  * @param {{}} paths
