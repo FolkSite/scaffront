@@ -97,7 +97,7 @@ streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
   if (typeof options.resolveAsset != 'function') {
-    throw new Error('[scaffront][cssCompile] `resolveAsset` must be a function.');
+    throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
   }
 
   if (typeof options.rebaseAssetUrl != 'function') {
@@ -127,28 +127,30 @@ streams.cssCompile = function cssCompile (options) {
       opts.from = file.path;
       opts.to = opts.to || file.path;
 
-      var entryFilepath = path.join(file.base, file.stem);
+      //var entryFilepath = path.join(file.base, file.name);
+      var entryFilepath = file.path;
+      console.log($.util.colors.blue('entryFilepath'), entryFilepath);
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        rebaseAssetsUrlPlugin(assets, entryFilepath, entryFilepath, assetsUrlRebaser),
+        //rebaseAssetsUrlPlugin(assets, entryFilepath, entryFilepath, assetsUrlRebaser),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
           resolve: function (module, basedir, importOptions) {
-            return __.nodeResolve(module, basedir);
+            return options.resolver(module, basedir, path.dirname(entryFilepath));
           },
           // каждый импортированный файл тоже надо пропустить через postcss
-          transform: function(css, filepath, options) {
-            return postcss([
-              // теперь сохраним все ассеты из импортируемых файлов
-              rebaseAssetsUrlPlugin(assets, entryFilepath, filepath, assetsUrlRebaser)
-            ])
-              .process(css)
-              .then(function(result) {
-                return result.css;
-              });
-          }
+          //transform: function(css, filepath, options) {
+          //  return postcss([
+          //    // теперь сохраним все ассеты из импортируемых файлов
+          //    rebaseAssetsUrlPlugin(assets, entryFilepath, filepath, assetsUrlRebaser)
+          //  ])
+          //    .process(css)
+          //    .then(function(result) {
+          //      return result.css;
+          //    });
+          //}
         })
       ])
         .process(file.contents, opts)
@@ -183,8 +185,8 @@ streams.cssCompile = function cssCompile (options) {
 
 streams.scssCompile = function scssCompile (options) {
 
-  if (typeof options.resolveAsset != 'function') {
-    throw new Error('[scaffront][scssCompile] `resolveAsset` must be a function.');
+  if (typeof options.resolver != 'function') {
+    throw new Error('[scaffront][scssCompile] `resolver` must be a function.');
   }
 
   if (typeof options.rebaseAssetUrl != 'function') {
@@ -255,6 +257,8 @@ streams.scssCompile = function scssCompile (options) {
 
 streams.copyAssets = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
+
+  console.log('copyAssets!');
 
   return combiner(
     through(function(file, enc, callback) {

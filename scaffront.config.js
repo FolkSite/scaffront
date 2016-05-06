@@ -24,19 +24,15 @@ tasks.root = tasks.src;
 tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
 /**
- * Функция должна вернуть абсолютный путь к ассет-файлу, исходя из url и файла, в котором он был найден.
+ * Функция должна вернуть абсолютный путь к файлу, исходя из месторасположения файла, в котором он был найден.
  *
- * @param {string} assetUrl Урл, как оно есть
- * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
- * @param {string} baseFilepath Файл, в котором этот урл был найден
+ * @param {string} module Урл, как оно есть
+ * @param {string} basedir Месторасположение файла, в котором этот урл был найден
+ * @param {string} entryBasedir Месторасположение файла, в который проинклюдится файл из basedir (необходимо для css/scss/html)
  * @return {string}
  */
-tasks.resolveAsset = function (assetUrl, entryFilepath, baseFilepath) {
-  let assetFilepath = __.resolve(assetUrl, {basedir: path.dirname(baseFilepath)});
-
-
-
-  return assetFilepath;
+tasks.resolver = function (module, basedir, entryBasedir) {
+  return __.resolve(module, {basedir: basedir});
 };
 
 /**
@@ -49,7 +45,7 @@ tasks.resolveAsset = function (assetUrl, entryFilepath, baseFilepath) {
  * относительно чего надо вернуть новый урл (html/scss/etc).
  *
  * @param {string} assetUrl Урл, как оно есть
- * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `resolveAsset`-функции
+ * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `tasks.resolver`-функции
  * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
  * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @returns {string}

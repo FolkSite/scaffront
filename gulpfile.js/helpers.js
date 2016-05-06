@@ -4,7 +4,7 @@ const fs             = require('fs');
 const path           = require('path');
 const crypto         = require('crypto');
 const isUrl          = require('is-url');
-const resolve        = require('resolve');
+const nodeResolve    = require('resolve');
 const bowerDirectory = require('bower-directory');
 const browserSync    = require('browser-sync');
 
@@ -35,7 +35,7 @@ __.getArray = function getArray (anything) {
  * @param {boolean} [silence]
  * @returns {*}
  */
-__.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories, silence) {
+__.nodeResolve = function __nodeResolve (url, basedir, customModuleDirectories, silence) {
   if (isUrl(url)) { return url; }
 
   if (arguments.length == 2) {
@@ -99,15 +99,17 @@ __.resolve = function resolve (url, opts) {
     return path.join(process.cwd(), url);
   }
 
-  let resolvedUrl;
+  var resolved;
 
   try {
-    resolvedUrl = resolve.sync(url, opts || {});
+    resolved = nodeResolve.sync(url, opts || {});
   } catch (e) {
-    resolvedUrl = '';
+    resolved = '';
   }
 
-  return resolvedUrl;
+  console.log('resolved', resolved);
+
+  return resolved;
 };
 
 /**
