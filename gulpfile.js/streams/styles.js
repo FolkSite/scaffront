@@ -24,54 +24,76 @@ function isUrlShouldBeIgnored (url) {
     /^[a-z]+:\/\//.test(url)
 }
 
-/**
- * @param {string} url
- * @param {{}} assetsStorage Объект
- * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [getTargetAsset]
- * @returns {string}
- */
-var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepath, filepath, getTargetAsset) {
-  let rebasedUrl = url;
+///**
+// * @param {string} url
+// * @param {{}} assetsStorage Объект
+// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+// * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
+// * @param {function} [getTargetAsset]
+// * @returns {string}
+// */
+var getTargetAssets = function getTargetAssets (assetsStorage, url, entryFilepath, baseFilepath, options) {
+  var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
+  var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
 
-  if (!isUrlShouldBeIgnored(url)) {
-    let resolvedUrl = __.nodeResolve(url, path.dirname(filepath), true);
-
-    if (!__.nodeResolve.lastError) {
-      resolvedUrl = path.relative(process.cwd(), resolvedUrl);
-
-      assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-      assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
-
-      if (_.isFunction(getTargetAsset)) {
-        rebasedUrl = getTargetAsset(resolvedUrl, {
-          entryFile: path.relative(process.cwd(), entryFilepath),
-          sourceFile: path.relative(process.cwd(), filepath)
-        });
-        rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
-
-        assetsStorage[entryFilepath][resolvedUrl] = rebasedUrl;
-      }
-    }
+  if (!assetTarget.url || !assetTarget.path) {
+    throw new Error('[scaffront] `getTargetAsset` must return a simple object with `url` and `path` properties');
   }
 
-  return rebasedUrl;
+  assetsStorage[assetFilepath] = assetTarget.path;
+
+  return assetTarget.url;
+
+  //let rebasedUrl = url;
+  //
+  //if (!isUrlShouldBeIgnored(url)) {
+  //  let resolvedUrl = __.nodeResolve(url, path.dirname(filepath), true);
+  //
+  //  if (!__.nodeResolve.lastError) {
+  //    resolvedUrl = path.relative(process.cwd(), resolvedUrl);
+  //
+  //    assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
+  //    assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
+  //
+  //    if (_.isFunction(getTargetAsset)) {
+  //      rebasedUrl = getTargetAsset(resolvedUrl, {
+  //        entryFile: path.relative(process.cwd(), entryFilepath),
+  //        sourceFile: path.relative(process.cwd(), filepath)
+  //      });
+  //      rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
+  //
+  //      assetsStorage[entryFilepath][resolvedUrl] = rebasedUrl;
+  //    }
+  //  }
+  //}
+  //
+  //return rebasedUrl;
 };
 
-/**
- * @param {{}} assetsStorage Объект
- * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [assetsRebaser]
- * @returns {string}
- */
-var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, filepath, assetsRebaser) {
-  filepath = (!filepath) ? entryFilepath : filepath;
+///**
+// * @param {{}} assetsStorage Объект
+// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+// * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
+// * @param {function} [assetsRebaser]
+// * @returns {string}
+// */
+var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, filepath, options) {
 
   return require('postcss-url')({
-    url: function (url, decl, from, dirname, to, options, result) {
-      return rebaseAssetsUrl(url, assetsStorage, entryFilepath, filepath, assetsRebaser || null);
+    url: function (url) {
+      return getTargetAssets(assetsStorage, url, entryFilepath, filepath, options);
+
+      ////assetUrl, assetFilepath, baseFilepath, entryFilepath
+      //var assetFilepath = options.resolver(url, path.dirname(filepath), path.dirname(entryFilepath));
+      //var assetTarget = options.getTargetAsset(url, assetFilepath, filepath, entryFilepath);
+      //
+      //if (!assetTarget.url || !assetTarget.path) {
+      //  throw new Error('[scaffront] `getTargetAsset` must return an object with `url` and `path` properties');
+      //}
+      //
+      //assetsStorage[assetFilepath] = assetTarget.path;
+      //
+      //return assetTarget.url;
     }
   })
 };
@@ -100,8 +122,8 @@ streams.cssCompile = function cssCompile (options) {
     throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
   }
 
-  if (typeof options.getTargetAsset != 'function') {
-    throw new Error('[scaffront][cssCompile] `getTargetAsset` must be a function.');
+  if (typeof options.getAssetTarget != 'function') {
+    throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
   }
 
   var assets = {};
@@ -132,7 +154,7 @@ streams.cssCompile = function cssCompile (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        //rebaseAssetsUrlPlugin(assets, entryFilepath, entryFilepath, assetsUrlRebaser),
+        getTargetAssetsPlugin(assets, entryFilepath, entryFilepath, options),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
@@ -140,10 +162,10 @@ streams.cssCompile = function cssCompile (options) {
             return options.resolver(module, basedir, path.dirname(entryFilepath));
           },
           // каждый импортированный файл тоже надо пропустить через postcss
-          transform: function(css, filepath, options) {
+          transform: function(css, filepath, _options) {
             return postcss([
               // теперь сохраним все ассеты из импортируемых файлов
-              getTargetAssetsPlugin(assets, entryFilepath, filepath, options.getTargetAsset)
+              getTargetAssetsPlugin(assets, entryFilepath, filepath, options)
             ])
               .process(css)
               .then(function(result) {
@@ -188,8 +210,8 @@ streams.scssCompile = function scssCompile (options) {
     throw new Error('[scaffront][scssCompile] `resolver` must be a function.');
   }
 
-  if (typeof options.getTargetAsset != 'function') {
-    throw new Error('[scaffront][scssCompile] `getTargetAsset` must be a function.');
+  if (typeof options.getAssetTarget != 'function') {
+    throw new Error('[scaffront][scssCompile] `getAssetTarget` must be a function.');
   }
 
   var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
@@ -240,7 +262,7 @@ streams.scssCompile = function scssCompile (options) {
           if (!url) {
             url = '';
           } else {
-            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, options.getTargetAsset);
+            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, options.getAssetTarget);
           }
 
           done(new sass.types.String('url("'+ url +'")'));

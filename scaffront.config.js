@@ -62,15 +62,14 @@ tasks.resolver = function (module, basedir, entryBasedir) {
  * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `tasks.resolver`-функции
  * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
  * @param {string} baseFilepath Файл, в котором этот урл был найден
- * @returns {string}
+ * @returns {{url: string, path: string}}
  */
-tasks.getTargetAsset = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
-  let targetAssetUrl = assetUrl;
-
+tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
+  let assetTargetUrl = assetUrl;
 
 
   return {
-    url: targetAssetUrl,
+    url: assetTargetUrl,
     path: assetFilepath
   };
 };

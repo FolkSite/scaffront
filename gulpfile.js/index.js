@@ -389,7 +389,7 @@ gulp.task('styles:css', function () {
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
       resolver:   config.tasks.resolver,
-      getTargetAsset: config.tasks.getTargetAsset
+      getAssetTarget: config.tasks.getAssetTarget
     }))
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
     //.pipe(streams.styles.copyAssets())
@@ -461,7 +461,7 @@ gulp.task('styles:scss', function (cb) {
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
       resolver:   config.tasks.resolver,
-      getTargetAsset: config.tasks.getTargetAsset
+      getAssetTarget: config.tasks.getAssetTarget
     }))
     //.pipe(streams.styles.copyAssets())
     .pipe($.if(
