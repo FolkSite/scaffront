@@ -47,7 +47,17 @@ tasks.resolver = function (module, basedir, entryBasedir) {
     return module;
   }
 
-  if (!path.isAbsolute(module)) {
+  let root = tasks.root;
+  if (path.isAbsolute(module)) {
+    root = __.preparePath(root, {startSlash: true, trailingSlash: false});
+    //root = path.join('/', path.relative(process.cwd(), root));
+
+    console.log('module.indexOf(root)', module.indexOf(root));
+
+    //if (module.indexOf(root) === 0) {
+    //  module = path.join(process.cwd(), root, module);
+    //}
+  } else {
     module = './'+ module;
   }
 

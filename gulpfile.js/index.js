@@ -119,6 +119,8 @@ gulp.task('files:clean', function () {
 var resolveAsset = function resolveAsset (assetUrl, baseFilepath, entryFilepath) {
 
 };
+config.tasks.resolver,
+config.tasks.getAssetTarget
 
 gulp.task('html', function () {
   return gulp
@@ -173,12 +175,22 @@ gulp.task('html', function () {
         return;
       }
 
-      var pathsObject = {};
-      pathsObject[config.tasks.root] = '/';
-
       file.dirname = path.dirname(file.path);
       var matches = locate(file);
-      console.log('matches', matches);
+      //console.log('matches', matches);
+      // todo: а когда resolver возвращает пустую строку? чего делать?
+      console.log($.util.colors.blue('html file'), file.basename);
+      matches.forEach(function (module) {
+        console.log($.util.colors.blue('module'), module);
+        var resolved = config.tasks.resolver(module, file.dirname, file.dirname);
+        console.log($.util.colors.blue('resolved'), resolved);
+      });
+
+
+      //this.push(file);
+      callback(null, file);
+      return;
+
       matches.forEach(function (matched) {
         // блин. пути со слешами!!
         var resolved = __.nodeResolve(__.preparePath(matched, {startSlash: false}), file.dirname, true);
@@ -210,6 +222,10 @@ gulp.task('html', function () {
     // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
     // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
     //.pipe($.newer(config.tasks.files.dest))
+    .pipe(through(function(file, enc, callback) {
+      console.log($.util.colors.blue('basename'), file.basename);
+      console.log($.util.colors.blue('assets'), file.assets);
+    }))
     .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
 
     .pipe(gulp.dest(config.tasks.dest))

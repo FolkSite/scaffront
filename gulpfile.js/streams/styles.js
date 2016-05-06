@@ -249,45 +249,6 @@ streams.scssCompile = function scssCompile (options) {
   );
 };
 
-streams.copyAssets = function (options) {
-  options = (_.isPlainObject(options)) ? options : {};
-
-  return combiner(
-    through(function(file, enc, callback) {
-      var assetsStreamsCount = 0;
-      var assetsStreamsCountEnded = 0;
-
-      var assetStreamCallback = function () {
-        assetsStreamsCountEnded++;
-        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
-
-        callback(null, file);
-      };
-
-      Object.keys(file.assets).forEach(function (sourceFile) {
-        var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
-        var destPath = path.dirname(destFile);
-        destFile = path.basename(destFile);
-
-        gulp
-          .src(sourceFile)
-          .pipe(through((function (newBasename) {
-            return function(file, enc, callback) {
-              file.basename = newBasename;
-              callback(null, file);
-            };
-          })(destFile)))
-          .pipe($.newer(destPath))
-          .pipe(gulp.dest(destPath))
-          .on('end', assetStreamCallback)
-        ;
-
-        assetsStreamsCount++;
-      });
-    })
-  );
-};
-
 streams.dist = function (options) {
   options = (_.isPlainObject(options)) ? options : {};
 

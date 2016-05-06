@@ -113,7 +113,7 @@ streams.compile = function htmlCompile (options) {
         callback();
         return;
       } else if (file.isStream()) {
-        callback(new $.gutil.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
+        callback(new $.util.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
         return;
       }
 
@@ -123,6 +123,12 @@ streams.compile = function htmlCompile (options) {
       file.dirname = path.dirname(file.path);
       var matches = locate(file);
       console.log('matches', matches);
+
+      //this.push(file);
+      callback(null, file);
+
+      return;
+
       matches.forEach(function (matched) {
         // блин. пути со слешами!!
         var resolved = __.nodeResolve(__.preparePath(matched, {startSlash: false}), file.dirname, true);
@@ -143,6 +149,10 @@ streams.compile = function htmlCompile (options) {
     }),
     through(function(file, enc, callback) {
       file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
+
+      console.log($.util.colors.blue('basename'), file.basename);
+      console.log($.util.colors.blue('assets'), file.assets);
+
       callback(null, file);
     })
   );
