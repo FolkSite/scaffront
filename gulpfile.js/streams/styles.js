@@ -63,15 +63,15 @@ var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepat
  * @param {{}} assetsStorage Объект
  * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
  * @param {string} [filepath] Импортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [assetsResolver]
+ * @param {function} [assetsRebaser]
  * @returns {string}
  */
-var rebaseAssetsUrlPlugin = function rebaseAssetsUrlPlugin (assetsStorage, entryFilepath, filepath, assetsResolver) {
+var rebaseAssetsUrlPlugin = function rebaseAssetsUrlPlugin (assetsStorage, entryFilepath, filepath, assetsRebaser) {
   filepath = (!filepath) ? entryFilepath : filepath;
 
   return require('postcss-url')({
     url: function (url, decl, from, dirname, to, options, result) {
-      return rebaseAssetsUrl(url, assetsStorage, entryFilepath, filepath, assetsResolver || null);
+      return rebaseAssetsUrl(url, assetsStorage, entryFilepath, filepath, assetsRebaser || null);
     }
   })
 };

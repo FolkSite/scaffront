@@ -14,26 +14,8 @@ var __ = {};
 __.noop = function noop () {};
 __.noopTask = function noopTask (cb) { cb(null) };
 
-var bowerPath = (bowerDirectory) ? bowerDirectory.sync() : '';
-__.bower = {};
-__.bower.path = bowerPath;
-__.bower.pathRelative = (bowerPath) ? path.relative(process.cwd(), bowerPath) : void 0;
-
-/**
- * @param {string} [directory]
- * @returns String
- */
-__.getPackagePath = function getPackagePath (directory) {
-  return path.join('node_modules', directory || '');
-};
-
-/**
- * @param {string} [directory]
- * @returns String
- */
-__.getBowerPath = function getBowerPath (directory) {
-  return path.join(__.bower.pathRelative, directory || '');
-};
+var bowerDir = (bowerDirectory) ? bowerDirectory.sync() : '';
+__.bowerDir = (bowerDir) ? path.relative(process.cwd(), bowerDir) : '';
 
 /**
  * @param {*} anything
@@ -106,6 +88,32 @@ __.nodeResolve = function nodeResolve (url, basedir, customModuleDirectories, si
 };
 
 /**
+ * @param {string} url
+ * @param {{}} [opts]
+ * @returns {string}
+ */
+__.resolve = function resolve (url, opts) {
+  if (isUrl(url)) { return url; }
+
+  if (path.isAbsolute(url)) {
+    return path.join(process.cwd(), url);
+  }
+
+  let resolvedUrl;
+
+  try {
+    resolvedUrl = resolve.sync(url, opts || {});
+  } catch (e) {
+    resolvedUrl = '';
+  }
+
+  return resolvedUrl;
+};
+
+/**
+ * Если установлен `to`, то вычисляется классическим методом - `path.resolve`.
+ * Если `to` не установлен, то отрезается первый слеш
+ *
  * @param {String} from
  * @param {String} [to]
  * @returns {string}
@@ -116,6 +124,8 @@ __.getRelativePath = function getRelativePath (from, to) {
   to = to || null;
 
   if (!from) { return result; }
+
+  //if (isUrl?)
 
   if (to) {
     result = path.relative(from, to);
