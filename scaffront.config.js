@@ -53,25 +53,41 @@ tasks.resolver = function (module, basedir, entryBasedir) {
  * Функция должна вернуть объект с новым урл и новым местоположением файла.
  * Здесь вы сами можете определить каким будет урл:
  *   - абсолютным;
- *   - относительным какой-то определённой директории из вашей конфигурации
+ *   - относительно какой-то определённой директории веб-сервера (м.б. исходя из конфигурации выше)
  *   - или что-то ещё.
- * Используйте расширения и пути `entryFilepath` и `baseFilepath` файлов, чтобы определить -
+ * Используйте расширения, имена файлов и пути из `entryFilepath` и `baseFilepath` файлов, чтобы определить -
  * относительно чего надо вернуть новый урл (html/scss/etc).
  *
  * @param {string} assetUrl Урл, как оно есть
  * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `tasks.resolver`-функции
- * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
  * @param {string} baseFilepath Файл, в котором этот урл был найден
+ * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
  * @returns {{url: string, path: string}}
  */
 tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
   let assetTargetUrl = assetUrl;
 
-
   return {
     url: assetTargetUrl,
     path: assetFilepath
   };
+
+
+
+  var rebasedUrl = resolvedUrl;
+  var root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
+  var url = __.preparePath(resolvedUrl, {startSlash: false, trailingSlash: false});
+
+  // если файл лежит внутри root-папки
+  if (url.indexOf(root) === 0) {
+    // то заменяем `root`-путь на `dist`-путь
+    rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
+  } else {
+    // а если нет (например `bower_components` из корня), то переносим этот путь как есть внутрь `dist`
+    rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
+  }
+  // в конечном счёте, все файлы будут иметь абсолютные пути, относительно `dist`-директории
+  return rebasedUrl;
 };
 
 tasks.files      = {};
