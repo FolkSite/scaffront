@@ -89,9 +89,22 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
 
   //dest = __.preparePath(tasks.dest, {startSlash: false, trailingSlash: false});
 
-  // если файл находится внутри папки-"источника" исходников
+  // если файл находится внутри папки-"источника" исходников (`root`-папка)
   if (assetFilepath.indexOf(root) === 0) {
     // то перебазируем его в `dest`-папку
+    target.path = (function () {
+      // todo короче надо заменить в пути файла `root`-путь на `dest`-путь
+      // и вернуть путь от корня фс
+
+      var dirname = path.join(process.cwd(), dest);
+
+      assetFilepath = path.relative(process.cwd(), assetFilepath);
+
+      path.relative(path.join(process.cwd(), assetFilepath))
+
+      return dirname;
+    })();
+
     target.path = path.join(process.cwd(), assetFilepath);
     // и делаем url абсолютным относительно `dist`-папки (она же корень веб-сервера)
     //target.url = ;
@@ -102,13 +115,13 @@ tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFil
   } else
   // если нужный файл уже лежит в `dest`-папке
   if (assetFilepath.indexOf(dest) === 0) {
-    // то просто делаем url абсолютным относительно `dist`-папки (она же корень веб-сервера)
+    // то просто делаем url абсолютным относительно `dest`-папки (она же корень веб-сервера)
     target.url = __.preparePath(path.relative(root, assetFilepath), {startSlash: true, trailingSlash: false});
     target.path = path.join(process.cwd(), assetFilepath);
   }
   // если файл не лежит ни в `root`, ни в `dest` (например в `bower_components` в корне всего проекта)
   else {
-    // то переносим его путь (отнсительно `process.cwd()`) внутрь `dest`-папки
+    // то переносим весь его путь (без стартового `process.cwd()`) внутрь `dest`-папки
     rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
     //target.path = ;
     // url делаем соответствующим
