@@ -32,7 +32,7 @@ function isUrlShouldBeIgnored (url) {
 // * @param {function} [getTargetAsset]
 // * @returns {string}
 // */
-var getTargetAssets = function getTargetAssets (assetsStorage, url, entryFilepath, baseFilepath, options) {
+var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryFilepath, baseFilepath, options) {
   var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
   var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
 
@@ -81,7 +81,7 @@ var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entry
 
   return require('postcss-url')({
     url: function (url) {
-      return getTargetAssets(assetsStorage, url, entryFilepath, filepath, options);
+      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, filepath, options);
 
       ////assetUrl, assetFilepath, baseFilepath, entryFilepath
       //var assetFilepath = options.resolver(url, path.dirname(filepath), path.dirname(entryFilepath));
@@ -126,11 +126,11 @@ streams.cssCompile = function cssCompile (options) {
     throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
   }
 
-  var assets = {};
-
   return combiner(
     // пропускаем каждую точку входа через свой поток-трансформер
     through(function(file, enc, callback) {
+      var assets = {};
+
       if (file.isNull()) {
         return cb(null, file);
       }
@@ -180,7 +180,10 @@ streams.cssCompile = function cssCompile (options) {
           var warnings = result.warnings().join('\n');
 
           file.contents = new Buffer(result.css);
-          file.assets = {};
+          file.assets = assets;
+
+          console.log('file.path', file.path);
+          console.log('file.assets', file.assets);
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -214,7 +217,6 @@ streams.scssCompile = function scssCompile (options) {
     throw new Error('[scaffront][scssCompile] `getAssetTarget` must be a function.');
   }
 
-  var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
   return combiner(
@@ -256,13 +258,16 @@ streams.scssCompile = function scssCompile (options) {
       },
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
-          url      = url.getValue();
-          filepath = filepath.getValue();
+          url               = url.getValue();
+          var baseFilepath  = filepath.getValue();
+          var entryFilepath = this.options.file;
+
+          assets[this.options.file] = assets[this.options.file] || {};
 
           if (!url) {
             url = '';
           } else {
-            url = rebaseAssetsUrl(url, assets, this.options.file, filepath, options.getAssetTarget);
+            url = getTargetAssetsUrl(assets[this.options.file], url, entryFilepath, baseFilepath, options);
           }
 
           done(new sass.types.String('url("'+ url +'")'));
@@ -271,6 +276,10 @@ streams.scssCompile = function scssCompile (options) {
     }),
     through(function(file, enc, callback) {
       file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
+
+      console.log('file.path', gutil.replaceExtension(file.path, file.scssExt));
+      console.log('file.assets', file.assets);
+
       callback(null, file);
     })
   );
