@@ -262,11 +262,12 @@ streams.scssCompile = function scssCompile (options) {
           var entryFilepath = this.options.file;
 
           assets[this.options.file] = assets[this.options.file] || {};
+          var assetsStorage = assets[this.options.file];
 
           if (!url) {
             url = '';
           } else {
-            url = getTargetAssetsUrl(assets[this.options.file], url, entryFilepath, baseFilepath, options);
+            url = getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
           }
 
           done(new sass.types.String('url("'+ url +'")'));
