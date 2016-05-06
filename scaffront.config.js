@@ -92,26 +92,32 @@ tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
  * Функция должна вернуть путь к ассет-файлу
  *
  * @param {string} assetUrl Урл, как оно есть
- * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
+ * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @return {string}
  */
-tasks.resolveAsset = function (assetUrl, baseFilepath, entryFilepath) {
+tasks.resolveAsset = function (assetUrl, entryFilepath, baseFilepath) {
   let assetFilepath = __.resolve(assetUrl, {basedir: path.dirname(baseFilepath)});
 
   return assetFilepath;
 };
 
 /**
- * Функция должна вернуть новый урл, который попадёт в конечный `entryFilepath`-файл
+ * Функция должна вернуть новый урл, который попадёт в конечный `entryFilepath`-файл.
+ * Здесь вы сами можете определить каким будет урл:
+ *   - абсолютным;
+ *   - относительным какой-то определённой директории из вашей конфигурации
+ *   - или что-то ещё.
+ * Используйте расширения и пути `entryFilepath` и `baseFilepath` файлов, чтобы определить -
+ * относительно чего надо вернуть новый урл (html/scss/etc).
  *
  * @param {string} assetUrl Урл, как оно есть
  * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `resolveAsset`-функции
- * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
+ * @param {string} baseFilepath Файл, в котором этот урл был найден
  * @returns {string}
  */
-tasks.rebaseAssetUrl = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
+tasks.rebaseAssetUrl = function (assetUrl, assetFilepath, entryFilepath, baseFilepath) {
   let targetAssetUrl = assetUrl;
 
 
