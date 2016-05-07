@@ -6,7 +6,6 @@ const __             = require('./helpers');
 const del            = require('del');
 const path           = require('path');
 const gulp           = require('gulp');
-const gutil          = require('gulp-util');
 const isUrl          = require('is-url');
 const merge          = require('merge-stream');
 const extend         = require('extend');
