@@ -12,21 +12,22 @@ const extend         = require('extend');
 const resolve        = require('resolve');
 const postcss        = require('postcss');
 const combiner       = require('stream-combiner2').obj;
-const nodeResolve    = require('resolve');
 
 const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
+
+const processCwd = process.cwd();
 
 /**
  * @param {string} dirname
  * @param {string} cwd
  * @returns {string}
  */
-var convertToRelativeByCwd = function (dirname, cwd) {
-  cwd = __.preparePath(cwd, {startSlash: false, trailingSlash: false});
+var convertToRelativeByCwd = function convertToRelativeByCwd (dirname, cwd) {
+  //cwd     = __.preparePath(cwd, {startSlash: false, trailingSlash: false});
   dirname = __.preparePath(dirname, {startSlash: false, trailingSlash: false});
 
-  if (!dirname.indexOf(cwd)) {
+  if (dirname.indexOf(cwd) !== 0) {
     dirname = path.join(cwd, dirname);
   }
   dirname = path.relative(cwd, dirname);
@@ -34,17 +35,31 @@ var convertToRelativeByCwd = function (dirname, cwd) {
   return dirname;
 };
 
+/**
+ * @param {string} dirname
+ * @param {string} basepathFrom
+ * @param {string} basepathTo
+ * @param {string} [cwd=process.cwd()]
+ * @returns {string}
+ */
+var replaceBasepath = function replaceBasepath (dirname, basepathFrom, basepathTo, cwd) {
+  cwd = cwd || processCwd;
 
-var processCwd = process.cwd();
+  basepathFrom = convertToRelativeByCwd(basepathFrom, cwd);
+  basepathTo   = convertToRelativeByCwd(basepathTo, cwd);
+
+};
+
+
 config.tasks.root = convertToRelativeByCwd(config.tasks.root, processCwd);
 config.tasks.dest = convertToRelativeByCwd(config.tasks.dest, processCwd);
 
 
-function isUrlShouldBeIgnored (url) {
+var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
   return url[0] === '#' ||
     url.indexOf('data:') === 0 ||
     isUrl(url);
-}
+};
 
 var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
   ? config.tasks.nodeResolveDefaults
@@ -54,7 +69,7 @@ var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
  * @param {{}} [opts]
  * @returns {string}
  */
-var moduleResolver = function (module, opts) {
+var moduleResolver = function moduleResolver (module, opts) {
   if (isUrlShouldBeIgnored(module)) { return ''; }
 
   // проинициализируем настройки
