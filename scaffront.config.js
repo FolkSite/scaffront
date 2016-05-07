@@ -63,7 +63,7 @@ tasks.resolver = function (module, basedir, entryBasedir) {
 
   module = module.split('?')[0]; // remove qs & hash
 
-  return __.resolve(module, {basedir: basedir});
+  return __.resolve(module, {basedir: basedir}) || '';
 };
 
 /**

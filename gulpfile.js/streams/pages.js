@@ -41,7 +41,8 @@ streams.compileHtml = function htmlCompile (options) {
           .map(function (matched) {
             return new RegExp('(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm').exec(matched)[3] || null;
           })
-          .filter((matched) => !!matched);
+          .filter((matched) => !!matched)
+        ;
 
         return matches || [];
       };
