@@ -25,6 +25,10 @@ tasks.src  = 'app/frontend';
 tasks.root = tasks.src;
 tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
+tasks.nodeResolveDefaults = {
+  moduleDirectory: ['node_modules', 'bower_directory']
+};
+
 function isUrlShouldBeIgnored (url) {
   return url[0] === "/" ||
     url[0] === "#" ||

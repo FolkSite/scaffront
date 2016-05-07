@@ -13,9 +13,40 @@ const extend         = require('extend');
 const resolve        = require('resolve');
 const postcss        = require('postcss');
 const combiner       = require('stream-combiner2').obj;
+const nodeResolve    = require('resolve');
 
 const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
+
+function isUrlShouldBeIgnored (url) {
+  return url[0] === "/" ||
+    url[0] === "#" ||
+    url.indexOf("data:") === 0 ||
+    isUrl(url) ||
+    /^[a-z]+:\/\//.test(url)
+}
+
+var moduleResolver = function (module, opts) {
+  var resolved = '';
+
+  if (isUrl(module)) { return resolved; }
+
+  var defaults = _.isPlainObject(config.tasks.nodeResolveDefaults) ? config.tasks.nodeResolveDefaults : {};
+  opts = _.defaults(opts, defaults);
+
+
+  if (path.isAbsolute(module)) {
+    return path.join(process.cwd(), module);
+  }
+
+  try {
+    resolved = nodeResolve.sync(module, opts || {});
+  } catch (e) {
+    resolved = '';
+  }
+
+  return resolved;
+};
 
 /**
  * @param {string} filePath
