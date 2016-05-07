@@ -1,8 +1,10 @@
 'use strict';
 
-const path  = require('path');
-const sep   = path.sep;
-const isWin = process.platform == 'win32';
+const isUndefined   = require('lodash/lang/isUndefined');
+const isPlainObject = require('lodash/lang/isPlainObject');
+const path          = require('path');
+const sep           = path.sep;
+const isWin         = process.platform == 'win32';
 
 let defaults = {
   cwd:      process.cwd(),
@@ -11,6 +13,8 @@ let defaults = {
   basename: '',
   extname:  ''
 };
+
+//var convertSlashesToWin32
 
 /**
  * @param {string} _path
@@ -30,10 +34,92 @@ var isPathToDotFile = function isPathToDotFile (_path) {
  * @returns {boolean}
  */
 var isPathToFile = function isPathToFile (_path) {
-  // есть расширение или это dot-файл
+  // если есть расширение или это dot-файл
   return !!path.extname(_path) || isPathToDotFile(_path);
 };
 
+/**
+ * @param {string} _path
+ * @returns {boolean}
+ */
+var isWin32RootPath = function isWin32RootPath (_path) {
+  return /^[a-z]:/i.test(_path);
+};
+
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var getPathWithoutFile = function getPathWithoutFile (_path) {
+  return (isPathToFile(_path)) ? path.dirname(_path) : _path;
+};
+
+/**
+ * Добавляет в начало пути `./`, делая путь относительным.
+ *
+ * @param {string} _path
+ * @param {{}} [opts]
+ * @param {boolean} [opts.force=false]
+ * @returns {string}
+ */
+var getPathWithLeadingDotSlash = function getPathWithLeadingDotSlash (_path, opts) {
+  opts       = (isPlainObject(opts)) ? opts : {};
+  opts.force = (!isUndefined(opts.force)) ? !!opts.force : false;
+
+  let pathIsAbsolute = path.isAbsolute(_path);
+
+  if (pathIsAbsolute && win32 && !/^[a-z]:/i.test(_path)) {
+
+  }
+
+  if (!pathIsAbsolute) {
+
+  }
+
+  return _path;
+};
+
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var getPathWithoutLeadingDotSlash = function getPathWithoutLeadingDotSlash (_path) {
+
+  return _path;
+};
+
+var fixSideSlashes = function fixSideSlashes (_path, opts) {
+  opts = (isUndefined(opts)) ? opts : {};
+  if (!isPlainObject(opts)) {
+    opts = {
+      leading: !!opts,
+      trailing: !!opts
+    };
+  }
+
+  if (!isUndefined(opts.leading)) {
+    let pathIsAbsolute = path.isAbsolute(_path);
+
+    if (opts.leading) {
+      _path = (pathIsAbsolute);
+    } else {
+
+    }
+
+
+    if (win32) {
+
+      if (pathIsAbsolute && !/^[a-z]:/i.test(_path)) {
+        pathIsAbsolute = false;
+        cwd = cwd.slice(sep.length);
+      }
+    }
+  }
+
+
+
+
+};
 
 /**
  * @param {string} dir
