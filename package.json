@@ -104,7 +104,7 @@
     "merge-stream": "^1.0.0",
     "mkpath": "*",
     "node-notifier": "^4.3.1",
-    "node-sass": "^3.5.3",
+    "node-sass": "^3.7.0",
     "node-sass-asset-functions": "0.0.9",
     "node-sass-css-importer": "0.0.3",
     "node-sass-import-once": "github:antixrist/node-sass-import-once",

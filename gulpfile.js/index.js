@@ -115,12 +115,11 @@ gulp.task('files:clean', function () {
   return del(config.tasks.files.clean, {read: false});
 });
 
-
-var resolveAsset = function resolveAsset (assetUrl, baseFilepath, entryFilepath) {
-
-};
-config.tasks.resolver,
-config.tasks.getAssetTarget
+//var resolveAsset = function resolveAsset (assetUrl, baseFilepath, entryFilepath) {
+//
+//};
+//config.tasks.resolver,
+//config.tasks.getAssetTarget
 
 gulp.task('html', function () {
   return gulp
