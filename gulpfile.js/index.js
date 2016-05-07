@@ -18,33 +18,64 @@ const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
 
 function isUrlShouldBeIgnored (url) {
-  return url[0] === "/" ||
-    url[0] === "#" ||
+  return url[0] === "#" ||
     url.indexOf("data:") === 0 ||
-    isUrl(url) ||
-    /^[a-z]+:\/\//.test(url)
+    isUrl(url)
 }
 
 var moduleResolver = function (module, opts) {
-  var resolved = '';
+  if (isUrlShouldBeIgnored(module)) { return ''; }
 
-  if (isUrl(module)) { return resolved; }
+  var retVal = '';
+  // проинициализируем пользовательские настройки resolve'а
+  var defaults = (_.isPlainObject(config.tasks.nodeResolveDefaults)) ? config.tasks.nodeResolveDefaults : {};
+  // и настройки, пришедшие напрямую в данную функцию
+  opts = (_.isPlainObject(opts)) ? opts : {}; // basedir?
 
-  var defaults = _.isPlainObject(config.tasks.nodeResolveDefaults) ? config.tasks.nodeResolveDefaults : {};
+  // отдельно проинициализируем `moduleDirectory`
+  if (defaults.moduleDirectory) {
+    defaults.moduleDirectory = (!_.isArray(defaults.moduleDirectory)) ? [defaults.moduleDirectory] : defaults.moduleDirectory;
+  } else {
+    defaults.moduleDirectory = [];
+  }
+
+  // здесь тоже
+  if (opts.moduleDirectory) {
+    opts.moduleDirectory = (!_.isArray(opts.moduleDirectory)) ? [opts.moduleDirectory] : opts.moduleDirectory;
+  } else {
+    opts.moduleDirectory = [];
+  }
+
+  // объединим `moduleDirectory` из пользовательских настроек и из настроек, пришедших в эту функцию
+  var moduleDirectory = (opts.moduleDirectory).concat(defaults.moduleDirectory);
+  // объединим настройки
   opts = _.defaults(opts, defaults);
+  // перезаписываем `moduleDirectory`.
+  // свистопляска с `moduleDirectory` нужна потому, что ни `extend`, ни `_.merge`, ни что либо ещё -
+  // не умеют рекурсивно сливать массивы, когда они являются свойствами объекта
+  opts.moduleDirectory = moduleDirectory;
 
-
+  // если урл абсолютный
   if (path.isAbsolute(module)) {
-    return path.join(process.cwd(), module);
+    // надо узнать относительно чего он абсолютный - корня фс
+  }
+  // если урл относительный
+  else {
+    // то пробуем зарезолвить стандартным способом, т.к.
+    // это может быть попытка подключить пакет из `node_modules`
+    // или любой другой директории из `opts.moduleDirectory`
+    retVal = __.resolve(module, opts);
+    // если ничего не вышло
+    if (!retVal) {
+      // то добавим точку со слешем,
+      // чтобы попробовать зарезолвить модуль относительно `opts.basedir`
+      retVal = './'+ retVal;
+      retVal = __.resolve(retVal, opts);
+      // если здесь ничего не нашлось, то значит кто-то пытается подключить что-то не существующее
+    }
   }
 
-  try {
-    resolved = nodeResolve.sync(module, opts || {});
-  } catch (e) {
-    resolved = '';
-  }
-
-  return resolved;
+  return retVal;
 };
 
 /**

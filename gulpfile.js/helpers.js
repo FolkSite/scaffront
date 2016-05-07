@@ -93,12 +93,6 @@ __.nodeResolve = function __nodeResolve (url, basedir, customModuleDirectories, 
  * @returns {string}
  */
 __.resolve = function resolve (url, opts) {
-  if (isUrl(url)) { return url; }
-
-  if (path.isAbsolute(url)) {
-    return path.join(process.cwd(), url);
-  }
-
   var resolved;
 
   try {
