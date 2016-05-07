@@ -32,37 +32,30 @@ var moduleResolver = function (module, opts) {
   // и настройки, пришедшие напрямую в данную функцию
   opts = (_.isPlainObject(opts)) ? opts : {}; // basedir?
 
-  // отдельно проинициализируем `moduleDirectory`
-  if (defaults.moduleDirectory) {
-    defaults.moduleDirectory = (!_.isArray(defaults.moduleDirectory)) ? [defaults.moduleDirectory] : defaults.moduleDirectory;
-  } else {
-    defaults.moduleDirectory = [];
-  }
+  var props = {};
+  ['moduleDirectory', 'extensions', 'paths'].forEach(function (prop) {
+    opts[prop] = [].concat(opts[prop] || []);
+    defaults[prop] = [].concat(defaults[prop] || []);
+    props[prop] = [].concat(defaults[prop], opts[prop]);
 
-  // здесь тоже
-  if (opts.moduleDirectory) {
-    opts.moduleDirectory = (!_.isArray(opts.moduleDirectory)) ? [opts.moduleDirectory] : opts.moduleDirectory;
-  } else {
-    opts.moduleDirectory = [];
-  }
+    delete opts[prop];
+    delete defaults[prop];
+    if (!props[prop].length) {
+      delete props[prop];
+    }
+  });
 
-  // объединим `moduleDirectory` из пользовательских настроек и из настроек, пришедших в эту функцию
-  var moduleDirectory = (opts.moduleDirectory).concat(defaults.moduleDirectory);
   // объединим настройки
-  opts = _.defaults(opts, defaults);
-  // перезаписываем `moduleDirectory`.
-  // свистопляска с `moduleDirectory` нужна потому, что ни `extend`, ни `_.merge`, ни что либо ещё -
-  // не умеют рекурсивно сливать массивы, когда они являются свойствами объекта
-  opts.moduleDirectory = moduleDirectory;
+  opts = _.merge(defaults, opts, props);
 
   // если урл абсолютный
   if (path.isAbsolute(module)) {
-    // надо узнать относительно чего он абсолютный - корня фс
+    // надо узнать относительно чего он абсолютный - корня фс, от `config.tasks.root` или от process.cwd
   }
   // если урл относительный
   else {
-    // то пробуем зарезолвить стандартным способом, т.к.
-    // это может быть попытка подключить пакет из `node_modules`
+    // то пробуем зарезолвить стандартным способом,
+    // т.к. это может быть попытка подключить пакет из `node_modules`
     // или любой другой директории из `opts.moduleDirectory`
     retVal = __.resolve(module, opts);
     // если ничего не вышло
@@ -71,7 +64,7 @@ var moduleResolver = function (module, opts) {
       // чтобы попробовать зарезолвить модуль относительно `opts.basedir`
       retVal = './'+ retVal;
       retVal = __.resolve(retVal, opts);
-      // если здесь ничего не нашлось, то значит кто-то пытается подключить что-то не существующее
+      // если и здесь ничего не нашлось, то кто-то пытается подключить что-то не существующее
     }
   }
 
