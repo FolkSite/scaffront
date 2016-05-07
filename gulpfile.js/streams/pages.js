@@ -15,65 +15,19 @@ const resolve        = require('resolve');
 const combiner       = require('stream-combiner2').obj;
 const through        = require('through2').obj;
 
-function isUrlShouldBeIgnored (url) {
-  return url[0] === "/" ||
-    url[0] === "#" ||
-    url.indexOf("data:") === 0 ||
-    isUrl(url) ||
-    /^[a-z]+:\/\//.test(url)
-}
-
-/**
- * @param {string} url
- * @param {{}} assetsStorage Объект
- * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
- * @param {function} [assetsUrlRebaser]
- * @returns {string}
- */
-var rebaseAssetsUrl = function rebaseAssetsUrl (url, assetsStorage, entryFilepath, filepath, assetsUrlRebaser) {
-  let rebasedUrl = url;
-
-  if (!isUrlShouldBeIgnored(url)) {
-    let resolvedUrl = __.nodeResolve(url, path.dirname(filepath), true);
-
-    if (!__.nodeResolve.lastError) {
-      resolvedUrl = path.relative(process.cwd(), resolvedUrl);
-
-      assetsStorage[entryFilepath] = assetsStorage[entryFilepath] || {};
-      assetsStorage[entryFilepath][resolvedUrl] = resolvedUrl;
-
-      if (_.isFunction(assetsUrlRebaser)) {
-        rebasedUrl = assetsUrlRebaser(resolvedUrl, {
-          entryFile: path.relative(process.cwd(), entryFilepath),
-          sourceFile: path.relative(process.cwd(), filepath)
-        });
-        rebasedUrl = (rebasedUrl) ? rebasedUrl : resolvedUrl;
-
-        assetsStorage[entryFilepath][resolvedUrl] = rebasedUrl;
-      }
-    }
-  }
-
-  return rebasedUrl;
-};
-
 var streams = {};
 
-streams.compile = function htmlCompile (options) {
+streams.compileHtml = function htmlCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  if (typeof options.resolveAsset != 'function') {
-    throw new Error('[scaffront][htmlCompile] `resolveAsset` must be a function.');
+  if (typeof options.resolver != 'function') {
+    throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
   }
 
-  if (typeof options.rebaseAssetUrl != 'function') {
-    throw new Error('[scaffront][htmlCompile] `rebaseAssetUrl` must be a function.');
+  if (typeof options.getAssetTarget != 'function') {
+    throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
   }
 
-
-
-  var assetsUrlRebaser = (_.isFunction(options.assetsUrlRebaser)) ? options.assetsUrlRebaser : __.noop;
   var assets = {};
 
   return combiner(
@@ -113,20 +67,24 @@ streams.compile = function htmlCompile (options) {
         callback();
         return;
       } else if (file.isStream()) {
-        callback(new $.util.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
+        callback(new $.gutil.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
         return;
       }
 
-      var pathsObject = {};
-      pathsObject[config.tasks.root] = '/';
-
       file.dirname = path.dirname(file.path);
       var matches = locate(file);
-      console.log('matches', matches);
+      //console.log('matches', matches);
+      // todo: а когда resolver возвращает пустую строку? чего делать?
+      console.log($.util.colors.blue('html file'), file.basename);
+      matches.forEach(function (module) {
+        console.log($.util.colors.blue('module'), module);
+        var resolved = config.tasks.resolver(module, file.dirname, file.dirname);
+        console.log($.util.colors.blue('resolved'), resolved);
+      });
+
 
       //this.push(file);
       callback(null, file);
-
       return;
 
       matches.forEach(function (matched) {
@@ -139,13 +97,13 @@ streams.compile = function htmlCompile (options) {
 
         }
       });
-      //__.nodeResolve(module, basedir)
 
       //return replace(file, matches, handle, pathsObject[handle]);
 
       //delete file.dirname;
       this.push(file);
       callback();
+
     }),
     through(function(file, enc, callback) {
       file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};

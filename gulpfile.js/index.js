@@ -115,13 +115,7 @@ gulp.task('files:clean', function () {
   return del(config.tasks.files.clean, {read: false});
 });
 
-//var resolveAsset = function resolveAsset (assetUrl, baseFilepath, entryFilepath) {
-//
-//};
-//config.tasks.resolver,
-//config.tasks.getAssetTarget
-
-gulp.task('html', function () {
+gulp.task('pages', function () {
   return gulp
     .src(__.glob(config.tasks.root, '*.html', true), {
       // При повторном запуске таска (например, через watch) выбирает только те файлы,
@@ -134,79 +128,9 @@ gulp.task('html', function () {
         message: err.message
       }))
     }))
-    .pipe(through(function(file, enc, callback) {
-      var locate = function(file) {
-        var search, matches;
-        search = new RegExp('<[^>]+?(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm');
-        matches = file.contents.toString().match(search);
-
-        matches = matches
-          .map(function (matched) {
-            return new RegExp('(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm').exec(matched)[3] || null;
-          })
-          .filter((matched) => !!matched);
-
-        return matches || [];
-      };
-
-      var replace = function(file, matches, handle, pathling) {
-        var search = new RegExp(handle + '\\/{2}([^\'\"]+)','g');
-        var destiny = path.resolve(pathling);
-        var contents = file.contents.toString();
-        var asset, relative;
-
-        matches.forEach(function(match) {
-          asset = path.parse(path.join(destiny, search.exec(match)[1]));
-          relative = path.relative(file.dirname, destiny);
-          relative = path.join(relative, asset.base);
-          contents = contents.replace(match, '\"' + relative + '\"');
-          search.lastIndex = 0;
-        });
-
-        file.contents = Buffer(contents);
-      };
-
-      if (file.isNull()) {
-        callback();
-        return;
-      } else if (file.isStream()) {
-        callback(new $.gutil.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
-        return;
-      }
-
-      file.dirname = path.dirname(file.path);
-      var matches = locate(file);
-      //console.log('matches', matches);
-      // todo: а когда resolver возвращает пустую строку? чего делать?
-      console.log($.util.colors.blue('html file'), file.basename);
-      matches.forEach(function (module) {
-        console.log($.util.colors.blue('module'), module);
-        var resolved = config.tasks.resolver(module, file.dirname, file.dirname);
-        console.log($.util.colors.blue('resolved'), resolved);
-      });
-
-
-      //this.push(file);
-      callback(null, file);
-      return;
-
-      matches.forEach(function (matched) {
-        // блин. пути со слешами!!
-        var resolved = __.nodeResolve(__.preparePath(matched, {startSlash: false}), file.dirname, true);
-
-        console.log('resolved', !!__.nodeResolve.lastError, resolved);
-
-        if (!__.nodeResolve.lastError) {
-
-        }
-      });
-
-      //return replace(file, matches, handle, pathsObject[handle]);
-
-      //delete file.dirname;
-      this.push(file);
-      callback();
-
+    .pipe(streams.pages.compileHtml({
+      resolver:       config.tasks.resolver,
+      getAssetTarget: config.tasks.getAssetTarget
     }))
     //.pipe($.tap(function (file) {
     //  console.log('file', file.path);

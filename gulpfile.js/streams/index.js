@@ -8,6 +8,7 @@ const through        = require('through2').obj;
 
 var streams = {
   styles: require('./styles'),
+  pages: require('./pages'),
   scripts: require('./scripts')
 };
 
