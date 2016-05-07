@@ -18,6 +18,26 @@ const streams        = require('./streams');
 
 const processCwd = process.cwd();
 
+var VirtualPath = function (_path, opts) {
+  this.cwd = opts.cwd || process.cwd();
+  this.base = opts.base || '';
+
+  var ext = path.extname(_path);
+
+  this.dirname = path.dirname(_path);
+  this.basename = path.basename(_path);
+  this.stem = path.basename(_path, ext);
+  this.extname = ext;
+
+  //extend(this, {
+  //  opts
+  //});
+};
+
+VirtualPath.prototype.toString = function () {
+  return path.join(this.cwd, this.base, this.dirname, this.basename);
+};
+
 /**
  * @param {string} dirname
  * @param {string} cwd
