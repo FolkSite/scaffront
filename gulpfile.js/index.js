@@ -26,13 +26,19 @@ function isUrlShouldBeIgnored (url) {
 var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
   ? config.tasks.nodeResolveDefaults
   : {};
+/**
+ * @param {string} module
+ * @param {{}} [opts]
+ * @returns {string}
+ */
 var moduleResolver = function (module, opts) {
   if (isUrlShouldBeIgnored(module)) { return ''; }
 
   // проинициализируем настройки
   opts = (_.isPlainObject(opts)) ? opts : {}; // basedir?
 
-  var retVal   = '',
+  var cwd      = process.cwd(),
+      retVal   = '',
       props    = {},
       defaults = moduleResolverDefaults;
 
@@ -58,6 +64,11 @@ var moduleResolver = function (module, opts) {
   if (path.isAbsolute(module)) {
     //// надо узнать относительно чего он абсолютный - от корня фс, `config.tasks.root` или от `process.cwd`
 
+    if (module.indexOf(cwd)) {
+
+    } else {
+
+    }
   }
   // если урл относительный
   else {
