@@ -18,25 +18,28 @@ const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
 
 function isUrlShouldBeIgnored (url) {
-  return url[0] === "#" ||
-    url.indexOf("data:") === 0 ||
-    isUrl(url)
+  return url[0] === '#' ||
+    url.indexOf('data:') === 0 ||
+    isUrl(url);
 }
 
+var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
+  ? config.tasks.nodeResolveDefaults
+  : {};
 var moduleResolver = function (module, opts) {
   if (isUrlShouldBeIgnored(module)) { return ''; }
 
-  var retVal = '';
-  // проинициализируем пользовательские настройки resolve'а
-  var defaults = (_.isPlainObject(config.tasks.nodeResolveDefaults)) ? config.tasks.nodeResolveDefaults : {};
-  // и настройки, пришедшие напрямую в данную функцию
+  // проинициализируем настройки
   opts = (_.isPlainObject(opts)) ? opts : {}; // basedir?
 
-  var props = {};
+  var retVal   = '',
+      props    = {},
+      defaults = moduleResolverDefaults;
+
   ['moduleDirectory', 'extensions', 'paths'].forEach(function (prop) {
-    opts[prop] = [].concat(opts[prop] || []);
+    opts[prop]     = [].concat(opts[prop] || []);
     defaults[prop] = [].concat(defaults[prop] || []);
-    props[prop] = [].concat(defaults[prop], opts[prop]);
+    props[prop]    = [].concat(defaults[prop], opts[prop]);
 
     delete opts[prop];
     delete defaults[prop];
@@ -53,7 +56,7 @@ var moduleResolver = function (module, opts) {
 
   // если урл абсолютный
   if (path.isAbsolute(module)) {
-    // надо узнать относительно чего он абсолютный - от корня фс, `config.tasks.root` или от `process.cwd`
+    //// надо узнать относительно чего он абсолютный - от корня фс, `config.tasks.root` или от `process.cwd`
 
   }
   // если урл относительный
