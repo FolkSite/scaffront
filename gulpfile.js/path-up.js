@@ -6,14 +6,6 @@ const path          = require('path');
 const sep           = path.sep;
 const isWin         = process.platform == 'win32';
 
-let defaults = {
-  cwd:      process.cwd(),
-  base:     '',
-  dirname:  '',
-  basename: '',
-  extname:  ''
-};
-
 /**
  * @param {string} _path
  * @returns {boolean}
@@ -32,7 +24,6 @@ var isPathToDotFile = function pathUp$isPathToDotFile (_path) {
  * @returns {boolean}
  */
 var isPathToFile = function pathUp$isPathToFile (_path) {
-  // если есть расширение или это dot-файл
   return !!path.extname(_path) || isPathToDotFile(_path);
 };
 
@@ -40,7 +31,7 @@ var isPathToFile = function pathUp$isPathToFile (_path) {
  * @param {string} _path
  * @returns {boolean}
  */
-var isPathFromWin32Device = function pathUp$isWin32RootPath (_path) {
+var isPathFromWin32Device = function pathUp$isPathFromWin32Device (_path) {
   return path.win32.isAbsolute(_path) && /^[a-z]:/i.test(_path);
 };
 
@@ -48,7 +39,7 @@ var isPathFromWin32Device = function pathUp$isWin32RootPath (_path) {
  * @param {string} _path
  * @returns {string}
  */
-var getWithoutFile = function pathUp$getWithoutFile (_path) {
+var withoutFile = function pathUp$withoutFile (_path) {
   return (isPathToFile(_path)) ? path.dirname(_path) : _path;
 };
 
@@ -90,50 +81,69 @@ var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (_path) {
  */
 var addLeadingDotSlash = function pathUp$addLeadingDotSlash (_path) {
   if (!isPathFromWin32Device(_path)) {
-    let pathIsAbsolute = path.isAbsolute(_path);
-    if (!hasLeadingDotSlash(_path)) {
-      _path = (pathIsAbsolute) ? '.'+ _path : './'+ path;
-    }
+    _path = './'+ removeLeadingDotSlash(_path);
   }
 
   return _path;
 };
 
 /**
- *
  * @param {string} _path
- * @param {{}|boolean} [opts]
- * @param {boolean} [opts.leading]
- * @param {boolean} [opts.trailing]
+ * @returns {string}
  */
-var alterSideSlashes = function pathUp$alterSideSlashes (_path, opts) {
-  if (isUndefined(opts)) { return _path; }
-
-  if (!isPlainObject(opts)) {
-    opts = {
-      leading:  opts,
-      trailing: opts
-    };
+var removeLeadingSlash = function pathUp$removeLeadingSlash (_path) {
+  if (!isPathFromWin32Device(_path)) {
+    _path = _path.replace(/^[\/\\]+/, '');
   }
 
-  opts.leading  = (!isUndefined(opts.leading)) ? !!opts.leading : void 0;
-  opts.trailing = (!isUndefined(opts.trailing)) ? !!opts.trailing : void 0;
+  return _path;
+};
 
-  if (opts.leading === true) {
-
-  } else
-  if (opts.leading === false) {
-
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var addLeadingSlash = function pathUp$addLeadingSlash (_path) {
+  if (!isPathFromWin32Device(_path)) {
+    _path = '/'+ removeLeadingSlash(_path);
   }
 
-  if (opts.trailing === true) {
+  return _path;
+};
 
-  } else
-  if (opts.trailing === false) {
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var removeTrailingSlash = function pathUp$removeTrailingSlash (_path) {
+  _path = _path.replace(/[\/\\]+$/, '');
 
+  return _path;
+};
+
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var addTrailingSlash = function pathUp$addTrailingSlash (_path) {
+  if (!isPathToFile(_path)) {
+    _path = removeTrailingSlash(_path) +'/';
   }
 
+  return _path;
+};
 
+/**
+ * @param {string} _path
+ * @param {string} cwd
+ * @returns {string}
+ */
+var getRelativeByCwd = function pathUp$getRelativeByCwd (_path, cwd) {
+  var dirToCompare, cwdToCompare;
+
+
+
+  return '';
 };
 
 /**
@@ -314,6 +324,14 @@ let parse = function VirtualPath$parse (_path, opts) {
 
   this.basename = path.basename(_path);
   this.extname = ext;
+};
+
+let defaults = {
+  cwd:      process.cwd(),
+  base:     '',
+  dirname:  '',
+  basename: '',
+  extname:  ''
 };
 
 class VinylPath {
