@@ -48,9 +48,13 @@ var moduleResolver = function (module, opts) {
   // объединим настройки
   opts = _.merge(defaults, opts, props);
 
+  // удалим строку запроса и хэш
+  module = module.split('?')[0];
+
   // если урл абсолютный
   if (path.isAbsolute(module)) {
-    // надо узнать относительно чего он абсолютный - корня фс, от `config.tasks.root` или от process.cwd
+    // надо узнать относительно чего он абсолютный - от корня фс, `config.tasks.root` или от `process.cwd`
+
   }
   // если урл относительный
   else {
