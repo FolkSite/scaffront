@@ -135,11 +135,11 @@ var addTrailingSlash = function pathUp$addTrailingSlash (_path) {
 
 /**
  * @param {string} _path
- * @param {string} cwd
+ * @param {string} leadingPath
  * @returns {string}
  */
-var getRelativeByCwd = function pathUp$getRelativeByCwd (_path, cwd) {
-  var dirToCompare, cwdToCompare;
+var removeLeadingPath = function pathUp$removeLeadingPath (_path, leadingPath) {
+  var pathToCompare = _path, leadingToCompare = leadingPath;
 
 
 
