@@ -15,7 +15,7 @@ let defaults = {
  * @param {string} cwd
  * @returns {string}
  */
-let makeRelativeByCwd = function makeRelativeByCwd (dirname, cwd) {
+let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
   var isWin = process.platform == 'win32';
   var sep = path.sep;
 
@@ -62,6 +62,22 @@ let makeRelativeByCwd = function makeRelativeByCwd (dirname, cwd) {
   ('/is/cwd/',   'dir/name/') === 'dir/name';
   ('/is/cwd/',   'dir/name/') === 'dir/name';
 
+  ('C:\\is\\cwd\\',  'C:\\is\\cwd\\dir\\name\\') === 'dir\\name';
+  ('C:\\is\\cwd\\',  '\\dir\\name\\') === 'dir\\name';
+  ('\\is\\cwd\\',  'C:\\is\\cwd\\dir\\name\\') === 'dir\\name';
+
+  ('/is/cwd/', './is/cwd/dir/name/') === 'dir/name';
+  ( 'is/cwd/', './is/cwd/dir/name/') === 'dir/name';
+  ('/is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
+  ( 'is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
+
+  ('/is/cwd/',  '/dir/name/') === 'dir/name';
+  ( 'is/cwd/',  '/dir/name/') === 'dir/name';
+  ('/is/cwd/', './dir/name/') === 'dir/name';
+  ( 'is/cwd/', './dir/name/') === 'dir/name';
+  ('/is/cwd/',   'dir/name/') === 'dir/name';
+  ('/is/cwd/',   'dir/name/') === 'dir/name';
+
   ('', '');
 
   */
@@ -71,6 +87,40 @@ let makeRelativeByCwd = function makeRelativeByCwd (dirname, cwd) {
   } else {
     //dirname = path.resolve(cwdAbsolute, dirnameRelative);
   }
+
+  let cwdForCompare, dirnameForCompare;
+  let cwdIsAbsolute, dirnameIsAbsolute;
+
+  cwdIsAbsolute     = path.isAbsolute(cwd);
+  dirnameIsAbsolute = path.isAbsolute(dirname);
+  if (isWin) {
+    if (cwdIsAbsolute && !/^[a-z]:/i.test(cwd)) {
+      cwdIsAbsolute = false;
+      cwd = cwd.slice(sep.length);
+    }
+
+    if (dirnameIsAbsolute && !/^[a-z]:/i.test(dirname)) {
+      dirnameIsAbsolute = false;
+      dirname = dirname.slice(sep.length);
+    }
+  } else {
+
+  }
+
+  if (cwdIsAbsolute && dirnameIsAbsolute) {
+
+  } else
+  if (cwdIsAbsolute && !dirnameIsAbsolute) {
+
+  } else
+  if (!cwdIsAbsolute && dirnameIsAbsolute) {
+
+  } else
+  if (!cwdIsAbsolute && !dirnameIsAbsolute) {
+
+  }
+
+
 
 
 
