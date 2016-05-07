@@ -11,22 +11,22 @@ let defaults = {
 };
 
 /**
- * @param {string} dirname
+ * @param {string} dir
  * @param {string} cwd
  * @returns {string}
  */
-let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
+let getRelativeFromCwd = function getRelativeFromCwd (dir, cwd) {
   var isWin = process.platform == 'win32';
   var sep = path.sep;
 
-  cwd     = path.dirname(cwd);
-  dirname = path.dirname(dirname);
+  cwd = path.dirname(cwd);
+  dir = path.dirname(dir);
 
-  var cwdIsRelative     = !path.isAbsolute(cwd);
-  var dirnameIsRelative = !path.isAbsolute(dirname);
+  var cwdIsRelative = !path.isAbsolute(cwd);
+  var dirIsRelative = !path.isAbsolute(dir);
 
   var cwdAbsolute, cwdRelative;
-  var dirnameAbsolute, dirnameRelative;
+  var dirAbsolute, dirRelative;
 
   if (cwdIsRelative) {
     cwdAbsolute = path.join(sep, cwd);
@@ -36,16 +36,16 @@ let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
     cwdRelative = cwd.slice(sep.length);
   }
 
-  if (dirnameIsRelative) {
-    dirnameAbsolute = path.join(sep, dirname);
-    dirnameRelative = dirname;
+  if (dirIsRelative) {
+    dirAbsolute = path.join(sep, dir);
+    dirRelative = dir;
   } else {
-    dirnameAbsolute = dirname;
-    dirnameRelative = dirname.slice(sep.length);
+    dirAbsolute = dir;
+    dirRelative = dir.slice(sep.length);
   }
 
   cwdAbsolute = path.dirname(cwdAbsolute);
-  dirnameAbsolute = path.dirname(dirnameAbsolute);
+  dirAbsolute = path.dirname(dirAbsolute);
 
   /*
   ('/is/cwd/',  '/is/cwd/dir/name/') === 'dir/name';
@@ -82,47 +82,64 @@ let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
 
   */
 
-  if (dirnameAbsolute.indexOf(cwdAbsolute) === 0) {
-    dirname = dirnameAbsolute.slice(cwdAbsolute.length);
+  if (dirAbsolute.indexOf(cwdAbsolute) === 0) {
+    dir = dirAbsolute.slice(cwdAbsolute.length);
   } else {
-    //dirname = path.resolve(cwdAbsolute, dirnameRelative);
+    //dir = path.resolve(cwdAbsolute, dirRelative);
   }
 
-  let cwdForCompare, dirnameForCompare;
-  let cwdIsAbsolute, dirnameIsAbsolute;
 
-  cwdIsAbsolute     = path.isAbsolute(cwd);
-  dirnameIsAbsolute = path.isAbsolute(dirname);
+
+
+  cwd = path.dirname(cwd);
+  dir = path.dirname(dir);
+
+  let isWin = process.platform == 'win32';
+  let sep = path.sep;
+
+  let cwdForCompare, dirForCompare;
+  let cwdIsAbsolute, dirIsAbsolute;
+
+  cwdIsAbsolute = path.isAbsolute(cwd);
+  dirIsAbsolute = path.isAbsolute(dir);
   if (isWin) {
     if (cwdIsAbsolute && !/^[a-z]:/i.test(cwd)) {
       cwdIsAbsolute = false;
       cwd = cwd.slice(sep.length);
     }
-
-    if (dirnameIsAbsolute && !/^[a-z]:/i.test(dirname)) {
-      dirnameIsAbsolute = false;
-      dirname = dirname.slice(sep.length);
+    if (dirIsAbsolute && !/^[a-z]:/i.test(dir)) {
+      dirIsAbsolute = false;
+      dir = dir.slice(sep.length);
     }
   } else {
 
   }
 
-  if (cwdIsAbsolute && dirnameIsAbsolute) {
-
+  if (cwdIsAbsolute && dirIsAbsolute) {
+    cwdForCompare = cwd;
+    dirForCompare = dir;
   } else
-  if (cwdIsAbsolute && !dirnameIsAbsolute) {
-
+  if (cwdIsAbsolute && !dirIsAbsolute) {
+    cwdForCompare = cwd;
+    dirForCompare = (dir.indexOf(`.${sep}`) === 0) ? dir.slice(1) : sep + dir;
   } else
-  if (!cwdIsAbsolute && dirnameIsAbsolute) {
-
+  if (!cwdIsAbsolute && dirIsAbsolute) {
+    cwdForCompare = (cwd.indexOf(`.${sep}`) === 0) ? cwd.slice(1) : sep + cwd;
+    dirForCompare = dir;
   } else
-  if (!cwdIsAbsolute && !dirnameIsAbsolute) {
-
+  if (!cwdIsAbsolute && !dirIsAbsolute) {
+    cwdForCompare = (cwd.indexOf(`.${sep}`) === 0) ? cwd.slice(1) : sep + cwd;
+    dirForCompare = (dir.indexOf(`.${sep}`) === 0) ? dir.slice(1) : sep + dir;
   }
 
+  var retVal;
+  if (dirForCompare.indexOf(cwdForCompare) === 0) {
+    retVal = dirForCompare.slice(cwdForCompare.length);
+  } else {
+    retVal =
+  }
 
-
-
+  return retVal;
 
   if (!isWin) {
 
@@ -132,7 +149,7 @@ let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
 
 
 
-  if (!path.isAbsolute(dirname)) {
+  if (!path.isAbsolute(dir)) {
     if (!isWin) {
 
     }
@@ -146,12 +163,12 @@ let getRelativeFromCwd = function getRelativeFromCwd (dirname, cwd) {
 
 
 
-  if (dirname.indexOf(cwd) !== 0) {
-    dirname = path.join(cwd, dirname);
+  if (dir.indexOf(cwd) !== 0) {
+    dir = path.join(cwd, dir);
   }
-  dirname = path.relative(cwd, dirname);
+  dir = path.relative(cwd, dir);
 
-  return dirname;
+  return dir;
 };
 
 /**
