@@ -14,8 +14,6 @@ let defaults = {
   extname:  ''
 };
 
-//var convertSlashesToWin32
-
 /**
  * @param {string} _path
  * @returns {boolean}
@@ -43,7 +41,7 @@ var isPathToFile = function isPathToFile (_path) {
  * @returns {boolean}
  */
 var isWin32RootPath = function isWin32RootPath (_path) {
-  return /^[a-z]:/i.test(_path);
+  return path.win32.isAbsolute(_path) && /^[a-z]:/i.test(_path);
 };
 
 /**
@@ -67,8 +65,7 @@ var getPathWithLeadingDotSlash = function getPathWithLeadingDotSlash (_path, opt
   opts.force = (!isUndefined(opts.force)) ? !!opts.force : false;
 
   let pathIsAbsolute = path.isAbsolute(_path);
-
-  if (pathIsAbsolute && win32 && !/^[a-z]:/i.test(_path)) {
+  if (pathIsAbsolute && opts.force && !isWin32RootPath(_path)) {
 
   }
 
@@ -301,11 +298,11 @@ let parse = function VirtualPath$parse (_path, opts) {
   this.extname = ext;
 };
 
-class VirtualPath {
+class VinylPath {
   constructor (_path, opts) {
     opts = opts || {};
 
-    this.isWin     = process.platform == 'win32';
+    this.win32     = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
     this._cwd      = '';
     this._base     = '';
     this._dirname  = '';
@@ -364,4 +361,4 @@ class VirtualPath {
   }
 }
 
-module.exports = VirtualPath;
+module.exports = VinylPath;
