@@ -1,6 +1,8 @@
 'use strict';
 
-const path = require('path');
+const path  = require('path');
+const sep   = path.sep;
+const isWin = process.platform == 'win32';
 
 let defaults = {
   cwd:      process.cwd(),
@@ -11,14 +13,34 @@ let defaults = {
 };
 
 /**
+ * @param {string} _path
+ * @returns {boolean}
+ */
+var isPathToDotFile = function isPathToDotFile (_path) {
+  _path = path.normalize(_path);
+
+  let parts = _path.split(sep);
+  let last = parts[parts.length - 1];
+
+  return /^\./.test(last);
+};
+
+/**
+ * @param {string} _path
+ * @returns {boolean}
+ */
+var isPathToFile = function isPathToFile (_path) {
+  // есть расширение или это dot-файл
+  return !!path.extname(_path) || isPathToDotFile(_path);
+};
+
+
+/**
  * @param {string} dir
  * @param {string} cwd
  * @returns {string}
  */
 let getRelativeFromCwd = function getRelativeFromCwd (dir, cwd) {
-  var isWin = process.platform == 'win32';
-  var sep = path.sep;
-
   cwd = path.dirname(cwd);
   dir = path.dirname(dir);
 
@@ -91,11 +113,8 @@ let getRelativeFromCwd = function getRelativeFromCwd (dir, cwd) {
 
 
 
-  cwd = path.dirname(cwd);
-  dir = path.dirname(dir);
-
-  let isWin = process.platform == 'win32';
-  let sep = path.sep;
+  cwd = (isPathToFile(cwd)) ? path.dirname(cwd) : cwd;
+  dir = (isPathToFile(dir)) ? path.dirname(dir) : dir;
 
   let cwdForCompare, dirForCompare;
   let cwdIsAbsolute, dirIsAbsolute;
@@ -136,7 +155,7 @@ let getRelativeFromCwd = function getRelativeFromCwd (dir, cwd) {
   if (dirForCompare.indexOf(cwdForCompare) === 0) {
     retVal = dirForCompare.slice(cwdForCompare.length);
   } else {
-    retVal =
+    //retVal =
   }
 
   return retVal;
@@ -188,6 +207,8 @@ let parse = function VirtualPath$parse (_path, opts) {
   this.cwd = opts.cwd || '';
   this.base = opts.base || '';
 
+
+  // isPathToFile
   var ext = path.extname(_path);
 
   this.basename = path.basename(_path);
