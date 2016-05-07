@@ -18,7 +18,7 @@ let defaults = {
  * @param {string} _path
  * @returns {boolean}
  */
-var isPathToDotFile = function isPathToDotFile (_path) {
+var isPathToDotFile = function pathUp$isPathToDotFile (_path) {
   _path = path.normalize(_path);
 
   let parts = _path.split(sep);
@@ -31,7 +31,7 @@ var isPathToDotFile = function isPathToDotFile (_path) {
  * @param {string} _path
  * @returns {boolean}
  */
-var isPathToFile = function isPathToFile (_path) {
+var isPathToFile = function pathUp$isPathToFile (_path) {
   // если есть расширение или это dot-файл
   return !!path.extname(_path) || isPathToDotFile(_path);
 };
@@ -40,7 +40,7 @@ var isPathToFile = function isPathToFile (_path) {
  * @param {string} _path
  * @returns {boolean}
  */
-var isWin32RootPath = function isWin32RootPath (_path) {
+var isPathFromWin32Device = function pathUp$isWin32RootPath (_path) {
   return path.win32.isAbsolute(_path) && /^[a-z]:/i.test(_path);
 };
 
@@ -48,72 +48,90 @@ var isWin32RootPath = function isWin32RootPath (_path) {
  * @param {string} _path
  * @returns {string}
  */
-var getPathWithoutFile = function getPathWithoutFile (_path) {
+var getWithoutFile = function pathUp$getWithoutFile (_path) {
   return (isPathToFile(_path)) ? path.dirname(_path) : _path;
 };
 
 /**
- * Добавляет в начало пути `./`, делая путь относительным.
- *
  * @param {string} _path
- * @param {{}} [opts]
- * @param {boolean} [opts.force=false]
- * @returns {string}
+ * @returns {boolean}
  */
-var getPathWithLeadingDotSlash = function getPathWithLeadingDotSlash (_path, opts) {
-  opts       = (isPlainObject(opts)) ? opts : {};
-  opts.force = (!isUndefined(opts.force)) ? !!opts.force : false;
+var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (_path) {
+  return /^\.\//.test(_path) || /^\.\\/.test(_path);
+};
 
-  let pathIsAbsolute = path.isAbsolute(_path);
-  if (pathIsAbsolute && opts.force && !isWin32RootPath(_path)) {
+/**
+ * @param {string} _path
+ * @returns {boolean}
+ */
+var isRelative = function pathUp$isRelative (_path) {
+  return !path.isAbsolute(_path);
+};
 
-  }
-
-  if (!pathIsAbsolute) {
-
-  }
-
-  return _path;
+/**
+ * @param {string} _path
+ * @returns {boolean}
+ */
+var isDotDotRelative = function pathUp$isDotDotRelative (_path) {
+  return isRelative(_path) && (/^\.\.\//.test(_path) || /^\.\.\\/.test(_path));
 };
 
 /**
  * @param {string} _path
  * @returns {string}
  */
-var getPathWithoutLeadingDotSlash = function getPathWithoutLeadingDotSlash (_path) {
+var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (_path) {
+  return _path.replace(/^\.[\/\\]+/, '');
+};
+
+/**
+ * @param {string} _path
+ * @returns {string}
+ */
+var addLeadingDotSlash = function pathUp$addLeadingDotSlash (_path) {
+  if (!isPathFromWin32Device(_path)) {
+    let pathIsAbsolute = path.isAbsolute(_path);
+    if (!hasLeadingDotSlash(_path)) {
+      _path = (pathIsAbsolute) ? '.'+ _path : './'+ path;
+    }
+  }
 
   return _path;
 };
 
-var fixSideSlashes = function fixSideSlashes (_path, opts) {
-  opts = (isUndefined(opts)) ? opts : {};
+/**
+ *
+ * @param {string} _path
+ * @param {{}|boolean} [opts]
+ * @param {boolean} [opts.leading]
+ * @param {boolean} [opts.trailing]
+ */
+var alterSideSlashes = function pathUp$alterSideSlashes (_path, opts) {
+  if (isUndefined(opts)) { return _path; }
+
   if (!isPlainObject(opts)) {
     opts = {
-      leading: !!opts,
-      trailing: !!opts
+      leading:  opts,
+      trailing: opts
     };
   }
 
-  if (!isUndefined(opts.leading)) {
-    let pathIsAbsolute = path.isAbsolute(_path);
+  opts.leading  = (!isUndefined(opts.leading)) ? !!opts.leading : void 0;
+  opts.trailing = (!isUndefined(opts.trailing)) ? !!opts.trailing : void 0;
 
-    if (opts.leading) {
-      _path = (pathIsAbsolute);
-    } else {
+  if (opts.leading === true) {
 
-    }
+  } else
+  if (opts.leading === false) {
 
-
-    if (win32) {
-
-      if (pathIsAbsolute && !/^[a-z]:/i.test(_path)) {
-        pathIsAbsolute = false;
-        cwd = cwd.slice(sep.length);
-      }
-    }
   }
 
+  if (opts.trailing === true) {
 
+  } else
+  if (opts.trailing === false) {
+
+  }
 
 
 };
@@ -123,7 +141,7 @@ var fixSideSlashes = function fixSideSlashes (_path, opts) {
  * @param {string} cwd
  * @returns {string}
  */
-let getRelativeFromCwd = function getRelativeFromCwd (dir, cwd) {
+let getRelativeFromCwd = function pathUp$getRelativeFromCwd (dir, cwd) {
   cwd = path.dirname(cwd);
   dir = path.dirname(dir);
 
@@ -361,4 +379,6 @@ class VinylPath {
   }
 }
 
-module.exports = VinylPath;
+module.exports = {
+  VinylPath
+};
