@@ -17,6 +17,29 @@ const nodeResolve    = require('resolve');
 const config         = require('../scaffront.config.js');
 const streams        = require('./streams');
 
+/**
+ * @param {string} dirname
+ * @param {string} cwd
+ * @returns {string}
+ */
+var convertToRelativeByCwd = function (dirname, cwd) {
+  cwd = __.preparePath(cwd, {startSlash: false, trailingSlash: false});
+  dirname = __.preparePath(dirname, {startSlash: false, trailingSlash: false});
+
+  if (!dirname.indexOf(cwd)) {
+    dirname = path.join(cwd, dirname);
+  }
+  dirname = path.relative(cwd, dirname);
+
+  return dirname;
+};
+
+
+var processCwd = process.cwd();
+config.tasks.root = convertToRelativeByCwd(config.tasks.root, processCwd);
+config.tasks.dest = convertToRelativeByCwd(config.tasks.dest, processCwd);
+
+
 function isUrlShouldBeIgnored (url) {
   return url[0] === '#' ||
     url.indexOf('data:') === 0 ||
