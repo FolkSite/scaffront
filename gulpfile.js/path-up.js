@@ -128,6 +128,16 @@ var isRelative = function pathUp$isRelative (pathname) {
  * @param {string} pathname
  * @returns {boolean}
  */
+var isDot = function pathUp$isDot (pathname) {
+  assertPath(pathname);
+
+  return pathname == '.';
+};
+
+/**
+ * @param {string} pathname
+ * @returns {boolean}
+ */
 var isDotRelative = function pathUp$isDotRelative (pathname) {
   assertPath(pathname);
 
@@ -246,15 +256,20 @@ var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) 
   }
 
   leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+  leadingPathname = (leadingPathname != '.') ? leadingPathname : '';
 
-  leadingPathname = removeLeadingDotSlash(leadingPathname);
-  pathname        = removeLeadingDotSlash(pathname);
-  leadingPathname = removeLeadingSlash(leadingPathname);
-  pathname        = removeLeadingSlash(pathname);
-  leadingPathname = addTrailingSlash(leadingPathname);
-  pathname        = addTrailingSlash(pathname);
+  if (leadingPathname) {
+    leadingPathname = removeLeadingDotSlash(leadingPathname);
+    pathname        = removeLeadingDotSlash(pathname);
+    leadingPathname = removeLeadingSlash(leadingPathname);
+    pathname        = removeLeadingSlash(pathname);
+    leadingPathname = addTrailingSlash(leadingPathname);
+    pathname        = addTrailingSlash(pathname);
 
-  return pathname.indexOf(leadingPathname) === 0;
+    return pathname.indexOf(leadingPathname) === 0;
+  }
+
+  return false;
 };
 
 /**
@@ -277,16 +292,19 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   }
 
   leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+  leadingPathname = (!isDot(leadingPathname)) ? leadingPathname : '';
 
-  leadingPathname = removeLeadingDotSlash(leadingPathname);
-  pathname        = removeLeadingDotSlash(pathname);
-  leadingPathname = removeLeadingSlash(leadingPathname);
-  pathname        = removeLeadingSlash(pathname);
-  leadingPathname = addTrailingSlash(leadingPathname);
-  pathname        = addTrailingSlash(pathname);
+  if (leadingPathname) {
+    leadingPathname = removeLeadingDotSlash(leadingPathname);
+    pathname        = removeLeadingDotSlash(pathname);
+    leadingPathname = removeLeadingSlash(leadingPathname);
+    pathname        = removeLeadingSlash(pathname);
+    leadingPathname = addTrailingSlash(leadingPathname);
+    pathname        = addTrailingSlash(pathname);
 
-  if (pathname.indexOf(leadingPathname) === 0) {
-    return removeTrailingSlash(pathname.slice(leadingPathname.length));
+    if (pathname.indexOf(leadingPathname) === 0) {
+      return removeTrailingSlash(pathname.slice(leadingPathname.length));
+    }
   }
 
   return enterPathname;
@@ -309,7 +327,7 @@ class VinylPath {
     pathname = normalize(pathname, 'posix');
     //console.log('norm pathname', pathname);
 
-    return (pathname != '.') ? pathname : '';
+    return (!isDot(pathname)) ? pathname : '';
   }
 
   static resolve (basePathname, pathname) {
@@ -323,7 +341,7 @@ class VinylPath {
     // сперва удаляем `basePathname` из `pathname`, если он там есть.
     if (pathname && basePathname) {
       newPathname = removeLeadingPath(pathname, basePathname);
-      newPathname = (pathname != '.') ? pathname : '';
+      newPathname = (!isDot(pathname)) ? pathname : '';
 
       // если `pathname` относительный
       if (newPathname != pathname && isRelative(pathname)) {
@@ -367,6 +385,7 @@ class VinylPath {
 
     // `cwd` - это корень всего
     cwd = cwd || processCwd;
+    cwd = (!isDot(cwd)) ? cwd : processCwd;
     cwd = VinylPath.normalize(cwd);
     cwd = addLeadingSlash(cwd);
     this._cwd = removeTrailingSlash(cwd);
@@ -377,42 +396,43 @@ class VinylPath {
 
     // `base` всегда должен быть относительным по отношению к `cwd`
     base = base || '';
+    base = (!isDot(base)) ? base : '';
     if (base) {
       let tmp = removeLeadingSlash(removeLeadingDotSlash(base));
       if (isDotDotRelative(tmp)) {
         base = VinylPath.normalize(tmp);
         base = path.join(this._cwd, base);
-
-        //let baseWithoutCwd = removeLeadingPath(base, this._cwd);
-        //if (base != baseWithoutCwd) {
-        //
-        //}
       } else {
         base = VinylPath.normalize(base);
       }
       base = (isPathToFile(base)) ? withoutFile(base) : base;
-      base = removeLeadingPath(base, this._cwd);
-      base = removeTrailingSlash(base);
-      base = removeLeadingDotSlash(base);
-      base = removeLeadingSlash(base);
+      base = (!isDot(base)) ? base : '';
+      if (base) {
+        base = removeLeadingPath(base, this._cwd);
+        base = removeTrailingSlash(base);
+        base = removeLeadingDotSlash(base);
+        base = removeLeadingSlash(base);
+      }
     }
 
     this._base = base;
 
-    if (this._dirname) {
+    if (this._dirname && this._base) {
       this._dirname = removeLeadingPath(this._dirname, this._base);
       this._dirname = removeTrailingSlash(this._dirname);
       this._dirname = removeLeadingDotSlash(this._dirname);
       this._dirname = removeLeadingSlash(this._dirname);
     }
-
-    //this.dirname = VinylPath.resolve(base, this._dirname);
   }
 
   set dirname (dirname) {
     assertPath(dirname);
 
     dirname = dirname || '';
+    dirname = (!isDot(dirname)) ? dirname : '';
+    console.log('1 dirname', dirname);
+
+    let hasBase = false;
     if (dirname) {
       let tmp = removeLeadingSlash(removeLeadingDotSlash(dirname));
       if (isDotDotRelative(tmp)) {
@@ -423,28 +443,32 @@ class VinylPath {
       }
 
       dirname = (isPathToFile(dirname)) ? withoutFile(dirname) : dirname;
+      dirname = (isDot(dirname)) ? dirname : '';
 
-      let hasBase = false;
+      if (dirname) {
+        let dirnameWithoutCwd = removeLeadingPath(dirname, this._cwd);
+        if (dirnameWithoutCwd != dirname) {
+          dirname = dirnameWithoutCwd;
 
-      let dirnameWithoutCwd = removeLeadingPath(dirname, this._cwd);
-      if (dirnameWithoutCwd != dirname) {
-        dirname = dirnameWithoutCwd;
-
-        let dirnameWithoutBase = removeLeadingPath(dirname, this._base);
-        if (dirnameWithoutBase != dirname) {
-          dirname = dirnameWithoutBase;
-          hasBase = true;
+          let dirnameWithoutBase = removeLeadingPath(dirname, this._base);
+          if (dirnameWithoutBase != dirname) {
+            dirname = dirnameWithoutBase;
+            hasBase = true;
+          }
         }
-      }
 
-      dirname = removeTrailingSlash(dirname);
-      dirname = removeLeadingDotSlash(dirname);
-      dirname = removeLeadingSlash(dirname);
-      this._dirname = dirname;
-
-      if (!hasBase) {
-        this._base = '';
+        dirname = removeTrailingSlash(dirname);
+        dirname = removeLeadingDotSlash(dirname);
+        dirname = removeLeadingSlash(dirname);
       }
+    }
+
+    console.log('2 dirname', dirname);
+
+    this._dirname = dirname;
+
+    if (this._dirname && !hasBase) {
+      this._base = '';
     }
   }
 
@@ -452,11 +476,17 @@ class VinylPath {
     assertPath(pathname);
 
     pathname = pathname || '';
+    pathname = (!isDot(pathname)) ? pathname : '';
     let basename = '';
     if (pathname) {
       let isToFile = isPathToFile(pathname);
       basename = (isToFile) ? path.basename(pathname) : '';
       pathname = (isToFile) ? withoutFile(pathname) : pathname;
+      pathname = (!isDot(pathname)) ? pathname : '';
+      console.log('3 pathname', pathname);
+    }
+
+    if (pathname) {
       this.dirname = pathname;
     }
 
@@ -739,18 +769,20 @@ class VinylPath {
     assertPath(basename);
 
     basename = basename || '';
-    let newDirname = '';
+    let dirname = '';
     if (basename) {
-      basename = VinylPath.normalize(basename);
-      newDirname = path.dirname(basename);
-      basename = path.basename(basename);
+      let isToFile = isPathToFile(dirname);
+      dirname = (isToFile) ? withoutFile(basename) : basename;
+      dirname = (!isDot(dirname)) ? dirname : '';
+      basename = (isToFile) ? path.basename(dirname) : '';
+
+      this._basename = basename;
+      this._extname  = path.extname(this._basename);
     }
 
-    this._basename = basename;
-    this._extname  = path.extname(this._basename);
-
-    if (newDirname != '.' && newDirname) {
-      this.dirname = newDirname;
+    if (dirname) {
+      console.log('4 pathname', dirname);
+      this.dirname = dirname;
     }
   }
 
@@ -814,7 +846,7 @@ var File = VinylPath;
 console.time('time');
 var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
   //base: 'D:/repositories/scaffront\\app\\frontend'
-  base: '\\app\\frontend\\'
+  //base: '\\app\\frontend\\'
 });
 
 inspectFile(file);
