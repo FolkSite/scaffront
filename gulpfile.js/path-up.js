@@ -29,39 +29,48 @@ var convertToWin32 = function pathUp$convertToWin32 (pathname) {
   return pathname.split('\/').join('\\');
 };
 
-var fileWin32 = 'D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss';
-//console.log('= fileWin32', fileWin32);
-//console.log('convertToWin32', convertToWin32(fileWin32));
-//console.log('convertToPosix', convertToPosix(fileWin32));
-//console.log('convertToWin32(convertToPosix)', convertToWin32(convertToPosix(fileWin32)));
-//console.log('convertToPosix(convertToWin32)', convertToPosix(convertToWin32(fileWin32)));
-
-var filePosix = 'D:/repositories/scaffront/app/frontend/css/css.scss';
-console.log('= filePosix', filePosix);
-console.log('convertToWin32', convertToWin32(filePosix));
-console.log('convertToPosix', convertToPosix(filePosix));
-console.log('convertToWin32(convertToPosix)', convertToWin32(convertToPosix(filePosix)));
-console.log('convertToPosix(convertToWin32)', convertToPosix(convertToWin32(filePosix)));
-
-return;
-
 /**
  * @param {string} pathname
+ * @param {string} [convertTo='']
  * @returns {string}
  */
-var normalize = function pathUp$normalize (pathname) {
+var normalize = function pathUp$normalize (pathname, convertTo) {
   assertPath(pathname);
 
-  if (isWin) {
-    pathname = path.normalize(pathname);
-    pathname = pathname.replace(/\\/g, '/');
-  }
+  pathname = path.normalize(pathname);
+  pathname = (isWin)
+    ? path.posix.normalize(convertToPosix(pathname))
+    : path.win32.normalize(convertToWin32(pathname))
+  ;
 
-  pathname = path.posix.normalize(pathname);
+  convertTo = (!isUndefined(convertTo)) ? convertTo.trim() : '';
+  switch (convertTo) {
+    case 'win32':
+      pathname = convertToWin32(pathname);
+      break;
+    case 'posix':
+      pathname = convertToPosix(pathname);
+      break;
+    default:
+      pathname = (isWin) ? convertToWin32(pathname) : convertToPosix(pathname);
+  }
 
   return pathname;
 };
 
+var norm = function (pathname, convertTo) {
+  assertPath(pathname);
+
+  convertTo = convertTo || '';
+  console.log(pathname, convertTo, normalize(pathname, convertTo || ''));
+};
+
+
+norm('\\123/qwe\\asd//zxc');
+norm('\\123/qwe\\asd//zxc', 'win32');
+norm('\\123/qwe\\asd//zxc', 'posix');
+
+return;
 /**
  * @param {string} pathname
  * @returns {boolean}
