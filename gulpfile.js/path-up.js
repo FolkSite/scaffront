@@ -334,7 +334,7 @@ class VinylPath {
     assertPath(pathname);
     assertPath(basePathname);
 
-    console.log('1 resolver', basePathname, pathname);
+    //console.log('1 resolver', basePathname, pathname);
 
     var newPathname = pathname;
 
@@ -353,11 +353,11 @@ class VinylPath {
         //pathname = removeLeadingSlash(pathname);
         //pathname = removeTrailingSlash(pathname);
 
-        newPathname = pathname;
+        newPathname = newPathname;
       }
     }
 
-    console.log('2 resolver', basePathname, pathname);
+    //console.log('2 resolver', basePathname, pathname);
 
     return newPathname;
   }
@@ -430,7 +430,7 @@ class VinylPath {
 
     dirname = dirname || '';
     dirname = (!isDot(dirname)) ? dirname : '';
-    console.log('1 dirname', dirname);
+    //console.log('9 dirname', dirname);
 
     let hasBase = false;
     if (dirname) {
@@ -441,9 +441,10 @@ class VinylPath {
       } else {
         dirname = VinylPath.normalize(dirname);
       }
+      //console.log('10 dirname', dirname);
 
       dirname = (isPathToFile(dirname)) ? withoutFile(dirname) : dirname;
-      dirname = (isDot(dirname)) ? dirname : '';
+      dirname = (!isDot(dirname)) ? dirname : '';
 
       if (dirname) {
         let dirnameWithoutCwd = removeLeadingPath(dirname, this._cwd);
@@ -463,7 +464,7 @@ class VinylPath {
       }
     }
 
-    console.log('2 dirname', dirname);
+    //console.log('11 dirname', dirname);
 
     this._dirname = dirname;
 
@@ -477,13 +478,15 @@ class VinylPath {
 
     pathname = pathname || '';
     pathname = (!isDot(pathname)) ? pathname : '';
+    //console.log('1 pathname', pathname);
     let basename = '';
     if (pathname) {
       let isToFile = isPathToFile(pathname);
       basename = (isToFile) ? path.basename(pathname) : '';
+      //console.log('2 basename', basename);
       pathname = (isToFile) ? withoutFile(pathname) : pathname;
       pathname = (!isDot(pathname)) ? pathname : '';
-      console.log('3 pathname', pathname);
+      //console.log('3 pathname', pathname);
     }
 
     if (pathname) {
@@ -770,18 +773,23 @@ class VinylPath {
 
     basename = basename || '';
     let dirname = '';
+    //console.log('4 basename', basename);
     if (basename) {
-      let isToFile = isPathToFile(dirname);
+      let isToFile = isPathToFile(basename);
       dirname = (isToFile) ? withoutFile(basename) : basename;
+      basename = (isToFile) ? path.basename(basename) : '';
       dirname = (!isDot(dirname)) ? dirname : '';
-      basename = (isToFile) ? path.basename(dirname) : '';
+      //console.log('7 dirname', dirname);
+      //console.log('8 basename', basename);
 
       this._basename = basename;
       this._extname  = path.extname(this._basename);
+      //console.log('6 basename', basename);
     }
+    //console.log('this._basename', this._basename);
+    //console.log('this._extname', this._extname);
 
     if (dirname) {
-      console.log('4 pathname', dirname);
       this.dirname = dirname;
     }
   }
@@ -851,14 +859,14 @@ var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss',
 
 inspectFile(file);
 
-//file.base = '\\app\\frontend\\';
-//inspectFile(file);
+file.base = '\\app\\frontend\\';
+inspectFile(file);
 
 //file.basename = '..\\app\\frontend/..\\css.scss';
 //inspectFile(file);
-
-file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
-inspectFile(file);
+//
+//file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
+//inspectFile(file);
 
 //file.basename = 'app\\frontend\\css.scss';
 //inspectFile(file);
