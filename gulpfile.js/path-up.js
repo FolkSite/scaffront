@@ -131,7 +131,7 @@ var isRelative = function pathUp$isRelative (pathname) {
 var isDotRelative = function pathUp$isDotRelative (pathname) {
   assertPath(pathname);
 
-  return isRelative(pathname) && /^\.[\/\\]]/.test(pathname);
+  return isRelative(pathname) && /^\.[\/\\]/.test(pathname);
 };
 
 /**
@@ -141,7 +141,7 @@ var isDotRelative = function pathUp$isDotRelative (pathname) {
 var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
   assertPath(pathname);
 
-  return isRelative(pathname) && /^\.\.[\/\\]]/.test(pathname);
+  return isRelative(pathname) && /^\.\.[\/\\]/.test(pathname);
 };
 
 /**
@@ -273,7 +273,7 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   leadingPathname = normalize(leadingPathname, 'posix');
 
   if (pathname == '.' || leadingPathname == '.') {
-    return '';
+    return enterPathname;
   }
 
   leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
@@ -286,7 +286,7 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   pathname        = addTrailingSlash(pathname);
 
   if (pathname.indexOf(leadingPathname) === 0) {
-    return pathname.slice(leadingPathname.length);
+    return removeTrailingSlash(pathname.slice(leadingPathname.length));
   }
 
   return enterPathname;
@@ -329,8 +329,8 @@ class VinylPath {
       if (newPathname != pathname && isRelative(pathname)) {
         // зарезолвим
         console.log('basePathname, pathname', basePathname, pathname);
-        pathname = path.join(basePathname, pathname);
-        pathname = removeLeadingPath(pathname, basePathname);
+        newPathname = path.join(basePathname, newPathname);
+        newPathname = removeLeadingPath(newPathname, basePathname);
         //pathname = removeLeadingDotSlash(pathname);
         //pathname = removeLeadingSlash(pathname);
         //pathname = removeTrailingSlash(pathname);
@@ -378,66 +378,362 @@ class VinylPath {
     // `base` всегда должен быть относительным по отношению к `cwd`
     base = base || '';
     if (base) {
-      base = VinylPath.normalize(base);
-      base = VinylPath.resolve(this._cwd, base);
+      let tmp = removeLeadingSlash(removeLeadingDotSlash(base));
+      if (isDotDotRelative(tmp)) {
+        base = VinylPath.normalize(tmp);
+        base = path.join(this._cwd, base);
+
+        //let baseWithoutCwd = removeLeadingPath(base, this._cwd);
+        //if (base != baseWithoutCwd) {
+        //
+        //}
+      } else {
+        base = VinylPath.normalize(base);
+      }
+      base = (isPathToFile(base)) ? withoutFile(base) : base;
+      base = removeLeadingPath(base, this._cwd);
+      base = removeTrailingSlash(base);
+      base = removeLeadingDotSlash(base);
+      base = removeLeadingSlash(base);
     }
 
     this._base = base;
-    this.dirname = VinylPath.resolve(base, this._dirname);
+
+    if (this._dirname) {
+      this._dirname = removeLeadingPath(this._dirname, this._base);
+      this._dirname = removeTrailingSlash(this._dirname);
+      this._dirname = removeLeadingDotSlash(this._dirname);
+      this._dirname = removeLeadingSlash(this._dirname);
+    }
+
+    //this.dirname = VinylPath.resolve(base, this._dirname);
   }
 
   set dirname (dirname) {
     assertPath(dirname);
 
-    // `dirname` всегда должен быть относительным по отношению к `base`
     dirname = dirname || '';
-    let newBasename = '';
     if (dirname) {
-      dirname = VinylPath.normalize(dirname);
-      newBasename = path.basename(dirname);
-      console.log('dirname', dirname);
-      dirname = withoutFile(dirname);
-      console.log('withoutFile dirname', dirname);
-
-      //console.log('dirname', dirname);
-      let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
-      let dirnameStartWithCwd = resolvedByCwd != dirname;
-      console.log('dirnameStartWithCwd', dirnameStartWithCwd, resolvedByCwd);
-
-      if (dirnameStartWithCwd) {
-        let resolvedByBase = VinylPath.resolve(this._base, resolvedByCwd);
-        let dirnameStartWithBase = resolvedByBase != resolvedByCwd;
-        console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
-
-        if (dirnameStartWithBase) {
-          dirname = resolvedByBase;
-        } else {
-          this._base = resolvedByBase;
-          dirname = '';
-        }
-
+      let tmp = removeLeadingSlash(removeLeadingDotSlash(dirname));
+      if (isDotDotRelative(tmp)) {
+        dirname = VinylPath.normalize(tmp);
+        dirname = path.join(this._cwd, this._base, dirname);
       } else {
-        let resolvedByBase = VinylPath.resolve(this._base, dirname);
-        let dirnameStartWithBase = resolvedByBase != dirname;
-        console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
+        dirname = VinylPath.normalize(dirname);
+      }
 
-        if (dirnameStartWithBase) {
-          dirname = resolvedByBase;
+      dirname = (isPathToFile(dirname)) ? withoutFile(dirname) : dirname;
+
+      let hasBase = false;
+
+      let dirnameWithoutCwd = removeLeadingPath(dirname, this._cwd);
+      if (dirnameWithoutCwd != dirname) {
+        dirname = dirnameWithoutCwd;
+
+        let dirnameWithoutBase = removeLeadingPath(dirname, this._base);
+        if (dirnameWithoutBase != dirname) {
+          dirname = dirnameWithoutBase;
+          hasBase = true;
         }
       }
-    }
 
-    dirname = removeLeadingDotSlash(dirname);
-    dirname = removeLeadingSlash(dirname);
-    dirname = removeTrailingSlash(dirname);
+      dirname = removeTrailingSlash(dirname);
+      dirname = removeLeadingDotSlash(dirname);
+      dirname = removeLeadingSlash(dirname);
+      this._dirname = dirname;
 
-    this._dirname = dirname;
-
-    console.log('newBasename', newBasename);
-    if (newBasename) {
-      this.basename = newBasename;
+      if (!hasBase) {
+        this._base = '';
+      }
     }
   }
+
+  set path (pathname) {
+    assertPath(pathname);
+
+    pathname = pathname || '';
+    let basename = '';
+    if (pathname) {
+      let isToFile = isPathToFile(pathname);
+      basename = (isToFile) ? path.basename(pathname) : '';
+      pathname = (isToFile) ? withoutFile(pathname) : pathname;
+      this.dirname = pathname;
+    }
+
+    if (basename) {
+      this.basename = basename;
+    }
+  }
+
+      //set dirname_ (dirname) {
+  //  assertPath(dirname);
+  //
+  //  // `dirname` всегда должен быть относительным по отношению к `base`
+  //  //dirname = dirname || '';
+  //  //let newBasename = '';
+  //  //if (dirname) {
+  //  //  dirname = VinylPath.normalize(dirname);
+  //  //  newBasename = path.basename(dirname);
+  //  //  console.log('dirname', dirname);
+  //  //  dirname = withoutFile(dirname);
+  //  //  console.log('withoutFile dirname', dirname);
+  //  //
+  //  //  //console.log('dirname', dirname);
+  //  //  let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
+  //  //  let dirnameStartWithCwd = resolvedByCwd != dirname;
+  //  //  console.log('dirnameStartWithCwd', dirnameStartWithCwd, resolvedByCwd);
+  //  //
+  //  //  if (dirnameStartWithCwd) {
+  //  //    let resolvedByBase = VinylPath.resolve(this._base, resolvedByCwd);
+  //  //    let dirnameStartWithBase = resolvedByBase != resolvedByCwd;
+  //  //    console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
+  //  //
+  //  //    if (dirnameStartWithBase) {
+  //  //      dirname = resolvedByBase;
+  //  //    } else {
+  //  //      this._base = resolvedByBase;
+  //  //      dirname = '';
+  //  //    }
+  //  //
+  //  //  } else {
+  //  //    let resolvedByBase = VinylPath.resolve(this._base, dirname);
+  //  //    let dirnameStartWithBase = resolvedByBase != dirname;
+  //  //    console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
+  //  //
+  //  //    if (dirnameStartWithBase) {
+  //  //      dirname = resolvedByBase;
+  //  //    }
+  //  //  }
+  //  //}
+  //  //
+  //  //dirname = removeLeadingDotSlash(dirname);
+  //  //dirname = removeLeadingSlash(dirname);
+  //  //dirname = removeTrailingSlash(dirname);
+  //
+  //  dirname = dirname || '';
+  //  if (dirname) {
+  //    let newDirname = '';
+  //    let relative = removeLeadingSlash(removeLeadingDotSlash(dirname));
+  //
+  //    if (isDotDotRelative(relative)) {
+  //      newDirname = VinylPath.normalize(relative);
+  //      newDirname = path.join(this._cwd, this._base, newDirname);
+  //      newDirname = removeLeadingPath(newDirname, this._cwd);
+  //      newDirname = removeLeadingPath(newDirname, this._base);
+  //    } else {
+  //      newDirname = VinylPath.normalize(dirname);
+  //    }
+  //
+  //    newDirname = (isPathToFile(newDirname)) ? withoutFile(newDirname) : newDirname;
+  //
+  //    console.log('newDirname', newDirname);
+  //
+  //
+  //
+  //    //dirname = removeLeadingPath(dirname, this._cwd);
+  //    //dirname = removeLeadingPath(dirname, this._base);
+  //    //let newDirname = path.join(this._cwd, this._base, dirname);
+  //    //
+  //    //
+  //    //let base     = '';
+  //    //let cwd      = '';
+  //    //let basename = '';
+  //    //let pathname = '';
+  //    //
+  //    //
+  //    //dirname = removeLeadingPath(dirname, this._cwd);
+  //    //dirname = removeLeadingPath(dirname, this._base);
+  //    //
+  //    //pathname = path.join(this._cwd, this._base, dirname, basename);
+  //    //
+  //    //this.path = pathname;
+  //    //
+  //    //console.log('pathname', pathname);
+  //
+  //    //let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
+  //    //let dirnameStartWithCwd = resolvedByCwd != dirname;
+  //
+  //  }
+  //
+  //  this._dirname = dirname;
+  //}
+
+  //set path_ (pathname) {
+  //  assertPath(pathname);
+  //
+  //  pathname = pathname || '';
+  //  console.log('pathname', pathname);
+  //  if (pathname) {
+  //    let newPathname = '';
+  //    let relative = removeLeadingSlash(removeLeadingDotSlash(pathname));
+  //
+  //    if (isDotDotRelative(relative)) {
+  //      newPathname = VinylPath.normalize(relative);
+  //      newPathname = path.join(this._cwd, this._base, newPathname);
+  //      newPathname = removeLeadingPath(newPathname, this._cwd);
+  //      newPathname = removeLeadingPath(newPathname, this._base);
+  //    } else {
+  //      newPathname = VinylPath.normalize(pathname);
+  //    }
+  //
+  //    let isToFile = isPathToFile(newPathname);
+  //    let newBasename = (isToFile) ? path.basename(newPathname) : '';
+  //    newPathname = (isToFile) ? withoutFile(newPathname) : newPathname;
+  //    newPathname = removeTrailingSlash(newPathname);
+  //
+  //    console.log('newPathname', newPathname);
+  //    console.log('newBasename', newBasename);
+  //
+  //    let hasCwd = false, hasBase = false, hasDirname = false;
+  //    let withoutCwd = '', withoutBase = '', withoutDirname = '';
+  //
+  //    withoutCwd = removeLeadingPath(newPathname, this._cwd);
+  //    if (withoutCwd != newPathname) {
+  //      hasCwd = true;
+  //      newPathname = withoutCwd;
+  //    }
+  //    withoutBase = removeLeadingPath(newPathname, this._base);
+  //    if (withoutBase != newPathname) {
+  //      hasBase = true;
+  //      newPathname = withoutBase;
+  //    }
+  //    withoutDirname = removeLeadingPath(newPathname, this._dirname);
+  //    if (withoutDirname != newPathname) {
+  //      hasDirname = true;
+  //      newPathname = withoutDirname;
+  //    }
+  //
+  //    if (hasCwd) {
+  //      if (hasBase && hasDirname) {
+  //
+  //      } else
+  //      if (hasBase && !hasDirname) {
+  //
+  //      } else
+  //      if (!hasBase && hasDirname) {
+  //
+  //      } else
+  //      if (!hasBase && !hasDirname) {
+  //
+  //      }
+  //    } else {
+  //      if (!hasBase && !hasDirname) {
+  //
+  //      } else
+  //      if (hasBase && !hasDirname) {
+  //
+  //      } else
+  //      if (!hasBase && hasDirname) {
+  //
+  //      } else
+  //      if (hasBase && hasDirname) {
+  //
+  //      }
+  //    }
+  //
+  //    console.log('hasCwd', hasCwd);
+  //    console.log('withoutCwd', withoutCwd);
+  //    console.log('hasBase', hasBase);
+  //    console.log('withoutBase', withoutBase);
+  //    console.log('hasDirname', hasDirname);
+  //    console.log('withoutDirname', withoutDirname);
+  //    console.log('newPathname', newPathname);
+  //
+  //
+  //
+  //
+  //
+  //    //dirname = removeLeadingPath(dirname, this._cwd);
+  //    //dirname = removeLeadingPath(dirname, this._base);
+  //    //let newDirname = path.join(this._cwd, this._base, dirname);
+  //    //
+  //    //
+  //    //let base     = '';
+  //    //let cwd      = '';
+  //    //let basename = '';
+  //    //let pathname = '';
+  //    //
+  //    //
+  //    //dirname = removeLeadingPath(dirname, this._cwd);
+  //    //dirname = removeLeadingPath(dirname, this._base);
+  //    //
+  //    //pathname = path.join(this._cwd, this._base, dirname, basename);
+  //    //
+  //    //this.path = pathname;
+  //    //
+  //    //console.log('pathname', pathname);
+  //
+  //    //let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
+  //    //let dirnameStartWithCwd = resolvedByCwd != dirname;
+  //
+  //  }
+  //
+  //
+  //  //pathname = pathname || '';
+  //  //if (pathname) {
+  //  //  let relative = removeLeadingDotSlash(removeLeadingSlash(dirname));
+  //  //  if (isDotDotRelative(relative)) {
+  //  //    pathname = relative;
+  //  //  }
+  //  //  pathname = VinylPath.normalize(pathname);
+  //  //  let isToFile = isPathToFile(pathname);
+  //  //  let base     = '';
+  //  //  let cwd      = '';
+  //  //  let basename = '';
+  //  //
+  //  //  let pathWithoutLeadingCwd = removeLeadingPath(dirname, this._cwd);
+  //  //  if (pathname != pathWithoutLeadingCwd) {
+  //  //    pathname = pathWithoutLeadingCwd;
+  //  //
+  //  //    let pathWithoutLeadingBase = removeLeadingPath(dirname, this._base);
+  //  //    if (pathname != pathWithoutLeadingBase) {
+  //  //      pathname = pathWithoutLeadingBase;
+  //  //
+  //  //      let pathWithoutLeadingDirname = removeLeadingPath(dirname, this._dirname);
+  //  //      if (pathname != pathWithoutLeadingDirname) {
+  //  //        pathname = pathWithoutLeadingDirname;
+  //  //        this._dirname = path.join(this._dirname, pathname);
+  //  //      } else {
+  //  //        this._dirname = pathname;
+  //  //      }
+  //  //    } else {
+  //  //
+  //  //      let pathWithoutLeadingDirname = removeLeadingPath(dirname, this._dirname);
+  //  //      if (pathname != pathWithoutLeadingDirname) {
+  //  //        pathname = pathWithoutLeadingDirname;
+  //  //        this._dirname = path.join(this._dirname, pathname);
+  //  //      } else {
+  //  //        this._dirname = pathname;
+  //  //      }
+  //  //    }
+  //  //  } else {
+  //  //
+  //  //  }
+  //  //
+  //  //}
+  //  //pathname = VinylPath.normalize(pathname);
+  //  //
+  //  //pathname = VinylPath.resolve(this._cwd, pathname);
+  //  ////console.log('pathname', pathname);
+  //  //
+  //  //pathname = VinylPath.resolve(this._base, pathname);
+  //  ////console.log('pathname', pathname);
+  //  //
+  //  //if (isPathToFile(pathname)) {
+  //  //  this._dirname = withoutFile(pathname);
+  //  //  this.basename = path.basename(pathname);
+  //  //} else {
+  //  //  this._dirname = pathname;
+  //  //}
+  //
+  //  /*
+  //   если `pathname` содержит cwd, то удаляем cwd
+  //   если `pathname` содержит base, то удаляем base
+  //
+  //   получившееся резолвим (path.relative) относительно cwd + base
+  //   выдираем и записываем имя файла в basename и директорию в dirname
+  //   */
+  //}
 
   set basename (basename) {
     assertPath(basename);
@@ -466,38 +762,6 @@ class VinylPath {
     this._basename = path.basename(this.basename, this.extname);
     this._basename += extname;
     this._extname = extname;
-  }
-
-  set path (pathname) {
-    assertPath(pathname);
-
-    pathname = pathname || '';
-    pathname = VinylPath.normalize(pathname);
-
-    //console.log('this.cwd', this.cwd);
-    //console.log('this.base', this.base);
-    //console.log('pathname', pathname);
-
-    pathname = VinylPath.resolve(this._cwd, pathname);
-    //console.log('pathname', pathname);
-
-    pathname = VinylPath.resolve(this._base, pathname);
-    //console.log('pathname', pathname);
-
-    if (isPathToFile(pathname)) {
-      this._dirname = withoutFile(pathname);
-      this.basename = path.basename(pathname);
-    } else {
-      this._dirname = pathname;
-    }
-
-    /*
-    если `pathname` содержит cwd, то удаляем cwd
-    если `pathname` содержит base, то удаляем base
-
-    получившееся резолвим (path.relative) относительно cwd + base
-    выдираем и записываем имя файла в basename и директорию в dirname
-    */
   }
 
   get path () {
@@ -561,7 +825,7 @@ inspectFile(file);
 //file.basename = '..\\app\\frontend/..\\css.scss';
 //inspectFile(file);
 
-file.dirname = '../../../\\bower_components\\frontend/styles\\css.scss';
+file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
 inspectFile(file);
 
 //file.basename = 'app\\frontend\\css.scss';
