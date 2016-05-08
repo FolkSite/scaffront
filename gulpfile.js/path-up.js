@@ -261,42 +261,61 @@ class VinylPath {
     parse.call(this, _path, opts);
   }
 
-  set path (pathname) {
-    // устанавливая новый pathname, надо зарезолвить
-  }
-
   set cwd (cwd) {
+    // `cwd` - это корень всего
     this._cwd = cwd || defaults.cwd;
   }
+  set base (base) {
+    // `base` всегда должен быть относительным по отношению к `cwd`
+    this._base = base || defaults.base;
+  }
+  set dirname (dirname) {
+    // `dirname` всегда должен быть относительным по отношению к `base`
+    this._dirname = dirname || defaults.dirname;
+  }
+  set basename (basename) {
+    // устанавливая `basename`, устанавливаем `stem` и `extname`
+    this._basename = basename || defaults.basename;
+    this._extname = path.extname(this._basename);
+  }
+  set extname (basename) {
+    // устанавливая `extname`, меняем `basename`
+    this._extname = path.extname(this._basename);
+    this._basename = basename || defaults.basename;
+  }
+
+  get path () {
+    // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
+    return path.join(this.cwd, this.base, this.dirname, this.basename);
+  }
+
+  set path (pathname) {
+    // в path всегда должен быть полный путь к файлу.
+    // устанавливая новый path, надо делать кучу вещей:
+    // - надо получить `path` без `cwd` и без `base`
+  }
+
+
+
+
+
+
   get cwd () {
     return this._cwd;
   }
 
-  set base (base) {
-    this._base = base || defaults.base;
-  }
   get base () {
     return this._base;
   }
 
-  set dirname (dirname) {
-    this._dirname = dirname || defaults.dirname;
-  }
   get dirname () {
     return this._dirname;
   }
 
-  set basename (basename) {
-    this._basename = basename || defaults.basename;
-    this._extname = path.extname(this._basename);
-  }
   get basename () {
     return path.basename(this._basename);
   }
 
-  set extname (extname) {
-    this._extname = extname || defaults.extname;
-  }
   get extname () {
     return path.extname(this._extname);
   }
@@ -342,10 +361,10 @@ var file = new File({
 });
 
 var inspectFile = function inspectFile (file) {
-  ['cwd', 'base', 'relative', 'dirname', 'basename', 'extname', 'stem'].forEach(function (key) {
+  ['path', 'cwd', 'base', 'relative', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
     if (typeof file[key] == 'function') { return; }
 
-    console.log('==', key, file[key]);
+    console.log('==', key, '==\n  ', file[key]);
   });
 };
 
