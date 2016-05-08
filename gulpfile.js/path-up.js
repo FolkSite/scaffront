@@ -284,53 +284,48 @@ class VinylPath {
     this._basename = basename || defaults.basename;
   }
 
+  set path (pathname) {
+    /*
+    если `pathname` содержит cwd, то удаляем cwd
+    если `pathname` содержит base, то удаляем base
+
+    получившееся резолвим (path.relative) относительно cwd + base
+    выдираем и записываем имя файла в basename и директорию в dirname
+    */
+  }
+
   get path () {
     // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
     return path.join(this.cwd, this.base, this.dirname, this.basename);
   }
 
-  set path (pathname) {
-    // в path всегда должен быть полный путь к файлу.
-    // устанавливая новый path, надо делать кучу вещей:
-    // - надо получить `path` без `cwd` и без `base`
-  }
-
-
-
-
-
-
   get cwd () {
-    return this._cwd;
+
   }
 
   get base () {
-    return this._base;
+
   }
 
   get dirname () {
-    return this._dirname;
+
   }
 
   get basename () {
-    return path.basename(this._basename);
+
   }
 
   get extname () {
-    return path.extname(this._extname);
+
   }
 
   get stem () {
-    return path.basename(this.basename, this.extname);
+
   }
 
-  //get path () {
-  //  return path.join(this.cwd, this.base, this.dirname, this.basename);
-  //}
-
-  //get toString() {
-  //  return this.path;
-  //}
+  get toString() {
+    return this.path;
+  }
 }
 
 module.exports = {
