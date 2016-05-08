@@ -65,9 +65,7 @@ var normalize = function pathUp$normalize (pathname, convertTo) {
 var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
   assertPath(pathname);
 
-  pathname = path.normalize(pathname);
-
-  let parts = pathname.split(sep);
+  let parts = normalize(pathname).split(sep);
   let last = parts[parts.length - 1];
 
   return /^\./.test(last);
@@ -89,6 +87,7 @@ var isPathToFile = function pathUp$isPathToFile (pathname) {
  */
 var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
   assertPath(pathname);
+  pathname = normalize(pathname, 'win32');
 
   return path.win32.isAbsolute(pathname) && /^[a-z]:/i.test(pathname);
 };
@@ -99,8 +98,6 @@ var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
  */
 var withoutFile = function pathUp$withoutFile (pathname) {
   assertPath(pathname);
-  pathname = path.posix.normalize(pathname);
-  pathname = path.dirname(pathname);
 
   return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
 };
@@ -112,7 +109,7 @@ var withoutFile = function pathUp$withoutFile (pathname) {
 var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (pathname) {
   assertPath(pathname);
 
-  return /^\.\//.test(pathname) || /^\.\\/.test(pathname);
+  return /^\.[\/\\]/.test(pathname);
 };
 
 /**
@@ -132,7 +129,7 @@ var isRelative = function pathUp$isRelative (pathname) {
 var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
   assertPath(pathname);
 
-  return isRelative(pathname) && (/^\.\.\//.test(pathname) || /^\.\.\\/.test(pathname));
+  return isRelative(pathname) && /^\.\.[\/\\]]/.test(pathname);
 };
 
 /**
