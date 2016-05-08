@@ -58,19 +58,6 @@ var normalize = function pathUp$normalize (pathname, convertTo) {
   return pathname;
 };
 
-var norm = function (pathname, convertTo) {
-  assertPath(pathname);
-
-  convertTo = convertTo || '';
-  console.log(pathname, convertTo, normalize(pathname, convertTo || ''));
-};
-
-
-norm('\\123/qwe\\asd//zxc');
-norm('\\123/qwe\\asd//zxc', 'win32');
-norm('\\123/qwe\\asd//zxc', 'posix');
-
-return;
 /**
  * @param {string} pathname
  * @returns {boolean}
