@@ -54,6 +54,8 @@ var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
  */
 var withoutFile = function pathUp$withoutFile (pathname) {
   assertPath(pathname);
+  pathname = path.posix.normalize(pathname);
+  pathname = path.dirname(pathname);
 
   return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
 };
@@ -200,9 +202,11 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
 
   pathname = removeLeadingDotSlash(pathname);
   pathname = removeLeadingSlash(pathname);
+  //console.log('leadingPathname', leadingPathname);
+  //console.log('pathname', pathname);
 
   if (pathname.indexOf(leadingPathname) === 0) {
-    return pathname;
+    return pathname.slice(leadingPathname.length);
   }
 
   return enterPathname;
@@ -251,64 +255,109 @@ class VinylPath {
 
     this.win32 = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
 
-    this.cwd  = opts.cwd || '';
-    this.base = opts.base || '';
-    this.dirname = '';
+    this.cwd      = opts.cwd || '';
+    this.base     = opts.base || '';
+    this.dirname  = '';
     this.basename = '';
-    this.path = pathname;
+    this.path     = pathname;
+  }
+
+  static normalize (pathname) {
+    assertPath(pathname);
+
+    if (isWin) {
+      pathname = path.normalize(pathname);
+      pathname = pathname.replace(/\\/g, '/');
+    }
+
+    pathname = path.posix.normalize(pathname);
+
+    return pathname;
   }
 
   set cwd (cwd) {
     assertPath(cwd);
 
     // `cwd` - это корень всего
-    this._cwd = addLeadingSlash(cwd || processCwd);
+    this._cwd = cwd || processCwd;
+    this._cwd = VinylPath.normalize(this._cwd);
+    this._cwd = addLeadingSlash(this._cwd);
   }
+
   set base (base) {
     assertPath(base);
 
     // `base` всегда должен быть относительным по отношению к `cwd`
     this._base = base;
+    this._base = VinylPath.normalize(this._base);
   }
+
   set dirname (dirname) {
     assertPath(dirname);
 
     // `dirname` всегда должен быть относительным по отношению к `base`
     this._dirname = dirname || '';
+    this._dirname = VinylPath.normalize(this._dirname);
   }
+
   set basename (basename) {
     assertPath(basename);
-
-    // устанавливая `basename`, устанавливаем `stem` и `extname`
+    // а если здесь тоже директория?
     this._basename = basename || '';
-    this._extname = path.extname(this._basename);
+    this._basename = VinylPath.normalize(this._basename);
+    this._extname  = path.extname(this._basename);
   }
+
   set extname (extname) {
     assertPath(extname);
 
-    extname = (!extname || /^\./.test(extname)) ? extname : '.'+ extname;
-    // устанавливая `extname`, меняем `basename`
+    extname = (extname && !/^\./.test(extname)) ? '.'+ extname : extname;
+
     this._basename = path.basename(this.basename, this.extname);
     this._basename += extname;
     this._extname = extname;
   }
-  //
-  //set path (pathname) {
-  //  assertPath(pathname);
-  //
-  //  /*
-  //  если `pathname` содержит cwd, то удаляем cwd
-  //  если `pathname` содержит base, то удаляем base
-  //
-  //  получившееся резолвим (path.relative) относительно cwd + base
-  //  выдираем и записываем имя файла в basename и директорию в dirname
-  //  */
-  //}
-  //
-  //get path () {
-  //  // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
-  //  return path.join(this.cwd, this.base, this.dirname, this.basename);
-  //}
+
+  set path (pathname) {
+    assertPath(pathname);
+
+    pathname = VinylPath.normalize(pathname);
+    //console.log('this.cwd', this.cwd);
+    //console.log('this.base', this.base);
+
+    pathname = removeLeadingPath(pathname, this.cwd);
+    pathname = removeLeadingSlash(pathname);
+    pathname = (isDotDotRelative(pathname)) ? path.resolve(this.cwd, pathname) : pathname;
+    //console.log('pathname', pathname);
+
+    pathname = removeLeadingPath(pathname, this.base);
+    pathname = removeLeadingSlash(pathname);
+    pathname = (isDotDotRelative(pathname)) ? path.resolve(this.base, pathname) : pathname;
+    //console.log('pathname', pathname);
+
+    pathname = removeTrailingSlash(pathname);
+
+    if (isPathToFile(pathname)) {
+      this._dirname = VinylPath.normalize(withoutFile(pathname));
+      this.basename = path.basename(pathname);
+    } else {
+      this._dirname = VinylPath.normalize(pathname);
+    }
+
+    /*
+    если `pathname` содержит cwd, то удаляем cwd
+    если `pathname` содержит base, то удаляем base
+
+    получившееся резолвим (path.relative) относительно cwd + base
+    выдираем и записываем имя файла в basename и директорию в dirname
+    */
+  }
+
+  get path () {
+    //return this._path;
+    // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
+    return VinylPath.normalize(path.join(this.cwd, this.base, this.dirname, this.basename));
+  }
 
   get cwd () {
     return this._cwd;
@@ -342,7 +391,9 @@ class VinylPath {
 //var File = require('vinyl');
 var File = VinylPath;
 
-var file = new File(path.join(__dirname, __filename));
+var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
+  base: 'app/frontend'
+});
 
 var inspectFile = function inspectFile (file) {
   ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
