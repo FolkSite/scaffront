@@ -251,89 +251,117 @@ class VinylPath {
 
     this.win32 = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
 
-    this.cwd   = opts.cwd || '';
-    this.base  = opts.base || '';
-    this.path  = pathname;
+    this.cwd  = opts.cwd || '';
+    this.base = opts.base || '';
+    this.dirname = '';
+    this.basename = '';
+    this.path = pathname;
   }
 
   set cwd (cwd) {
     assertPath(cwd);
 
     // `cwd` - это корень всего
-    this._cwd = cwd || processCwd;
+    this._cwd = addLeadingSlash(cwd || processCwd);
   }
   set base (base) {
     assertPath(base);
 
     // `base` всегда должен быть относительным по отношению к `cwd`
-    this._base = base || defaults.base;
+    this._base = base;
   }
   set dirname (dirname) {
     assertPath(dirname);
 
     // `dirname` всегда должен быть относительным по отношению к `base`
-    this._dirname = dirname || defaults.dirname;
+    this._dirname = dirname || '';
   }
   set basename (basename) {
     assertPath(basename);
 
     // устанавливая `basename`, устанавливаем `stem` и `extname`
-    this._basename = basename || defaults.basename;
+    this._basename = basename || '';
     this._extname = path.extname(this._basename);
   }
   set extname (extname) {
     assertPath(extname);
 
+    extname = (!extname || /^\./.test(extname)) ? extname : '.'+ extname;
     // устанавливая `extname`, меняем `basename`
-    this._extname = path.extname(this._basename);
-    this._basename = basename || defaults.basename;
+    this._basename = path.basename(this.basename, this.extname);
+    this._basename += extname;
+    this._extname = extname;
   }
-
-  set path (pathname) {
-    assertPath(pathname);
-
-    /*
-    если `pathname` содержит cwd, то удаляем cwd
-    если `pathname` содержит base, то удаляем base
-
-    получившееся резолвим (path.relative) относительно cwd + base
-    выдираем и записываем имя файла в basename и директорию в dirname
-    */
-  }
-
-  get path () {
-    // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
-    return path.join(this.cwd, this.base, this.dirname, this.basename);
-  }
+  //
+  //set path (pathname) {
+  //  assertPath(pathname);
+  //
+  //  /*
+  //  если `pathname` содержит cwd, то удаляем cwd
+  //  если `pathname` содержит base, то удаляем base
+  //
+  //  получившееся резолвим (path.relative) относительно cwd + base
+  //  выдираем и записываем имя файла в basename и директорию в dirname
+  //  */
+  //}
+  //
+  //get path () {
+  //  // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
+  //  return path.join(this.cwd, this.base, this.dirname, this.basename);
+  //}
 
   get cwd () {
-
+    return this._cwd;
   }
 
   get base () {
-
+    return this._base;
   }
 
   get dirname () {
-
+    return this._dirname;
   }
 
   get basename () {
-
-  }
-
-  get extname () {
-
+    return this._basename;
   }
 
   get stem () {
+    return path.basename(this.basename, this.extname);
+  }
 
+  get extname () {
+    return this._extname;
   }
 
   get toString() {
     return this.path;
   }
 }
+
+//var File = require('vinyl');
+var File = VinylPath;
+
+var file = new File(path.join(__dirname, __filename));
+
+var inspectFile = function inspectFile (file) {
+  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
+    if (typeof file[key] == 'function') { return; }
+
+    console.log('==', key, '==\n  ', file[key]);
+  });
+};
+
+inspectFile(file);
+
+//console.log('file', file);
+//console.log('file', file.inspect());
+
+
+
+
+
+
 
 module.exports = {
   isPathToDotFile,
@@ -354,26 +382,6 @@ module.exports = {
   VinylPath
 };
 
-
-var File = require('vinyl');
-
-console.log('path.join(__dirname, __filename)', path.join(__dirname, __filename));
-var file = new File({
-  path: path.join(__dirname, __filename)
-});
-
-var inspectFile = function inspectFile (file) {
-  ['path', 'cwd', 'base', 'relative', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
-    if (typeof file[key] == 'function') { return; }
-
-    console.log('==', key, '==\n  ', file[key]);
-  });
-};
-
-inspectFile(file);
-
-//console.log('file', file);
-//console.log('file', file.inspect());
 
 
 
