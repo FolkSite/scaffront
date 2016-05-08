@@ -235,56 +235,63 @@ let parse = function VirtualPath$parse (_path, opts) {
 
 
 var processCwd = process.cwd();
-let defaults = {
-  cwd:      process.cwd(),
-  base:     '',
-  dirname:  '',
-  basename: '',
-  extname:  ''
-};
+//let defaults = {
+//  cwd:      process.cwd(),
+//  base:     '',
+//  dirname:  '',
+//  basename: '',
+//  extname:  ''
+//};
 
 class VinylPath {
-  constructor (_path, opts) {
+  constructor (pathname, opts) {
+    assertPath(pathname);
+
     opts = opts || {};
 
-    this.win32     = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
-    this._cwd      = opts.cwd  || processCwd;
-    this._base     = opts.base || '';
-    this._path     = opts.path || '';
-    this._dirname  = '';
+    this.win32 = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
 
-
-
-    this._basename = '';
-    this._extname  = '';
-
-    parse.call(this, _path, opts);
+    this.cwd   = opts.cwd || '';
+    this.base  = opts.base || '';
+    this.path  = pathname;
   }
 
   set cwd (cwd) {
+    assertPath(cwd);
+
     // `cwd` - это корень всего
-    this._cwd = cwd || defaults.cwd;
+    this._cwd = cwd || processCwd;
   }
   set base (base) {
+    assertPath(base);
+
     // `base` всегда должен быть относительным по отношению к `cwd`
     this._base = base || defaults.base;
   }
   set dirname (dirname) {
+    assertPath(dirname);
+
     // `dirname` всегда должен быть относительным по отношению к `base`
     this._dirname = dirname || defaults.dirname;
   }
   set basename (basename) {
+    assertPath(basename);
+
     // устанавливая `basename`, устанавливаем `stem` и `extname`
     this._basename = basename || defaults.basename;
     this._extname = path.extname(this._basename);
   }
-  set extname (basename) {
+  set extname (extname) {
+    assertPath(extname);
+
     // устанавливая `extname`, меняем `basename`
     this._extname = path.extname(this._basename);
     this._basename = basename || defaults.basename;
   }
 
   set path (pathname) {
+    assertPath(pathname);
+
     /*
     если `pathname` содержит cwd, то удаляем cwd
     если `pathname` содержит base, то удаляем base
