@@ -266,32 +266,6 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   return enterPathname;
 };
 
-/**
- * @param _path
- * @param opts
- * @this VirtualPath
- */
-let parse = function VirtualPath$parse (_path, opts) {
-  this._cwd = opts.cwd || this._cwd || defaults.cwd;
-  this._base = opts.base || this._base || defaults.base;
-
-
-
-  this._basename = '';
-  this._extname = '';
-
-  this.cwd = opts.cwd || '';
-  this.base = opts.base || '';
-
-
-  // isPathToFile
-  var ext = path.extname(_path);
-
-  this.basename = path.basename(_path);
-  this.extname = ext;
-};
-
-
 var processCwd = process.cwd();
 //let defaults = {
 //  cwd:      process.cwd(),
@@ -308,7 +282,7 @@ class VinylPath {
     return normalize(pathname, 'posix');
   }
 
-  static relativeTo () {
+  static resolve (basePathname, pathname) {
 
   }
 
@@ -317,7 +291,7 @@ class VinylPath {
 
     opts = opts || {};
 
-    this.cwd      = opts.cwd || '';
+    this.cwd      = opts.cwd  || '';
     this.base     = opts.base || '';
     this.dirname  = '';
     this.basename = '';
@@ -328,10 +302,10 @@ class VinylPath {
     assertPath(cwd);
 
     // `cwd` - это корень всего
-    this._cwd = cwd || processCwd;
-    this._cwd = VinylPath.normalize(this._cwd);
-    this._cwd = addLeadingSlash(this._cwd);
-    this._cwd = removeTrailingSlash(this._cwd);
+    cwd = cwd || processCwd;
+    cwd = VinylPath.normalize(cwd);
+    cwd = addLeadingSlash(cwd);
+    this._cwd = removeTrailingSlash(cwd);
   }
 
   set base (base) {
