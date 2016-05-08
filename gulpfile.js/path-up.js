@@ -5,7 +5,7 @@ const isPlainObject = require('lodash/lang/isPlainObject');
 const path          = require('path');
 const util          = require('util');
 const isWin         = process.platform == 'win32';
-const sep           = path.sep;
+const processCwd    = process.cwd();
 
 function assertPath (path) {
   if (typeof path !== 'string') {
@@ -310,56 +310,14 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   return enterPathname;
 };
 
-var processCwd = process.cwd();
-//let defaults = {
-//  cwd:      process.cwd(),
-//  base:     '',
-//  dirname:  '',
-//  basename: '',
-//  extname:  ''
-//};
 
 class VinylPath {
   static normalize (pathname) {
     assertPath(pathname);
 
-    //console.log('.norm pathname', pathname);
     pathname = normalize(pathname, 'posix');
-    //console.log('norm pathname', pathname);
 
     return (!isDot(pathname)) ? pathname : '';
-  }
-
-  static resolve (basePathname, pathname) {
-    assertPath(pathname);
-    assertPath(basePathname);
-
-    //console.log('1 resolver', basePathname, pathname);
-
-    var newPathname = pathname;
-
-    // сперва удаляем `basePathname` из `pathname`, если он там есть.
-    if (pathname && basePathname) {
-      newPathname = removeLeadingPath(pathname, basePathname);
-      newPathname = (!isDot(pathname)) ? pathname : '';
-
-      // если `pathname` относительный
-      if (newPathname != pathname && isRelative(pathname)) {
-        // зарезолвим
-        console.log('basePathname, pathname', basePathname, pathname);
-        newPathname = path.join(basePathname, newPathname);
-        newPathname = removeLeadingPath(newPathname, basePathname);
-        //pathname = removeLeadingDotSlash(pathname);
-        //pathname = removeLeadingSlash(pathname);
-        //pathname = removeTrailingSlash(pathname);
-
-        newPathname = newPathname;
-      }
-    }
-
-    //console.log('2 resolver', basePathname, pathname);
-
-    return newPathname;
   }
 
   constructor (pathname, opts) {
@@ -383,7 +341,6 @@ class VinylPath {
   set cwd (cwd) {
     assertPath(cwd);
 
-    // `cwd` - это корень всего
     cwd = cwd || processCwd;
     cwd = (!isDot(cwd)) ? cwd : processCwd;
     cwd = VinylPath.normalize(cwd);
@@ -394,7 +351,6 @@ class VinylPath {
   set base (base) {
     assertPath(base);
 
-    // `base` всегда должен быть относительным по отношению к `cwd`
     base = base || '';
     base = (!isDot(base)) ? base : '';
     if (base) {
@@ -430,7 +386,6 @@ class VinylPath {
 
     dirname = dirname || '';
     dirname = (!isDot(dirname)) ? dirname : '';
-    //console.log('9 dirname', dirname);
 
     let hasBase = false;
     let basename = '';
@@ -442,7 +397,6 @@ class VinylPath {
       } else {
         dirname = VinylPath.normalize(dirname);
       }
-      //console.log('10 dirname', dirname);
       let isToFile = isPathToFile(dirname);
       basename = (isToFile) ? path.basename(dirname) : '';
       dirname = (isToFile) ? withoutFile(dirname) : dirname;
@@ -466,8 +420,6 @@ class VinylPath {
       }
     }
 
-    //console.log('11 dirname', dirname);
-
     this._dirname = dirname;
 
     if (this._dirname && !hasBase) {
@@ -484,15 +436,12 @@ class VinylPath {
 
     pathname = pathname || '';
     pathname = (!isDot(pathname)) ? pathname : '';
-    //console.log('1 pathname', pathname);
     let basename = '';
     if (pathname) {
       let isToFile = isPathToFile(pathname);
       basename = (isToFile) ? path.basename(pathname) : '';
-      //console.log('2 basename', basename);
       pathname = (isToFile) ? withoutFile(pathname) : pathname;
       pathname = (!isDot(pathname)) ? pathname : '';
-      //console.log('3 pathname', pathname);
     }
 
     if (pathname) {
@@ -504,296 +453,20 @@ class VinylPath {
     }
   }
 
-      //set dirname_ (dirname) {
-  //  assertPath(dirname);
-  //
-  //  // `dirname` всегда должен быть относительным по отношению к `base`
-  //  //dirname = dirname || '';
-  //  //let newBasename = '';
-  //  //if (dirname) {
-  //  //  dirname = VinylPath.normalize(dirname);
-  //  //  newBasename = path.basename(dirname);
-  //  //  console.log('dirname', dirname);
-  //  //  dirname = withoutFile(dirname);
-  //  //  console.log('withoutFile dirname', dirname);
-  //  //
-  //  //  //console.log('dirname', dirname);
-  //  //  let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
-  //  //  let dirnameStartWithCwd = resolvedByCwd != dirname;
-  //  //  console.log('dirnameStartWithCwd', dirnameStartWithCwd, resolvedByCwd);
-  //  //
-  //  //  if (dirnameStartWithCwd) {
-  //  //    let resolvedByBase = VinylPath.resolve(this._base, resolvedByCwd);
-  //  //    let dirnameStartWithBase = resolvedByBase != resolvedByCwd;
-  //  //    console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
-  //  //
-  //  //    if (dirnameStartWithBase) {
-  //  //      dirname = resolvedByBase;
-  //  //    } else {
-  //  //      this._base = resolvedByBase;
-  //  //      dirname = '';
-  //  //    }
-  //  //
-  //  //  } else {
-  //  //    let resolvedByBase = VinylPath.resolve(this._base, dirname);
-  //  //    let dirnameStartWithBase = resolvedByBase != dirname;
-  //  //    console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
-  //  //
-  //  //    if (dirnameStartWithBase) {
-  //  //      dirname = resolvedByBase;
-  //  //    }
-  //  //  }
-  //  //}
-  //  //
-  //  //dirname = removeLeadingDotSlash(dirname);
-  //  //dirname = removeLeadingSlash(dirname);
-  //  //dirname = removeTrailingSlash(dirname);
-  //
-  //  dirname = dirname || '';
-  //  if (dirname) {
-  //    let newDirname = '';
-  //    let relative = removeLeadingSlash(removeLeadingDotSlash(dirname));
-  //
-  //    if (isDotDotRelative(relative)) {
-  //      newDirname = VinylPath.normalize(relative);
-  //      newDirname = path.join(this._cwd, this._base, newDirname);
-  //      newDirname = removeLeadingPath(newDirname, this._cwd);
-  //      newDirname = removeLeadingPath(newDirname, this._base);
-  //    } else {
-  //      newDirname = VinylPath.normalize(dirname);
-  //    }
-  //
-  //    newDirname = (isPathToFile(newDirname)) ? withoutFile(newDirname) : newDirname;
-  //
-  //    console.log('newDirname', newDirname);
-  //
-  //
-  //
-  //    //dirname = removeLeadingPath(dirname, this._cwd);
-  //    //dirname = removeLeadingPath(dirname, this._base);
-  //    //let newDirname = path.join(this._cwd, this._base, dirname);
-  //    //
-  //    //
-  //    //let base     = '';
-  //    //let cwd      = '';
-  //    //let basename = '';
-  //    //let pathname = '';
-  //    //
-  //    //
-  //    //dirname = removeLeadingPath(dirname, this._cwd);
-  //    //dirname = removeLeadingPath(dirname, this._base);
-  //    //
-  //    //pathname = path.join(this._cwd, this._base, dirname, basename);
-  //    //
-  //    //this.path = pathname;
-  //    //
-  //    //console.log('pathname', pathname);
-  //
-  //    //let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
-  //    //let dirnameStartWithCwd = resolvedByCwd != dirname;
-  //
-  //  }
-  //
-  //  this._dirname = dirname;
-  //}
-
-  //set path_ (pathname) {
-  //  assertPath(pathname);
-  //
-  //  pathname = pathname || '';
-  //  console.log('pathname', pathname);
-  //  if (pathname) {
-  //    let newPathname = '';
-  //    let relative = removeLeadingSlash(removeLeadingDotSlash(pathname));
-  //
-  //    if (isDotDotRelative(relative)) {
-  //      newPathname = VinylPath.normalize(relative);
-  //      newPathname = path.join(this._cwd, this._base, newPathname);
-  //      newPathname = removeLeadingPath(newPathname, this._cwd);
-  //      newPathname = removeLeadingPath(newPathname, this._base);
-  //    } else {
-  //      newPathname = VinylPath.normalize(pathname);
-  //    }
-  //
-  //    let isToFile = isPathToFile(newPathname);
-  //    let newBasename = (isToFile) ? path.basename(newPathname) : '';
-  //    newPathname = (isToFile) ? withoutFile(newPathname) : newPathname;
-  //    newPathname = removeTrailingSlash(newPathname);
-  //
-  //    console.log('newPathname', newPathname);
-  //    console.log('newBasename', newBasename);
-  //
-  //    let hasCwd = false, hasBase = false, hasDirname = false;
-  //    let withoutCwd = '', withoutBase = '', withoutDirname = '';
-  //
-  //    withoutCwd = removeLeadingPath(newPathname, this._cwd);
-  //    if (withoutCwd != newPathname) {
-  //      hasCwd = true;
-  //      newPathname = withoutCwd;
-  //    }
-  //    withoutBase = removeLeadingPath(newPathname, this._base);
-  //    if (withoutBase != newPathname) {
-  //      hasBase = true;
-  //      newPathname = withoutBase;
-  //    }
-  //    withoutDirname = removeLeadingPath(newPathname, this._dirname);
-  //    if (withoutDirname != newPathname) {
-  //      hasDirname = true;
-  //      newPathname = withoutDirname;
-  //    }
-  //
-  //    if (hasCwd) {
-  //      if (hasBase && hasDirname) {
-  //
-  //      } else
-  //      if (hasBase && !hasDirname) {
-  //
-  //      } else
-  //      if (!hasBase && hasDirname) {
-  //
-  //      } else
-  //      if (!hasBase && !hasDirname) {
-  //
-  //      }
-  //    } else {
-  //      if (!hasBase && !hasDirname) {
-  //
-  //      } else
-  //      if (hasBase && !hasDirname) {
-  //
-  //      } else
-  //      if (!hasBase && hasDirname) {
-  //
-  //      } else
-  //      if (hasBase && hasDirname) {
-  //
-  //      }
-  //    }
-  //
-  //    console.log('hasCwd', hasCwd);
-  //    console.log('withoutCwd', withoutCwd);
-  //    console.log('hasBase', hasBase);
-  //    console.log('withoutBase', withoutBase);
-  //    console.log('hasDirname', hasDirname);
-  //    console.log('withoutDirname', withoutDirname);
-  //    console.log('newPathname', newPathname);
-  //
-  //
-  //
-  //
-  //
-  //    //dirname = removeLeadingPath(dirname, this._cwd);
-  //    //dirname = removeLeadingPath(dirname, this._base);
-  //    //let newDirname = path.join(this._cwd, this._base, dirname);
-  //    //
-  //    //
-  //    //let base     = '';
-  //    //let cwd      = '';
-  //    //let basename = '';
-  //    //let pathname = '';
-  //    //
-  //    //
-  //    //dirname = removeLeadingPath(dirname, this._cwd);
-  //    //dirname = removeLeadingPath(dirname, this._base);
-  //    //
-  //    //pathname = path.join(this._cwd, this._base, dirname, basename);
-  //    //
-  //    //this.path = pathname;
-  //    //
-  //    //console.log('pathname', pathname);
-  //
-  //    //let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
-  //    //let dirnameStartWithCwd = resolvedByCwd != dirname;
-  //
-  //  }
-  //
-  //
-  //  //pathname = pathname || '';
-  //  //if (pathname) {
-  //  //  let relative = removeLeadingDotSlash(removeLeadingSlash(dirname));
-  //  //  if (isDotDotRelative(relative)) {
-  //  //    pathname = relative;
-  //  //  }
-  //  //  pathname = VinylPath.normalize(pathname);
-  //  //  let isToFile = isPathToFile(pathname);
-  //  //  let base     = '';
-  //  //  let cwd      = '';
-  //  //  let basename = '';
-  //  //
-  //  //  let pathWithoutLeadingCwd = removeLeadingPath(dirname, this._cwd);
-  //  //  if (pathname != pathWithoutLeadingCwd) {
-  //  //    pathname = pathWithoutLeadingCwd;
-  //  //
-  //  //    let pathWithoutLeadingBase = removeLeadingPath(dirname, this._base);
-  //  //    if (pathname != pathWithoutLeadingBase) {
-  //  //      pathname = pathWithoutLeadingBase;
-  //  //
-  //  //      let pathWithoutLeadingDirname = removeLeadingPath(dirname, this._dirname);
-  //  //      if (pathname != pathWithoutLeadingDirname) {
-  //  //        pathname = pathWithoutLeadingDirname;
-  //  //        this._dirname = path.join(this._dirname, pathname);
-  //  //      } else {
-  //  //        this._dirname = pathname;
-  //  //      }
-  //  //    } else {
-  //  //
-  //  //      let pathWithoutLeadingDirname = removeLeadingPath(dirname, this._dirname);
-  //  //      if (pathname != pathWithoutLeadingDirname) {
-  //  //        pathname = pathWithoutLeadingDirname;
-  //  //        this._dirname = path.join(this._dirname, pathname);
-  //  //      } else {
-  //  //        this._dirname = pathname;
-  //  //      }
-  //  //    }
-  //  //  } else {
-  //  //
-  //  //  }
-  //  //
-  //  //}
-  //  //pathname = VinylPath.normalize(pathname);
-  //  //
-  //  //pathname = VinylPath.resolve(this._cwd, pathname);
-  //  ////console.log('pathname', pathname);
-  //  //
-  //  //pathname = VinylPath.resolve(this._base, pathname);
-  //  ////console.log('pathname', pathname);
-  //  //
-  //  //if (isPathToFile(pathname)) {
-  //  //  this._dirname = withoutFile(pathname);
-  //  //  this.basename = path.basename(pathname);
-  //  //} else {
-  //  //  this._dirname = pathname;
-  //  //}
-  //
-  //  /*
-  //   если `pathname` содержит cwd, то удаляем cwd
-  //   если `pathname` содержит base, то удаляем base
-  //
-  //   получившееся резолвим (path.relative) относительно cwd + base
-  //   выдираем и записываем имя файла в basename и директорию в dirname
-  //   */
-  //}
-
   set basename (basename) {
     assertPath(basename);
 
     basename = basename || '';
     let dirname = '';
-    //console.log('4 basename', basename);
     if (basename) {
       let isToFile = isPathToFile(basename);
       dirname = (isToFile) ? withoutFile(basename) : basename;
       basename = (isToFile) ? path.basename(basename) : '';
       dirname = (!isDot(dirname)) ? dirname : '';
-      //console.log('7 dirname', dirname);
-      //console.log('8 basename', basename);
 
       this._basename = basename;
       this._extname  = path.extname(this._basename);
-      //console.log('6 basename', basename);
     }
-    //console.log('this._basename', this._basename);
-    //console.log('this._extname', this._extname);
 
     if (dirname) {
       this.dirname = dirname;
@@ -811,7 +484,6 @@ class VinylPath {
   }
 
   get path () {
-    //return this._path;
     // path - это всегда полный резолв всех составляющих, учитывая `this.win32`
     return VinylPath.normalize(path.join(this.cwd, this.base, this.dirname, this.basename));
   }
@@ -845,65 +517,64 @@ class VinylPath {
   }
 }
 
-var inspectFile = function inspectFile (file) {
-  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
-    if (typeof file[key] == 'function') { return; }
-
-    console.log('==', key +':', file[key]);
-  });
-  console.log('');
-};
-
-//var File = require('vinyl');
-var File = VinylPath;
-
-console.time('time');
-var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
-  //base: 'D:/repositories/scaffront\\app\\frontend'
-  //base: '\\app\\frontend\\'
-});
-
-inspectFile(file);
-
-file.base = '\\app\\frontend\\';
-inspectFile(file);
-
-file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
-inspectFile(file);
-
-file.base = 'dist\\production\\';
-inspectFile(file);
-
-//file.basename = '..\\app\\frontend/..\\css.scss';
+//var inspectFile = function inspectFile (file) {
+//  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
+//    if (typeof file[key] == 'function') { return; }
+//
+//    console.log('==', key +':', file[key]);
+//  });
+//  console.log('');
+//};
+//
+////var File = require('vinyl');
+//var File = VinylPath;
+//
+//console.time('time');
+//var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
+//  //base: 'D:/repositories/scaffront\\app\\frontend'
+//  //base: '\\app\\frontend\\'
+//});
+//
+//inspectFile(file);
+//
+//file.base = '\\app\\frontend\\';
 //inspectFile(file);
 //
 //file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
 //inspectFile(file);
-
-//file.basename = 'app\\frontend\\css.scss';
+//
+//file.base = 'dist\\production\\';
 //inspectFile(file);
-
-console.timeEnd('time');
-
-const fs = require('fs');
-console.log('exists', fs.existsSync(file.path));
-
-//console.log('file', file);
-//console.log('file', file.inspect());
-
-
-
-
-
-
+//
+////file.basename = '..\\app\\frontend/..\\css.scss';
+////inspectFile(file);
+////
+////file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
+////inspectFile(file);
+//
+////file.basename = 'app\\frontend\\css.scss';
+////inspectFile(file);
+//
+//console.timeEnd('time');
+//
+//const fs = require('fs');
+//console.log('exists', fs.existsSync(file.path));
+//
+////console.log('file', file);
+////console.log('file', file.inspect());
 
 module.exports = {
+  convertToPosix,
+  convertToWin32,
   isPathToDotFile,
   isPathToFile,
-  isPathFromWin32Device,
   withoutFile,
+  normalize,
+  isPathFromWin32Device,
   hasLeadingDotSlash,
   isRelative,
+  isDot,
+  isDotRelative,
   isDotDotRelative,
   removeLeadingDotSlash,
   addLeadingDotSlash,
@@ -911,13 +582,7 @@ module.exports = {
   addLeadingSlash,
   removeTrailingSlash,
   addTrailingSlash,
-  //hasLeadingPath,
+  hasLeadingPath,
   removeLeadingPath,
   VinylPath
 };
-
-
-
-
-
-
