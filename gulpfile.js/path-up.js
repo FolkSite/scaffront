@@ -88,7 +88,7 @@ var normalize = function pathUp$normalize (pathname, convertTo) {
     }
   }
 
-  pathname = (isPathToFile(pathname)) ? withoutFile(pathname) : pathname;
+  //pathname = (isPathToFile(pathname)) ? withoutFile(pathname) : pathname;
 
   return pathname;
 };
@@ -274,7 +274,9 @@ class VinylPath {
   static normalize (pathname) {
     assertPath(pathname);
 
+    //console.log('.norm pathname', pathname);
     pathname = normalize(pathname, 'posix');
+    //console.log('norm pathname', pathname);
 
     return (pathname != '.') ? pathname : '';
   }
@@ -310,6 +312,12 @@ class VinylPath {
 
     opts = opts || {};
 
+    this._cwd      = '';
+    this._base     = '';
+    this._dirname  = '';
+    this._basename = '';
+    this._extname  = '';
+
     this.cwd      = opts.cwd  || '';
     this.base     = opts.base || '';
     this.dirname  = '';
@@ -338,6 +346,7 @@ class VinylPath {
     }
 
     this._base = base;
+    this.dirname = VinylPath.resolve(base, this._dirname);
   }
 
   set dirname (dirname) {
@@ -347,6 +356,7 @@ class VinylPath {
     dirname = dirname || '';
     if (dirname) {
       dirname = VinylPath.normalize(dirname);
+      dirname = VinylPath.resolve(this._cwd, dirname);
       dirname = VinylPath.resolve(this._base, dirname);
     }
 
@@ -359,8 +369,18 @@ class VinylPath {
     basename = basename || '';
     if (basename) {
       basename = VinylPath.normalize(basename);
-      basename = VinylPath.resolve(this._dirname, basename);
+      basename = path.basename(basename);
+
+      let dirname = path.dirname(basename);
+      dirname = VinylPath.resolve(this._cwd, dirname);
+      dirname = VinylPath.resolve(this._base, dirname);
+      dirname = VinylPath.resolve(this._dirname, dirname);
+
+      if (dirname) {
+        this._dirname = dirname;
+      }
     }
+
     this._basename = basename;
     this._extname  = path.extname(this._basename);
   }
@@ -380,13 +400,16 @@ class VinylPath {
 
     pathname = pathname || '';
     pathname = VinylPath.normalize(pathname);
+
     //console.log('this.cwd', this.cwd);
     //console.log('this.base', this.base);
+    //console.log('pathname', pathname);
 
     pathname = VinylPath.resolve(this._cwd, pathname);
-    pathname = VinylPath.resolve(this._base, pathname);
+    //console.log('pathname', pathname);
 
-    console.log('pathname', pathname);
+    pathname = VinylPath.resolve(this._base, pathname);
+    //console.log('pathname', pathname);
 
     if (isPathToFile(pathname)) {
       this._dirname = withoutFile(pathname);
@@ -439,22 +462,30 @@ class VinylPath {
   }
 }
 
-//var File = require('vinyl');
-var File = VinylPath;
-
-var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
-  base: '/app/frontend'
-});
-
 var inspectFile = function inspectFile (file) {
   ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
     if (typeof file[key] == 'function') { return; }
 
-    console.log('==', key, '==\n  ', file[key]);
+    console.log('==', key +':', file[key]);
   });
+  console.log('');
 };
 
+//var File = require('vinyl');
+var File = VinylPath;
+
+var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
+  //base: 'D:/repositories/scaffront\\app\\frontend'
+});
+
 inspectFile(file);
+
+file.base = '\\app\\frontend\\';
+inspectFile(file);
+
+file.basename = '\\app\\frontend\\styles.css';
+inspectFile(file);
+
 
 const fs = require('fs');
 console.log('exists', fs.existsSync(file.path));
