@@ -371,14 +371,14 @@ class VinylPath {
       basename = VinylPath.normalize(basename);
       basename = path.basename(basename);
 
-      let dirname = path.dirname(basename);
-      dirname = VinylPath.resolve(this._cwd, dirname);
-      dirname = VinylPath.resolve(this._base, dirname);
-      dirname = VinylPath.resolve(this._dirname, dirname);
-
-      if (dirname) {
-        this._dirname = dirname;
-      }
+      //let dirname = path.dirname(basename);
+      //dirname = VinylPath.resolve(this._cwd, dirname);
+      //dirname = VinylPath.resolve(this._base, dirname);
+      //dirname = VinylPath.resolve(this._dirname, dirname);
+      //
+      //if (dirname) {
+      //  this._dirname = dirname;
+      //}
     }
 
     this._basename = basename;
