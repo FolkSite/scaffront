@@ -126,6 +126,16 @@ var isRelative = function pathUp$isRelative (pathname) {
  * @param {string} pathname
  * @returns {boolean}
  */
+var isDotRelative = function pathUp$isDotRelative (pathname) {
+  assertPath(pathname);
+
+  return isRelative(pathname) && /^\.[\/\\]]/.test(pathname);
+};
+
+/**
+ * @param {string} pathname
+ * @returns {boolean}
+ */
 var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
   assertPath(pathname);
 
@@ -144,13 +154,15 @@ var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (pathname) {
 
 /**
  * @param {string} pathname
+ * @param {string} [sep=/]
  * @returns {string}
  */
-var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname) {
+var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname, sep) {
   assertPath(pathname);
 
   if (!isPathFromWin32Device(pathname)) {
-    pathname = './'+ removeLeadingDotSlash(pathname);
+    sep = sep || '/';
+    pathname = '.'+ sep + removeLeadingDotSlash(pathname);
   }
 
   return pathname;
@@ -163,20 +175,20 @@ var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname) {
 var removeLeadingSlash = function pathUp$removeLeadingSlash (pathname) {
   assertPath(pathname);
 
-  pathname = pathname.replace(/^[\/\\]+/, '');
-
-  return pathname;
+  return pathname.replace(/^[\/\\]+/, '');
 };
 
 /**
  * @param {string} pathname
+ * @param {string} [sep=/]
  * @returns {string}
  */
-var addLeadingSlash = function pathUp$addLeadingSlash (pathname) {
+var addLeadingSlash = function pathUp$addLeadingSlash (pathname, sep) {
   assertPath(pathname);
 
   if (!isPathFromWin32Device(pathname)) {
-    pathname = '/'+ removeLeadingSlash(pathname);
+    sep = sep || '/';
+    pathname = sep + removeLeadingSlash(pathname);
   }
 
   return pathname;
@@ -189,20 +201,20 @@ var addLeadingSlash = function pathUp$addLeadingSlash (pathname) {
 var removeTrailingSlash = function pathUp$removeTrailingSlash (pathname) {
   assertPath(pathname);
 
-  pathname = pathname.replace(/[\/\\]+$/, '');
-
-  return pathname;
+  return pathname.replace(/[\/\\]+$/, '');
 };
 
 /**
  * @param {string} pathname
+ * @param {string} [sep=/]
  * @returns {string}
  */
-var addTrailingSlash = function pathUp$addTrailingSlash (pathname) {
+var addTrailingSlash = function pathUp$addTrailingSlash (pathname, sep) {
   assertPath(pathname);
 
   if (!isPathToFile(pathname)) {
-    pathname = removeTrailingSlash(pathname) +'/';
+    sep = sep || '/';
+    pathname = removeTrailingSlash(pathname) + sep;
   }
 
   return pathname;
@@ -290,31 +302,26 @@ var processCwd = process.cwd();
 //};
 
 class VinylPath {
+  static normalize (pathname) {
+    assertPath(pathname);
+
+    return normalize(pathname, 'posix');
+  }
+
+  static relativeTo () {
+
+  }
+
   constructor (pathname, opts) {
     assertPath(pathname);
 
     opts = opts || {};
-
-    this.win32 = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
 
     this.cwd      = opts.cwd || '';
     this.base     = opts.base || '';
     this.dirname  = '';
     this.basename = '';
     this.path     = pathname;
-  }
-
-  static normalize (pathname) {
-    assertPath(pathname);
-
-    if (isWin) {
-      pathname = path.normalize(pathname);
-      pathname = pathname.replace(/\\/g, '/');
-    }
-
-    pathname = path.posix.normalize(pathname);
-
-    return pathname;
   }
 
   set cwd (cwd) {
