@@ -3,14 +3,23 @@
 const isUndefined   = require('lodash/lang/isUndefined');
 const isPlainObject = require('lodash/lang/isPlainObject');
 const path          = require('path');
-const sep           = path.sep;
+const util          = require('util');
 const isWin         = process.platform == 'win32';
+const sep           = path.sep;
+
+function assertPath (path) {
+  if (typeof path !== 'string') {
+    throw new TypeError('Path must be a string. Received '+ util.inspect(path));
+  }
+}
 
 /**
  * @param {string} pathname
  * @returns {boolean}
  */
 var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
+  assertPath(pathname);
+
   pathname = path.normalize(pathname);
 
   let parts = pathname.split(sep);
@@ -24,6 +33,8 @@ var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
  * @returns {boolean}
  */
 var isPathToFile = function pathUp$isPathToFile (pathname) {
+  assertPath(pathname);
+
   return !!path.extname(pathname) || isPathToDotFile(pathname);
 };
 
@@ -32,6 +43,8 @@ var isPathToFile = function pathUp$isPathToFile (pathname) {
  * @returns {boolean}
  */
 var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
+  assertPath(pathname);
+
   return path.win32.isAbsolute(pathname) && /^[a-z]:/i.test(pathname);
 };
 
@@ -40,6 +53,8 @@ var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
  * @returns {string}
  */
 var withoutFile = function pathUp$withoutFile (pathname) {
+  assertPath(pathname);
+
   return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
 };
 
@@ -48,6 +63,8 @@ var withoutFile = function pathUp$withoutFile (pathname) {
  * @returns {boolean}
  */
 var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (pathname) {
+  assertPath(pathname);
+
   return /^\.\//.test(pathname) || /^\.\\/.test(pathname);
 };
 
@@ -56,6 +73,8 @@ var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (pathname) {
  * @returns {boolean}
  */
 var isRelative = function pathUp$isRelative (pathname) {
+  assertPath(pathname);
+
   return !path.isAbsolute(pathname);
 };
 
@@ -64,6 +83,8 @@ var isRelative = function pathUp$isRelative (pathname) {
  * @returns {boolean}
  */
 var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
+  assertPath(pathname);
+
   return isRelative(pathname) && (/^\.\.\//.test(pathname) || /^\.\.\\/.test(pathname));
 };
 
@@ -72,6 +93,8 @@ var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
  * @returns {string}
  */
 var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (pathname) {
+  assertPath(pathname);
+
   return pathname.replace(/^\.[\/\\]+/, '');
 };
 
@@ -80,6 +103,8 @@ var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (pathname) {
  * @returns {string}
  */
 var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname) {
+  assertPath(pathname);
+
   if (!isPathFromWin32Device(pathname)) {
     pathname = './'+ removeLeadingDotSlash(pathname);
   }
@@ -92,9 +117,9 @@ var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname) {
  * @returns {string}
  */
 var removeLeadingSlash = function pathUp$removeLeadingSlash (pathname) {
-  if (!isPathFromWin32Device(pathname)) {
-    pathname = pathname.replace(/^[\/\\]+/, '');
-  }
+  assertPath(pathname);
+
+  pathname = pathname.replace(/^[\/\\]+/, '');
 
   return pathname;
 };
@@ -104,6 +129,8 @@ var removeLeadingSlash = function pathUp$removeLeadingSlash (pathname) {
  * @returns {string}
  */
 var addLeadingSlash = function pathUp$addLeadingSlash (pathname) {
+  assertPath(pathname);
+
   if (!isPathFromWin32Device(pathname)) {
     pathname = '/'+ removeLeadingSlash(pathname);
   }
@@ -116,6 +143,8 @@ var addLeadingSlash = function pathUp$addLeadingSlash (pathname) {
  * @returns {string}
  */
 var removeTrailingSlash = function pathUp$removeTrailingSlash (pathname) {
+  assertPath(pathname);
+
   pathname = pathname.replace(/[\/\\]+$/, '');
 
   return pathname;
@@ -126,6 +155,8 @@ var removeTrailingSlash = function pathUp$removeTrailingSlash (pathname) {
  * @returns {string}
  */
 var addTrailingSlash = function pathUp$addTrailingSlash (pathname) {
+  assertPath(pathname);
+
   if (!isPathToFile(pathname)) {
     pathname = removeTrailingSlash(pathname) +'/';
   }
@@ -134,173 +165,47 @@ var addTrailingSlash = function pathUp$addTrailingSlash (pathname) {
 };
 
 /**
- * @param {string} _path
- * @param {string} leadingPath
- * @returns {string}
+ * @param {string} pathname
+ * @param {string} leadingPathname
+ * @returns {boolean}
  */
-var removeLeadingPath = function pathUp$removeLeadingPath (_path, leadingPath) {
-  var pathToCompare = _path, leadingToCompare = leadingPath;
+var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) {
+  assertPath(pathname);
+  assertPath(leadingPathname);
 
-  leadingToCompare = (isPathToFile(leadingToCompare)) ? withoutFile(leadingToCompare) : leadingToCompare;
+  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+  leadingPathname = removeLeadingDotSlash(leadingPathname);
+  leadingPathname = removeLeadingSlash(leadingPathname);
 
+  pathname = removeLeadingDotSlash(pathname);
+  pathname = removeLeadingSlash(pathname);
 
-
-  return '';
+  return (pathname.indexOf(leadingPathname) === 0)
 };
 
 /**
- * @param {string} dir
- * @param {string} cwd
+ * @param {string} pathname
+ * @param {string} leadingPathname
  * @returns {string}
  */
-let getRelativeFromCwd = function pathUp$getRelativeFromCwd (dir, cwd) {
-  cwd = path.dirname(cwd);
-  dir = path.dirname(dir);
+var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPathname) {
+  assertPath(pathname);
+  assertPath(leadingPathname);
 
-  var cwdIsRelative = !path.isAbsolute(cwd);
-  var dirIsRelative = !path.isAbsolute(dir);
+  var enterPathname = pathname;
 
-  var cwdAbsolute, cwdRelative;
-  var dirAbsolute, dirRelative;
+  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+  leadingPathname = removeLeadingDotSlash(leadingPathname);
+  leadingPathname = removeLeadingSlash(leadingPathname);
 
-  if (cwdIsRelative) {
-    cwdAbsolute = path.join(sep, cwd);
-    cwdRelative = cwd;
-  } else {
-    cwdAbsolute = cwd;
-    cwdRelative = cwd.slice(sep.length);
+  pathname = removeLeadingDotSlash(pathname);
+  pathname = removeLeadingSlash(pathname);
+
+  if (pathname.indexOf(leadingPathname) === 0) {
+    return pathname;
   }
 
-  if (dirIsRelative) {
-    dirAbsolute = path.join(sep, dir);
-    dirRelative = dir;
-  } else {
-    dirAbsolute = dir;
-    dirRelative = dir.slice(sep.length);
-  }
-
-  cwdAbsolute = path.dirname(cwdAbsolute);
-  dirAbsolute = path.dirname(dirAbsolute);
-
-  /*
-  ('/is/cwd/',  '/is/cwd/dir/name/') === 'dir/name';
-  ( 'is/cwd/',  '/is/cwd/dir/name/') === 'dir/name';
-  ('/is/cwd/', './is/cwd/dir/name/') === 'dir/name';
-  ( 'is/cwd/', './is/cwd/dir/name/') === 'dir/name';
-  ('/is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
-  ( 'is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
-
-  ('/is/cwd/',  '/dir/name/') === 'dir/name';
-  ( 'is/cwd/',  '/dir/name/') === 'dir/name';
-  ('/is/cwd/', './dir/name/') === 'dir/name';
-  ( 'is/cwd/', './dir/name/') === 'dir/name';
-  ('/is/cwd/',   'dir/name/') === 'dir/name';
-  ('/is/cwd/',   'dir/name/') === 'dir/name';
-
-  ('C:\\is\\cwd\\',  'C:\\is\\cwd\\dir\\name\\') === 'dir\\name';
-  ('C:\\is\\cwd\\',  '\\dir\\name\\') === 'dir\\name';
-  ('\\is\\cwd\\',  'C:\\is\\cwd\\dir\\name\\') === 'dir\\name';
-
-  ('/is/cwd/', './is/cwd/dir/name/') === 'dir/name';
-  ( 'is/cwd/', './is/cwd/dir/name/') === 'dir/name';
-  ('/is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
-  ( 'is/cwd/',   'is/cwd/dir/name/') === 'dir/name';
-
-  ('/is/cwd/',  '/dir/name/') === 'dir/name';
-  ( 'is/cwd/',  '/dir/name/') === 'dir/name';
-  ('/is/cwd/', './dir/name/') === 'dir/name';
-  ( 'is/cwd/', './dir/name/') === 'dir/name';
-  ('/is/cwd/',   'dir/name/') === 'dir/name';
-  ('/is/cwd/',   'dir/name/') === 'dir/name';
-
-  ('', '');
-
-  */
-
-  if (dirAbsolute.indexOf(cwdAbsolute) === 0) {
-    dir = dirAbsolute.slice(cwdAbsolute.length);
-  } else {
-    //dir = path.resolve(cwdAbsolute, dirRelative);
-  }
-
-
-
-
-  cwd = (isPathToFile(cwd)) ? path.dirname(cwd) : cwd;
-  dir = (isPathToFile(dir)) ? path.dirname(dir) : dir;
-
-  let cwdForCompare, dirForCompare;
-  let cwdIsAbsolute, dirIsAbsolute;
-
-  cwdIsAbsolute = path.isAbsolute(cwd);
-  dirIsAbsolute = path.isAbsolute(dir);
-  if (isWin) {
-    if (cwdIsAbsolute && !/^[a-z]:/i.test(cwd)) {
-      cwdIsAbsolute = false;
-      cwd = cwd.slice(sep.length);
-    }
-    if (dirIsAbsolute && !/^[a-z]:/i.test(dir)) {
-      dirIsAbsolute = false;
-      dir = dir.slice(sep.length);
-    }
-  } else {
-
-  }
-
-  if (cwdIsAbsolute && dirIsAbsolute) {
-    cwdForCompare = cwd;
-    dirForCompare = dir;
-  } else
-  if (cwdIsAbsolute && !dirIsAbsolute) {
-    cwdForCompare = cwd;
-    dirForCompare = (dir.indexOf(`.${sep}`) === 0) ? dir.slice(1) : sep + dir;
-  } else
-  if (!cwdIsAbsolute && dirIsAbsolute) {
-    cwdForCompare = (cwd.indexOf(`.${sep}`) === 0) ? cwd.slice(1) : sep + cwd;
-    dirForCompare = dir;
-  } else
-  if (!cwdIsAbsolute && !dirIsAbsolute) {
-    cwdForCompare = (cwd.indexOf(`.${sep}`) === 0) ? cwd.slice(1) : sep + cwd;
-    dirForCompare = (dir.indexOf(`.${sep}`) === 0) ? dir.slice(1) : sep + dir;
-  }
-
-  var retVal;
-  if (dirForCompare.indexOf(cwdForCompare) === 0) {
-    retVal = dirForCompare.slice(cwdForCompare.length);
-  } else {
-    //retVal =
-  }
-
-  return retVal;
-
-  if (!isWin) {
-
-  } else {
-
-  }
-
-
-
-  if (!path.isAbsolute(dir)) {
-    if (!isWin) {
-
-    }
-  } else {
-    if (isWin) {
-
-    } else {
-
-    }
-  }
-
-
-
-  if (dir.indexOf(cwd) !== 0) {
-    dir = path.join(cwd, dir);
-  }
-  dir = path.relative(cwd, dir);
-
-  return dir;
+  return enterPathname;
 };
 
 /**
@@ -328,6 +233,8 @@ let parse = function VirtualPath$parse (_path, opts) {
   this.extname = ext;
 };
 
+
+var processCwd = process.cwd();
 let defaults = {
   cwd:      process.cwd(),
   base:     '',
@@ -341,13 +248,21 @@ class VinylPath {
     opts = opts || {};
 
     this.win32     = (!isUndefined(opts.win32)) ? !!opts.win32 : process.platform == 'win32';
-    this._cwd      = '';
-    this._base     = '';
+    this._cwd      = opts.cwd  || processCwd;
+    this._base     = opts.base || '';
+    this._path     = opts.path || '';
     this._dirname  = '';
+
+
+
     this._basename = '';
     this._extname  = '';
 
     parse.call(this, _path, opts);
+  }
+
+  set path (pathname) {
+    // устанавливая новый pathname, надо зарезолвить
   }
 
   set cwd (cwd) {
@@ -394,11 +309,52 @@ class VinylPath {
   //  return path.join(this.cwd, this.base, this.dirname, this.basename);
   //}
 
-  get toString() {
-    return this.path;
-  }
+  //get toString() {
+  //  return this.path;
+  //}
 }
 
 module.exports = {
+  isPathToDotFile,
+  isPathToFile,
+  isPathFromWin32Device,
+  withoutFile,
+  hasLeadingDotSlash,
+  isRelative,
+  isDotDotRelative,
+  removeLeadingDotSlash,
+  addLeadingDotSlash,
+  removeLeadingSlash,
+  addLeadingSlash,
+  removeTrailingSlash,
+  addTrailingSlash,
+  hasLeadingPath,
+  removeLeadingPath,
   VinylPath
 };
+
+
+var File = require('vinyl');
+
+console.log('path.join(__dirname, __filename)', path.join(__dirname, __filename));
+var file = new File({
+  path: path.join(__dirname, __filename)
+});
+
+var inspectFile = function inspectFile (file) {
+  ['cwd', 'base', 'relative', 'dirname', 'basename', 'extname', 'stem'].forEach(function (key) {
+    if (typeof file[key] == 'function') { return; }
+
+    console.log('==', key, file[key]);
+  });
+};
+
+inspectFile(file);
+
+//console.log('file', file);
+//console.log('file', file.inspect());
+
+
+
+
+
