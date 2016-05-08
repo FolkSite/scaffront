@@ -433,6 +433,7 @@ class VinylPath {
     //console.log('9 dirname', dirname);
 
     let hasBase = false;
+    let basename = '';
     if (dirname) {
       let tmp = removeLeadingSlash(removeLeadingDotSlash(dirname));
       if (isDotDotRelative(tmp)) {
@@ -442,8 +443,9 @@ class VinylPath {
         dirname = VinylPath.normalize(dirname);
       }
       //console.log('10 dirname', dirname);
-
-      dirname = (isPathToFile(dirname)) ? withoutFile(dirname) : dirname;
+      let isToFile = isPathToFile(dirname);
+      basename = (isToFile) ? path.basename(dirname) : '';
+      dirname = (isToFile) ? withoutFile(dirname) : dirname;
       dirname = (!isDot(dirname)) ? dirname : '';
 
       if (dirname) {
@@ -470,6 +472,10 @@ class VinylPath {
 
     if (this._dirname && !hasBase) {
       this._base = '';
+    }
+
+    if (basename) {
+      this.basename = basename;
     }
   }
 
@@ -860,6 +866,12 @@ var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss',
 inspectFile(file);
 
 file.base = '\\app\\frontend\\';
+inspectFile(file);
+
+file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
+inspectFile(file);
+
+file.base = 'dist\\production\\';
 inspectFile(file);
 
 //file.basename = '..\\app\\frontend/..\\css.scss';
