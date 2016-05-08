@@ -229,6 +229,37 @@ var addTrailingSlash = function pathUp$addTrailingSlash (pathname, sep) {
 /**
  * @param {string} pathname
  * @param {string} leadingPathname
+ * @returns {boolean}
+ */
+var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) {
+  assertPath(pathname);
+  assertPath(leadingPathname);
+
+  var enterPathname = pathname;
+
+  // приводим к одному виду
+  pathname        = normalize(pathname, 'posix');
+  leadingPathname = normalize(leadingPathname, 'posix');
+
+  if (pathname == '.' || leadingPathname == '.') {
+    return false;
+  }
+
+  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+
+  leadingPathname = removeLeadingDotSlash(leadingPathname);
+  pathname        = removeLeadingDotSlash(pathname);
+  leadingPathname = removeLeadingSlash(leadingPathname);
+  pathname        = removeLeadingSlash(pathname);
+  leadingPathname = addTrailingSlash(leadingPathname);
+  pathname        = addTrailingSlash(pathname);
+
+  return pathname.indexOf(leadingPathname) === 0;
+};
+
+/**
+ * @param {string} pathname
+ * @param {string} leadingPathname
  * @returns {string}
  */
 var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPathname) {
@@ -285,26 +316,32 @@ class VinylPath {
     assertPath(pathname);
     assertPath(basePathname);
 
+    console.log('1 resolver', basePathname, pathname);
+
+    var newPathname = pathname;
+
     // сперва удаляем `basePathname` из `pathname`, если он там есть.
     if (pathname && basePathname) {
-      pathname = removeLeadingPath(pathname, basePathname);
-      pathname = (pathname != '.') ? pathname : '';
+      newPathname = removeLeadingPath(pathname, basePathname);
+      newPathname = (pathname != '.') ? pathname : '';
 
       // если `pathname` относительный
-      if (pathname && isRelative(pathname)) {
+      if (newPathname != pathname && isRelative(pathname)) {
         // зарезолвим
+        console.log('basePathname, pathname', basePathname, pathname);
         pathname = path.join(basePathname, pathname);
         pathname = removeLeadingPath(pathname, basePathname);
+        //pathname = removeLeadingDotSlash(pathname);
+        //pathname = removeLeadingSlash(pathname);
+        //pathname = removeTrailingSlash(pathname);
+
+        newPathname = pathname;
       }
     }
 
-    if (pathname) {
-      pathname = removeLeadingDotSlash(pathname);
-      pathname = removeLeadingSlash(pathname);
-      pathname = removeTrailingSlash(pathname);
-    }
+    console.log('2 resolver', basePathname, pathname);
 
-    return pathname;
+    return newPathname;
   }
 
   constructor (pathname, opts) {
@@ -354,35 +391,71 @@ class VinylPath {
 
     // `dirname` всегда должен быть относительным по отношению к `base`
     dirname = dirname || '';
+    let newBasename = '';
     if (dirname) {
       dirname = VinylPath.normalize(dirname);
-      dirname = VinylPath.resolve(this._cwd, dirname);
-      dirname = VinylPath.resolve(this._base, dirname);
+      newBasename = path.basename(dirname);
+      console.log('dirname', dirname);
+      dirname = withoutFile(dirname);
+      console.log('withoutFile dirname', dirname);
+
+      //console.log('dirname', dirname);
+      let resolvedByCwd = VinylPath.resolve(this._cwd, dirname);
+      let dirnameStartWithCwd = resolvedByCwd != dirname;
+      console.log('dirnameStartWithCwd', dirnameStartWithCwd, resolvedByCwd);
+
+      if (dirnameStartWithCwd) {
+        let resolvedByBase = VinylPath.resolve(this._base, resolvedByCwd);
+        let dirnameStartWithBase = resolvedByBase != resolvedByCwd;
+        console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
+
+        if (dirnameStartWithBase) {
+          dirname = resolvedByBase;
+        } else {
+          this._base = resolvedByBase;
+          dirname = '';
+        }
+
+      } else {
+        let resolvedByBase = VinylPath.resolve(this._base, dirname);
+        let dirnameStartWithBase = resolvedByBase != dirname;
+        console.log('dirnameStartWithBase', dirnameStartWithBase, resolvedByBase);
+
+        if (dirnameStartWithBase) {
+          dirname = resolvedByBase;
+        }
+      }
     }
 
+    dirname = removeLeadingDotSlash(dirname);
+    dirname = removeLeadingSlash(dirname);
+    dirname = removeTrailingSlash(dirname);
+
     this._dirname = dirname;
+
+    console.log('newBasename', newBasename);
+    if (newBasename) {
+      this.basename = newBasename;
+    }
   }
 
   set basename (basename) {
     assertPath(basename);
-    // а если здесь тоже директория?
+
     basename = basename || '';
+    let newDirname = '';
     if (basename) {
       basename = VinylPath.normalize(basename);
+      newDirname = path.dirname(basename);
       basename = path.basename(basename);
-
-      //let dirname = path.dirname(basename);
-      //dirname = VinylPath.resolve(this._cwd, dirname);
-      //dirname = VinylPath.resolve(this._base, dirname);
-      //dirname = VinylPath.resolve(this._dirname, dirname);
-      //
-      //if (dirname) {
-      //  this._dirname = dirname;
-      //}
     }
 
     this._basename = basename;
     this._extname  = path.extname(this._basename);
+
+    if (newDirname != '.' && newDirname) {
+      this.dirname = newDirname;
+    }
   }
 
   set extname (extname) {
@@ -474,18 +547,27 @@ var inspectFile = function inspectFile (file) {
 //var File = require('vinyl');
 var File = VinylPath;
 
+console.time('time');
 var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
   //base: 'D:/repositories/scaffront\\app\\frontend'
+  base: '\\app\\frontend\\'
 });
 
 inspectFile(file);
 
-file.base = '\\app\\frontend\\';
+//file.base = '\\app\\frontend\\';
+//inspectFile(file);
+
+//file.basename = '..\\app\\frontend/..\\css.scss';
+//inspectFile(file);
+
+file.dirname = '../../../\\bower_components\\frontend/styles\\css.scss';
 inspectFile(file);
 
-file.basename = '\\app\\frontend\\styles.css';
-inspectFile(file);
+//file.basename = 'app\\frontend\\css.scss';
+//inspectFile(file);
 
+console.timeEnd('time');
 
 const fs = require('fs');
 console.log('exists', fs.existsSync(file.path));
