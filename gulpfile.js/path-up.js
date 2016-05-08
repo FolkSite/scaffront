@@ -31,6 +31,36 @@ var convertToWin32 = function pathUp$convertToWin32 (pathname) {
 
 /**
  * @param {string} pathname
+ * @returns {boolean}
+ */
+var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
+  assertPath(pathname);
+
+  return /[\/\\]\.[^\/\\]+$/.test(pathname);
+};
+
+/**
+ * @param {string} pathname
+ * @returns {boolean}
+ */
+var isPathToFile = function pathUp$isPathToFile (pathname) {
+  assertPath(pathname);
+
+  return !!path.extname(pathname) || isPathToDotFile(pathname);
+};
+
+/**
+ * @param {string} pathname
+ * @returns {string}
+ */
+var withoutFile = function pathUp$withoutFile (pathname) {
+  assertPath(pathname);
+
+  return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
+};
+
+/**
+ * @param {string} pathname
  * @param {string} [convertTo='']
  * @returns {string}
  */
@@ -58,30 +88,9 @@ var normalize = function pathUp$normalize (pathname, convertTo) {
     }
   }
 
+  pathname = (isPathToFile(pathname)) ? withoutFile(pathname) : pathname;
+
   return pathname;
-};
-
-/**
- * @param {string} pathname
- * @returns {boolean}
- */
-var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
-  assertPath(pathname);
-
-  let parts = normalize(pathname).split(sep);
-  let last = parts[parts.length - 1];
-
-  return /^\./.test(last);
-};
-
-/**
- * @param {string} pathname
- * @returns {boolean}
- */
-var isPathToFile = function pathUp$isPathToFile (pathname) {
-  assertPath(pathname);
-
-  return !!path.extname(pathname) || isPathToDotFile(pathname);
 };
 
 /**
@@ -93,16 +102,6 @@ var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
   pathname = normalize(pathname, 'win32');
 
   return path.win32.isAbsolute(pathname) && /^[a-z]:/i.test(pathname);
-};
-
-/**
- * @param {string} pathname
- * @returns {string}
- */
-var withoutFile = function pathUp$withoutFile (pathname) {
-  assertPath(pathname);
-
-  return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
 };
 
 /**
@@ -152,7 +151,9 @@ var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
 var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (pathname) {
   assertPath(pathname);
 
-  return pathname.replace(/^\.[\/\\]+/, '');
+  let newPathname = pathname.replace(/^\.[\/\\]+/, '');
+
+  return (pathname == newPathname) ? newPathname : pathUp$removeLeadingDotSlash(newPathname);
 };
 
 /**
@@ -178,7 +179,9 @@ var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname, sep) {
 var removeLeadingSlash = function pathUp$removeLeadingSlash (pathname) {
   assertPath(pathname);
 
-  return pathname.replace(/^[\/\\]+/, '');
+  let newPathname = pathname.replace(/^[\/\\]+/, '');
+
+  return (pathname == newPathname) ? newPathname : pathUp$removeLeadingSlash(newPathname);
 };
 
 /**
@@ -223,25 +226,6 @@ var addTrailingSlash = function pathUp$addTrailingSlash (pathname, sep) {
   return pathname;
 };
 
-///**
-// * @param {string} pathname
-// * @param {string} leadingPathname
-// * @returns {boolean}
-// */
-//var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) {
-//  assertPath(pathname);
-//  assertPath(leadingPathname);
-//
-//  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
-//  leadingPathname = removeLeadingDotSlash(leadingPathname);
-//  leadingPathname = removeLeadingSlash(leadingPathname);
-//
-//  pathname = removeLeadingDotSlash(pathname);
-//  pathname = removeLeadingSlash(pathname);
-//
-//  return (pathname.indexOf(leadingPathname) === 0)
-//};
-
 /**
  * @param {string} pathname
  * @param {string} leadingPathname
@@ -253,21 +237,22 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
 
   var enterPathname = pathname;
 
-  if (!pathname.trim() || !leadingPathname.trim()) {
-    return pathname;
-  }
-
+  // приводим к одному виду
   pathname        = normalize(pathname, 'posix');
   leadingPathname = normalize(leadingPathname, 'posix');
 
-  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
-  leadingPathname = removeLeadingDotSlash(leadingPathname);
-  leadingPathname = removeLeadingSlash(leadingPathname);
+  if (pathname == '.' || leadingPathname == '.') {
+    return '';
+  }
 
-  pathname = removeLeadingDotSlash(pathname);
-  pathname = removeLeadingSlash(pathname);
-  //console.log('leadingPathname', leadingPathname);
-  //console.log('pathname', pathname);
+  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+
+  leadingPathname = removeLeadingDotSlash(leadingPathname);
+  pathname        = removeLeadingDotSlash(pathname);
+  leadingPathname = removeLeadingSlash(leadingPathname);
+  pathname        = removeLeadingSlash(pathname);
+  leadingPathname = addTrailingSlash(leadingPathname);
+  pathname        = addTrailingSlash(pathname);
 
   if (pathname.indexOf(leadingPathname) === 0) {
     return pathname.slice(leadingPathname.length);
@@ -289,14 +274,33 @@ class VinylPath {
   static normalize (pathname) {
     assertPath(pathname);
 
-    return normalize(pathname, 'posix');
+    pathname = normalize(pathname, 'posix');
+
+    return (pathname != '.') ? pathname : '';
   }
 
   static resolve (basePathname, pathname) {
     assertPath(pathname);
     assertPath(basePathname);
 
-    pathname = removeLeadingPath(pathname, basePathname);
+    // сперва удаляем `basePathname` из `pathname`, если он там есть.
+    if (pathname && basePathname) {
+      pathname = removeLeadingPath(pathname, basePathname);
+      pathname = (pathname != '.') ? pathname : '';
+
+      // если `pathname` относительный
+      if (pathname && isRelative(pathname)) {
+        // зарезолвим
+        pathname = path.join(basePathname, pathname);
+        pathname = removeLeadingPath(pathname, basePathname);
+      }
+    }
+
+    if (pathname) {
+      pathname = removeLeadingDotSlash(pathname);
+      pathname = removeLeadingSlash(pathname);
+      pathname = removeTrailingSlash(pathname);
+    }
 
     return pathname;
   }
@@ -327,27 +331,37 @@ class VinylPath {
     assertPath(base);
 
     // `base` всегда должен быть относительным по отношению к `cwd`
+    base = base || '';
+    if (base) {
+      base = VinylPath.normalize(base);
+      base = VinylPath.resolve(this._cwd, base);
+    }
+
     this._base = base;
-    this._base = VinylPath.normalize(this._base);
-    this._base = removeLeadingSlash(this._base);
-    this._base = removeTrailingSlash(this._base);
   }
 
   set dirname (dirname) {
     assertPath(dirname);
 
     // `dirname` всегда должен быть относительным по отношению к `base`
-    this._dirname = dirname || '';
-    this._dirname = VinylPath.normalize(this._dirname);
-    this._dirname = removeLeadingSlash(this._dirname);
-    this._dirname = removeTrailingSlash(this._dirname);
+    dirname = dirname || '';
+    if (dirname) {
+      dirname = VinylPath.normalize(dirname);
+      dirname = VinylPath.resolve(this._base, dirname);
+    }
+
+    this._dirname = dirname;
   }
 
   set basename (basename) {
     assertPath(basename);
     // а если здесь тоже директория?
-    this._basename = basename || '';
-    this._basename = VinylPath.normalize(this._basename);
+    basename = basename || '';
+    if (basename) {
+      basename = VinylPath.normalize(basename);
+      basename = VinylPath.resolve(this._dirname, basename);
+    }
+    this._basename = basename;
     this._extname  = path.extname(this._basename);
   }
 
@@ -364,27 +378,21 @@ class VinylPath {
   set path (pathname) {
     assertPath(pathname);
 
+    pathname = pathname || '';
     pathname = VinylPath.normalize(pathname);
     //console.log('this.cwd', this.cwd);
     //console.log('this.base', this.base);
 
-    pathname = removeLeadingPath(pathname, this.cwd);
-    pathname = removeLeadingSlash(pathname);
-    pathname = (isDotDotRelative(pathname)) ? path.resolve(this.cwd, pathname) : pathname;
-    //console.log('pathname', pathname);
+    pathname = VinylPath.resolve(this._cwd, pathname);
+    pathname = VinylPath.resolve(this._base, pathname);
 
-    pathname = removeLeadingPath(pathname, this.base);
-    pathname = removeLeadingSlash(pathname);
-    pathname = (isDotDotRelative(pathname)) ? path.resolve(this.base, pathname) : pathname;
-    //console.log('pathname', pathname);
-
-    pathname = removeTrailingSlash(pathname);
+    console.log('pathname', pathname);
 
     if (isPathToFile(pathname)) {
-      this._dirname = VinylPath.normalize(withoutFile(pathname));
+      this._dirname = withoutFile(pathname);
       this.basename = path.basename(pathname);
     } else {
-      this._dirname = VinylPath.normalize(pathname);
+      this._dirname = pathname;
     }
 
     /*
