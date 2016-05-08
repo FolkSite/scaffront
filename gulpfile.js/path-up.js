@@ -7,130 +7,130 @@ const sep           = path.sep;
 const isWin         = process.platform == 'win32';
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var isPathToDotFile = function pathUp$isPathToDotFile (_path) {
-  _path = path.normalize(_path);
+var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
+  pathname = path.normalize(pathname);
 
-  let parts = _path.split(sep);
+  let parts = pathname.split(sep);
   let last = parts[parts.length - 1];
 
   return /^\./.test(last);
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var isPathToFile = function pathUp$isPathToFile (_path) {
-  return !!path.extname(_path) || isPathToDotFile(_path);
+var isPathToFile = function pathUp$isPathToFile (pathname) {
+  return !!path.extname(pathname) || isPathToDotFile(pathname);
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var isPathFromWin32Device = function pathUp$isPathFromWin32Device (_path) {
-  return path.win32.isAbsolute(_path) && /^[a-z]:/i.test(_path);
+var isPathFromWin32Device = function pathUp$isPathFromWin32Device (pathname) {
+  return path.win32.isAbsolute(pathname) && /^[a-z]:/i.test(pathname);
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var withoutFile = function pathUp$withoutFile (_path) {
-  return (isPathToFile(_path)) ? path.dirname(_path) : _path;
+var withoutFile = function pathUp$withoutFile (pathname) {
+  return (isPathToFile(pathname)) ? path.dirname(pathname) : pathname;
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (_path) {
-  return /^\.\//.test(_path) || /^\.\\/.test(_path);
+var hasLeadingDotSlash = function pathUp$hasLeadingDotSlash (pathname) {
+  return /^\.\//.test(pathname) || /^\.\\/.test(pathname);
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var isRelative = function pathUp$isRelative (_path) {
-  return !path.isAbsolute(_path);
+var isRelative = function pathUp$isRelative (pathname) {
+  return !path.isAbsolute(pathname);
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {boolean}
  */
-var isDotDotRelative = function pathUp$isDotDotRelative (_path) {
-  return isRelative(_path) && (/^\.\.\//.test(_path) || /^\.\.\\/.test(_path));
+var isDotDotRelative = function pathUp$isDotDotRelative (pathname) {
+  return isRelative(pathname) && (/^\.\.\//.test(pathname) || /^\.\.\\/.test(pathname));
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (_path) {
-  return _path.replace(/^\.[\/\\]+/, '');
+var removeLeadingDotSlash = function pathUp$removeLeadingDotSlash (pathname) {
+  return pathname.replace(/^\.[\/\\]+/, '');
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var addLeadingDotSlash = function pathUp$addLeadingDotSlash (_path) {
-  if (!isPathFromWin32Device(_path)) {
-    _path = './'+ removeLeadingDotSlash(_path);
+var addLeadingDotSlash = function pathUp$addLeadingDotSlash (pathname) {
+  if (!isPathFromWin32Device(pathname)) {
+    pathname = './'+ removeLeadingDotSlash(pathname);
   }
 
-  return _path;
+  return pathname;
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var removeLeadingSlash = function pathUp$removeLeadingSlash (_path) {
-  if (!isPathFromWin32Device(_path)) {
-    _path = _path.replace(/^[\/\\]+/, '');
+var removeLeadingSlash = function pathUp$removeLeadingSlash (pathname) {
+  if (!isPathFromWin32Device(pathname)) {
+    pathname = pathname.replace(/^[\/\\]+/, '');
   }
 
-  return _path;
+  return pathname;
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var addLeadingSlash = function pathUp$addLeadingSlash (_path) {
-  if (!isPathFromWin32Device(_path)) {
-    _path = '/'+ removeLeadingSlash(_path);
+var addLeadingSlash = function pathUp$addLeadingSlash (pathname) {
+  if (!isPathFromWin32Device(pathname)) {
+    pathname = '/'+ removeLeadingSlash(pathname);
   }
 
-  return _path;
+  return pathname;
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var removeTrailingSlash = function pathUp$removeTrailingSlash (_path) {
-  _path = _path.replace(/[\/\\]+$/, '');
+var removeTrailingSlash = function pathUp$removeTrailingSlash (pathname) {
+  pathname = pathname.replace(/[\/\\]+$/, '');
 
-  return _path;
+  return pathname;
 };
 
 /**
- * @param {string} _path
+ * @param {string} pathname
  * @returns {string}
  */
-var addTrailingSlash = function pathUp$addTrailingSlash (_path) {
-  if (!isPathToFile(_path)) {
-    _path = removeTrailingSlash(_path) +'/';
+var addTrailingSlash = function pathUp$addTrailingSlash (pathname) {
+  if (!isPathToFile(pathname)) {
+    pathname = removeTrailingSlash(pathname) +'/';
   }
 
-  return _path;
+  return pathname;
 };
 
 /**
@@ -140,6 +140,8 @@ var addTrailingSlash = function pathUp$addTrailingSlash (_path) {
  */
 var removeLeadingPath = function pathUp$removeLeadingPath (_path, leadingPath) {
   var pathToCompare = _path, leadingToCompare = leadingPath;
+
+  leadingToCompare = (isPathToFile(leadingToCompare)) ? withoutFile(leadingToCompare) : leadingToCompare;
 
 
 
