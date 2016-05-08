@@ -15,6 +15,55 @@ function assertPath (path) {
 
 /**
  * @param {string} pathname
+ * @returns {string}
+ */
+var convertToPosix = function pathUp$convertToPosix (pathname) {
+  return pathname.split('\\').join('\/');
+};
+
+/**
+ * @param {string} pathname
+ * @returns {string}
+ */
+var convertToWin32 = function pathUp$convertToWin32 (pathname) {
+  return pathname.split('\/').join('\\');
+};
+
+var fileWin32 = 'D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss';
+//console.log('= fileWin32', fileWin32);
+//console.log('convertToWin32', convertToWin32(fileWin32));
+//console.log('convertToPosix', convertToPosix(fileWin32));
+//console.log('convertToWin32(convertToPosix)', convertToWin32(convertToPosix(fileWin32)));
+//console.log('convertToPosix(convertToWin32)', convertToPosix(convertToWin32(fileWin32)));
+
+var filePosix = 'D:/repositories/scaffront/app/frontend/css/css.scss';
+console.log('= filePosix', filePosix);
+console.log('convertToWin32', convertToWin32(filePosix));
+console.log('convertToPosix', convertToPosix(filePosix));
+console.log('convertToWin32(convertToPosix)', convertToWin32(convertToPosix(filePosix)));
+console.log('convertToPosix(convertToWin32)', convertToPosix(convertToWin32(filePosix)));
+
+return;
+
+/**
+ * @param {string} pathname
+ * @returns {string}
+ */
+var normalize = function pathUp$normalize (pathname) {
+  assertPath(pathname);
+
+  if (isWin) {
+    pathname = path.normalize(pathname);
+    pathname = pathname.replace(/\\/g, '/');
+  }
+
+  pathname = path.posix.normalize(pathname);
+
+  return pathname;
+};
+
+/**
+ * @param {string} pathname
  * @returns {boolean}
  */
 var isPathToDotFile = function pathUp$isPathToDotFile (pathname) {
@@ -282,6 +331,7 @@ class VinylPath {
     this._cwd = cwd || processCwd;
     this._cwd = VinylPath.normalize(this._cwd);
     this._cwd = addLeadingSlash(this._cwd);
+    this._cwd = removeTrailingSlash(this._cwd);
   }
 
   set base (base) {
@@ -290,6 +340,8 @@ class VinylPath {
     // `base` всегда должен быть относительным по отношению к `cwd`
     this._base = base;
     this._base = VinylPath.normalize(this._base);
+    this._base = removeLeadingSlash(this._base);
+    this._base = removeTrailingSlash(this._base);
   }
 
   set dirname (dirname) {
@@ -298,6 +350,8 @@ class VinylPath {
     // `dirname` всегда должен быть относительным по отношению к `base`
     this._dirname = dirname || '';
     this._dirname = VinylPath.normalize(this._dirname);
+    this._dirname = removeLeadingSlash(this._dirname);
+    this._dirname = removeTrailingSlash(this._dirname);
   }
 
   set basename (basename) {
@@ -392,7 +446,7 @@ class VinylPath {
 var File = VinylPath;
 
 var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
-  base: 'app/frontend'
+  base: '/app/frontend'
 });
 
 var inspectFile = function inspectFile (file) {
@@ -404,6 +458,9 @@ var inspectFile = function inspectFile (file) {
 };
 
 inspectFile(file);
+
+const fs = require('fs');
+console.log('exists', fs.existsSync(file.path));
 
 //console.log('file', file);
 //console.log('file', file.inspect());
