@@ -37,22 +37,25 @@ var convertToWin32 = function pathUp$convertToWin32 (pathname) {
 var normalize = function pathUp$normalize (pathname, convertTo) {
   assertPath(pathname);
 
-  pathname = path.normalize(pathname);
-  pathname = (isWin)
-    ? path.posix.normalize(convertToPosix(pathname))
-    : path.win32.normalize(convertToWin32(pathname))
-  ;
+  pathname = pathname.trim();
+  if (pathname) {
+    pathname = path.normalize(pathname);
+    pathname = (isWin)
+      ? path.posix.normalize(convertToPosix(pathname))
+      : path.win32.normalize(convertToWin32(pathname))
+    ;
 
-  convertTo = (!isUndefined(convertTo)) ? convertTo.trim() : '';
-  switch (convertTo) {
-    case 'win32':
-      pathname = convertToWin32(pathname);
-      break;
-    case 'posix':
-      pathname = convertToPosix(pathname);
-      break;
-    default:
-      pathname = (isWin) ? convertToWin32(pathname) : convertToPosix(pathname);
+    convertTo = (!isUndefined(convertTo)) ? convertTo.trim() : '';
+    switch (convertTo) {
+      case 'win32':
+        pathname = convertToWin32(pathname);
+        break;
+      case 'posix':
+        pathname = convertToPosix(pathname);
+        break;
+      default:
+        pathname = (isWin) ? convertToWin32(pathname) : convertToPosix(pathname);
+    }
   }
 
   return pathname;
@@ -220,24 +223,24 @@ var addTrailingSlash = function pathUp$addTrailingSlash (pathname, sep) {
   return pathname;
 };
 
-/**
- * @param {string} pathname
- * @param {string} leadingPathname
- * @returns {boolean}
- */
-var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) {
-  assertPath(pathname);
-  assertPath(leadingPathname);
-
-  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
-  leadingPathname = removeLeadingDotSlash(leadingPathname);
-  leadingPathname = removeLeadingSlash(leadingPathname);
-
-  pathname = removeLeadingDotSlash(pathname);
-  pathname = removeLeadingSlash(pathname);
-
-  return (pathname.indexOf(leadingPathname) === 0)
-};
+///**
+// * @param {string} pathname
+// * @param {string} leadingPathname
+// * @returns {boolean}
+// */
+//var hasLeadingPath = function pathUp$hasLeadingPath (pathname, leadingPathname) {
+//  assertPath(pathname);
+//  assertPath(leadingPathname);
+//
+//  leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
+//  leadingPathname = removeLeadingDotSlash(leadingPathname);
+//  leadingPathname = removeLeadingSlash(leadingPathname);
+//
+//  pathname = removeLeadingDotSlash(pathname);
+//  pathname = removeLeadingSlash(pathname);
+//
+//  return (pathname.indexOf(leadingPathname) === 0)
+//};
 
 /**
  * @param {string} pathname
@@ -249,6 +252,13 @@ var removeLeadingPath = function pathUp$removeLeadingPath (pathname, leadingPath
   assertPath(leadingPathname);
 
   var enterPathname = pathname;
+
+  if (!pathname.trim() || !leadingPathname.trim()) {
+    return pathname;
+  }
+
+  pathname        = normalize(pathname, 'posix');
+  leadingPathname = normalize(leadingPathname, 'posix');
 
   leadingPathname = (isPathToFile(leadingPathname)) ? withoutFile(leadingPathname) : leadingPathname;
   leadingPathname = removeLeadingDotSlash(leadingPathname);
@@ -283,7 +293,12 @@ class VinylPath {
   }
 
   static resolve (basePathname, pathname) {
+    assertPath(pathname);
+    assertPath(basePathname);
 
+    pathname = removeLeadingPath(pathname, basePathname);
+
+    return pathname;
   }
 
   constructor (pathname, opts) {
@@ -459,7 +474,7 @@ module.exports = {
   addLeadingSlash,
   removeTrailingSlash,
   addTrailingSlash,
-  hasLeadingPath,
+  //hasLeadingPath,
   removeLeadingPath,
   VinylPath
 };
