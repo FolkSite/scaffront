@@ -74,7 +74,6 @@ gulp.task('styles:css:watch', function () {
   ;
 });
 
-
 tasksConfig['styles:scss'] = {
   src:           __.glob(config.root, ['*.scss', '!_*.scss'], true),
   dest:          config.dest,
@@ -99,20 +98,24 @@ gulp.task('styles:scss:watch', function () {
   };
 
   gulp
-    .watch(__.glob(config.root, ['_*.scss', '_*.css'], true))
+    .watch(__.glob(config.root, ['_*.{sass,scss,css}'], true))
     .on('change', runAllFiles)
     .on('add', runAllFiles)
     .on('unlink', runAllFiles)
   ;
 
   gulp
-    .watch(__.glob(config.root, ['*.scss', '!_*.scss', '!_*.css'], true))
+    .watch(__.glob(config.root, ['*.{sass,scss}', '!_*.{sass,scss,css}'], true))
     .on('change', runEntryFile)
     .on('add', runEntryFile)
   ;
 });
 
+gulp.task('styles', gulp.parallel('styles:css', 'styles:scss'));
 gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch'));
+gulp.task('styles:clean', function () {
+  return del(__.glob(config.dest, '*.css', true), {read: false});
+});
 
 
 /** ========== SERVER ========== **/
@@ -412,13 +415,6 @@ var postCssProcessorsDist = [
 //  ;
 //
 //});
-
-gulp.task('styles', gulp.series(
-  gulp.parallel('styles:css', 'styles:scss')
-  //,function (cb) {
-  //  cb();
-  //}
-));
 
 gulp.task('styles:clean', function () {
   return del(config.tasks.styles.clean, {read: false});
