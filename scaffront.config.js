@@ -42,16 +42,21 @@ var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
  */
 
 /**
- * @param {string} url
- * @param {string} pathname
- * @param {string} entryPathname
+ * Функция должна вернуть либо строку с новым урл,
+ * либо (если файл надо переименовать или переложить в другое место)
+ * объект с полями `url`, `src` и `dest`,
+ * где `src` и `dest` - это *абсолютные* пути
+ *
+ * @param {string} url Урл как оно есть
+ * @param {string} basePathname Файл, в котором этот урл встретился
+ * @param {string} entryPathname Файл, в который будет проинклюден basePathname
  * @returns {string|resolvedAsset}
  */
-tasks.assetResolver = function assetResolver (url, pathname, entryPathname) {
+tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) {
   if (isUrlShouldBeIgnored(url)) { return url; }
 
   var result = {};
-  var basedir = path.dirname(pathname);
+  var basedir = path.dirname(basePathname);
   var resolved = resolver(url, basedir);
   var vinylPathSrc = new VinylPath({
     base: tasks.root,
