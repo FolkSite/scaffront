@@ -1,1 +1,2 @@
-console.log('its a common!');
+console.log('its a common');
+

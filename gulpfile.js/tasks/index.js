@@ -144,6 +144,99 @@ tasks['pages'] = function (opts, cb) {
   return stream;
 };
 
+const gulplog       = require('gulplog');
+const webpackStream = require('webpack-stream');
+const webpack       = webpackStream.webpack;
+//const AssetsPlugin  = require('assets-webpack-plugin');
+
+tasks['scripts'] = function (opts, cb) {
+  opts = (_.isPlainObject(opts)) ? opts : {};
+  assertTask(opts);
+
+  opts.plugins = _.isArray(opts.plugins) ? opts.plugins : [];
+  if (!config.env.isProd) {
+
+  }
+
+  if (config.env.isProd) {
+    /* 1 */
+    //opts.plugins.push(new AssetsPlugin({
+    //  filename: 'scripts.json',
+    //  path:     path.join(process.cwd(), 'dist/frontend-manifest'),
+    //  processOutput(assets) {
+    //    Object.keys(assets).forEach(function (key) {
+    //      assets[key + '.js'] = assets[key].js.slice(opts.output.publicPath.length);
+    //      delete assets[key];
+    //    });
+    //
+    //    return JSON.stringify(assets);
+    //  }
+    //}));
+
+    opts.plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        unsafe: true
+      }
+    }));
+  }
+
+  //- Stream -//
+
+  let firstBuildReady = false;
+  //let smOpts = {
+  //  sourceRoot: '/js/sources',
+  //  includeContent: true,
+  //};
+
+  return gulp
+    .src(opts.src, {
+      //since: gulp.lastRun(opts.taskName)
+    })
+    //.pipe($.plumber({
+    //  errorHandler: $.notify.onError(err => ({
+    //    title:   'Webpack',
+    //    message: err.message
+    //  }))
+    //}))
+    //.pipe(through(function (file, enc, cb) {
+    //  console.log('= file.path', file.path);
+    //  cb(null, file);
+    //}))
+    .pipe(streams.scripts.webpack(opts, webpack, function done (err, stats) {
+      firstBuildReady = true;
+
+      if (err) { // hard error, see https://webpack.github.io/docs/node.js-api.html#error-handling
+        return;  // emit('error', err) in webpack-stream
+      }
+
+      gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
+        colors: true
+      }));
+    }))
+    //.pipe($.sourcemaps.init({loadMaps: true}))
+    //.pipe(through(function (file, enc, cb) {
+    //  var isSourceMap = /\.map$/.test(file.path);
+    //  if (!isSourceMap) { this.push(file); }
+    //  cb();
+    //}))
+    //.pipe($.if(config.env.isProd, $.uglify()))
+    //.pipe($.if(
+    //  config.env.isProd,
+    //  $.sourcemaps.write('.', smOpts), // во внешний файл
+    //  $.sourcemaps.write('', smOpts) // инлайн
+    //))
+    .pipe($.if(config.env.isDev, $.debug({title: 'Script:'})))
+    .pipe(gulp.dest(opts.dest))
+    .on('data', function() {
+      if (firstBuildReady) {
+        cb();
+      }
+    })
+  ;
+};
+
 tasks['files'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);

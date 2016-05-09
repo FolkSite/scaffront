@@ -22,7 +22,7 @@ const tasks          = require('./tasks');
 const streams        = require('./streams');
 
 const runTask        = function runTask (taskName, opts, cb) {
-  tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], opts);
+  tasksConfig[taskName] = extend(true, {}, tasksConfig[taskName], opts);
   gulp.parallel(taskName)(function () {
     if (typeof cb == 'function') { cb(); }
   });
@@ -190,123 +190,28 @@ gulp.task('files:clean', function files$clean () {
 /** ========== //FILES ========== **/
 
 /** ========== SCRIPTS ========== **/
-const gulplog       = require('gulplog');
-const webpackStream = require('webpack-stream');
-const webpack       = webpackStream.webpack;
-const AssetsPlugin  = require('assets-webpack-plugin');
-const through       = require('through2').obj;
-
-let webpackTask = function webpackTask (options) {
-  options = _.isPlainObject(options) ? options : {};
-
-  return function (cb) {
-    options.plugins = _.isArray(options.plugins) ? options.plugins : [];
-    if (!config.env.isProd) {
-
-    }
-
-    if (config.env.isProd) {
-      /* 1 */
-      //options.plugins.push(new AssetsPlugin({
-      //  filename: 'scripts.json',
-      //  path:     path.join(process.cwd(), 'dist/frontend-manifest'),
-      //  processOutput(assets) {
-      //    Object.keys(assets).forEach(function (key) {
-      //      assets[key + '.js'] = assets[key].js.slice(options.output.publicPath.length);
-      //      delete assets[key];
-      //    });
-      //
-      //    return JSON.stringify(assets);
-      //  }
-      //}));
-
-      options.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          drop_console: true,
-          unsafe: true
-        }
-      }));
-    }
-
-    //- Stream -//
-
-    let firstBuildReady = false;
-    //let smOpts = {
-    //  sourceRoot: '/js/sources',
-    //  includeContent: true,
-    //};
-
-    return gulp
-      .src(options.src, {
-        //since: gulp.lastRun(options.taskName)
-      })
-      //.pipe($.plumber({
-      //  errorHandler: $.notify.onError(err => ({
-      //    title:   'Webpack',
-      //    message: err.message
-      //  }))
-      //}))
-      //.pipe(through(function (file, enc, cb) {
-      //  console.log('= file.path', file.path);
-      //  cb(null, file);
-      //}))
-      .pipe(streams.scripts.webpack(options, function done (err, stats) {
-        firstBuildReady = true;
-
-        if (err) { // hard error, see https://webpack.github.io/docs/node.js-api.html#error-handling
-          return;  // emit('error', err) in webpack-stream
-        }
-
-        gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
-          colors: true
-        }));
-      }))
-      //.pipe($.sourcemaps.init({loadMaps: true}))
-      //.pipe(through(function (file, enc, cb) {
-      //  var isSourceMap = /\.map$/.test(file.path);
-      //  if (!isSourceMap) { this.push(file); }
-      //  cb();
-      //}))
-      //.pipe($.if(config.env.isProd, $.uglify()))
-      //.pipe($.if(
-      //  config.env.isProd,
-      //  $.sourcemaps.write('.', smOpts), // во внешний файл
-      //  $.sourcemaps.write('', smOpts) // инлайн
-      //))
-      .pipe($.if(config.env.isDev, $.debug({title: 'Script:'})))
-      .pipe(gulp.dest(options.dest))
-      .on('data', function() {
-        if (firstBuildReady) {
-          cb();
-        }
-      })
-      ;
-  };
-};
-
 let webpackConfig = require('../webpack.config.js');
-let webpackConfigRequired = extend(true, {}, webpackConfig, {
-  src: config.tasks.scripts.src,
-  dest: config.tasks.scripts.dest,
-
-  //profile: !config.env.isProd,
-  devtool: !config.env.isProd ? '#module-cheap-inline-source-map' : '#source-map'
+tasksConfig['scripts'] = extend(true, {}, webpackConfig, {
+  src:  __.glob(path.join(config.root, 'js'), ['*.js', '!_*.js']),
+  dest: path.join(config.dest, 'js')
+});
+gulp.task('scripts', function scripts (cb) {
+  return tasks['scripts'](tasksConfig['scripts'], cb);
 });
 
-gulp.task('scripts', webpackTask(webpackConfigRequired));
 gulp.task('scripts:watch', function (cb) {
-  cb();
+  return tasks['scripts'](
+    extend(true, {}, tasksConfig['scripts'], {
+      watch: true,
+      watchOptions: {
+        aggregateTimeout: 100
+      }
+    }),
+    cb
+  );
 });
-//gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
-//  watch: true,
-//  watchOptions: {
-//    aggregateTimeout: 100
-//  }
-//})));
-
 gulp.task('scripts:clean', function scripts$clean (cb) {
-  cb();
+  return del(__.glob(path.join(config.dest, 'js'), ['*.js'], true), {read: false});
 });
 //gulp.task('scripts:clean', function scripts$clean () {
 //  return del(__.glob(config.dest, ['*.js'], true), {read: false});

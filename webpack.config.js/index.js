@@ -5,11 +5,8 @@ const path    = require('path');
 const extend  = require('extend');
 const webpack = require('webpack');
 
-// get all entries from './app/frontend/js/'
-
 let webpackConfig = {
   output: {
-    //filename: !config.env.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
     filename: '[name].js',
     library: '[name]',
     chunkFilename: '[id].js',
@@ -24,6 +21,9 @@ let webpackConfig = {
     //lodash: 'window._',
     jquery: 'window.jQuery',
   },
+
+  //profile: !config.env.isProd,
+  devtool: !config.env.isProd ? '#module-cheap-inline-source-map' : '#source-map',
 
   plugins: [
     new webpack.NoErrorsPlugin(),

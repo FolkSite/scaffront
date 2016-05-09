@@ -42,6 +42,7 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "bluebird-q": "^1.0.3",
+    "domready": "^1.0.8",
     "extend": "^3.0.0",
     "fast-url-parser": "^1.1.3",
     "getobject": "^0.1.0",

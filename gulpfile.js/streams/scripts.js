@@ -11,18 +11,18 @@ const through  = require('through2').obj;
 
 const named         = require('vinyl-named');
 const webpackStream = require('webpack-stream');
-const webpack       = webpackStream.webpack;
+//const webpack       = webpackStream.webpack;
 
 let streams = {};
 
-streams.webpack = function (options, cb) {
+streams.webpack = function (opts, webpack, cb) {
   let args = slice(arguments);
 
   if (args.length == 1 && _.isFunction(args[0])) {
-    cb = options;
+    cb = opts;
   }
 
-  options = (_.isPlainObject(options)) ? args[0] : {};
+  opts = (_.isPlainObject(opts)) ? args[0] : {};
   cb = (_.isFunction(cb)) ? cb : __.noop;
 
   return combiner(
@@ -33,15 +33,7 @@ streams.webpack = function (options, cb) {
       }))
     }),
     named(),
-    through(function (file, enc, cb) {
-      console.log('== file.path', file.path);
-      cb(null, file);
-    }),
-    webpackStream(options, null, cb),
-    through(function (file, enc, cb) {
-      console.log('=== file.path', file.path);
-      cb(null, file);
-    })
+    webpackStream(opts, webpack, cb)
   );
 };
 
