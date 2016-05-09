@@ -30,9 +30,9 @@ module.exports = function (id, basedir, opts) {
 
   id = id.split('?')[0];
 
-  var resolved = resolveModule(id, opts);
+  var resolved = resolveModule('./'+ id, opts);
   if (!resolved) {
-    resolved = resolveModule('./'+ id, opts);
+    resolved = resolveModule(id, opts);
   }
 
   if (!resolved) {

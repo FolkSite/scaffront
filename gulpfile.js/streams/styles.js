@@ -105,7 +105,6 @@ streams.cssCompile = function cssCompile (options) {
         //getTargetAssetsPlugin(assets, entryFilepath, entryFilepath, options),
         // импортируем вложенные css-ки
         require('postcss-import')({
-          // резолвим пути по стандарному для node.js алгоритму
           resolve: function (module, basedir, importOptions) {
             return resolver(module, basedir, {
               extensions: ['.css']
@@ -113,6 +112,8 @@ streams.cssCompile = function cssCompile (options) {
           },
           // каждый импортированный файл тоже надо пропустить через postcss
           transform: function(css, filepath, _options) {
+            console.log($.util.colors.blue('filepath'), filepath);
+
             return postcss([
               // теперь сохраним все ассеты из импортируемых файлов
               require('postcss-url')({
