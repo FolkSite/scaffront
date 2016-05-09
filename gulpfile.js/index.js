@@ -157,7 +157,8 @@ gulp.task('files:watch', function () {
   ;
 });
 gulp.task('files:clean', function () {
-  return del(__.glob(config.dest, '*.*', '!*.{css,js,html}', true), {read: false});
+  //console.log('files:clean', __.glob(config.dest, ['*.*', '!*.{css,js,html}'], true));
+  return del(__.glob(config.dest, ['*.*', '!*.{css,js,html}'], true), {read: false});
 });
 /** ========== //FILES ========== **/
 
@@ -166,10 +167,6 @@ gulp.task('files:clean', function () {
 
 
 
-
-gulp.task('files:clean', function () {
-  return del(config.tasks.files.clean, {read: false});
-});
 
 gulp.task('pages', function () {
   return gulp
