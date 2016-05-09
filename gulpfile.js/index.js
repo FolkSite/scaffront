@@ -1,18 +1,13 @@
 'use strict';
 
-const $         = require('gulp-load-plugins')();
 const _         = require('lodash');
 const __        = require('./helpers');
 const del       = require('del');
 const path      = require('path');
-const pathUp    = require('./path-up');
-const VinylPath = pathUp.VinylPath;
 const gulp      = require('gulp');
-const isUrl     = require('is-url');
 const merge     = require('merge-stream');
 const extend    = require('extend');
 const postcss   = require('postcss');
-const combiner  = require('stream-combiner2').obj;
 
 var tasksConfig      = {};
 var config           = require('../scaffront.config.js');
@@ -192,14 +187,14 @@ gulp.task('files:clean', function files$clean () {
 /** ========== SCRIPTS ========== **/
 let webpackConfig = require('../webpack.config.js');
 tasksConfig['scripts'] = extend(true, {}, webpackConfig, {
-  src:  __.glob(path.join(config.root, 'js'), ['*.js', '!_*.js']),
-  dest: path.join(config.dest, 'js')
+  src:  __.glob(config.scripts.root, ['*.js', '!_*.js']),
+  dest: config.scripts.dest
 });
 gulp.task('scripts', function scripts (cb) {
   return tasks['scripts'](tasksConfig['scripts'], cb);
 });
 
-gulp.task('scripts:watch', function (cb) {
+gulp.task('scripts:watch', function scripts$watch (cb) {
   return tasks['scripts'](
     extend(true, {}, tasksConfig['scripts'], {
       watch: true,
@@ -211,11 +206,8 @@ gulp.task('scripts:watch', function (cb) {
   );
 });
 gulp.task('scripts:clean', function scripts$clean (cb) {
-  return del(__.glob(path.join(config.dest, 'js'), ['*.js'], true), {read: false});
+  return del(__.glob(config.scripts.dest, ['*.js'], true), {read: false});
 });
-//gulp.task('scripts:clean', function scripts$clean () {
-//  return del(__.glob(config.dest, ['*.js'], true), {read: false});
-//});
 /** ========== //SCRIPTS ========== **/
 
 /** ========== SERVER ========== **/
@@ -236,10 +228,12 @@ gulp.task('clean', function clean () {
 
 gulp.task('build', gulp.series(
   gulp.parallel(
+    'pages',
     'styles',
     'scripts'
   ),
-  'files'
+  'files',
+  'pages'
 ));
 
 gulp.task('rebuild', gulp.series(
@@ -248,6 +242,7 @@ gulp.task('rebuild', gulp.series(
 ));
 
 gulp.task('watch', gulp.parallel(
+  'pages:watch',
   'scripts:watch',
   'styles:watch',
   'files:watch'

@@ -21,6 +21,9 @@ let env = {
 
 var root = 'app/frontend';
 var dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
+var scripts = {};
+scripts.root = path.join(root, 'js');
+scripts.dest = path.join(dest, 'js');
 
 let server = {
   ui:        false,
@@ -227,6 +230,7 @@ module.exports = {
         tasks, // удалить
         root,
         dest,
+        scripts,
         server,
         resolver,
         assetResolver,
