@@ -542,44 +542,6 @@ class VinylPath {
   }
 }
 
-//var File = require('vinyl');
-//var File = VinylPath;
-//
-//console.time('time');
-//var file = new File({
-//  path: 'D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss'
-//  //base: 'D:/repositories/scaffront\\app\\frontend'
-//  //base: '\\app\\frontend\\'
-//});
-//
-//inspectFile(file);
-//
-//file.base = '\\app\\frontend\\';
-//inspectFile(file);
-//
-//file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
-//inspectFile(file);
-//
-//file.base = 'dist\\production\\';
-//inspectFile(file);
-//
-//file.basename = '/..\\app\\frontend/..\\css.scss';
-//inspectFile(file);
-//
-////file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
-////inspectFile(file);
-//
-////file.basename = 'app\\frontend\\css.scss';
-////inspectFile(file);
-//
-//console.timeEnd('time');
-//
-//const fs = require('fs');
-//console.log('exists', fs.existsSync(file.path));
-
-//console.log('file', file);
-//console.log('file', file.inspect());
-
 module.exports = {
   convertToPosix,
   convertToWin32,
