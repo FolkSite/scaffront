@@ -114,8 +114,7 @@ gulp.task('styles:scss:watch', function () {
 gulp.task('styles', gulp.parallel('styles:css', 'styles:scss'));
 gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch'));
 gulp.task('styles:clean', function () {
-  console.log('styles:clean', __.glob(config.dest, '*.css', true));
-  //return del(__.glob(config.dest, '*.css', true), {read: false});
+  return del(__.glob(config.dest, '*.css', true), {read: false});
 });
 
 
