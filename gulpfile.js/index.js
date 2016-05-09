@@ -152,7 +152,7 @@ gulp.task('files:watch', function () {
     .on('add', runFile)
     // todo: удалять из `dest` удалённый в `src` файл
     //.on('unlink', function () {
-    //
+    // /* new VinylPath */
     //})
   ;
 });
