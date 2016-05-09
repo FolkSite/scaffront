@@ -13,9 +13,8 @@ const merge     = require('merge-stream');
 const extend    = require('extend');
 const postcss   = require('postcss');
 const combiner  = require('stream-combiner2').obj;
-const resolver  = require('./resolver');
+//const resolver  = require('./resolver');
 
-const processCwd = process.cwd();
 const config     = require('../scaffront.config.js');
 const streams    = require('./streams');
 
@@ -25,7 +24,8 @@ if (config.env.isDev) {
   require('clarify');
 }
 
-var assetResolver = config.tasks.assetResolver || null;
+var resolver = config.resolver || null;
+var assetResolver = config.assetResolver || null;
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
@@ -283,9 +283,10 @@ gulp.task('styles:css', function () {
   };
 
   return gulp
-    .src(config.tasks.styles.css.src, {
+    .src(__.glob(config.root, ['*.css', '!_*.css'], true), {
       //since: gulp.lastRun(options.taskName)
     })
+    //.pipe($.debug({title: 'CSS:'}))
     // todo: инкрементальность
     .pipe($.plumber({
       errorHandler: $.notify.onError(err => ({
@@ -295,8 +296,10 @@ gulp.task('styles:css', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
+      resolver:      resolver,
       assetResolver: assetResolver
     }))
+    //.pipe($.newer(config.dest))
     //.pipe(through(function(file, enc, callback) {
     //  console.log($.util.colors.blue('file.path'), file.path);
     //  console.log($.util.colors.blue('file.assets'), file.assets);
@@ -310,7 +313,7 @@ gulp.task('styles:css', function () {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(gulp.dest(config.tasks.styles.dest))
+    .pipe(gulp.dest(config.dest))
   ;
 
 /*
@@ -354,7 +357,7 @@ gulp.task('styles:scss', function (cb) {
   };
 
   return gulp
-    .src(config.tasks.styles.scss.src, {
+    .src(__.glob(config.root, ['*.scss', '!_*.scss'], true), {
       //since: gulp.lastRun(options.taskName)
     })
     //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
@@ -374,7 +377,7 @@ gulp.task('styles:scss', function (cb) {
       $.sourcemaps.write('.', smOpts), // во внешний файл
       $.sourcemaps.write('', smOpts) // инлайн
     ))
-    .pipe(gulp.dest(config.tasks.styles.dest))
+    .pipe(gulp.dest(config.dest))
   ;
 });
 

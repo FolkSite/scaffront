@@ -1,20 +1,15 @@
 'use strict';
 
-/**
- * It will be used in your frontend's scripts as a global variables
- * and in gulp tasks.
- */
-
+const _         = require('lodash');
 const __        = require('./gulpfile.js/helpers');
 const $         = require('gulp-load-plugins')();
 const fs        = require('fs');
 const isUrl     = require('is-url');
 const path      = require('path');
-const resolver  = require('./gulpfile.js/resolver');
+const resolve   = require('resolve');
+//const resolver  = require('./gulpfile.js/resolver');
 const pathUp    = require('./gulpfile.js/path-up');
 const VinylPath = pathUp.VinylPath;
-const Url       = require('fast-url-parser');
-Url.queryString = require('querystringparser');
 
 let env = {
   NODE_ENV: process.env.NODE_ENV,
@@ -24,16 +19,64 @@ let env = {
   debug:    process.env.DEBUG == 'true'
 };
 
-let tasks = {};
+var root = 'app/frontend';
+var dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
-tasks.src  = 'app/frontend';
-tasks.root = tasks.src;
-tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
+let server = {
+  ui:        false,
+  open:      false,
+  //reloadDelay: 1000,
+  //reloadDebounce: 1000,
+  ghostMode: false,
 
-var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
-  return url[0] === '#' ||
-    url.indexOf('data:') === 0 ||
-    isUrl(url);
+  startPath: '/',
+  port:      (env.isDev) ? 1313 : 13666,
+  server:    {
+    index:     'index.html',
+    directory: false,
+    baseDir:   dest
+  }
+};
+
+/**
+ * Функция используется для резолва импортов в css/scss.
+ * Должна вернуть *абсолютный* путь к файлу.
+ *
+ * @param {string} id
+ * @param {string|{basedir: string}} basedir
+ * @param {{}} [opts]
+ * @param {string} [opts.basedir]
+ */
+var resolver = function resolver (id, basedir, opts) {
+  if (_.isPlainObject(basedir)) {
+    opts = basedir;
+  } else {
+    opts = (_.isPlainObject(opts)) ? opts : {};
+    opts.basedir = basedir;
+  }
+  var paths = [].concat(opts.path || []);
+
+  id = id.split('?')[0];
+
+  var resolved = __.resolve('./'+ id, opts);
+  if (!resolved) {
+    resolved = __.resolve(id, opts);
+  }
+
+  if (!resolved) {
+    if (paths.indexOf(opts.basedir) === -1) {
+      paths.unshift(opts.basedir)
+    }
+
+    throw new Error([
+      "Failed to find '" + id + "'",
+      "in [ ",
+      "    " + paths.join(",\n        "),
+      "]"
+    ].join("\n    "));
+  }
+
+  return resolved;
 };
 
 /**
@@ -54,7 +97,7 @@ var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
  * @param {string} entryPathname Файл, в который будет проинклюден basePathname
  * @returns {string|resolvedAsset}
  */
-tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) {
+var assetResolver = function assetResolver (url, basePathname, entryPathname) {
   if (isUrlShouldBeIgnored(url)) { return url; }
 
   var qs = '', hash = '';
@@ -70,14 +113,14 @@ tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) 
   var basedir = path.dirname(basePathname);
   var resolved = resolver(url, basedir);
   var vinylPathSrc = new VinylPath({
-    base: tasks.root,
+    base: root,
     path: resolved
   });
   var vinylPathDest = new VinylPath({
-    base: tasks.root,
+    base: root,
     path: vinylPathSrc.path
   });
-  vinylPathDest.base = tasks.dest;
+  vinylPathDest.base = dest;
 
   result.url = path.join(vinylPathDest.dirname, vinylPathDest.basename);
   result.url = '/'+ pathUp.normalize(result.url, 'posix') + qs + hash;
@@ -92,6 +135,10 @@ tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) 
 
 
 
+
+var tasks = {};
+tasks.src = root;
+tasks.dest = root;
 
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
@@ -157,27 +204,21 @@ tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
 
-let server = {
-  ui:        false,
-  open:      false,
-  //reloadDelay: 1000,
-  //reloadDebounce: 1000,
-  ghostMode: false,
+function isUrlShouldBeIgnored (url) {
+  return !url ||
+    url[0] === '#' ||
+    url.indexOf('data:') === 0 ||
+    isUrl(url);
+}
 
-  startPath: '/',
-  port:      (env.isDev) ? 1313 : 13666,
-  server:    {
-    index:     'index.html',
-    directory: false,
-    baseDir:   tasks.dest
-  }
-};
-
-//console.log('config', config);
 
 module.exports = {
-  server: server,
-  tasks:  tasks,
-  env:    env,
-  envs:   env
+  tasks, // удалить
+  root,
+  dest,
+  server,
+  resolver,
+  assetResolver,
+  env,
+  envs: env
 };

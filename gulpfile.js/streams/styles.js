@@ -16,57 +16,13 @@ const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 const resolver       = require('../resolver');
 
-var resolverFactory = function resolverFactory (resolver) {
-  if (typeof resolver != 'function') {
-    resolver = __.noop;
-  }
-
-  return function (id, basedir, opts) {
-    return resolver(id, basedir, opts || {});
-  };
-};
-
-var assetResolverFactory = function assetResolverFactory (assetResolver) {
-  if (typeof assetResolver != 'function') {
-    assetResolver = __.noop;
-  }
-
-  return function (url, pathname, entryPathname) {
-    var result = assetResolver(url, pathname, entryPathname);
-    result = (result) ? result : url;
-    result = (_.isPlainObject(result)) ? result : { url: result };
-
-    Object.assign({
-      url: '',
-      src: '',
-      dest: ''
-    }, result);
-
-    return result;
-  };
-};
-
-function handleError (cb) {
-  return function (error) {
-    var errorOptions = { fileName: file.path };
-    if (error.name === 'CssSyntaxError') {
-      error = error.message + error.showSourceCode();
-      errorOptions.showStack = false;
-    }
-    // Prevent stream’s unhandled exception from
-    // being suppressed by Promise
-    cb && setImmediate(function () {
-      cb(new $.util.PluginError('gulp-postcss', error));
-    });
-  };
-}
-
 var streams = {};
 
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  var assetResolver = assetResolverFactory(options.assetResolver || null);
+  var resolver      = __.resolverFactory(options.resolver || null);
+  var assetResolver = __.assetResolverFactory(options.assetResolver || null);
 
   return combiner(
     // пропускаем каждую точку входа через свой поток-трансформер
@@ -80,6 +36,8 @@ streams.cssCompile = function cssCompile (options) {
       }
 
       var assets = {};
+      var entryFilepath = file.path;
+
       var opts = { map: false };
 
       if (file.sourceMap) {
@@ -88,9 +46,6 @@ streams.cssCompile = function cssCompile (options) {
 
       opts.from = file.path;
       opts.to = opts.to || file.path;
-
-      //var entryFilepath = path.join(file.base, file.name);
-      var entryFilepath = file.path;
 
       postcss([
         // сперва сохраним все ассеты для точки входа
@@ -166,11 +121,13 @@ streams.cssCompile = function cssCompile (options) {
 streams.scssCompile = function scssCompile (options) {
 
   var assets = {};
-  var assetResolver = assetResolverFactory(options.assetResolver || null);
+  var resolver      = __.resolverFactory(options.resolver || null);
+  var assetResolver = __.assetResolverFactory(options.assetResolver || null);
 
   return combiner(
     through(function(file, enc, callback) {
-      var __filepath = `$__filepath: unquote("${file.path}");`;
+      var filepath = file.path.replace(/\\/g, '\\\\');
+      var __filepath = `$__filepath: unquote("${filepath}");`;
       var contents = file.contents.toString().replace(/(@import\b.+?;)/gm, `$1\n${__filepath}`);
 
       contents = `
@@ -199,11 +156,13 @@ streams.scssCompile = function scssCompile (options) {
          * @returns {string}
          */
         transformContent: function (filepath, contents) {
-          console.log('===== filepath', filepath);
           filepath = filepath.replace(/\\/g, '\\\\');
 
           var __filepath = `$__filepath: unquote("${filepath}");`;
           contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
+          //console.log('================');
+          //console.log('contents', contents);
+          //console.log('================');
 
           return `${__filepath}\n${contents}`;
         }
@@ -214,19 +173,15 @@ streams.scssCompile = function scssCompile (options) {
           url               = url.getValue();
           filepath          = filepath.getValue();
 
-          //console.log($.util.colors.blue('entryFilepath'), entryFilepath);
-          //console.log($.util.colors.blue('filepath'), filepath);
-          console.log($.util.colors.blue('url'), url);
-          console.log('');
+          assets[entryFilepath] = assets[entryFilepath] || {};
 
-          //assets[entryFilepath] = assets[entryFilepath] || {};
-          //var assetsStorage = assets[entryFilepath];
-          //
-          //if (!url) {
-          //  url = '';
-          //} else {
-          //  url = getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
-          //}
+          if (url) {
+            let asset = assetResolver(url, filepath, entryFilepath);
+            url = asset.url || url;
+            if (asset.src && asset.dest) {
+              assets[entryFilepath][asset.src] = asset.dest;
+            }
+          }
 
           done(new sass.types.String('url("'+ url +'")'));
         }
@@ -245,5 +200,20 @@ streams.dist = function (options) {
 
 
 };
+
+function handleError (cb) {
+  return function (error) {
+    var errorOptions = { fileName: file.path };
+    if (error.name === 'CssSyntaxError') {
+      error = error.message + error.showSourceCode();
+      errorOptions.showStack = false;
+    }
+    // Prevent stream’s unhandled exception from
+    // being suppressed by Promise
+    cb && setImmediate(function () {
+      cb(new $.util.PluginError('gulp-postcss', error));
+    });
+  };
+}
 
 module.exports = streams;

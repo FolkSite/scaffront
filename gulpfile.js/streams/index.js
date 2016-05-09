@@ -17,22 +17,26 @@ streams.copyAssets = function (options) {
 
   return combiner(
     through(function(file, enc, callback) {
-      if (!file.assets) {
+      file.assets = (_.isPlainObject(file.assets)) ? file.assets : {};
+
+      var assetsSrc = Object.keys(file.assets);
+      var assetsCount = assetsSrc.length;
+
+      if (!assetsCount) {
         callback(null, file);
         return;
       }
 
-      var assetsStreamsCount = 0;
       var assetsStreamsCountEnded = 0;
 
       var assetStreamCallback = function () {
         assetsStreamsCountEnded++;
-        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
+        if (assetsStreamsCountEnded != assetsCount) { return; }
 
         callback(null, file);
       };
 
-      Object.keys(file.assets).forEach(function (sourceFile) {
+      assetsSrc.forEach(function (sourceFile) {
         var destPath = file.assets[sourceFile];
         var destFile = path.basename(destPath);
         destPath = path.dirname(destPath);
@@ -49,8 +53,6 @@ streams.copyAssets = function (options) {
           .pipe(gulp.dest(destPath))
           .on('end', assetStreamCallback)
         ;
-
-        assetsStreamsCount++;
       });
     })
   );

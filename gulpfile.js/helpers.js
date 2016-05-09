@@ -14,6 +14,55 @@ var __ = {};
 __.noop = function noop () {};
 __.noopTask = function noopTask (cb) { cb(null) };
 
+/**
+ * @param {string} id
+ * @param {{}} [opts]
+ * @returns {string}
+ */
+__.resolve = function resolve (id, opts) {
+  var resolved;
+
+  try {
+    resolved = nodeResolve.sync(id, opts || {});
+  } catch (e) {
+    resolved = '';
+  }
+
+  return resolved;
+};
+
+__.resolverFactory = function resolverFactory (resolver) {
+  if (typeof resolver != 'function') {
+    resolver = __.noop;
+  }
+
+  return function (id, basedir, opts) {
+    return resolver(id, basedir, opts || {}) || id;
+  };
+};
+
+__.assetResolverFactory = function assetResolverFactory (assetResolver) {
+  if (typeof assetResolver != 'function') {
+    assetResolver = __.noop;
+  }
+
+  return function (url, pathname, entryPathname) {
+    var result = assetResolver(url, pathname, entryPathname);
+    result = (result) ? result : url;
+    result = (_.isPlainObject(result)) ? result : { url: result };
+
+    Object.assign({
+      url: '',
+      src: '',
+      dest: ''
+    }, result);
+
+    return result;
+  };
+};
+
+
+
 var bowerDir = (bowerDirectory) ? bowerDirectory.sync() : '';
 __.bowerDir = (bowerDir) ? path.relative(process.cwd(), bowerDir) : '';
 
@@ -87,22 +136,7 @@ __.nodeResolve = function __nodeResolve (url, basedir, customModuleDirectories, 
   return url;
 };
 
-/**
- * @param {string} url
- * @param {{}} [opts]
- * @returns {string}
- */
-__.resolve = function resolve (url, opts) {
-  var resolved;
 
-  try {
-    resolved = nodeResolve.sync(url, opts || {});
-  } catch (e) {
-    resolved = '';
-  }
-
-  return resolved;
-};
 
 /**
  * Если установлен `to`, то вычисляется классическим методом - `path.resolve`.
