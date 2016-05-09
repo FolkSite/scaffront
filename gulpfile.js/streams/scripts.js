@@ -7,6 +7,7 @@ const path     = require('path');
 const config   = require('../../scaffront.config.js');
 const slice    = require('sliced');
 const combiner = require('stream-combiner2').obj;
+const through  = require('through2').obj;
 
 const named         = require('vinyl-named');
 const webpackStream = require('webpack-stream');
@@ -25,8 +26,22 @@ streams.webpack = function (options, cb) {
   cb = (_.isFunction(cb)) ? cb : __.noop;
 
   return combiner(
+    $.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'Webpack',
+        message: err.message
+      }))
+    }),
     named(),
-    webpackStream(options, null, cb)
+    through(function (file, enc, cb) {
+      console.log('== file.path', file.path);
+      cb(null, file);
+    }),
+    webpackStream(options, null, cb),
+    through(function (file, enc, cb) {
+      console.log('=== file.path', file.path);
+      cb(null, file);
+    })
   );
 };
 

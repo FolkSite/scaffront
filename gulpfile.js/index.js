@@ -196,10 +196,8 @@ const webpack       = webpackStream.webpack;
 const AssetsPlugin  = require('assets-webpack-plugin');
 const through       = require('through2').obj;
 
-let webpackConfig = require('../webpack.config.js');
 let webpackTask = function webpackTask (options) {
   options = _.isPlainObject(options) ? options : {};
-  options = extend(true, {}, options, webpackConfig);
 
   return function (cb) {
     options.plugins = _.isArray(options.plugins) ? options.plugins : [];
@@ -243,13 +241,17 @@ let webpackTask = function webpackTask (options) {
       .src(options.src, {
         //since: gulp.lastRun(options.taskName)
       })
-      .pipe($.plumber({
-        errorHandler: $.notify.onError(err => ({
-          title:   'Webpack',
-          message: err.message
-        }))
-      }))
-      .pipe(streams.scripts.webpack(options), function done(err, stats) {
+      //.pipe($.plumber({
+      //  errorHandler: $.notify.onError(err => ({
+      //    title:   'Webpack',
+      //    message: err.message
+      //  }))
+      //}))
+      //.pipe(through(function (file, enc, cb) {
+      //  console.log('= file.path', file.path);
+      //  cb(null, file);
+      //}))
+      .pipe(streams.scripts.webpack(options, function done (err, stats) {
         firstBuildReady = true;
 
         if (err) { // hard error, see https://webpack.github.io/docs/node.js-api.html#error-handling
@@ -259,7 +261,7 @@ let webpackTask = function webpackTask (options) {
         gulplog[stats.hasErrors() ? 'error' : 'info'](stats.toString({
           colors: true
         }));
-      })
+      }))
       //.pipe($.sourcemaps.init({loadMaps: true}))
       //.pipe(through(function (file, enc, cb) {
       //  var isSourceMap = /\.map$/.test(file.path);
@@ -283,25 +285,32 @@ let webpackTask = function webpackTask (options) {
   };
 };
 
-let webpackConfigRequired = {
+let webpackConfig = require('../webpack.config.js');
+let webpackConfigRequired = extend(true, {}, webpackConfig, {
   src: config.tasks.scripts.src,
   dest: config.tasks.scripts.dest,
 
   //profile: !config.env.isProd,
   devtool: !config.env.isProd ? '#module-cheap-inline-source-map' : '#source-map'
-};
+});
 
 gulp.task('scripts', webpackTask(webpackConfigRequired));
-gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
-  watch: true,
-  watchOptions: {
-    aggregateTimeout: 100
-  }
-})));
-
-gulp.task('scripts:clean', function scripts$clean () {
-  return del(__.glob(config.dest, ['*.js'], true), {read: false});
+gulp.task('scripts:watch', function (cb) {
+  cb();
 });
+//gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
+//  watch: true,
+//  watchOptions: {
+//    aggregateTimeout: 100
+//  }
+//})));
+
+gulp.task('scripts:clean', function scripts$clean (cb) {
+  cb();
+});
+//gulp.task('scripts:clean', function scripts$clean () {
+//  return del(__.glob(config.dest, ['*.js'], true), {read: false});
+//});
 /** ========== //SCRIPTS ========== **/
 
 /** ========== SERVER ========== **/

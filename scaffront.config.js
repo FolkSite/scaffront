@@ -149,7 +149,7 @@ var assetResolver = function assetResolver (url, basePathname, entryPathname) {
 
 var tasks = {};
 tasks.src = root;
-tasks.dest = root;
+tasks.dest = dest;
 
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');
@@ -193,14 +193,14 @@ tasks.scripts.webpack = {
   // здесь они нужны, чтобы можно было запускать вебпак из консоли
   context: path.resolve('./app/frontend/'),
   entries: fs
-   .readdirSync(path.join(path.resolve('./app/frontend/'), 'js'))
-   .reduce(function (all, file) {
-     if (/\.js$/.test(file) && !/^_/.test(file)) {
-       all[path.basename(file, '.js')] = './js/'+ file;
-     }
+             .readdirSync(path.join(path.resolve('./app/frontend/'), 'js'))
+             .reduce(function (all, file) {
+               if (/\.js$/.test(file) && !/^_/.test(file)) {
+                 all[path.basename(file, '.js')] = './js/'+ file;
+               }
 
-     return all;
-   }, {})
+               return all;
+             }, {})
 };
 
 tasks.styles       = {};
@@ -224,12 +224,12 @@ function isUrlShouldBeIgnored (url) {
 
 
 module.exports = {
-  tasks, // удалить
-  root,
-  dest,
-  server,
-  resolver,
-  assetResolver,
-  env,
+        tasks, // удалить
+        root,
+        dest,
+        server,
+        resolver,
+        assetResolver,
+        env,
   envs: env
 };
