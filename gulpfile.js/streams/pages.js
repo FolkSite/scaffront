@@ -17,16 +17,11 @@ const through        = require('through2').obj;
 
 var streams = {};
 
-streams.compileHtml = function htmlCompile (options) {
+streams.htmlCompile = function htmlCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  if (typeof options.resolver != 'function') {
-    throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
-  }
-
-  if (typeof options.getAssetTarget != 'function') {
-    throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
-  }
+  var resolver      = __.resolverFactory(options.resolver || null);
+  var assetResolver = __.assetResolverFactory(options.assetResolver || null);
 
   var assets = {};
 

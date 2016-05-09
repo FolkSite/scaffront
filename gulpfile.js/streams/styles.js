@@ -160,9 +160,6 @@ streams.scssCompile = function scssCompile (options) {
 
           var __filepath = `$__filepath: unquote("${filepath}");`;
           contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
-          //console.log('================');
-          //console.log('contents', contents);
-          //console.log('================');
 
           return `${__filepath}\n${contents}`;
         }
@@ -194,6 +191,159 @@ streams.scssCompile = function scssCompile (options) {
     })
   );
 };
+
+
+
+
+
+
+
+/*
+ Переписать на scss: https://github.com/jonathantneal/postcss-short-position
+ Что-то похожее на центрирование:
+ https://github.com/jedmao/postcss-center
+
+ https://github.com/postcss/postcss-import
+ https://github.com/postcss/postcss-url
+ https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
+
+ Скаффолдер для плагинов под PostCSS:
+ https://github.com/postcss/postcss-plugin-boilerplate
+
+ Автоматические стайлгайды!
+ https://github.com/morishitter/postcss-style-guide
+
+ Форматирование стилей:
+ https://github.com/ben-eb/perfectionist
+
+ Сообщения об ошибках "компиляции", как в SCSS (body:before)
+ https://github.com/postcss/postcss-browser-reporter
+ require('postcss-browser-reporter')({
+ selector: 'html:before'
+ }),
+
+
+ Ещё один месседжер:
+ https://github.com/postcss/postcss-reporter
+
+ Отфильтровывает файлы из потока и применяет плагин:
+ https://github.com/tsm91/postcss-filter-stream
+ filterStream('**\/css/vendor/**', colorguard()),
+
+ H5BP'ые in-/visible хелперы:
+ https://github.com/lukelarsen/postcss-hidden
+
+ http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
+ https://www.npmjs.com/package/image-size
+
+ Ассеты и шрифты:
+ http://postcss.parts/tag/images
+ http://postcss.parts/tag/svg
+ https://github.com/justim/postcss-svg-fallback
+ https://github.com/jonathantneal/postcss-font-magician
+ https://github.com/geut/postcss-copy
+
+ https://github.com/tars/tars-scss
+ https://toster.ru/q/256261
+ https://github.com/glebmachine/postcss-cachebuster
+ */
+
+
+var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
+var postCssTasksForAnyStyles = $.postcss([
+  require('postcss-pseudo-content-insert'),
+  require('postcss-focus'),
+  require('postcss-single-charset')(),
+  require('postcss-easings')({
+    easings: require('postcss-easings').easings
+  })
+]);
+var postCssProcessorsFallbacks = [
+  require('postcss-color-rgba-fallback')({
+    properties: ['background-color', 'background', 'color', 'border', 'border-color', 'outline', 'outline-color'],
+    oldie: true,
+    backgroundColor: [255, 255, 255]
+  }),
+  require('postcss-gradient-transparency-fix'),
+  require('postcss-single-charset')(),
+  require('postcss-will-change'),
+  require('pixrem')({
+    // `pixrem` tries to get the root font-size from CSS (html or :root) and overrides this option
+    //rootValue: 16px,
+    replace: false,
+    atrules: true,
+    browsers: browsers,
+    unitPrecision: 10
+  }),
+  require('postcss-pseudoelements')({
+    selectors: ['before','after','first-letter','first-line']
+  }),
+  require('postcss-vmin'),
+  require('postcss-opacity'),
+  require('postcss-filter-gradient'),
+  require('postcss-input-style'),
+  require('postcss-unroot')({
+    method: 'copy'
+  }),
+  //require('postcss-svg-fallback')({
+  //  // base path for the images found in the css
+  //  // this is most likely the path to the css file you're processing
+  //  // not setting this option might lead to unexpected behavior
+  //  basePath: '',
+  //
+  //  // destination for the generated SVGs
+  //  // this is most likely the path to where the generated css file is outputted
+  //  // not setting this option might lead to unexpected behavior
+  //  dest: '',
+  //
+  //  // selector that gets prefixed to selector
+  //  fallbackSelector: '.no-svg',
+  //
+  //  // when `true` only the css is changed (no new files created)
+  //  disableConvert: false,
+  //}),
+  // с `postcss-unmq` надо разобраться на тему -
+  // как засунуть получившиеся стили в поток отдельным файлом
+  //require('postcss-unmq')({
+  //  // these are already the default options
+  //  type: 'screen',
+  //  width: 1024,
+  //  height: 768,
+  //  resolution: '1dppx',
+  //  color: 3
+  //}),
+];
+var postCssProcessorsDist = [
+  require('cssnano')({
+    autoprefixer: {
+      browsers: browsers,
+      cascade:  false,
+      remove:   true
+    },
+    calc: {},
+    colormin: {legacy : false},
+    convertValues: {length: false},
+    discardComments: {},
+    discardDuplicates: {},
+    discardEmpty: {},
+    discardUnused: {},
+    filterPlugins: {},
+    mergeIdents: {},
+    mergeLonghand: {},
+    mergeRules: {},
+    minifyFontValues: {},
+    minifyGradients: {},
+    minifySelectors: {},
+    normalizeCharset: {},
+    normalizeUrl: {},
+    orderedValues: {},
+    reduceIdents: {},
+    reduceTransforms: {},
+    svgo: {},
+    uniqueSelectors: {},
+    zindex: {}
+  })
+];
 
 streams.dist = function (options) {
   options = (_.isPlainObject(options)) ? options : {};

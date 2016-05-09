@@ -118,6 +118,45 @@ gulp.task('styles:clean', function () {
 });
 /** ========== //STYLES ========== **/
 
+/** ========== PAGES ========== **/
+tasksConfig['pages'] = {
+  src:           __.glob(config.root, ['*.html', '!_*.html'], true),
+  dest:          config.dest,
+  resolver:      config.resolver,
+  assetResolver: config.assetResolver
+};
+gulp.task('pages', function (cb) {
+  return tasks['pages'](tasksConfig['pages'], cb);
+});
+
+gulp.task('pages:watch', function () {
+  var defaults = Object.assign({}, tasksConfig['pages']);
+
+  var runAllFiles = function runAllFiles () {
+    runTask('pages', defaults);
+  };
+  var runEntryFile = function runEntryFile (file) {
+    runTask('pages', {
+      src: file,
+      base: config.root
+    });
+  };
+
+  gulp
+    .watch(__.glob(config.root, ['_*.html'], true))
+    .on('change', runAllFiles)
+    .on('add', runAllFiles)
+    .on('unlink', runAllFiles)
+  ;
+
+  gulp
+    .watch(__.glob(config.root, ['*.html', '!_*.html'], true))
+    .on('change', runEntryFile)
+    .on('add', runEntryFile)
+  ;
+});
+/** ========== //PAGES ========== **/
+
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('server', config.server);
@@ -167,248 +206,48 @@ gulp.task('files:clean', function () {
 
 
 
-gulp.task('pages', function () {
-  return gulp
-    .src(__.glob(config.tasks.root, '*.html', true), {
-      // При повторном запуске таска (например, через watch) выбирает только те файлы,
-      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe($.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'Html',
-        message: err.message
-      }))
-    }))
-    //.pipe(streams.pages.compileHtml({
-    //  resolver:       moduleResolver,
-    //  getAssetTarget: config.tasks.getAssetTarget
-    //}))
-    //.pipe($.tap(function (file) {
-    //  console.log('file', file.path);
-    //}))
-    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    //.pipe($.cached('files'))
-
-    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
-    // если в целевой директории такие файлы уже есть, то не пропускает их.
-    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
-    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-    //.pipe($.newer(config.tasks.files.dest))
-    .pipe(through(function(file, enc, callback) {
-      console.log($.util.colors.blue('basename'), file.basename);
-      console.log($.util.colors.blue('assets'), file.assets);
-    }))
-    .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
-
-    .pipe(gulp.dest(config.tasks.dest))
-    ;
-});
-
-
-/** ========== //FILES ========== **/
-
-/** ========== STYLES ========== **/
-
-/*
- Переписать на scss: https://github.com/jonathantneal/postcss-short-position
- Что-то похожее на центрирование:
- https://github.com/jedmao/postcss-center
-
- https://github.com/postcss/postcss-import
- https://github.com/postcss/postcss-url
- https://github.com/postcss/postcss/blob/master/docs/writing-a-plugin.md
-
- Скаффолдер для плагинов под PostCSS:
- https://github.com/postcss/postcss-plugin-boilerplate
-
- Автоматические стайлгайды!
- https://github.com/morishitter/postcss-style-guide
-
- Форматирование стилей:
- https://github.com/ben-eb/perfectionist
-
- Сообщения об ошибках "компиляции", как в SCSS (body:before)
- https://github.com/postcss/postcss-browser-reporter
- require('postcss-browser-reporter')({
- selector: 'html:before'
- }),
-
-
- Ещё один месседжер:
- https://github.com/postcss/postcss-reporter
-
- Отфильтровывает файлы из потока и применяет плагин:
- https://github.com/tsm91/postcss-filter-stream
- filterStream('**\/css/vendor/**', colorguard()),
-
- H5BP'ые in-/visible хелперы:
- https://github.com/lukelarsen/postcss-hidden
-
- http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
- https://www.npmjs.com/package/image-size
-
- Ассеты и шрифты:
- http://postcss.parts/tag/images
- http://postcss.parts/tag/svg
- https://github.com/justim/postcss-svg-fallback
- https://github.com/jonathantneal/postcss-font-magician
- https://github.com/geut/postcss-copy
-
- https://github.com/tars/tars-scss
- https://toster.ru/q/256261
- https://github.com/glebmachine/postcss-cachebuster
- */
-
-
-var browsers = ['last 4 versions', 'ie 8-9', '> 2%'];
-var postCssTasksForAnyStyles = $.postcss([
-  require('postcss-pseudo-content-insert'),
-  require('postcss-focus'),
-  require('postcss-single-charset')(),
-  require('postcss-easings')({
-    easings: require('postcss-easings').easings
-  })
-]);
-var postCssProcessorsFallbacks = [
-  require('postcss-color-rgba-fallback')({
-    properties: ['background-color', 'background', 'color', 'border', 'border-color', 'outline', 'outline-color'],
-    oldie: true,
-    backgroundColor: [255, 255, 255]
-  }),
-  require('postcss-gradient-transparency-fix'),
-  require('postcss-single-charset')(),
-  require('postcss-will-change'),
-  require('pixrem')({
-    // `pixrem` tries to get the root font-size from CSS (html or :root) and overrides this option
-    //rootValue: 16px,
-    replace: false,
-    atrules: true,
-    browsers: browsers,
-    unitPrecision: 10
-  }),
-  require('postcss-pseudoelements')({
-    selectors: ['before','after','first-letter','first-line']
-  }),
-  require('postcss-vmin'),
-  require('postcss-opacity'),
-  require('postcss-filter-gradient'),
-  require('postcss-input-style'),
-  require('postcss-unroot')({
-    method: 'copy'
-  }),
-  //require('postcss-svg-fallback')({
-  //  // base path for the images found in the css
-  //  // this is most likely the path to the css file you're processing
-  //  // not setting this option might lead to unexpected behavior
-  //  basePath: '',
-  //
-  //  // destination for the generated SVGs
-  //  // this is most likely the path to where the generated css file is outputted
-  //  // not setting this option might lead to unexpected behavior
-  //  dest: '',
-  //
-  //  // selector that gets prefixed to selector
-  //  fallbackSelector: '.no-svg',
-  //
-  //  // when `true` only the css is changed (no new files created)
-  //  disableConvert: false,
-  //}),
-  // с `postcss-unmq` надо разобраться на тему -
-  // как засунуть получившиеся стили в поток отдельным файлом
-  //require('postcss-unmq')({
-  //  // these are already the default options
-  //  type: 'screen',
-  //  width: 1024,
-  //  height: 768,
-  //  resolution: '1dppx',
-  //  color: 3
-  //}),
-];
-var postCssProcessorsDist = [
-  require('cssnano')({
-    autoprefixer: {
-      browsers: browsers,
-      cascade:  false,
-      remove:   true
-    },
-    calc: {},
-    colormin: {legacy : false},
-    convertValues: {length: false},
-    discardComments: {},
-    discardDuplicates: {},
-    discardEmpty: {},
-    discardUnused: {},
-    filterPlugins: {},
-    mergeIdents: {},
-    mergeLonghand: {},
-    mergeRules: {},
-    minifyFontValues: {},
-    minifyGradients: {},
-    minifySelectors: {},
-    normalizeCharset: {},
-    normalizeUrl: {},
-    orderedValues: {},
-    reduceIdents: {},
-    reduceTransforms: {},
-    svgo: {},
-    uniqueSelectors: {},
-    zindex: {}
-  })
-];
-
-
-
-//gulp.task('styles:scss', function (cb) {
-//  var smOpts = {
-//    sourceRoot: '/css/sources',
-//    includeContent: true,
-//  };
-//
+//gulp.task('pages', function () {
 //  return gulp
-//    .src(__.glob(config.root, ['*.scss', '!_*.scss'], true), {
+//    .src(__.glob(config.tasks.root, '*.html', true), {
+//      // При повторном запуске таска (например, через watch) выбирает только те файлы,
+//      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
 //      //since: gulp.lastRun(options.taskName)
 //    })
-//    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
 //    .pipe($.plumber({
 //      errorHandler: $.notify.onError(err => ({
-//        title:   'SCSS',
+//        title:   'Html',
 //        message: err.message
 //      }))
 //    }))
-//    .pipe($.sourcemaps.init({loadMaps: true}))
-//    .pipe(streams.styles.scssCompile({
-//      assetResolver: config.assetResolver
+//    //.pipe(streams.pages.compileHtml({
+//    //  resolver:       moduleResolver,
+//    //  getAssetTarget: config.tasks.getAssetTarget
+//    //}))
+//    //.pipe($.tap(function (file) {
+//    //  console.log('file', file.path);
+//    //}))
+//    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
+//    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
+//    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
+//    //.pipe($.cached('files'))
+//
+//    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
+//    // если в целевой директории такие файлы уже есть, то не пропускает их.
+//    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
+//    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
+//    //.pipe($.newer(config.tasks.files.dest))
+//    .pipe(through(function(file, enc, callback) {
+//      console.log($.util.colors.blue('basename'), file.basename);
+//      console.log($.util.colors.blue('assets'), file.assets);
 //    }))
-//    .pipe(streams.copyAssets())
-//    .pipe($.if(
-//      config.env.isProd,
-//      $.sourcemaps.write('.', smOpts), // во внешний файл
-//      $.sourcemaps.write('', smOpts) // инлайн
-//    ))
-//    .pipe(gulp.dest(config.dest))
+//    .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
+//
+//    .pipe(gulp.dest(config.tasks.dest))
 //    ;
 //});
 
-//gulp.task('styles:watch', function () {
-//  gulp
-//    .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
-//    .on('unlink', function (filepath) {
-//
-//    })
-//  ;
-//  gulp
-//    .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
-//    .on('unlink', function (filepath) {
-//
-//    })
-//  ;
-//
-//});
 
-/** ========== //STYLES ========== **/
+/** ========== //FILES ========== **/
 
 /** ========== SCRIPTS ========== **/
 const gulplog       = require('gulplog');

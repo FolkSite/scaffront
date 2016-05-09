@@ -113,6 +113,37 @@ tasks['styles:scss'] = function (opts, cb) {
   return stream;
 };
 
+tasks['pages'] = function (opts, cb) {
+  opts = (_.isPlainObject(opts)) ? opts : {};
+  assertTask(opts);
+
+  var stream = gulp
+    .src(opts.src, opts)
+    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'Page',
+        message: err.message
+      }))
+    }))
+    .pipe(streams.pages.htmlCompile({
+      resolver:      opts.resolver || null,
+      assetResolver: opts.assetResolver || null
+    }));
+
+  if (opts.dest) {
+    stream = stream.pipe($.newer(opts.dest));
+  }
+
+  stream = stream.pipe(streams.copyAssets());
+
+  if (opts.dest) {
+    stream = stream.pipe(gulp.dest(opts.dest));
+  }
+
+  return stream;
+};
+
 tasks['files'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
