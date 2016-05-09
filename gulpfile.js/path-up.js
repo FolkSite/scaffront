@@ -320,10 +320,19 @@ class VinylPath {
     return (!isDot(pathname)) ? pathname : '';
   }
 
+  /**
+   * @param {string|{}} pathname
+   * @param {{}} [opts]
+   */
   constructor (pathname, opts) {
-    assertPath(pathname);
+    if (isPlainObject(pathname)) {
+      opts     = pathname;
+      pathname = opts.path;
+    }
 
     opts = opts || {};
+
+    assertPath(pathname);
 
     this._cwd      = '';
     this._base     = '';
@@ -517,20 +526,21 @@ class VinylPath {
   }
 }
 
-//var inspectFile = function inspectFile (file) {
-//  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
-//    if (typeof file[key] == 'function') { return; }
-//
-//    console.log('==', key +':', file[key]);
-//  });
-//  console.log('');
-//};
-//
-////var File = require('vinyl');
+var inspectFile = function inspectFile (file) {
+  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
+    if (typeof file[key] == 'function') { return; }
+
+    console.log('==', key +':', file[key]);
+  });
+  console.log('');
+};
+
+//var File = require('vinyl');
 //var File = VinylPath;
 //
 //console.time('time');
-//var file = new File('D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss', {
+//var file = new File({
+//  path: 'D:\\repositories\\scaffront\\app\\frontend\\css\\css.scss'
 //  //base: 'D:/repositories/scaffront\\app\\frontend'
 //  //base: '\\app\\frontend\\'
 //});
@@ -546,9 +556,9 @@ class VinylPath {
 //file.base = 'dist\\production\\';
 //inspectFile(file);
 //
-////file.basename = '..\\app\\frontend/..\\css.scss';
-////inspectFile(file);
-////
+//file.basename = '/..\\app\\frontend/..\\css.scss';
+//inspectFile(file);
+//
 ////file.dirname = '/../../\\bower_components\\frontend/styles\\css.scss';
 ////inspectFile(file);
 //
@@ -559,9 +569,9 @@ class VinylPath {
 //
 //const fs = require('fs');
 //console.log('exists', fs.existsSync(file.path));
-//
-////console.log('file', file);
-////console.log('file', file.inspect());
+
+//console.log('file', file);
+//console.log('file', file.inspect());
 
 module.exports = {
   convertToPosix,
