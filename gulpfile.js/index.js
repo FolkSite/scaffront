@@ -11,81 +11,21 @@ const gulp      = require('gulp');
 const isUrl     = require('is-url');
 const merge     = require('merge-stream');
 const extend    = require('extend');
-const resolver  = require('./resolver');
 const postcss   = require('postcss');
 const combiner  = require('stream-combiner2').obj;
+const resolver  = require('./resolver');
 
 const processCwd = process.cwd();
 const config     = require('../scaffront.config.js');
 const streams    = require('./streams');
 
-var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
-  return url[0] === '#' ||
-    url.indexOf('data:') === 0 ||
-    isUrl(url);
-};
-
-var assetResolver = function assetResolver (url, baseDir, targetDir) {
-  if (isUrlShouldBeIgnored(url)) {
-    return url;
-  }
-
-
-
-
-
-  filePath  = __.preparePath(filePath, {startSlash: true, trailingSlash: false});
-  baseDir   = __.preparePath(baseDir, {startSlash: true, trailingSlash: true});
-  targetDir = __.preparePath(targetDir, {startSlash: true, trailingSlash: true});
-
-  var parsedFilePath        = __.parsePath(filePath);
-  var fileName              = parsedFilePath.base;
-  var fileDirWithoutBaseDir = path.relative(baseDir, parsedFilePath.dir);
-  var targetFile            = path.join(targetDir, fileDirWithoutBaseDir, fileName);
-
-  return targetFile;
-};
-
-/**
- * @param {string} filePath
- * @param {string} baseDir
- * @param {string} targetDir
- * @returns {string}
- */
-var resolveTargetFile = function resolveTargetFile (filePath, baseDir, targetDir) {
-  filePath  = __.preparePath(filePath, {startSlash: true, trailingSlash: false});
-  baseDir   = __.preparePath(baseDir, {startSlash: true, trailingSlash: true});
-  targetDir = __.preparePath(targetDir, {startSlash: true, trailingSlash: true});
-
-  var parsedFilePath        = __.parsePath(filePath);
-  var fileName              = parsedFilePath.base;
-  var fileDirWithoutBaseDir = path.relative(baseDir, parsedFilePath.dir);
-  var targetFile            = path.join(targetDir, fileDirWithoutBaseDir, fileName);
-
-  return targetFile;
-};
-
-/**
- * @param {string} filepath
- * @param {string} baseDir
- * @param {string} targetDir
- * @param {string} [cacheKey]
- */
-var onUnlink = function onUnlink (filepath, baseDir, targetDir, cacheKey) {
-  var file = path.resolve(filepath);
-  if (cacheKey && $.cached.caches[cacheKey]) {
-    delete $.cached.caches[cacheKey][file];
-  }
-
-  file = resolveTargetFile(filepath, config.tasks.files.root, config.tasks.dest);
-  file = path.join(process.cwd(), file);
-  del.sync(file, {read: false});
-};
 
 if (config.env.isDev) {
   require('trace');
   require('clarify');
 }
+
+var assetResolver = config.tasks.assetResolver || null;
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
@@ -135,7 +75,7 @@ gulp.task('files:watch', function () {
   gulp
     .watch(config.tasks.files.watch, gulp.series('files'))
     .on('unlink', function (filepath) {
-      onUnlink(filepath, config.tasks.files.root, config.tasks.dest, 'files');
+
     })
   ;
 });
@@ -157,10 +97,10 @@ gulp.task('pages', function () {
         message: err.message
       }))
     }))
-    .pipe(streams.pages.compileHtml({
-      resolver:       moduleResolver,
-      getAssetTarget: config.tasks.getAssetTarget
-    }))
+    //.pipe(streams.pages.compileHtml({
+    //  resolver:       moduleResolver,
+    //  getAssetTarget: config.tasks.getAssetTarget
+    //}))
     //.pipe($.tap(function (file) {
     //  console.log('file', file.path);
     //}))
@@ -355,10 +295,15 @@ gulp.task('styles:css', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
-      getAssetTarget: config.tasks.getAssetTarget
+      assetResolver: assetResolver
     }))
+    //.pipe(through(function(file, enc, callback) {
+    //  console.log($.util.colors.blue('file.path'), file.path);
+    //  console.log($.util.colors.blue('file.assets'), file.assets);
+    //  callback(null, file);
+    //}))
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
-    //.pipe(streams.copyAssets())
+    .pipe(streams.copyAssets())
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -421,7 +366,7 @@ gulp.task('styles:scss', function (cb) {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
-      getAssetTarget: config.tasks.getAssetTarget
+      assetResolver: assetResolver
     }))
     //.pipe(streams.styles.copyAssets())
     .pipe($.if(
@@ -437,13 +382,13 @@ gulp.task('styles:watch', function () {
   gulp
     .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
     .on('unlink', function (filepath) {
-      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+
     })
   ;
   gulp
     .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
     .on('unlink', function (filepath) {
-      onUnlink(filepath, config.tasks.styles.root, config.tasks.styles.dest, 'css');
+
     })
   ;
 

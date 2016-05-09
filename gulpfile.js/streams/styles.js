@@ -14,43 +14,27 @@ const resolve        = require('resolve');
 const combiner       = require('stream-combiner2').obj;
 const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
-const resolver = require('../resolver');
+const resolver       = require('../resolver');
 
-/**
- * @param {{}} assetsStorage
- * @param {string} url
- * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} baseFilepath Ипортируемый файл, у которого надо зарезолвить урлы
- * @param {{resolver: function, getAssetTarget: function}} options
- * @returns {string}
- */
-//var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryFilepath, baseFilepath, options) {
-//  var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
-//  var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
-//
-//  if (!assetTarget) {
-//    return url;
-//  }
-//
-//  assetsStorage[assetFilepath] = assetTarget.path;
-//
-//  return assetTarget.url;
-//};
-//
-///**
-// * @param {{}} assetsStorage
-// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
-// * @param {string} baseFilepath Импортируемый файл, у которого надо зарезолвить урлы
-// * @param {{resolver: function, getAssetTarget: function}} options
-// * @returns {string}
-// */
-//var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, baseFilepath, options) {
-//  return require('postcss-url')({
-//    url: function (url) {
-//      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
-//    }
-//  })
-//};
+var assetResolverFactory = function assetResolverFactory (assetResolver) {
+  if (typeof assetResolver != 'function') {
+    assetResolver = __.noop;
+  }
+
+  return function (url, pathname, entryPathname) {
+    var result = assetResolver(url, pathname, entryPathname);
+    result = (result) ? result : url;
+    result = (_.isPlainObject(result)) ? result : { url: result };
+
+    Object.assign({
+      url: '',
+      src: '',
+      dest: ''
+    }, result);
+
+    return result;
+  };
+};
 
 function handleError (cb) {
   return function (error) {
@@ -72,13 +56,7 @@ var streams = {};
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  //var assetResolver = (typeof options.assetResolver == 'function') ? assetResolver : function (url) {
-  //
-  //};
-
-  if (typeof options.getAssetTarget != 'function') {
-    throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
-  }
+  var assetResolver = assetResolverFactory(options.assetResolver || null);
 
   return combiner(
     // пропускаем каждую точку входа через свой поток-трансформер
@@ -91,6 +69,7 @@ streams.cssCompile = function cssCompile (options) {
         return handleError(callback)('Streams are not supported!');
       }
 
+      var assets = {};
       var opts = { map: false };
 
       if (file.sourceMap) {
@@ -102,7 +81,6 @@ streams.cssCompile = function cssCompile (options) {
 
       //var entryFilepath = path.join(file.base, file.name);
       var entryFilepath = file.path;
-      console.log($.util.colors.blue('entryFilepath'), entryFilepath);
 
       postcss([
         // сперва сохраним все ассеты для точки входа
@@ -116,15 +94,16 @@ streams.cssCompile = function cssCompile (options) {
           },
           // каждый импортированный файл тоже надо пропустить через postcss
           transform: function(css, filepath, _options) {
-            console.log($.util.colors.blue('filepath'), filepath);
-
             return postcss([
               // теперь сохраним все ассеты из импортируемых файлов
               require('postcss-url')({
                 url: function (url) {
-                  console.log('url', url);
-                  console.log('');
-                  return url;
+                  var asset = assetResolver(url, filepath, entryFilepath);
+                  if (asset.src && asset.dest) {
+                    assets[asset.src] = asset.dest;
+                  }
+
+                  return asset.url || url;
                 }
               })
             ])
@@ -141,6 +120,7 @@ streams.cssCompile = function cssCompile (options) {
           var warnings = result.warnings().join('\n');
 
           file.contents = new Buffer(result.css);
+          file.assets = assets;
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -166,11 +146,8 @@ streams.cssCompile = function cssCompile (options) {
 
 streams.scssCompile = function scssCompile (options) {
 
-  if (typeof options.getAssetTarget != 'function') {
-    throw new Error('[scaffront][scssCompile] `getAssetTarget` must be a function.');
-  }
-
   var assets = {};
+  var assetResolver = assetResolverFactory(options.assetResolver || null);
 
   return combiner(
     through(function(file, enc, callback) {
@@ -203,6 +180,9 @@ streams.scssCompile = function scssCompile (options) {
          * @returns {string}
          */
         transformContent: function (filepath, contents) {
+          console.log('===== filepath', filepath);
+          filepath = filepath.replace(/\\/g, '\\\\');
+
           var __filepath = `$__filepath: unquote("${filepath}");`;
           contents = contents.replace(/(@import\b.+?;)/gm, '$1\n'+ __filepath);
 
@@ -211,18 +191,23 @@ streams.scssCompile = function scssCompile (options) {
       },
       functions: {
         '__url($filepath, $url)': function(filepath, url, done) {
-          url               = url.getValue();
-          var baseFilepath  = filepath.getValue();
           var entryFilepath = this.options.file;
+          url               = url.getValue();
+          filepath          = filepath.getValue();
 
-          assets[entryFilepath] = assets[entryFilepath] || {};
-          var assetsStorage = assets[entryFilepath];
+          //console.log($.util.colors.blue('entryFilepath'), entryFilepath);
+          //console.log($.util.colors.blue('filepath'), filepath);
+          console.log($.util.colors.blue('url'), url);
+          console.log('');
 
-          if (!url) {
-            url = '';
-          } else {
-            url = getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
-          }
+          //assets[entryFilepath] = assets[entryFilepath] || {};
+          //var assetsStorage = assets[entryFilepath];
+          //
+          //if (!url) {
+          //  url = '';
+          //} else {
+          //  url = getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
+          //}
 
           done(new sass.types.String('url("'+ url +'")'));
         }

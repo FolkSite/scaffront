@@ -5,11 +5,14 @@
  * and in gulp tasks.
  */
 
-const __    = require('./gulpfile.js/helpers');
-const $     = require('gulp-load-plugins')();
-const fs    = require('fs');
-const path  = require('path');
-const isUrl = require('is-url');
+const __        = require('./gulpfile.js/helpers');
+const $         = require('gulp-load-plugins')();
+const fs        = require('fs');
+const isUrl     = require('is-url');
+const path      = require('path');
+const resolver  = require('./gulpfile.js/resolver');
+const pathUp    = require('./gulpfile.js/path-up');
+const VinylPath = pathUp.VinylPath;
 
 let env = {
   NODE_ENV: process.env.NODE_ENV,
@@ -25,117 +28,54 @@ tasks.src  = 'app/frontend';
 tasks.root = tasks.src;
 tasks.dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
 
-tasks.nodeResolveDefaults = {
-  moduleDirectory: ['node_modules', 'bower_directory']
-};
-
-function isUrlShouldBeIgnored (url) {
-  return url[0] === "/" ||
-    url[0] === "#" ||
-    url.indexOf("data:") === 0 ||
-    isUrl(url) ||
-    /^[a-z]+:\/\//.test(url)
-}
-
-/**
- * Функция должна вернуть абсолютный путь к файлу, исходя из месторасположения файла, в котором он был найден.
- *
- * @param {string} module Урл, как оно есть
- * @param {string} basedir Месторасположение файла, в котором этот урл был найден
- * @param {string} entryBasedir Месторасположение файла, в который проинклюдится файл из basedir (необходимо для
- *   css/scss/html)
- * @return {string}
- */
-tasks.resolver = function (module, basedir, entryBasedir) {
-  if (isUrlShouldBeIgnored(module)) {
-    return module;
-  }
-
-  let root = tasks.root;
-  if (path.isAbsolute(module)) {
-    root = __.preparePath(root, {startSlash: true, trailingSlash: false});
-    //root = path.join('/', path.relative(process.cwd(), root));
-
-    console.log('module.indexOf(root)', module.indexOf(root));
-
-    //if (module.indexOf(root) === 0) {
-    //  module = path.join(process.cwd(), root, module);
-    //}
-  } else {
-    module = './'+ module;
-  }
-
-  module = module.split('?')[0]; // remove qs & hash
-
-  return __.resolve(module, {basedir: basedir}) || '';
+var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
+  return url[0] === '#' ||
+    url.indexOf('data:') === 0 ||
+    isUrl(url);
 };
 
 /**
- * Функция должна вернуть объект с новым урл и новым местоположением файла.
- * Здесь вы сами можете определить каким будет урл:
- *   - абсолютным;
- *   - относительно какой-то определённой директории веб-сервера (м.б. исходя из конфигурации выше)
- *   - или что-то ещё.
- * Используйте расширения, имена файлов и пути из `entryFilepath` и `baseFilepath` файлов, чтобы определить -
- * относительно чего надо вернуть новые значения.
- *
- * @param {string} assetUrl Урл, как оно есть
- * @param {string} assetFilepath Абсолютный путь к ассет-файлу, который пришёл из `tasks.resolver`-функции
- * @param {string} baseFilepath Файл, в котором этот урл был найден
- * @param {string} entryFilepath Файл, в который проинклюдится baseFilepath (необходимо для css/scss/html)
- * @returns {{url: string, path: string}|null}
+ * @typedef {{}} resolvedAsset
+ * @property {string} url
+ * @property {string} [src]
+ * @property {string} [dest]
  */
-tasks.getAssetTarget = function (assetUrl, assetFilepath, baseFilepath, entryFilepath) {
-  if (isUrlShouldBeIgnored(assetUrl)) {
-    return null;
-  }
 
-  var root, dest, target = {
-    url: assetUrl,
-    path: assetFilepath
-  };
+/**
+ * @param {string} url
+ * @param {string} pathname
+ * @param {string} entryPathname
+ * @returns {string|resolvedAsset}
+ */
+tasks.assetResolver = function assetResolver (url, pathname, entryPathname) {
+  if (isUrlShouldBeIgnored(url)) { return url; }
 
-  var assetUrlQs = assetUrl.match(/\?([^#]+)/);
-  assetUrlQs = (assetUrlQs) ? '?'+ assetUrlQs[1] || '' : '';
-  var assetUrlHash = assetUrl.match(/#(.+)/);
-  assetUrlHash = (assetUrlHash) ? '#'+ assetUrlHash[1] || '' : '';
+  var result = {};
+  var basedir = path.dirname(pathname);
+  var resolved = resolver(url, basedir);
+  var vinylPathSrc = new VinylPath({
+    base: tasks.root,
+    path: resolved
+  });
+  var vinylPathDest = new VinylPath({
+    base: tasks.root,
+    path: vinylPathSrc.path
+  });
+  vinylPathDest.base = tasks.dest;
 
-  assetUrl = assetUrl.split('?')[0];
+  result.url = path.join(vinylPathDest.dirname, vinylPathDest.basename);
+  result.url = '/'+ pathUp.normalize(result.url, 'posix');
 
-  root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
-  root = path.relative(process.cwd(), root);
+  result.src = vinylPathSrc.path;
+  result.dest = vinylPathDest.path;
 
-  dest = __.preparePath(tasks.dest, {startSlash: false, trailingSlash: false});
-  dest = path.relative(process.cwd(), dest);
-
-  assetFilepath = path.relative(process.cwd(), assetFilepath);
-
-  // в данном случае делаем все url'ы абсолютными относительно `dest`-папки (она же корень веб-сервера)
-
-  // если файл находится внутри папки-"источника" исходников (`root`-папка)
-  if (assetFilepath.indexOf(root) === 0) {
-    // то перебазируем его в `dest`-папку
-    target.path = path.join(process.cwd(), assetFilepath.replace(new RegExp(`^${root}`), dest));
-    target.url = path.join('/', path.relative(dest, target.path));
-  } else
-  // если нужный файл уже лежит в `dest`-папке
-  if (assetFilepath.indexOf(dest) === 0) {
-    // то просто делаем url абсолютным относительно `dest`-папки
-    target.path = assetFilepath;
-    target.url = path.join('/', path.relative(dest, target.path));
-  }
-  // если файл не лежит ни в `root`, ни в `dest` (например в `bower_components` в корне всего проекта)
-  else {
-    // то переносим весь его путь (от `process.cwd()`) внутрь `dest`-папки
-    target.path = path.join(process.cwd(), dest, path.relative(process.cwd(), assetFilepath));
-    // url делаем соответствующим
-    target.url = path.join('/', path.relative(dest, target.path));
-  }
-
-  target.url = `${target.url}${assetUrlQs}${assetUrlHash}`;
-
-  return target;
+  return result;
 };
+
+
+
+
+
 
 tasks.files      = {};
 tasks.files.root = path.join(tasks.src, 'root');

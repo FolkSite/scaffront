@@ -528,7 +528,7 @@ class VinylPath {
     return this._extname;
   }
 
-  get toString() {
+  toString() {
     return this.path;
   }
 }
