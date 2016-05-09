@@ -27,6 +27,94 @@ if (config.env.isDev) {
 config.resolver = config.resolver || null;
 config.assetResolver = config.assetResolver || null;
 
+
+const runTask = function runTask (taskName, opts, cb) {
+  tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], opts);
+  gulp.parallel(taskName)(function () {
+    if (typeof cb == 'function') { cb(); }
+  });
+};
+
+var tasksConfig = {};
+
+tasksConfig['styles:css'] = {
+  src:           __.glob(config.root, ['*.css', '!_*.css'], true),
+  dest:          config.dest,
+  resolver:      config.resolver,
+  assetResolver: config.assetResolver
+};
+gulp.task('styles:css', function (cb) {
+  return tasks['styles:css'](tasksConfig['styles:css'], cb);
+});
+
+gulp.task('styles:css:watch', function () {
+  var defaults = Object.assign({}, tasksConfig['styles:css']);
+
+  var runAllFiles = function runAllFiles () {
+    runTask('styles:css', defaults);
+  };
+  var runEntryFile = function runEntryFile (file) {
+    runTask('styles:css', {
+      src: file,
+      base: config.root
+    });
+  };
+
+  gulp
+    .watch(__.glob(config.root, ['_*.css'], true))
+    .on('change', runAllFiles)
+    .on('add', runAllFiles)
+    .on('unlink', runAllFiles)
+  ;
+
+  gulp
+    .watch(__.glob(config.root, ['*.css', '!_*.css'], true))
+    .on('change', runEntryFile)
+    .on('add', runEntryFile)
+  ;
+});
+
+
+tasksConfig['styles:scss'] = {
+  src:           __.glob(config.root, ['*.scss', '!_*.scss'], true),
+  dest:          config.dest,
+  resolver:      config.resolver,
+  assetResolver: config.assetResolver
+};
+gulp.task('styles:scss', function (cb) {
+  return tasks['styles:scss'](tasksConfig['styles:scss'], cb);
+});
+
+gulp.task('styles:scss:watch', function () {
+  var defaults = Object.assign({}, tasksConfig['styles:scss']);
+
+  var runAllFiles = function runAllFiles () {
+    runTask('styles:scss', defaults);
+  };
+  var runEntryFile = function runEntryFile (file) {
+    runTask('styles:scss', {
+      src: file,
+      base: config.root
+    });
+  };
+
+  gulp
+    .watch(__.glob(config.root, ['_*.scss', '_*.css'], true))
+    .on('change', runAllFiles)
+    .on('add', runAllFiles)
+    .on('unlink', runAllFiles)
+  ;
+
+  gulp
+    .watch(__.glob(config.root, ['*.scss', '!_*.scss', '!_*.css'], true))
+    .on('change', runEntryFile)
+    .on('add', runEntryFile)
+  ;
+});
+
+gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch'));
+
+
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
   var server = __.server.run('server', config.server);
@@ -277,104 +365,53 @@ var postCssProcessorsDist = [
 ];
 
 
-var tasksConfig = {};
 
-tasksConfig['styles:css'] = {
-  src:           __.glob(config.root, ['*.css', '!_*.css'], true),
-  dest:          config.dest,
-  resolver:      config.resolver,
-  assetResolver: config.assetResolver
-};
-gulp.task('styles:css', function (cb) {
-  return tasks['styles:css'](tasksConfig['styles:css'], cb);
-});
+//gulp.task('styles:scss', function (cb) {
+//  var smOpts = {
+//    sourceRoot: '/css/sources',
+//    includeContent: true,
+//  };
+//
+//  return gulp
+//    .src(__.glob(config.root, ['*.scss', '!_*.scss'], true), {
+//      //since: gulp.lastRun(options.taskName)
+//    })
+//    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
+//    .pipe($.plumber({
+//      errorHandler: $.notify.onError(err => ({
+//        title:   'SCSS',
+//        message: err.message
+//      }))
+//    }))
+//    .pipe($.sourcemaps.init({loadMaps: true}))
+//    .pipe(streams.styles.scssCompile({
+//      assetResolver: config.assetResolver
+//    }))
+//    .pipe(streams.copyAssets())
+//    .pipe($.if(
+//      config.env.isProd,
+//      $.sourcemaps.write('.', smOpts), // во внешний файл
+//      $.sourcemaps.write('', smOpts) // инлайн
+//    ))
+//    .pipe(gulp.dest(config.dest))
+//    ;
+//});
 
-tasksConfig.cleaner = {
-  src: ''
-};
-gulp.task('cleaner', function () {
-  console.log('tasksConfig.cleaner.src', tasksConfig.cleaner.src);
-  if (tasksConfig.cleaner.src) {
-    return del(path.resolve(process.cwd(), tasksConfig.cleaner.src), {read: false});
-  }
-
-  cb();
-});
-
-var runTask = function runTask (taskName, opts, cb) {
-  var prevOpts = Object.assign({}, tasksConfig[taskName]);
-  tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], opts);
-  gulp.parallel(taskName)((function (prevOpts) {
-    return function () {
-      tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], prevOpts);
-      if (typeof cb == 'function') { cb(); }
-    };
-  })(prevOpts));
-};
-
-gulp.task('styles:css:watch', function () {
-  var runSingleFile = function runSingleFile (file) {
-    runTask('styles:css', {
-      src: file
-    });
-  };
-
-  gulp.watch(__.glob(config.root, ['_*.css'], true), gulp.series('styles:css'));
-
-  gulp
-    .watch(__.glob(config.root, ['*.css', '!_*.css'], true))
-    .on('change', runSingleFile)
-    .on('add', runSingleFile)
-  ;
-
-});
-
-gulp.task('styles:scss', function (cb) {
-  var smOpts = {
-    sourceRoot: '/css/sources',
-    includeContent: true,
-  };
-
-  return gulp
-    .src(__.glob(config.root, ['*.scss', '!_*.scss'], true), {
-      //since: gulp.lastRun(options.taskName)
-    })
-    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
-    .pipe($.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'SCSS',
-        message: err.message
-      }))
-    }))
-    .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe(streams.styles.scssCompile({
-      assetResolver: config.assetResolver
-    }))
-    .pipe(streams.copyAssets())
-    .pipe($.if(
-      config.env.isProd,
-      $.sourcemaps.write('.', smOpts), // во внешний файл
-      $.sourcemaps.write('', smOpts) // инлайн
-    ))
-    .pipe(gulp.dest(config.dest))
-    ;
-});
-
-gulp.task('styles:watch', function () {
-  gulp
-    .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
-    .on('unlink', function (filepath) {
-
-    })
-  ;
-  gulp
-    .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
-    .on('unlink', function (filepath) {
-
-    })
-  ;
-
-});
+//gulp.task('styles:watch', function () {
+//  gulp
+//    .watch(config.tasks.styles.css.watch, gulp.series('styles:css'))
+//    .on('unlink', function (filepath) {
+//
+//    })
+//  ;
+//  gulp
+//    .watch(config.tasks.styles.scss.watch, gulp.series('styles:scss'))
+//    .on('unlink', function (filepath) {
+//
+//    })
+//  ;
+//
+//});
 
 gulp.task('styles', gulp.series(
   gulp.parallel('styles:css', 'styles:scss')

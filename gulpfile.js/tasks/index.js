@@ -28,17 +28,13 @@ tasks['styles:css'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
 
-  console.log('opts.src', opts.src);
-
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
   };
 
   var stream = gulp
-    .src(opts.src, {
-      //since: gulp.lastRun(opts.taskName)
-    })
+    .src(opts.src, opts)
     //.pipe($.debug({title: 'CSS:'}))
     // todo: инкрементальность
     .pipe($.plumber({
@@ -58,13 +54,8 @@ tasks['styles:css'] = function (opts, cb) {
   }
 
   stream
-  //.pipe(through(function(file, enc, callback) {
-  //  console.log($.util.colors.blue('file.path'), file.path);
-  //  console.log($.util.colors.blue('file.assets'), file.assets);
-  //  callback(null, file);
-  //}))
-  // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
     .pipe(streams.copyAssets())
+    // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -72,6 +63,44 @@ tasks['styles:css'] = function (opts, cb) {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
   ;
+  if (opts.dest) {
+    stream = stream.pipe(gulp.dest(opts.dest));
+  }
+
+  return stream;
+};
+
+
+tasks['styles:scss'] = function (opts, cb) {
+  opts = (_.isPlainObject(opts)) ? opts : {};
+  assertTask(opts);
+
+  var smOpts = {
+    sourceRoot: '/css/sources',
+    includeContent: true,
+  };
+
+  var stream = gulp
+    .src(opts.src, opts)
+    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'SCSS',
+        message: err.message
+      }))
+    }))
+    .pipe($.sourcemaps.init({loadMaps: true}))
+    .pipe(streams.styles.scssCompile({
+      assetResolver: opts.assetResolver || null
+    }))
+    .pipe(streams.copyAssets())
+    .pipe($.if(
+      config.env.isProd,
+      $.sourcemaps.write('.', smOpts), // во внешний файл
+      $.sourcemaps.write('', smOpts) // инлайн
+    ))
+  ;
+
   if (opts.dest) {
     stream = stream.pipe(gulp.dest(opts.dest));
   }
