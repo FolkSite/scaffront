@@ -114,7 +114,8 @@ gulp.task('styles:scss:watch', function () {
 gulp.task('styles', gulp.parallel('styles:css', 'styles:scss'));
 gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch'));
 gulp.task('styles:clean', function () {
-  return del(__.glob(config.dest, '*.css', true), {read: false});
+  console.log('styles:clean', __.glob(config.dest, '*.css', true));
+  //return del(__.glob(config.dest, '*.css', true), {read: false});
 });
 
 
@@ -416,9 +417,6 @@ var postCssProcessorsDist = [
 //
 //});
 
-gulp.task('styles:clean', function () {
-  return del(config.tasks.styles.clean, {read: false});
-});
 /** ========== //STYLES ========== **/
 
 /** ========== SCRIPTS ========== **/
