@@ -109,24 +109,35 @@ var assetResolver = function assetResolver (url, basePathname, entryPathname) {
     hash = '#'+ url.split('#')[1];
   }
 
-  var result = {};
+  var result = {
+    url: '',
+    base: '',
+    path: ''
+  };
   var basedir = path.dirname(basePathname);
-  var resolved = resolver(url, basedir);
-  var vinylPathSrc = new VinylPath({
-    base: root,
-    path: resolved
-  });
-  var vinylPathDest = new VinylPath({
-    base: root,
-    path: vinylPathSrc.path
-  });
-  vinylPathDest.base = dest;
+  var resolved = '';
 
-  result.url = path.join(vinylPathDest.dirname, vinylPathDest.basename);
-  result.url = '/'+ pathUp.normalize(result.url, 'posix') + qs + hash;
+  try {
+    resolved = resolver(url, basedir);
+  } catch (e) {}
 
-  result.src = vinylPathSrc.path;
-  result.dest = vinylPathDest.path;
+  if (resolved) {
+    var vinylPathSrc = new VinylPath({
+      base: root,
+      path: resolved
+    });
+    var vinylPathDest = new VinylPath({
+      base: root,
+      path: vinylPathSrc.path
+    });
+    vinylPathDest.base = dest;
+
+    result.url = path.join(vinylPathDest.dirname, vinylPathDest.basename);
+    result.url = '/'+ pathUp.normalize(result.url, 'posix') + qs + hash;
+
+    result.src = vinylPathSrc.path;
+    result.dest = vinylPathDest.path;
+  }
 
   return result;
 };

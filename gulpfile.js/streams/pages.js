@@ -6,7 +6,6 @@ const __       = require('../helpers');
 const sass     = require('node-sass');
 const path     = require('path');
 const gulp     = require('gulp');
-const isUrl    = require('is-url');
 const gutil    = require('gulp-util');
 const config   = require('../../scaffront.config.js');
 const extend   = require('extend');
@@ -23,8 +22,6 @@ streams.htmlCompile = function htmlCompile (options) {
 
   var resolver      = __.resolverFactory(options.resolver || null);
   var assetResolver = __.assetResolverFactory(options.assetResolver || null);
-
-  var assets = {};
 
   return combiner(
     through(function(file, enc, callback) {
@@ -62,8 +59,14 @@ streams.htmlCompile = function htmlCompile (options) {
       Object.keys(assets).forEach(function (url) {
         var asset = assets[url];
 
-        content = content.replace(new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'), `$1$2${asset.url}$2$3`);
-        content = content.replace(new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'), `$1$2${asset.url}$2$3`);
+        content = content.replace(
+          new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'),
+          `<$1$2${asset.url}$2$3>`
+        );
+        content = content.replace(
+          new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'),
+          `<$1$2${asset.url}$2$3>`
+        );
 
         if (asset.src && asset.dest) {
           file.assets[asset.src] = asset.dest;
@@ -73,53 +76,14 @@ streams.htmlCompile = function htmlCompile (options) {
       file.contents = Buffer.from(content);
 
       callback(null, file);
-    }),
-    through(function(file, enc, callback) {
-      //file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
-
-      console.log($.util.colors.blue('basename'), file.basename);
-      console.log($.util.colors.blue('assets'), file.assets);
-
-      callback(null, file);
-    })
-  );
-};
-
-streams.copyAssets = function (options) {
-  options = (_.isPlainObject(options)) ? options : {};
-
-  return combiner(
-    through(function(file, enc, callback) {
-      var assetsStreamsCount = 0;
-      var assetsStreamsCountEnded = 0;
-
-      var assetStreamCallback = function () {
-        assetsStreamsCountEnded++;
-        if (assetsStreamsCountEnded != assetsStreamsCount) { return; }
-
-        callback(null, file);
-      };
-
-      Object.keys(file.assets).forEach(function (sourceFile) {
-        var destFile = path.join(config.tasks.dest, file.assets[sourceFile]);
-        var destPath = path.dirname(destFile);
-        destFile = path.basename(destFile);
-
-        gulp
-          .src(sourceFile)
-          .pipe(through((function (newBasename) {
-            return function(file, enc, callback) {
-              file.basename = newBasename;
-              callback(null, file);
-            };
-          })(destFile)))
-          .pipe($.newer(destPath))
-          .pipe(gulp.dest(destPath))
-          .on('end', assetStreamCallback)
-        ;
-
-        assetsStreamsCount++;
-      });
+    //}),
+    //through(function(file, enc, callback) {
+    //  //file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
+    //
+    //  console.log($.util.colors.blue('basename'), file.basename);
+    //  console.log($.util.colors.blue('assets'), file.assets);
+    //
+    //  callback(null, file);
     })
   );
 };
