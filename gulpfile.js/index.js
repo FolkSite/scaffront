@@ -1,79 +1,23 @@
 'use strict';
 
-const $              = require('gulp-load-plugins')();
-const _              = require('lodash');
-const __             = require('./helpers');
-const del            = require('del');
-const path           = require('path');
-const gulp           = require('gulp');
-const isUrl          = require('is-url');
-const merge          = require('merge-stream');
-const extend         = require('extend');
-const resolve        = require('resolve');
-const postcss        = require('postcss');
-const combiner       = require('stream-combiner2').obj;
-
-const config         = require('../scaffront.config.js');
-const streams        = require('./streams');
+const $         = require('gulp-load-plugins')();
+const _         = require('lodash');
+const __        = require('./helpers');
+const del       = require('del');
+const path      = require('path');
+const pathUp    = require('./path-up');
+const VinylPath = pathUp.VinylPath;
+const gulp      = require('gulp');
+const isUrl     = require('is-url');
+const merge     = require('merge-stream');
+const extend    = require('extend');
+const resolve   = require('resolve');
+const postcss   = require('postcss');
+const combiner  = require('stream-combiner2').obj;
 
 const processCwd = process.cwd();
-
-var VirtualPath = function (_path, opts) {
-  this.cwd = opts.cwd || process.cwd();
-  this.base = opts.base || '';
-
-  var ext = path.extname(_path);
-
-  this.dirname = path.dirname(_path);
-  this.basename = path.basename(_path);
-  this.stem = path.basename(_path, ext);
-  this.extname = ext;
-
-  //extend(this, {
-  //  opts
-  //});
-};
-
-VirtualPath.prototype.toString = function () {
-  return path.join(this.cwd, this.base, this.dirname, this.basename);
-};
-
-/**
- * @param {string} dirname
- * @param {string} cwd
- * @returns {string}
- */
-var convertToRelativeByCwd = function convertToRelativeByCwd (dirname, cwd) {
-  //cwd     = __.preparePath(cwd, {startSlash: false, trailingSlash: false});
-  dirname = __.preparePath(dirname, {startSlash: false, trailingSlash: false});
-
-  if (dirname.indexOf(cwd) !== 0) {
-    dirname = path.join(cwd, dirname);
-  }
-  dirname = path.relative(cwd, dirname);
-
-  return dirname;
-};
-
-/**
- * @param {string} dirname
- * @param {string} basepathFrom
- * @param {string} basepathTo
- * @param {string} [cwd=process.cwd()]
- * @returns {string}
- */
-var replaceBasepath = function replaceBasepath (dirname, basepathFrom, basepathTo, cwd) {
-  cwd = cwd || processCwd;
-
-  basepathFrom = convertToRelativeByCwd(basepathFrom, cwd);
-  basepathTo   = convertToRelativeByCwd(basepathTo, cwd);
-
-};
-
-
-config.tasks.root = convertToRelativeByCwd(config.tasks.root, processCwd);
-config.tasks.dest = convertToRelativeByCwd(config.tasks.dest, processCwd);
-
+const config     = require('../scaffront.config.js');
+const streams    = require('./streams');
 
 var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
   return url[0] === '#' ||
@@ -87,16 +31,20 @@ var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
 /**
  * @param {string} module
  * @param {{}} [opts]
+ * @param {string} [opts.basedir]
+ * @param {string} [opts.entryBasedir]
+ * @param {string|string[]} [opts.moduleDirectory]
+ * @param {string|string[]} [opts.extensions]
+ * @param {string|string[]} [opts.paths]
  * @returns {string}
  */
 var moduleResolver = function moduleResolver (module, opts) {
-  if (isUrlShouldBeIgnored(module)) { return ''; }
+  if (isUrlShouldBeIgnored(module)) { return module; }
 
   // проинициализируем настройки
-  opts = (_.isPlainObject(opts)) ? opts : {}; // basedir?
+  opts = (_.isPlainObject(opts)) ? opts : {};
 
-  var cwd      = process.cwd(),
-      retVal   = '',
+  var retVal   = '',
       props    = {},
       defaults = moduleResolverDefaults;
 
@@ -115,34 +63,64 @@ var moduleResolver = function moduleResolver (module, opts) {
   // объединим настройки
   opts = _.merge(defaults, opts, props);
 
+  // сперва запомним - был ли модуль написан относительно basedir ('./')
+  let moduleIsDotRelative = pathUp.isDotRelative(module);
   // удалим строку запроса и хэш
   module = module.split('?')[0];
+  // потому что node'овый path.normalize убирает стартовый './'
+  module = pathUp.normalize(module, 'posix');
+  // и возвращаем его обратно
+  module = (moduleIsDotRelative) ? './'+ module : module;
+  opts.basedir = (opts.basedir) ? pathUp.normalize(opts.basedir, 'posix') : '';
+
+
+  // здесь логика такая.
+  // в любых css/scss/html все подключаемые файлы надо писать node-way.
+  // но вот проблема - в css/html допускается писать относительные урлы без стартовых `./`.
+  // такие урлы `node-resolve` будет пытаться искать в директориях `opts.moduleDirectory`.
+  // это надо решить.
+
+  if (pathUp.isRelative(module) && !moduleIsDotRelative) {
+    let tmp = __.resolve(module, opts);
+    if (!tmp) {
+      tmp = __.resolve('./'+ module, opts);
+    }
+    retVal = tmp;
+  } else {
+    retVal = __.resolve(module, opts);
+  }
+
+  console.log('== retVal', retVal);
+
+
+
+  //retVal = module;
 
   // если урл абсолютный
-  if (path.isAbsolute(module)) {
-    //// надо узнать относительно чего он абсолютный - от корня фс, `config.tasks.root` или от `process.cwd`
-
-    if (module.indexOf(cwd)) {
-
-    } else {
-
-    }
-  }
-  // если урл относительный
-  else {
-    // то пробуем зарезолвить стандартным способом,
-    // т.к. это может быть попытка подключить пакет из `node_modules`
-    // или любой другой директории из `opts.moduleDirectory`
-    retVal = __.resolve(module, opts);
-    // если ничего не вышло
-    if (!retVal) {
-      // то добавим точку со слешем,
-      // чтобы попробовать зарезолвить модуль относительно `opts.basedir`
-      retVal = './'+ retVal;
-      retVal = __.resolve(retVal, opts);
-      // если и здесь ничего не нашлось, то кто-то пытается подключить что-то не существующее
-    }
-  }
+  //if (path.isAbsolute(module)) {
+  //  let tmp = new VinylPath({
+  //    cwd:  processCwd,
+  //    base: config.tasks.root,
+  //    path: module
+  //  });
+  //  console.log('tmp', tmp);
+  //  retVal = tmp.path;
+  //}
+  //// если урл относительный
+  //else {
+  //  // то пробуем зарезолвить стандартным способом,
+  //  // т.к. это может быть попытка подключить пакет из `node_modules`
+  //  // или любой другой директории из `opts.moduleDirectory`
+  //  retVal = __.resolve(module, opts);
+  //  // если ничего не вышло
+  //  if (!retVal) {
+  //    // то добавим точку со слешем,
+  //    // чтобы попробовать зарезолвить модуль относительно `opts.basedir`
+  //    retVal = './'+ retVal;
+  //    retVal = __.resolve(retVal, opts);
+  //    // если и здесь ничего не нашлось, то кто-то пытается подключить что-то не существующее
+  //  }
+  //}
 
   return retVal;
 };
@@ -259,7 +237,7 @@ gulp.task('pages', function () {
       }))
     }))
     .pipe(streams.pages.compileHtml({
-      resolver:       config.tasks.resolver,
+      resolver:       moduleResolver,
       getAssetTarget: config.tasks.getAssetTarget
     }))
     //.pipe($.tap(function (file) {
@@ -456,11 +434,10 @@ gulp.task('styles:css', function () {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.cssCompile({
-      resolver:       config.tasks.resolver,
       getAssetTarget: config.tasks.getAssetTarget
     }))
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
-    .pipe(streams.copyAssets())
+    //.pipe(streams.copyAssets())
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
     .pipe($.if(
       config.env.isProd,
@@ -523,7 +500,6 @@ gulp.task('styles:scss', function (cb) {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
-      resolver:       config.tasks.resolver,
       getAssetTarget: config.tasks.getAssetTarget
     }))
     //.pipe(streams.styles.copyAssets())

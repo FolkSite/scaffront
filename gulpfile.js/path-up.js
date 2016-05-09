@@ -327,7 +327,7 @@ class VinylPath {
   constructor (pathname, opts) {
     if (isPlainObject(pathname)) {
       opts     = pathname;
-      pathname = opts.path;
+      pathname = opts.path || '';
     }
 
     opts = opts || {};
@@ -362,6 +362,7 @@ class VinylPath {
 
     base = base || '';
     base = (!isDot(base)) ? base : '';
+
     if (base) {
       let tmp = removeLeadingSlash(removeLeadingDotSlash(base));
       if (isDotDotRelative(tmp)) {
@@ -396,7 +397,10 @@ class VinylPath {
     dirname = dirname || '';
     dirname = (!isDot(dirname)) ? dirname : '';
 
+    //console.log('=== 1 dirname', dirname);
+
     let hasBase = false;
+    let hasCwd = false;
     let basename = '';
     if (dirname) {
       let tmp = removeLeadingSlash(removeLeadingDotSlash(dirname));
@@ -415,6 +419,7 @@ class VinylPath {
         let dirnameWithoutCwd = removeLeadingPath(dirname, this._cwd);
         if (dirnameWithoutCwd != dirname) {
           dirname = dirnameWithoutCwd;
+          hasCwd = true;
 
           let dirnameWithoutBase = removeLeadingPath(dirname, this._base);
           if (dirnameWithoutBase != dirname) {
@@ -429,9 +434,11 @@ class VinylPath {
       }
     }
 
+    //console.log('=== 2 dirname', dirname);
+
     this._dirname = dirname;
 
-    if (this._dirname && !hasBase) {
+    if (this._dirname && hasCwd && !hasBase) {
       this._base = '';
     }
 

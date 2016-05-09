@@ -14,23 +14,8 @@ const resolve        = require('resolve');
 const combiner       = require('stream-combiner2').obj;
 const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
+const resolver = require('../resolver');
 
-function isUrlShouldBeIgnored (url) {
-  return url[0] === "/" ||
-    url[0] === "#" ||
-    url.indexOf("data:") === 0 ||
-    isUrl(url) ||
-    /^[a-z]+:\/\//.test(url)
-}
-
-///**
-// * @param {string} url
-// * @param {{}} assetsStorage Объект
-// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
-// * @param {string} [filepath] Ипортируемый файл, у которого надо зарезолвить урлы
-// * @param {function} [getTargetAsset]
-// * @returns {string}
-// */
 /**
  * @param {{}} assetsStorage
  * @param {string} url
@@ -87,10 +72,6 @@ var streams = {};
 streams.cssCompile = function cssCompile (options) {
   options = (_.isPlainObject(options)) ? options : {};
 
-  if (typeof options.resolver != 'function') {
-    throw new Error('[scaffront][cssCompile] `resolver` must be a function.');
-  }
-
   if (typeof options.getAssetTarget != 'function') {
     throw new Error('[scaffront][cssCompile] `getAssetTarget` must be a function.');
   }
@@ -98,8 +79,6 @@ streams.cssCompile = function cssCompile (options) {
   return combiner(
     // пропускаем каждую точку входа через свой поток-трансформер
     through(function(file, enc, callback) {
-      var assets = {};
-
       if (file.isNull()) {
         return cb(null, file);
       }
@@ -123,24 +102,26 @@ streams.cssCompile = function cssCompile (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        getTargetAssetsPlugin(assets, entryFilepath, entryFilepath, options),
+        //getTargetAssetsPlugin(assets, entryFilepath, entryFilepath, options),
         // импортируем вложенные css-ки
         require('postcss-import')({
           // резолвим пути по стандарному для node.js алгоритму
           resolve: function (module, basedir, importOptions) {
-            return options.resolver(module, basedir, path.dirname(entryFilepath));
+            return resolver(module, basedir, {
+              extensions: ['.css']
+            });
           },
           // каждый импортированный файл тоже надо пропустить через postcss
-          transform: function(css, filepath, _options) {
-            return postcss([
-              // теперь сохраним все ассеты из импортируемых файлов
-              getTargetAssetsPlugin(assets, entryFilepath, filepath, options)
-            ])
-              .process(css)
-              .then(function(result) {
-                return result.css;
-              });
-          }
+          //transform: function(css, filepath, _options) {
+          //  return postcss([
+          //    // теперь сохраним все ассеты из импортируемых файлов
+          //    getTargetAssetsPlugin(assets, entryFilepath, filepath, options)
+          //  ])
+          //    .process(css)
+          //    .then(function(result) {
+          //      return result.css;
+          //    });
+          //}
         })
       ])
         .process(file.contents, opts)
@@ -149,7 +130,6 @@ streams.cssCompile = function cssCompile (options) {
           var warnings = result.warnings().join('\n');
 
           file.contents = new Buffer(result.css);
-          file.assets = assets;
 
           // Apply source map to the chain
           if (file.sourceMap) {
@@ -174,10 +154,6 @@ streams.cssCompile = function cssCompile (options) {
 };
 
 streams.scssCompile = function scssCompile (options) {
-
-  if (typeof options.resolver != 'function') {
-    throw new Error('[scaffront][scssCompile] `resolver` must be a function.');
-  }
 
   if (typeof options.getAssetTarget != 'function') {
     throw new Error('[scaffront][scssCompile] `getAssetTarget` must be a function.');

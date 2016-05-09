@@ -2,7 +2,8 @@
 
 @import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
 @import './dir/dir2/_include2.css';
-@import '../../../bower_components/font-awesome/css/font-awesome.css';
+@import 'dir/entry2.css';
+/*@import '../../../bower_components/font-awesome/css/font-awesome.css';*/
 
 .qwe {
     aspect-ratio: '16:9';
