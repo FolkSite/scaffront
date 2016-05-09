@@ -24,33 +24,33 @@ const resolver = require('../resolver');
  * @param {{resolver: function, getAssetTarget: function}} options
  * @returns {string}
  */
-var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryFilepath, baseFilepath, options) {
-  var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
-  var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
-
-  if (!assetTarget) {
-    return url;
-  }
-
-  assetsStorage[assetFilepath] = assetTarget.path;
-
-  return assetTarget.url;
-};
-
-/**
- * @param {{}} assetsStorage
- * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
- * @param {string} baseFilepath Импортируемый файл, у которого надо зарезолвить урлы
- * @param {{resolver: function, getAssetTarget: function}} options
- * @returns {string}
- */
-var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, baseFilepath, options) {
-  return require('postcss-url')({
-    url: function (url) {
-      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
-    }
-  })
-};
+//var getTargetAssetsUrl = function getTargetAssetsUrl (assetsStorage, url, entryFilepath, baseFilepath, options) {
+//  var assetFilepath = options.resolver(url, path.dirname(baseFilepath), path.dirname(entryFilepath));
+//  var assetTarget   = options.getAssetTarget(url, assetFilepath, baseFilepath, entryFilepath);
+//
+//  if (!assetTarget) {
+//    return url;
+//  }
+//
+//  assetsStorage[assetFilepath] = assetTarget.path;
+//
+//  return assetTarget.url;
+//};
+//
+///**
+// * @param {{}} assetsStorage
+// * @param {string} entryFilepath Точка входа. Для неё сохраняются ассеты из всех импортируемых файлов
+// * @param {string} baseFilepath Импортируемый файл, у которого надо зарезолвить урлы
+// * @param {{resolver: function, getAssetTarget: function}} options
+// * @returns {string}
+// */
+//var getTargetAssetsPlugin = function getTargetAssetsPlugin (assetsStorage, entryFilepath, baseFilepath, options) {
+//  return require('postcss-url')({
+//    url: function (url) {
+//      return getTargetAssetsUrl(assetsStorage, url, entryFilepath, baseFilepath, options);
+//    }
+//  })
+//};
 
 function handleError (cb) {
   return function (error) {
@@ -115,14 +115,14 @@ streams.cssCompile = function cssCompile (options) {
             console.log($.util.colors.blue('filepath'), filepath);
 
             return postcss([
-              // теперь сохраним все ассеты из импортируемых файлов
+              //// теперь сохраним все ассеты из импортируемых файлов
               require('postcss-url')({
                 url: function (url, decl, from, dirname, to, options, result) {
-                  console.log('url', url);
-                  console.log('from', from);
-                  console.log('to', to);
-                  console.log('dirname', dirname);
-                  console.log('');
+                  console.log('== url', url);
+                  //console.log('from', from);
+                  //console.log('to', to);
+                  //console.log('dirname', dirname);
+                  //console.log('');
                   return url;
                 }
               })

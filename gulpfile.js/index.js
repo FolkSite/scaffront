@@ -25,7 +25,7 @@ var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
     isUrl(url);
 };
 
-var rebaseAssetUrl = function rebaseAssetUrl (url, baseDir, targetDir) {
+var resolveAsset = function resolveAsset (url, baseDir, targetDir) {
   if (isUrlShouldBeIgnored(url)) {
     return url;
   }
