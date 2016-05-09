@@ -1,19 +1,20 @@
 'use strict';
 
-const $              = require('gulp-load-plugins')();
-const _              = require('lodash');
-const __             = require('../helpers');
-const sass           = require('node-sass');
-const path           = require('path');
-const gulp           = require('gulp');
-const isUrl          = require('is-url');
-const gutil          = require('gulp-util');
-const config         = require('../../scaffront.config.js');
-const extend         = require('extend');
-const postcss        = require('postcss');
-const resolve        = require('resolve');
-const combiner       = require('stream-combiner2').obj;
-const through        = require('through2').obj;
+const $        = require('gulp-load-plugins')();
+const _        = require('lodash');
+const __       = require('../helpers');
+const sass     = require('node-sass');
+const path     = require('path');
+const gulp     = require('gulp');
+const isUrl    = require('is-url');
+const gutil    = require('gulp-util');
+const config   = require('../../scaffront.config.js');
+const extend   = require('extend');
+const postcss  = require('postcss');
+const resolve  = require('resolve');
+const combiner = require('stream-combiner2').obj;
+const through  = require('through2').obj;
+const cheerio  = require('cheerio');
 
 var streams = {};
 
@@ -27,82 +28,54 @@ streams.htmlCompile = function htmlCompile (options) {
 
   return combiner(
     through(function(file, enc, callback) {
-      var locate = function(file) {
-        var search, matches;
-        search = new RegExp('<[^>]+?(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm');
-        matches = file.contents.toString().match(search);
-
-        matches = matches
-          .map(function (matched) {
-            return new RegExp('(src|href|content)\\s*=\\s*([\"\'])(.+?)\\2', 'gm').exec(matched)[3] || null;
-          })
-          .filter((matched) => !!matched)
-        ;
-
-        return matches || [];
-      };
-
-      var replace = function(file, matches, handle, pathling) {
-        var search = new RegExp(handle + '\\/{2}([^\'\"]+)','g');
-        var destiny = path.resolve(pathling);
-        var contents = file.contents.toString();
-        var asset, relative;
-
-        matches.forEach(function(match) {
-          asset = path.parse(path.join(destiny, search.exec(match)[1]));
-          relative = path.relative(file.dirname, destiny);
-          relative = path.join(relative, asset.base);
-          contents = contents.replace(match, '\"' + relative + '\"');
-          search.lastIndex = 0;
-        });
-
-        file.contents = Buffer(contents);
-      };
-
       if (file.isNull()) {
         callback();
         return;
       } else if (file.isStream()) {
-        callback(new $.gutil.PluginError('qweqweqweqweqweqwe', 'Streaming not supported'));
+        callback(new $.gutil.PluginError('htmlCompile', 'Streaming not supported'));
         return;
       }
 
-      file.dirname = path.dirname(file.path);
-      var matches = locate(file);
-      //console.log('matches', matches);
-      // todo: а когда resolver возвращает пустую строку? чего делать?
-      console.log($.util.colors.blue('html file'), file.basename);
-      matches.forEach(function (module) {
-        console.log($.util.colors.blue('module'), module);
-        var resolved = config.tasks.resolver(module, file.dirname, file.dirname);
-        console.log($.util.colors.blue('resolved'), resolved);
+      var assets = {};
+      var jQ = cheerio.load(file.contents);
+      jQ('link').each(function (index, node) {
+        var $node = jQ(node);
+        var href = $node.attr('href');
+        var newSrc = assetResolver(href, file.path, file.path);
+
+        if (newSrc.url && newSrc.url != href) {
+          assets[href] = newSrc;
+        }
       });
+      jQ('script, img').each(function (index, node) {
+        var $node = jQ(node);
+        var src = $node.attr('src');
+        var newSrc = assetResolver(src, file.path, file.path);
 
-
-      //this.push(file);
-      callback(null, file);
-      return;
-
-      matches.forEach(function (matched) {
-        // блин. пути со слешами!!
-        var resolved = __.nodeResolve(__.preparePath(matched, {startSlash: false}), file.dirname, true);
-
-        console.log('resolved', !!__.nodeResolve.lastError, resolved);
-
-        if (!__.nodeResolve.lastError) {
-
+        if (newSrc.url && newSrc.url != src) {
+          assets[src] = newSrc;
         }
       });
 
-      //return replace(file, matches, handle, pathsObject[handle]);
+      var content = file.contents.toString();
+      file.assets = {};
+      Object.keys(assets).forEach(function (url) {
+        var asset = assets[url];
 
-      //delete file.dirname;
-      this.push(file);
-      callback();
+        content = content.replace(new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'), `$1$2${asset.url}$2$3`);
+        content = content.replace(new RegExp(`<([a-z]+ .*?)(["|'])${url}\\2(.*?)>`, 'igm'), `$1$2${asset.url}$2$3`);
 
+        if (asset.src && asset.dest) {
+          file.assets[asset.src] = asset.dest;
+        }
+      });
+
+      file.contents = Buffer.from(content);
+
+      callback(null, file);
     }),
     through(function(file, enc, callback) {
-      file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
+      //file.assets = assets[gutil.replaceExtension(file.path, file.scssExt)] || {};
 
       console.log($.util.colors.blue('basename'), file.basename);
       console.log($.util.colors.blue('assets'), file.assets);

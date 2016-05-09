@@ -157,17 +157,6 @@ gulp.task('pages:watch', function () {
 });
 /** ========== //PAGES ========== **/
 
-/** ========== SERVER ========== **/
-gulp.task('server', function () {
-  var server = __.server.run('server', config.server);
-  server.watch(__.glob(config.server.server.baseDir, '*.*', true))
-    .on('add', server.reload)
-    .on('change', server.reload)
-    .on('unlink', server.reload)
-  ;
-});
-/** ========== //SERVER ========== **/
-
 /** ========== FILES ========== **/
 tasksConfig['files'] = {
   src:  __.glob(config.root, ['*.*', '!_*.*', '!*.{sass,scss,css,js,html}'], true),
@@ -198,55 +187,6 @@ gulp.task('files:watch', function () {
 gulp.task('files:clean', function () {
   return del(__.glob(config.dest, ['*.*', '!*.{css,js,html}'], true), {read: false});
 });
-/** ========== //FILES ========== **/
-
-
-
-
-
-
-
-//gulp.task('pages', function () {
-//  return gulp
-//    .src(__.glob(config.tasks.root, '*.html', true), {
-//      // При повторном запуске таска (например, через watch) выбирает только те файлы,
-//      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
-//      //since: gulp.lastRun(options.taskName)
-//    })
-//    .pipe($.plumber({
-//      errorHandler: $.notify.onError(err => ({
-//        title:   'Html',
-//        message: err.message
-//      }))
-//    }))
-//    //.pipe(streams.pages.compileHtml({
-//    //  resolver:       moduleResolver,
-//    //  getAssetTarget: config.tasks.getAssetTarget
-//    //}))
-//    //.pipe($.tap(function (file) {
-//    //  console.log('file', file.path);
-//    //}))
-//    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-//    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-//    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-//    //.pipe($.cached('files'))
-//
-//    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
-//    // если в целевой директории такие файлы уже есть, то не пропускает их.
-//    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
-//    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-//    //.pipe($.newer(config.tasks.files.dest))
-//    .pipe(through(function(file, enc, callback) {
-//      console.log($.util.colors.blue('basename'), file.basename);
-//      console.log($.util.colors.blue('assets'), file.assets);
-//    }))
-//    .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
-//
-//    .pipe(gulp.dest(config.tasks.dest))
-//    ;
-//});
-
-
 /** ========== //FILES ========== **/
 
 /** ========== SCRIPTS ========== **/
@@ -364,34 +304,17 @@ gulp.task('scripts:clean', function () {
 });
 /** ========== //SCRIPTS ========== **/
 
+/** ========== SERVER ========== **/
+gulp.task('server', function () {
+  var server = __.server.run('server', config.server);
+  server.watch(__.glob(config.server.server.baseDir, '*.*', true))
+    .on('add', server.reload)
+    .on('change', server.reload)
+    .on('unlink', server.reload)
+  ;
+});
+/** ========== //SERVER ========== **/
 
-
-
-  //var imgSrc = 'src/img/**';
-  //var imgDest = 'build/img';
-  //gulp.task('images', function() {
-  //  return gulp
-  //    .src(imgSrc)
-  //    .pipe($.newer(imgDest))
-  //    .pipe($.imagemin({
-  //      optimizationLevel: 2, // png
-  //      interlaced: true,     // gif
-  //      progressive: true,    // jpg
-  //      multipass: true,      // svg
-  //      svgoPlugins: [
-  //        { removeViewBox: false },               // don't remove the viewbox atribute from the SVG
-  //        { removeUselessStrokeAndFill: false },  // don't remove Useless Strokes and Fills
-  //        { removeEmptyAttrs: false }             // don't remove Empty Attributes from the SVG
-  //      ],
-  //      use: [
-  //        PngQuant({
-  //          quality: '80-90',
-  //          speed: 4
-  //        })
-  //      ]
-  //    }))
-  //    .pipe(gulp.dest(imgDest));
-  //});
 
 gulp.task('clean', gulp.series(
   //gulp.parallel(

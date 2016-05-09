@@ -7,9 +7,10 @@ const combiner       = require('stream-combiner2').obj;
 const through        = require('through2').obj;
 
 var streams = {
-  styles: require('./styles'),
-  pages: require('./pages'),
+  styles:  require('./styles'),
+  pages:   require('./pages'),
   scripts: require('./scripts')
+  //images:  require('./images'),
 };
 
 streams.copyAssets = function (options) {
