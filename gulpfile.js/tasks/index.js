@@ -33,6 +33,8 @@ tasks['styles:css'] = function (opts, cb) {
     includeContent: true,
   };
 
+  console.log('css opts.src', opts.src);
+
   var stream = gulp
     .src(opts.src, opts)
     //.pipe($.debug({title: 'CSS:'}))
@@ -75,6 +77,8 @@ tasks['styles:scss'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
 
+  console.log('styles:scss opts.src', opts.src);
+
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
@@ -111,6 +115,8 @@ tasks['styles:scss'] = function (opts, cb) {
 tasks['files'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
+
+  console.log('files opts.src', opts.src);
 
   var stream = gulp
     .src(opts.src, opts)

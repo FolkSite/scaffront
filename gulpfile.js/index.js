@@ -131,7 +131,7 @@ gulp.task('server', function () {
 
 /** ========== FILES ========== **/
 tasksConfig['files'] = {
-  src:  __.glob(config.root, ['*.*', '!_.*', '!*.{sass,scss,css,js,html}'], true),
+  src:  __.glob(config.root, ['*.*', '!_*.*', '!*.{sass,scss,css,js,html}'], true),
   dest: config.dest
 };
 gulp.task('files', function (cb) {
@@ -140,14 +140,14 @@ gulp.task('files', function (cb) {
 
 gulp.task('files:watch', function () {
   var runFile = function runFile (file) {
-    runTask('styles:scss', {
+    runTask('files', {
       src: file,
       base: config.root
     });
   };
 
   gulp
-    .watch(__.glob(config.root, ['*.*', '!*.{sass,scss,css,js,html}'], true))
+    .watch(__.glob(config.root, ['*.*', '!_*.*', '!*.{sass,scss,css,js,html}'], true))
     .on('change', runFile)
     .on('add', runFile)
     // todo: удалять из `dest` удалённый в `src` файл
@@ -157,7 +157,6 @@ gulp.task('files:watch', function () {
   ;
 });
 gulp.task('files:clean', function () {
-  //console.log('files:clean', __.glob(config.dest, ['*.*', '!*.{css,js,html}'], true));
   return del(__.glob(config.dest, ['*.*', '!*.{css,js,html}'], true), {read: false});
 });
 /** ========== //FILES ========== **/
