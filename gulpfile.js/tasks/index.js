@@ -12,7 +12,6 @@ function assertTask (options) {
   }
 }
 
-
 var tasks = {};
 
 tasks['server'] = function () {
@@ -32,8 +31,6 @@ tasks['styles:css'] = function (opts, cb) {
     sourceRoot: '/css/sources',
     includeContent: true,
   };
-
-  console.log('css opts.src', opts.src);
 
   var stream = gulp
     .src(opts.src, opts)
@@ -55,7 +52,7 @@ tasks['styles:css'] = function (opts, cb) {
     stream = stream.pipe($.newer(opts.dest));
   }
 
-  stream
+  stream = stream
     .pipe(streams.copyAssets())
     // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
     //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
@@ -77,8 +74,6 @@ tasks['styles:scss'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
 
-  console.log('styles:scss opts.src', opts.src);
-
   var smOpts = {
     sourceRoot: '/css/sources',
     includeContent: true,
@@ -96,7 +91,13 @@ tasks['styles:scss'] = function (opts, cb) {
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
       assetResolver: opts.assetResolver || null
-    }))
+    }));
+
+  if (opts.dest) {
+    stream = stream.pipe($.newer(opts.dest));
+  }
+
+  stream = stream
     .pipe(streams.copyAssets())
     .pipe($.if(
       config.env.isProd,
@@ -116,8 +117,6 @@ tasks['files'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
   assertTask(opts);
 
-  console.log('files opts.src', opts.src);
-
   var stream = gulp
     .src(opts.src, opts)
     //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
@@ -130,7 +129,9 @@ tasks['files'] = function (opts, cb) {
   ;
 
   if (opts.dest) {
-    stream = stream.pipe(gulp.dest(opts.dest));
+    stream = stream
+      .pipe($.newer(opts.dest))
+      .pipe(gulp.dest(opts.dest));
   }
 
   return stream;
