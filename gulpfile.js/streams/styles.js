@@ -84,7 +84,16 @@ streams.cssCompile = function cssCompile (options) {
 
       postcss([
         // сперва сохраним все ассеты для точки входа
-        //getTargetAssetsPlugin(assets, entryFilepath, entryFilepath, options),
+        require('postcss-url')({
+          url: function (url) {
+            var asset = assetResolver(url, entryFilepath, entryFilepath);
+            if (asset.src && asset.dest) {
+              assets[asset.src] = asset.dest;
+            }
+
+            return asset.url || url;
+          }
+        }),
         // импортируем вложенные css-ки
         require('postcss-import')({
           resolve: function (module, basedir, importOptions) {
