@@ -108,5 +108,27 @@ tasks['styles:scss'] = function (opts, cb) {
   return stream;
 };
 
+tasks['files'] = function (opts, cb) {
+  opts = (_.isPlainObject(opts)) ? opts : {};
+  assertTask(opts);
+
+  var stream = gulp
+    .src(opts.src, opts)
+    //.pipe($.if(config.env.isDev, $.debug({title: 'Run SCSS:'})))
+    .pipe($.plumber({
+      errorHandler: $.notify.onError(err => ({
+        title:   'File',
+        message: err.message
+      }))
+    }))
+  ;
+
+  if (opts.dest) {
+    stream = stream.pipe(gulp.dest(opts.dest));
+  }
+
+  return stream;
+};
+
 
 module.exports = tasks;

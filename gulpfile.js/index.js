@@ -14,18 +14,18 @@ const extend    = require('extend');
 const postcss   = require('postcss');
 const combiner  = require('stream-combiner2').obj;
 
-const config     = require('../scaffront.config.js');
-const streams    = require('./streams');
+var tasksConfig      = {};
+var config           = require('../scaffront.config.js');
+config.resolver      = config.resolver || null;
+config.assetResolver = config.assetResolver || null;
+const tasks          = require('./tasks');
+const streams        = require('./streams');
 
-const tasks = require('./tasks');
 
 if (config.env.isDev) {
   require('trace');
   require('clarify');
 }
-
-config.resolver = config.resolver || null;
-config.assetResolver = config.assetResolver || null;
 
 
 const runTask = function runTask (taskName, opts, cb) {
@@ -35,8 +35,8 @@ const runTask = function runTask (taskName, opts, cb) {
   });
 };
 
-var tasksConfig = {};
 
+/** ========== STYLES ========== **/
 tasksConfig['styles:css'] = {
   src:           __.glob(config.root, ['*.css', '!_*.css'], true),
   dest:          config.dest,
@@ -116,7 +116,7 @@ gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch')
 gulp.task('styles:clean', function () {
   return del(__.glob(config.dest, '*.css', true), {read: false});
 });
-
+/** ========== //STYLES ========== **/
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
@@ -130,46 +130,42 @@ gulp.task('server', function () {
 /** ========== //SERVER ========== **/
 
 /** ========== FILES ========== **/
-gulp.task('files', function () {
-  return gulp
-    .src(config.tasks.files.src, {
-      // При повторном запуске таска (например, через watch) выбирает только те файлы,
-      // которые изменились с заданной даты (сравнивает по дате модификации mtime)
-      //since: gulp.lastRun(options.taskName)
-    })
-    .pipe($.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'Copy files',
-        message: err.message
-      }))
-    }))
-    //.pipe($.tap(function (file) {
-    //  console.log('file', file.path);
-    //}))
-    // При повторном запуске таска выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по
-    // названию файла и содержимому) $.cached - это замена since, но since быстрее, потому что ему не нужно полностью
-    // читать файл. Но since криво работает с ранее удалёнными и только что восстановленными через ctrl+z файлами.
-    .pipe($.cached('files'))
-
-    // $.newer сравнивает проходящие через него файлы с файлами в _целевой_ директории и,
-    // если в целевой директории такие файлы уже есть, то не пропускает их.
-    // по логике, since работает после второго запуска, а $.newer сразу же, при первом.
-    // у $.newer'а можно замапить сравнение исходных файлов с целевыми.
-    .pipe($.newer(config.tasks.files.dest))
-    .pipe($.if(config.env.isDev, $.debug({title: 'File:'})))
-
-    .pipe(gulp.dest(config.tasks.files.dest))
-    ;
+tasksConfig['files'] = {
+  src:  __.glob(config.root, ['*.*', '!_.*', '!*.{sass,scss,css,js,html}'], true),
+  dest: config.dest
+};
+gulp.task('files', function (cb) {
+  return tasks['files'](tasksConfig['files'], cb);
 });
 
 gulp.task('files:watch', function () {
-  gulp
-    .watch(config.tasks.files.watch, gulp.series('files'))
-    .on('unlink', function (filepath) {
+  var runFile = function runFile (file) {
+    runTask('styles:scss', {
+      src: file,
+      base: config.root
+    });
+  };
 
-    })
+  gulp
+    .watch(__.glob(config.root, ['*.*', '!*.{sass,scss,css,js,html}'], true))
+    .on('change', runFile)
+    .on('add', runFile)
+    // todo: удалять из `dest` удалённый в `src` файл
+    //.on('unlink', function () {
+    //
+    //})
   ;
 });
+gulp.task('files:clean', function () {
+  return del(__.glob(config.dest, '*.*', '!*.{css,js,html}', true), {read: false});
+});
+/** ========== //FILES ========== **/
+
+
+
+
+
+
 
 gulp.task('files:clean', function () {
   return del(config.tasks.files.clean, {read: false});
