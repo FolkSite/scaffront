@@ -528,19 +528,19 @@ class VinylPath {
     return this._extname;
   }
 
+  inspect () {
+    var output = [];
+    ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach((key) => {
+      output.push(key +': '+ this[key]);
+    });
+
+    return output.join('\n');
+  }
+
   toString() {
     return this.path;
   }
 }
-
-var inspectFile = function inspectFile (file) {
-  ['path', 'cwd', 'base', 'dirname', 'basename', 'stem', 'extname'].forEach(function (key) {
-    if (typeof file[key] == 'function') { return; }
-
-    console.log('==', key +':', file[key]);
-  });
-  console.log('');
-};
 
 //var File = require('vinyl');
 //var File = VinylPath;

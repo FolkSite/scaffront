@@ -13,7 +13,6 @@ const merge     = require('merge-stream');
 const extend    = require('extend');
 const postcss   = require('postcss');
 const combiner  = require('stream-combiner2').obj;
-//const resolver  = require('./resolver');
 
 const config     = require('../scaffront.config.js');
 const streams    = require('./streams');
@@ -371,7 +370,7 @@ gulp.task('styles:scss', function (cb) {
     .pipe(streams.styles.scssCompile({
       assetResolver: assetResolver
     }))
-    //.pipe(streams.styles.copyAssets())
+    .pipe(streams.copyAssets())
     .pipe($.if(
       config.env.isProd,
       $.sourcemaps.write('.', smOpts), // во внешний файл
