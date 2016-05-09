@@ -16,6 +16,8 @@ const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 const resolver = require('../resolver');
 
+var Promise = require('bluebird');
+
 /**
  * @param {{}} assetsStorage
  * @param {string} url
@@ -114,23 +116,32 @@ streams.cssCompile = function cssCompile (options) {
           transform: function(css, filepath, _options) {
             console.log($.util.colors.blue('filepath'), filepath);
 
-            return postcss([
-              //// теперь сохраним все ассеты из импортируемых файлов
-              require('postcss-url')({
-                url: function (url, decl, from, dirname, to, options, result) {
-                  console.log('== url', url);
-                  //console.log('from', from);
-                  //console.log('to', to);
-                  //console.log('dirname', dirname);
-                  //console.log('');
-                  return url;
-                }
-              })
-            ])
-              .process(css)
-              .then(function(result) {
-                return result.css;
-              });
+            //console.log('css', css);
+
+            //return css;
+
+            return new Promise(function (resolve, reject) {
+              postcss([
+                //// теперь сохраним все ассеты из импортируемых файлов
+                require('postcss-url')({
+                  //url: 'rebase'
+                  url: function (url, decl, from, dirname, to, options, result) {
+                    console.log('== url', url);
+                    //console.log('from', from);
+                    //console.log('to', to);
+                    //console.log('dirname', dirname);
+                    //console.log('');
+                    return url;
+                  }
+                })
+              ])
+                .process(css)
+                .then(function(result) {
+                  //console.log('====== result.css', result.css);
+                  resolve(css);
+                  //return result.css;
+                });
+            });
           }
         })
       ])
