@@ -199,7 +199,7 @@ const through       = require('through2').obj;
 let webpackConfig = require('../webpack.config.js');
 let webpackTask = function webpackTask (options) {
   options = _.isPlainObject(options) ? options : {};
-  options = extend(true, {}, webpackConfig, options);
+  options = extend(true, {}, options, webpackConfig);
 
   return function (cb) {
     options.plugins = _.isArray(options.plugins) ? options.plugins : [];

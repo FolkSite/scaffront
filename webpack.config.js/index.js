@@ -7,7 +7,7 @@ const webpack = require('webpack');
 
 // get all entries from './app/frontend/js/'
 
-let wpConfig = {
+let webpackConfig = {
   output: {
     //filename: !config.env.isProd ? '[name].js' : '[name].v-[chunkhash:10].js',
     filename: '[name].js',
@@ -16,7 +16,7 @@ let wpConfig = {
   },
 
   resolve: {
-    modulesDirectories: ['node_modules', 'bower_components'],
+    modulesDirectories: ['node_modules'],
     extensions: ['', '.js']
   },
 
@@ -57,7 +57,8 @@ let wpConfig = {
     noParse: [
       /angular\/angular.js/,
       /lodash/,
-      // /jquery/,
+      /bluebird/,
+      /jquery/
     ]
   },
   resolveLoader: {
@@ -67,6 +68,4 @@ let wpConfig = {
   }
 };
 
-wpConfig = extend(true, {}, wpConfig, config.tasks.scripts.webpack);
-
-module.exports = wpConfig;
+module.exports = webpackConfig;
