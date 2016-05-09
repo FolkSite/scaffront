@@ -21,20 +21,17 @@ config.assetResolver = config.assetResolver || null;
 const tasks          = require('./tasks');
 const streams        = require('./streams');
 
-
-if (config.env.isDev) {
-  require('trace');
-  require('clarify');
-}
-
-
-const runTask = function runTask (taskName, opts, cb) {
+const runTask        = function runTask (taskName, opts, cb) {
   tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], opts);
   gulp.parallel(taskName)(function () {
     if (typeof cb == 'function') { cb(); }
   });
 };
 
+if (config.env.isDev) {
+  require('trace');
+  require('clarify');
+}
 
 /** ========== STYLES ========== **/
 tasksConfig['styles:css'] = {
@@ -43,11 +40,11 @@ tasksConfig['styles:css'] = {
   resolver:      config.resolver,
   assetResolver: config.assetResolver
 };
-gulp.task('styles:css', function (cb) {
+gulp.task('styles:css', function styles$css (cb) {
   return tasks['styles:css'](tasksConfig['styles:css'], cb);
 });
 
-gulp.task('styles:css:watch', function () {
+gulp.task('styles:css:watch', function styles$css$watch () {
   var defaults = Object.assign({}, tasksConfig['styles:css']);
 
   var runAllFiles = function runAllFiles () {
@@ -80,11 +77,11 @@ tasksConfig['styles:scss'] = {
   resolver:      config.resolver,
   assetResolver: config.assetResolver
 };
-gulp.task('styles:scss', function (cb) {
+gulp.task('styles:scss', function styles$scss (cb) {
   return tasks['styles:scss'](tasksConfig['styles:scss'], cb);
 });
 
-gulp.task('styles:scss:watch', function () {
+gulp.task('styles:scss:watch', function styles$scss$watch () {
   var defaults = Object.assign({}, tasksConfig['styles:scss']);
 
   var runAllFiles = function runAllFiles () {
@@ -125,11 +122,11 @@ tasksConfig['pages'] = {
   resolver:      config.resolver,
   assetResolver: config.assetResolver
 };
-gulp.task('pages', function (cb) {
+gulp.task('pages', function pages (cb) {
   return tasks['pages'](tasksConfig['pages'], cb);
 });
 
-gulp.task('pages:watch', function () {
+gulp.task('pages:watch', function pages$watch () {
   var defaults = Object.assign({}, tasksConfig['pages']);
 
   var runAllFiles = function runAllFiles () {
@@ -155,6 +152,9 @@ gulp.task('pages:watch', function () {
     .on('add', runEntryFile)
   ;
 });
+gulp.task('pages:clean', function pages$clean () {
+  return del(__.glob(config.dest, ['*.html'], true), {read: false});
+});
 /** ========== //PAGES ========== **/
 
 /** ========== FILES ========== **/
@@ -162,11 +162,11 @@ tasksConfig['files'] = {
   src:  __.glob(config.root, ['*.*', '!_*.*', '!*.{sass,scss,css,js,html}'], true),
   dest: config.dest
 };
-gulp.task('files', function (cb) {
+gulp.task('files', function files (cb) {
   return tasks['files'](tasksConfig['files'], cb);
 });
 
-gulp.task('files:watch', function () {
+gulp.task('files:watch', function files$watch () {
   var runFile = function runFile (file) {
     runTask('files', {
       src: file,
@@ -184,7 +184,7 @@ gulp.task('files:watch', function () {
     //})
   ;
 });
-gulp.task('files:clean', function () {
+gulp.task('files:clean', function files$clean () {
   return del(__.glob(config.dest, ['*.*', '!*.{css,js,html}'], true), {read: false});
 });
 /** ========== //FILES ========== **/
@@ -299,13 +299,13 @@ gulp.task('scripts:watch', webpackTask(extend({}, webpackConfigRequired, {
   }
 })));
 
-gulp.task('scripts:clean', function () {
-  return del(config.tasks.scripts.clean, {read: false});
+gulp.task('scripts:clean', function scripts$clean () {
+  return del(__.glob(config.dest, ['*.js'], true), {read: false});
 });
 /** ========== //SCRIPTS ========== **/
 
 /** ========== SERVER ========== **/
-gulp.task('server', function () {
+gulp.task('server', function server () {
   var server = __.server.run('server', config.server);
   server.watch(__.glob(config.server.server.baseDir, '*.*', true))
     .on('add', server.reload)
@@ -316,16 +316,9 @@ gulp.task('server', function () {
 /** ========== //SERVER ========== **/
 
 
-gulp.task('clean', gulp.series(
-  //gulp.parallel(
-  //  'files:clean',
-  //  'styles:clean',
-  //  'scripts:clean'
-  //)
-  function clean () {
-    return del(config.tasks.dest, {read: false});
-  }
-));
+gulp.task('clean', function clean () {
+  return del(config.dest, {read: false});
+});
 
 gulp.task('build', gulp.series(
   gulp.parallel(
