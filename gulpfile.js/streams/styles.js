@@ -120,8 +120,8 @@ streams.cssCompile = function cssCompile (options) {
 
             //return css;
 
-            return new Promise(function (resolve, reject) {
-              postcss([
+            //return new Promise(function (resolve, reject) {
+              return postcss([
                 //// теперь сохраним все ассеты из импортируемых файлов
                 require('postcss-url')({
                   //url: 'rebase'
@@ -138,10 +138,10 @@ streams.cssCompile = function cssCompile (options) {
                 .process(css)
                 .then(function(result) {
                   //console.log('====== result.css', result.css);
-                  resolve(css);
-                  //return result.css;
+                  //resolve(css);
+                  return result.css;
                 });
-            });
+            //});
           }
         })
       ])
