@@ -11,7 +11,7 @@ const gulp      = require('gulp');
 const isUrl     = require('is-url');
 const merge     = require('merge-stream');
 const extend    = require('extend');
-const resolve   = require('resolve');
+const resolver  = require('./resolver');
 const postcss   = require('postcss');
 const combiner  = require('stream-combiner2').obj;
 
@@ -25,104 +25,25 @@ var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
     isUrl(url);
 };
 
-var moduleResolverDefaults = (_.isPlainObject(config.tasks.nodeResolveDefaults))
-  ? config.tasks.nodeResolveDefaults
-  : {};
-/**
- * @param {string} module
- * @param {{}} [opts]
- * @param {string} [opts.basedir]
- * @param {string} [opts.entryBasedir]
- * @param {string|string[]} [opts.moduleDirectory]
- * @param {string|string[]} [opts.extensions]
- * @param {string|string[]} [opts.paths]
- * @returns {string}
- */
-var moduleResolver = function moduleResolver (module, opts) {
-  if (isUrlShouldBeIgnored(module)) { return module; }
-
-  // проинициализируем настройки
-  opts = (_.isPlainObject(opts)) ? opts : {};
-
-  var retVal   = '',
-      props    = {},
-      defaults = moduleResolverDefaults;
-
-  ['moduleDirectory', 'extensions', 'paths'].forEach(function (prop) {
-    opts[prop]     = [].concat(opts[prop] || []);
-    defaults[prop] = [].concat(defaults[prop] || []);
-    props[prop]    = [].concat(defaults[prop], opts[prop]);
-
-    delete opts[prop];
-    delete defaults[prop];
-    if (!props[prop].length) {
-      delete props[prop];
-    }
-  });
-
-  // объединим настройки
-  opts = _.merge(defaults, opts, props);
-
-  // сперва запомним - был ли модуль написан относительно basedir ('./')
-  let moduleIsDotRelative = pathUp.isDotRelative(module);
-  // удалим строку запроса и хэш
-  module = module.split('?')[0];
-  // потому что node'овый path.normalize убирает стартовый './'
-  module = pathUp.normalize(module, 'posix');
-  // и возвращаем его обратно
-  module = (moduleIsDotRelative) ? './'+ module : module;
-  opts.basedir = (opts.basedir) ? pathUp.normalize(opts.basedir, 'posix') : '';
-
-
-  // здесь логика такая.
-  // в любых css/scss/html все подключаемые файлы надо писать node-way.
-  // но вот проблема - в css/html допускается писать относительные урлы без стартовых `./`.
-  // такие урлы `node-resolve` будет пытаться искать в директориях `opts.moduleDirectory`.
-  // это надо решить.
-
-  if (pathUp.isRelative(module) && !moduleIsDotRelative) {
-    let tmp = __.resolve(module, opts);
-    if (!tmp) {
-      tmp = __.resolve('./'+ module, opts);
-    }
-    retVal = tmp;
-  } else {
-    retVal = __.resolve(module, opts);
+var rebaseAssetUrl = function rebaseAssetUrl (url, baseDir, targetDir) {
+  if (isUrlShouldBeIgnored(url)) {
+    return url;
   }
 
-  console.log('== retVal', retVal);
 
 
 
-  //retVal = module;
 
-  // если урл абсолютный
-  //if (path.isAbsolute(module)) {
-  //  let tmp = new VinylPath({
-  //    cwd:  processCwd,
-  //    base: config.tasks.root,
-  //    path: module
-  //  });
-  //  console.log('tmp', tmp);
-  //  retVal = tmp.path;
-  //}
-  //// если урл относительный
-  //else {
-  //  // то пробуем зарезолвить стандартным способом,
-  //  // т.к. это может быть попытка подключить пакет из `node_modules`
-  //  // или любой другой директории из `opts.moduleDirectory`
-  //  retVal = __.resolve(module, opts);
-  //  // если ничего не вышло
-  //  if (!retVal) {
-  //    // то добавим точку со слешем,
-  //    // чтобы попробовать зарезолвить модуль относительно `opts.basedir`
-  //    retVal = './'+ retVal;
-  //    retVal = __.resolve(retVal, opts);
-  //    // если и здесь ничего не нашлось, то кто-то пытается подключить что-то не существующее
-  //  }
-  //}
+  filePath  = __.preparePath(filePath, {startSlash: true, trailingSlash: false});
+  baseDir   = __.preparePath(baseDir, {startSlash: true, trailingSlash: true});
+  targetDir = __.preparePath(targetDir, {startSlash: true, trailingSlash: true});
 
-  return retVal;
+  var parsedFilePath        = __.parsePath(filePath);
+  var fileName              = parsedFilePath.base;
+  var fileDirWithoutBaseDir = path.relative(baseDir, parsedFilePath.dir);
+  var targetFile            = path.join(targetDir, fileDirWithoutBaseDir, fileName);
+
+  return targetFile;
 };
 
 /**

@@ -98,7 +98,7 @@ streams.cssCompile = function cssCompile (options) {
 
       //var entryFilepath = path.join(file.base, file.name);
       var entryFilepath = file.path;
-      //console.log($.util.colors.blue('entryFilepath'), entryFilepath);
+      console.log($.util.colors.blue('entryFilepath'), entryFilepath);
 
       postcss([
         // сперва сохраним все ассеты для точки входа
@@ -112,16 +112,25 @@ streams.cssCompile = function cssCompile (options) {
             });
           },
           // каждый импортированный файл тоже надо пропустить через postcss
-          //transform: function(css, filepath, _options) {
-          //  return postcss([
-          //    // теперь сохраним все ассеты из импортируемых файлов
-          //    getTargetAssetsPlugin(assets, entryFilepath, filepath, options)
-          //  ])
-          //    .process(css)
-          //    .then(function(result) {
-          //      return result.css;
-          //    });
-          //}
+          transform: function(css, filepath, _options) {
+            return postcss([
+              // теперь сохраним все ассеты из импортируемых файлов
+              require('postcss-url')({
+                url: function (url, decl, from, dirname, to, options, result) {
+                  console.log('url', url);
+                  console.log('from', from);
+                  console.log('to', to);
+                  console.log('dirname', dirname);
+                  console.log('');
+                  return url;
+                }
+              })
+            ])
+              .process(css)
+              .then(function(result) {
+                return result.css;
+              });
+          }
         })
       ])
         .process(file.contents, opts)

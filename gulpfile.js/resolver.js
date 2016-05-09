@@ -17,6 +17,7 @@ var resolveModule = function resolveModule (url, opts) {
  * @param id
  * @param {string|{basedir: string}} basedir
  * @param {{}} [opts]
+ * @param {string} [opts.basedir]
  */
 module.exports = function (id, basedir, opts) {
   if (arguments.length == 2 && isPlainObject(basedir)) {
