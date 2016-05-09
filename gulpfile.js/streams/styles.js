@@ -16,6 +16,16 @@ const through        = require('through2').obj;
 const applySourceMap = require('vinyl-sourcemaps-apply');
 const resolver       = require('../resolver');
 
+var resolverFactory = function resolverFactory (resolver) {
+  if (typeof resolver != 'function') {
+    resolver = __.noop;
+  }
+
+  return function (id, basedir, opts) {
+    return resolver(id, basedir, opts || {});
+  };
+};
+
 var assetResolverFactory = function assetResolverFactory (assetResolver) {
   if (typeof assetResolver != 'function') {
     assetResolver = __.noop;

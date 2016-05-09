@@ -1,5 +1,5 @@
-var resolve = require('resolve');
-var isPlainObject = require('lodash/lang/isPlainObject');
+const _ = require('lodash');
+const resolve = require('resolve');
 
 var resolveModule = function resolveModule (url, opts) {
   var resolved;
@@ -20,10 +20,10 @@ var resolveModule = function resolveModule (url, opts) {
  * @param {string} [opts.basedir]
  */
 module.exports = function (id, basedir, opts) {
-  if (arguments.length == 2 && isPlainObject(basedir)) {
+  if (_.isPlainObject(basedir)) {
     opts = basedir;
   } else {
-    opts = (isPlainObject(opts)) ? opts : {};
+    opts = (_.isPlainObject(opts)) ? opts : {};
     opts.basedir = basedir;
   }
   var paths = [].concat(opts.path || []);

@@ -13,6 +13,8 @@ const path      = require('path');
 const resolver  = require('./gulpfile.js/resolver');
 const pathUp    = require('./gulpfile.js/path-up');
 const VinylPath = pathUp.VinylPath;
+const Url       = require('fast-url-parser');
+Url.queryString = require('querystringparser');
 
 let env = {
   NODE_ENV: process.env.NODE_ENV,
@@ -55,6 +57,15 @@ var isUrlShouldBeIgnored = function isUrlShouldBeIgnored (url) {
 tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) {
   if (isUrlShouldBeIgnored(url)) { return url; }
 
+  var qs = '', hash = '';
+  if (url.indexOf('?') >= 0) {
+    qs = '?'+ url.split('?')[1];
+  }
+
+  if (!qs && url.indexOf('#') >= 0) {
+    hash = '#'+ url.split('#')[1];
+  }
+
   var result = {};
   var basedir = path.dirname(basePathname);
   var resolved = resolver(url, basedir);
@@ -69,7 +80,7 @@ tasks.assetResolver = function assetResolver (url, basePathname, entryPathname) 
   vinylPathDest.base = tasks.dest;
 
   result.url = path.join(vinylPathDest.dirname, vinylPathDest.basename);
-  result.url = '/'+ pathUp.normalize(result.url, 'posix');
+  result.url = '/'+ pathUp.normalize(result.url, 'posix') + qs + hash;
 
   result.src = vinylPathSrc.path;
   result.dest = vinylPathDest.path;
@@ -145,32 +156,6 @@ tasks.styles.css.watch  = __.glob(tasks.styles.root, ['*.css'], true);
 tasks.styles.scss       = {};
 tasks.styles.scss.src   = __.glob(tasks.styles.root, ['*.scss', '!_*.scss']);
 tasks.styles.scss.watch = __.glob(tasks.styles.root, ['*.scss'], true);
-
-
-/**
- * @param {string} resolvedUrl
- * @param {{}} paths
- * @param {string} paths.entryFile
- * @param {string} paths.sourceFile
- * @returns {string}
- */
-tasks.styles.assetsUrlRebaser = function (resolvedUrl, paths) {
-  var rebasedUrl = resolvedUrl;
-  var root = __.preparePath(tasks.root, {startSlash: false, trailingSlash: false});
-  var url = __.preparePath(resolvedUrl, {startSlash: false, trailingSlash: false});
-
-  // если файл лежит внутри root-папки
-  if (url.indexOf(root) === 0) {
-    // то заменяем `root`-путь на `dist`-путь
-    rebasedUrl = __.preparePath(path.relative(root, url), {startSlash: true, trailingSlash: false});
-  } else {
-    // а если нет (например `bower_components` из корня), то переносим этот путь как есть внутрь `dist`
-    rebasedUrl = __.preparePath(url, {startSlash: true, trailingSlash: false});
-  }
-  // в конечном счёте, все файлы будут иметь абсолютные пути, относительно `dist`-директории
-  return rebasedUrl;
-};
-
 
 let server = {
   ui:        false,
