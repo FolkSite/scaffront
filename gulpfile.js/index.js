@@ -17,14 +17,15 @@ const combiner  = require('stream-combiner2').obj;
 const config     = require('../scaffront.config.js');
 const streams    = require('./streams');
 
+const tasks = require('./tasks');
 
 if (config.env.isDev) {
   require('trace');
   require('clarify');
 }
 
-var resolver = config.resolver || null;
-var assetResolver = config.assetResolver || null;
+config.resolver = config.resolver || null;
+config.assetResolver = config.assetResolver || null;
 
 /** ========== SERVER ========== **/
 gulp.task('server', function () {
@@ -67,7 +68,7 @@ gulp.task('files', function () {
     .pipe($.if(config.env.isDev, $.debug({title: 'File:'})))
 
     .pipe(gulp.dest(config.tasks.files.dest))
-  ;
+    ;
 });
 
 gulp.task('files:watch', function () {
@@ -120,7 +121,7 @@ gulp.task('pages', function () {
     .pipe($.if(config.env.isDev, $.debug({title: 'Html:'})))
 
     .pipe(gulp.dest(config.tasks.dest))
-  ;
+    ;
 });
 
 
@@ -149,7 +150,7 @@ gulp.task('pages', function () {
  Сообщения об ошибках "компиляции", как в SCSS (body:before)
  https://github.com/postcss/postcss-browser-reporter
  require('postcss-browser-reporter')({
-  selector: 'html:before'
+ selector: 'html:before'
  }),
 
 
@@ -275,78 +276,81 @@ var postCssProcessorsDist = [
   })
 ];
 
-gulp.task('styles:css', function () {
-  var smOpts = {
-    sourceRoot: '/css/sources',
-    includeContent: true,
+
+var tasksConfig = {};
+
+tasksConfig['styles:css'] = {
+  src:           __.glob(config.root, ['*.css', '!_*.css'], true),
+  dest:          config.dest,
+  resolver:      config.resolver,
+  assetResolver: config.assetResolver
+};
+gulp.task('styles:css', function (cb) {
+  return tasks['styles:css'](tasksConfig['styles:css'], cb);
+});
+
+tasksConfig.cleaner = {
+  src: ''
+};
+gulp.task('cleaner', function () {
+  if (tasksConfig.cleaner.src) {
+    return del(tasksConfig.cleaner.src, {read: false});
+  }
+
+  cb();
+});
+
+gulp.task('styles:css:watch', function () {
+  var runSingleFile = function runSingleFile (file) {
+    var src = tasksConfig['styles:css'].src;
+    tasksConfig['styles:css'].src = file;
+    gulp.series('styles:css')((function (src) {
+      return function () {
+        tasksConfig['styles:css'].src = src;
+      };
+    })(src));
   };
 
-  return gulp
-    .src(__.glob(config.root, ['*.css', '!_*.css'], true), {
-      //since: gulp.lastRun(options.taskName)
+  gulp
+    .watch(__.glob(config.root, ['*.css', '!_*.css'], true))
+    .on('change', runSingleFile)
+    .on('add', runSingleFile)
+    .on('unlink', function (file) {
+      var src = tasksConfig.cleaner.src;
+      tasksConfig.cleaner.src = file;
+      gulp.series('cleaner')((function (src) {
+        return function () {
+          tasksConfig.cleaner.src = src;
+        };
+      })(src));
     })
-    //.pipe($.debug({title: 'CSS:'}))
-    // todo: инкрементальность
-    .pipe($.plumber({
-      errorHandler: $.notify.onError(err => ({
-        title:   'CSS',
-        message: err.message
-      }))
-    }))
-    .pipe($.sourcemaps.init({loadMaps: true}))
-    .pipe(streams.styles.cssCompile({
-      resolver:      resolver,
-      assetResolver: assetResolver
-    }))
-    //.pipe($.newer(config.dest))
-    //.pipe(through(function(file, enc, callback) {
-    //  console.log($.util.colors.blue('file.path'), file.path);
-    //  console.log($.util.colors.blue('file.assets'), file.assets);
-    //  callback(null, file);
-    //}))
-    // todo: минификация изображений, svg, спрайты, шрифты, фоллбеки, полифиллы
-    .pipe(streams.copyAssets())
-    //.pipe($.if(config.env.isDev, $.debug({title: 'CSS:'})))
-    .pipe($.if(
-      config.env.isProd,
-      $.sourcemaps.write('.', smOpts), // во внешний файл
-      $.sourcemaps.write('', smOpts) // инлайн
-    ))
-    .pipe(gulp.dest(config.dest))
   ;
 
-/*
-   Описание $.remember, $.cached здесь:
-   https://youtu.be/uYZPNrT-e-8?t=240
-*/
-  //return combine(
-  //  $.cached('styles'),
-  //
-  //  $.if(config.env.isDev, $.debug({title: 'Style:'})),
-  //
-  //  gulp.dest(options.dist)
-  //)
-  //  .on('error', $.notify.onError(err => ({
-  //    title: 'CSS styles',
-  //    message: err.message
-  //  })));
-  //
-  //
-  //return combiner(
-  //  gulp.src(options.src, {
-  //    //since: gulp.lastRun(options.taskName)
-  //  }),
-  //  // $.remember запоминает все файлы, которые через него проходят, в своём внутреннем кеше ('css' - это ключ кеша)
-  //  // и потом, если в потоке они отсутствуют, добавляет их
-  //  // (это может произойти, если перед ним установлен since/$.cached/$.newer - они пропускают только изменённые
-  // файлы, // исключая из gulp.src не изменившееся). но если какой-то файл из src-потока удалён с диска, то $.remember
-  // // всё-равно будет его восстанавливать. для избежания подобного поведения, в watch-таске заставляем $.remember //
-  // забыть об удалённых файлах. $.remember('css'), // инклюдим файлы // $.include(), // При повторном запуске таска
-  // выбирает только те файлы, которые изменились с прошлого запуска (сравнивает по // названию файла и содержимому) //
-  // $.cached - это замена since, но since быстрее, потому что ему не нужно полностью // читать файл. Ещё since криво
-  // работает с ранее удалёнными и только что восстановленными через ctrl+z файлами. $.cached('css'),
-  // $.if(config.env.isDev, $.debug({title: 'CSS style:'})), postCssTasksForCss, gulp.dest(options.dist) ).on('error',
-  // $.notify.onError(err => ({ title: 'CSS styles', message: err.message })));
+  //gulp
+  //  .watch(__.glob(config.root, ['*.css', '!_*.css'], true), function () {
+  //    console.log('watch arguments', arguments);
+  //  })
+  //  .on('change', function (file) {
+  //    console.log('change arguments', arguments);
+  //    //tasksConfig['styles:css']
+  //    //return tasks['styles:css']({
+  //    //  src:           file,
+  //    //  dest:          config.dest,
+  //    //  resolver:      resolver,
+  //    //  assetResolver: assetResolver
+  //    //});
+  //  })
+  //  //.on('add', function () {
+  //  //  console.log('arguments', arguments);
+  //  //})
+  //;
+
+  //return tasks['styles:css']({
+  //  src:           __.glob(config.root, ['*.css', '!_*.css'], true),
+  //  dest:          config.dest,
+  //  resolver:      resolver,
+  //  assetResolver: assetResolver
+  //});
 });
 
 gulp.task('styles:scss', function (cb) {
@@ -368,7 +372,7 @@ gulp.task('styles:scss', function (cb) {
     }))
     .pipe($.sourcemaps.init({loadMaps: true}))
     .pipe(streams.styles.scssCompile({
-      assetResolver: assetResolver
+      assetResolver: config.assetResolver
     }))
     .pipe(streams.copyAssets())
     .pipe($.if(
@@ -377,7 +381,7 @@ gulp.task('styles:scss', function (cb) {
       $.sourcemaps.write('', smOpts) // инлайн
     ))
     .pipe(gulp.dest(config.dest))
-  ;
+    ;
 });
 
 gulp.task('styles:watch', function () {
@@ -498,7 +502,7 @@ let webpackTask = function webpackTask (options) {
           cb();
         }
       })
-    ;
+      ;
   };
 };
 
