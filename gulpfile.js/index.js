@@ -293,64 +293,40 @@ tasksConfig.cleaner = {
   src: ''
 };
 gulp.task('cleaner', function () {
+  console.log('tasksConfig.cleaner.src', tasksConfig.cleaner.src);
   if (tasksConfig.cleaner.src) {
-    return del(tasksConfig.cleaner.src, {read: false});
+    return del(path.resolve(process.cwd(), tasksConfig.cleaner.src), {read: false});
   }
 
   cb();
 });
 
+var runTask = function runTask (taskName, opts, cb) {
+  var prevOpts = Object.assign({}, tasksConfig[taskName]);
+  tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], opts);
+  gulp.parallel(taskName)((function (prevOpts) {
+    return function () {
+      tasksConfig[taskName] = Object.assign({}, tasksConfig[taskName], prevOpts);
+      if (typeof cb == 'function') { cb(); }
+    };
+  })(prevOpts));
+};
+
 gulp.task('styles:css:watch', function () {
   var runSingleFile = function runSingleFile (file) {
-    var src = tasksConfig['styles:css'].src;
-    tasksConfig['styles:css'].src = file;
-    gulp.series('styles:css')((function (src) {
-      return function () {
-        tasksConfig['styles:css'].src = src;
-      };
-    })(src));
+    runTask('styles:css', {
+      src: file
+    });
   };
+
+  gulp.watch(__.glob(config.root, ['_*.css'], true), gulp.series('styles:css'));
 
   gulp
     .watch(__.glob(config.root, ['*.css', '!_*.css'], true))
     .on('change', runSingleFile)
     .on('add', runSingleFile)
-    .on('unlink', function (file) {
-      var src = tasksConfig.cleaner.src;
-      tasksConfig.cleaner.src = file;
-      gulp.series('cleaner')((function (src) {
-        return function () {
-          tasksConfig.cleaner.src = src;
-        };
-      })(src));
-    })
   ;
 
-  //gulp
-  //  .watch(__.glob(config.root, ['*.css', '!_*.css'], true), function () {
-  //    console.log('watch arguments', arguments);
-  //  })
-  //  .on('change', function (file) {
-  //    console.log('change arguments', arguments);
-  //    //tasksConfig['styles:css']
-  //    //return tasks['styles:css']({
-  //    //  src:           file,
-  //    //  dest:          config.dest,
-  //    //  resolver:      resolver,
-  //    //  assetResolver: assetResolver
-  //    //});
-  //  })
-  //  //.on('add', function () {
-  //  //  console.log('arguments', arguments);
-  //  //})
-  //;
-
-  //return tasks['styles:css']({
-  //  src:           __.glob(config.root, ['*.css', '!_*.css'], true),
-  //  dest:          config.dest,
-  //  resolver:      resolver,
-  //  assetResolver: assetResolver
-  //});
 });
 
 gulp.task('styles:scss', function (cb) {
