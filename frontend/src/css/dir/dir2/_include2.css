@@ -1,0 +1,11 @@
+/* dir/dir2/_include2.css */
+
+@import '../_include.css';
+
+mark {
+  background: #cecece;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .6);
+  float:left;
+  background: url(../../../images/bg2.jpg);
+}
+

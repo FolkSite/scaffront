@@ -1,0 +1,21 @@
+// http://habrahabr.ru/post/220295/
+
+@import 'css/vars';
+//@import 'dir/dir2/include';
+
+p {
+  background: url('');
+  background-color: $base-selection-background;
+
+  & + & {
+    margin-top: 30px;
+    font-style: normal;
+  }
+}
+
+body.qwe {
+  background: url('../images/bg2.jpg');
+}
+
+@import '../../../bower_components/bxslider-4/dist/jquery.bxslider.css';
+

@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Лёха <kartashov.al.and@yandex.ru>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/antixrist/scaffront",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": "true"
+}
+

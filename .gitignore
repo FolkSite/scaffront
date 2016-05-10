@@ -1,15 +1,8 @@
-dist
-dist/
-dest
-dest/
-node_modules
-node_modules/
-bower_components
-bower_components/
-.sass-cache
-.sass-cache/
 .idea
-.idea/
+frontend/dist
+node_modules
+bower_components
+.sass-cache
 npm-debug.log
 
 *.iml

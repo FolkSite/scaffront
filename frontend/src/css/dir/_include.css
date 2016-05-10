@@ -1,0 +1,17 @@
+/* dir/_include.css */
+
+p {
+    font-size: 20px;
+    color: #ff0000;
+}
+
+body {
+    background: url(../../images/bg3.jpg);
+}
+.body {
+    background: url(../../images/bg2.jpg);
+}
+.qwe {
+    background: url(https://yandex.ru/images/today?size=1920x1080);
+}
+
