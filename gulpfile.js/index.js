@@ -213,7 +213,7 @@ gulp.task('scripts:clean', function scripts$clean (cb) {
 /** ========== SERVER ========== **/
 gulp.task('server', function server () {
   var server = __.server.run('server', config.server);
-  server.watch(__.glob(config.server.server.baseDir, '*.*', true))
+  server.watch(__.glob(config.dest, '*.*', true))
     .on('add', server.reload)
     .on('change', server.reload)
     .on('unlink', server.reload)

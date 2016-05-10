@@ -4,7 +4,7 @@ const __       = require('../helpers');
 const config   = require('../../scaffront.config.js');
 const streams  = require('../streams');
 const gulp     = require('gulp');
-const combiner = require('stream-combiner2').obj;
+const through  = require('through2').obj;
 
 function assertTask (options) {
   if (typeof options.src == 'undefined') {
@@ -147,7 +147,6 @@ tasks['pages'] = function (opts, cb) {
 const gulplog       = require('gulplog');
 const webpackStream = require('webpack-stream');
 const webpack       = webpackStream.webpack;
-//const AssetsPlugin  = require('assets-webpack-plugin');
 
 tasks['scripts'] = function (opts, cb) {
   opts = (_.isPlainObject(opts)) ? opts : {};
@@ -185,25 +184,13 @@ tasks['scripts'] = function (opts, cb) {
   //- Stream -//
 
   let firstBuildReady = false;
-  //let smOpts = {
-  //  sourceRoot: '/js/sources',
-  //  includeContent: true,
-  //};
+  let smOpts = {
+    sourceRoot: '/js/sources',
+    includeContent: true,
+  };
 
   return gulp
-    .src(opts.src, {
-      //since: gulp.lastRun(opts.taskName)
-    })
-    //.pipe($.plumber({
-    //  errorHandler: $.notify.onError(err => ({
-    //    title:   'Webpack',
-    //    message: err.message
-    //  }))
-    //}))
-    //.pipe(through(function (file, enc, cb) {
-    //  console.log('= file.path', file.path);
-    //  cb(null, file);
-    //}))
+    .src(opts.src)
     .pipe(streams.scripts.webpack(opts, webpack, function done (err, stats) {
       firstBuildReady = true;
 
@@ -215,18 +202,18 @@ tasks['scripts'] = function (opts, cb) {
         colors: true
       }));
     }))
-    //.pipe($.sourcemaps.init({loadMaps: true}))
-    //.pipe(through(function (file, enc, cb) {
-    //  var isSourceMap = /\.map$/.test(file.path);
-    //  if (!isSourceMap) { this.push(file); }
-    //  cb();
-    //}))
-    //.pipe($.if(config.env.isProd, $.uglify()))
-    //.pipe($.if(
-    //  config.env.isProd,
-    //  $.sourcemaps.write('.', smOpts), // во внешний файл
-    //  $.sourcemaps.write('', smOpts) // инлайн
-    //))
+    .pipe($.sourcemaps.init({loadMaps: true}))
+    .pipe(through(function (file, enc, cb) {
+      var isSourceMap = /\.map$/.test(file.path);
+      if (!isSourceMap) { this.push(file); }
+      cb();
+    }))
+    .pipe($.if(config.env.isProd, $.uglify()))
+    .pipe($.if(
+      config.env.isProd,
+      $.sourcemaps.write('.', smOpts), // во внешний файл
+      $.sourcemaps.write('', smOpts) // инлайн
+    ))
     .pipe($.if(config.env.isDev, $.debug({title: 'Script:'})))
     .pipe(gulp.dest(opts.dest))
     .on('data', function() {

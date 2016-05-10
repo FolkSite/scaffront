@@ -1,4 +1,5 @@
 console.log('its a common');
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+console.log('NODE_ENV', NODE_ENV);
 console.log('isProd', isProd);
 
+console.log('qweqweqweqwe');
