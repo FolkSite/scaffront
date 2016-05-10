@@ -18,7 +18,7 @@
     "rebuild:prod": "npm run rebuild:dist",
     "rebuild:production": "npm run rebuild:dist",
     "server": "cross-env NODE_ENV=development gulp server",
-    "server:dist": "cross-env NODE_ENV=production gulp server:dist",
+    "server:dist": "cross-env NODE_ENV=production gulp server",
     "server:prod": "npm run server:dist",
     "server:production": "npm run server:dist",
     "dev": "cross-env NODE_ENV=development gulp dev",
