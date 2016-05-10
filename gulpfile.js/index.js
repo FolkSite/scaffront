@@ -5,9 +5,7 @@ const __        = require('./helpers');
 const del       = require('del');
 const path      = require('path');
 const gulp      = require('gulp');
-const merge     = require('merge-stream');
 const extend    = require('extend');
-const postcss   = require('postcss');
 
 var tasksConfig      = {};
 var config           = require('../scaffront.config.js');
@@ -105,7 +103,7 @@ gulp.task('styles:scss:watch', function styles$scss$watch () {
 
 gulp.task('styles', gulp.parallel('styles:css', 'styles:scss'));
 gulp.task('styles:watch', gulp.parallel('styles:css:watch', 'styles:scss:watch'));
-gulp.task('styles:clean', function () {
+gulp.task('styles:clean', function styles$clean () {
   return del(__.glob(config.dest, '*.css', true), {read: false});
 });
 /** ========== //STYLES ========== **/
