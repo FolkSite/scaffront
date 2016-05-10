@@ -5,6 +5,7 @@ const __        = require('./gulpfile.js/helpers');
 const $         = require('gulp-load-plugins')();
 const fs        = require('fs');
 const path      = require('path');
+const isUrl     = require('is-url');
 const extend    = require('extend');
 const resolve   = require('resolve');
 //const resolver  = require('./gulpfile.js/resolver');
@@ -142,6 +143,13 @@ var assetResolver = function assetResolver (url, basePathname, entryPathname) {
 
   return result;
 };
+
+function isUrlShouldBeIgnored (url) {
+  return !url ||
+    url[0] === '#' ||
+    url.indexOf('data:') === 0 ||
+    isUrl(url);
+}
 
 module.exports = {
   root,
