@@ -27,9 +27,9 @@ let webpackConfig = {
 
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.EnvironmentPlugin(Object.keys(process.env)),
+    //new webpack.EnvironmentPlugin(Object.keys(process.env)),
     new webpack.DefinePlugin(Object.keys(config.env).reduce((_envs, env) => {
-      _envs[env] = JSON.stringify(config[env]);
+      _envs[env] = JSON.stringify(config.env[env]);
 
       return _envs;
     }, {})),

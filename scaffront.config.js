@@ -4,23 +4,21 @@ const _         = require('lodash');
 const __        = require('./gulpfile.js/helpers');
 const $         = require('gulp-load-plugins')();
 const fs        = require('fs');
-const isUrl     = require('is-url');
 const path      = require('path');
+const extend    = require('extend');
 const resolve   = require('resolve');
 //const resolver  = require('./gulpfile.js/resolver');
 const pathUp    = require('./gulpfile.js/path-up');
 const VinylPath = pathUp.VinylPath;
 
-let env = {
-  NODE_ENV: process.env.NODE_ENV,
-  mode:     process.env.NODE_ENV || 'development',
-  isDev:    process.env.NODE_ENV == 'development' || !process.env.NODE_ENV,
-  isProd:   process.env.NODE_ENV == 'production',
-  debug:    process.env.DEBUG == 'true'
-};
+let env      = {};
+env.NODE_ENV = process.env.NODE_ENV || 'development';
+env.isDev    = env.NODE_ENV == 'development' || !env.NODE_ENV;
+env.isProd   = env.NODE_ENV == 'production';
+env.debug    = env.DEBUG == 'true';
 
-var root = 'app/frontend';
-var dest = (env.isDev) ? 'dist/frontend/development' : 'dist/frontend/production';
+var root = 'frontend/src';
+var dest = (env.isDev) ? 'frontend/dist/development' : 'frontend/dist/production';
 var scripts = {};
 scripts.root = path.join(root, 'js');
 scripts.dest = path.join(dest, 'js');
