@@ -146,7 +146,8 @@
     "ion-checkradio": "*",
     "turntable": "git://github.com/PolarNotion/turntable.git",
     "lazy-progressive-enhancement": "git://github.com/tvler/lazy-progressive-enhancement.git",
-    "biu": "git://github.com/egoist/biu.git"
+    "biu": "git://github.com/egoist/biu.git",
+    "mousetrap": "git://github.com/ccampbell/mousetrap.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
