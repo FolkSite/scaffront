@@ -147,7 +147,11 @@
     "turntable": "git://github.com/PolarNotion/turntable.git",
     "lazy-progressive-enhancement": "git://github.com/tvler/lazy-progressive-enhancement.git",
     "biu": "git://github.com/egoist/biu.git",
-    "mousetrap": "git://github.com/ccampbell/mousetrap.git"
+    "mousetrap": "git://github.com/ccampbell/mousetrap.git",
+    "mixitup": "*",
+    "skrollr": "*",
+    "transformicons": "git://github.com/grayghostvisuals/transformicons.git",
+    "notie": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
