@@ -151,7 +151,8 @@
     "mixitup": "*",
     "skrollr": "*",
     "transformicons": "git://github.com/grayghostvisuals/transformicons.git",
-    "notie": "*"
+    "notie": "*",
+    "family.scss": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
