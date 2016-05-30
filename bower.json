@@ -152,7 +152,8 @@
     "skrollr": "*",
     "transformicons": "git://github.com/grayghostvisuals/transformicons.git",
     "notie": "*",
-    "family.scss": "*"
+    "family.scss": "*",
+    "starability": "git://github.com/LunarLogic/starability.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
