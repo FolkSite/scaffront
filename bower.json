@@ -153,7 +153,8 @@
     "transformicons": "git://github.com/grayghostvisuals/transformicons.git",
     "notie": "*",
     "family.scss": "*",
-    "starability": "git://github.com/LunarLogic/starability.git"
+    "starability": "git://github.com/LunarLogic/starability.git",
+    "another-rest-client": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
