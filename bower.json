@@ -156,7 +156,8 @@
     "starability": "git://github.com/LunarLogic/starability.git",
     "another-rest-client": "*",
     "plyr": "*",
-    "multirange": "git://github.com/LeaVerou/multirange.git"
+    "multirange": "git://github.com/LeaVerou/multirange.git",
+    "aos": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
