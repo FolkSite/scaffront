@@ -157,7 +157,8 @@
     "another-rest-client": "*",
     "plyr": "*",
     "multirange": "git://github.com/LeaVerou/multirange.git",
-    "aos": "*"
+    "aos": "*",
+    "flatpickr": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
