@@ -158,7 +158,8 @@
     "plyr": "*",
     "multirange": "git://github.com/LeaVerou/multirange.git",
     "aos": "*",
-    "flatpickr": "*"
+    "flatpickr": "*",
+    "simple-line-icons": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
