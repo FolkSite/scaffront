@@ -152,7 +152,7 @@
     "transformicons": "git://github.com/grayghostvisuals/transformicons.git",
     "notie": "*",
     "family.scss": "*",
-    "starability": "git://github.com/LunarLogic/starability.git",
+    "starability": "*",
     "another-rest-client": "*",
     "plyr": "*",
     "multirange": "git://github.com/LeaVerou/multirange.git",
