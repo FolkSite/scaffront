@@ -161,7 +161,8 @@
     "simple-line-icons": "*",
     "angled-edges": "*",
     "animejs": "*",
-    "logerr": "*"
+    "logerr": "*",
+    "jquery.panzoom": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
