@@ -162,7 +162,8 @@
     "angled-edges": "*",
     "animejs": "*",
     "logerr": "*",
-    "jquery.panzoom": "*"
+    "jquery.panzoom": "*",
+    "selectize": "selectize"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
