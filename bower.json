@@ -163,7 +163,8 @@
     "animejs": "*",
     "logerr": "*",
     "jquery.panzoom": "*",
-    "selectize": "selectize"
+    "selectize": "*",
+    "sifter": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
