@@ -121,8 +121,6 @@
     "flexibility": "*",
     "polyfiller": "git://github.com/Polyfiller/polyfiller.git",
     "checkit": "*",
-    "keypather": "*",
-    "expounder": "*",
     "skrollr": "*",
     "respond": "*",
     "dropzone": "*",
@@ -164,6 +162,7 @@
     "logerr": "*",
     "jquery.panzoom": "*",
     "selectize": "*",
+    "expounder": "*",
     "sifter": "*"
   },
   "resolutions": {
