@@ -163,7 +163,8 @@
     "jquery.panzoom": "*",
     "selectize": "*",
     "expounder": "*",
-    "sifter": "*"
+    "sifter": "*",
+    "zingtouch": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
