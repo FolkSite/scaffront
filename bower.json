@@ -165,7 +165,8 @@
     "expounder": "*",
     "sifter": "*",
     "zingtouch": "*",
-    "bytesize-icons": "https://github.com/danklammer/bytesize-icons"
+    "bytesize-icons": "https://github.com/danklammer/bytesize-icons",
+    "grade": "https://github.com/benhowdle89/grade"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
