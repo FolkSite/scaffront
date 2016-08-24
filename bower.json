@@ -166,7 +166,8 @@
     "sifter": "*",
     "zingtouch": "*",
     "bytesize-icons": "https://github.com/danklammer/bytesize-icons",
-    "grade": "https://github.com/benhowdle89/grade"
+    "grade": "https://github.com/benhowdle89/grade",
+    "jquery.adaptive-backgrounds.js": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
