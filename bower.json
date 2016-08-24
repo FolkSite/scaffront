@@ -164,7 +164,8 @@
     "selectize": "*",
     "expounder": "*",
     "sifter": "*",
-    "zingtouch": "*"
+    "zingtouch": "*",
+    "bytesize-icons": "https://github.com/danklammer/bytesize-icons"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
