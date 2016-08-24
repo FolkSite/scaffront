@@ -165,9 +165,10 @@
     "expounder": "*",
     "sifter": "*",
     "zingtouch": "*",
-    "bytesize-icons": "https://github.com/danklammer/bytesize-icons",
-    "grade": "https://github.com/benhowdle89/grade",
-    "jquery.adaptive-backgrounds.js": "*"
+    "bytesize-icons": "git://github.com/danklammer/bytesize-icons.git",
+    "grade": "git://github.com/benhowdle89/grade.git",
+    "jquery.adaptive-backgrounds.js": "*",
+    "jquery.pep.js": "git://github.com/briangonzalez/jquery.pep.js.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
