@@ -170,7 +170,8 @@
     "jquery.adaptive-backgrounds.js": "*",
     "jquery.pep.js": "git://github.com/briangonzalez/jquery.pep.js.git",
     "flickity": "*",
-    "draggabilly": "*"
+    "draggabilly": "*",
+    "matches-selector": "~1.0.3"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
