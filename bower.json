@@ -169,7 +169,8 @@
     "grade": "git://github.com/benhowdle89/grade.git",
     "jquery.adaptive-backgrounds.js": "*",
     "jquery.pep.js": "git://github.com/briangonzalez/jquery.pep.js.git",
-    "flickity": "*"
+    "flickity": "*",
+    "draggabilly": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
