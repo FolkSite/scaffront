@@ -171,7 +171,8 @@
     "jquery.pep.js": "git://github.com/briangonzalez/jquery.pep.js.git",
     "flickity": "*",
     "draggabilly": "*",
-    "matches-selector": "~1.0.3"
+    "matches-selector": "~1.0.3",
+    "sass-flex-mixin": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
