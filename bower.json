@@ -173,7 +173,8 @@
     "draggabilly": "*",
     "matches-selector": "~1.0.3",
     "sass-flex-mixin": "*",
-    "background-blur": "*"
+    "background-blur": "*",
+    "cleave.js": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
