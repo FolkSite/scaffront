@@ -176,7 +176,8 @@
     "background-blur": "*",
     "cleave.js": "*",
     "jquery.scroolly": "*",
-    "SassMagic": "git://github.com/W3cplus/SassMagic.git"
+    "SassMagic": "git://github.com/W3cplus/SassMagic.git",
+    "text-mask": "git://github.com/text-mask/text-mask.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
