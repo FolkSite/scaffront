@@ -175,7 +175,8 @@
     "sass-flex-mixin": "*",
     "background-blur": "*",
     "cleave.js": "*",
-    "jquery.scroolly": "*"
+    "jquery.scroolly": "*",
+    "SassMagic": "git://github.com/W3cplus/SassMagic.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
