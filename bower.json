@@ -177,7 +177,8 @@
     "cleave.js": "*",
     "jquery.scroolly": "*",
     "SassMagic": "git://github.com/W3cplus/SassMagic.git",
-    "text-mask": "git://github.com/text-mask/text-mask.git"
+    "text-mask": "git://github.com/text-mask/text-mask.git",
+    "reframe.js": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
