@@ -179,7 +179,8 @@
     "SassMagic": "git://github.com/W3cplus/SassMagic.git",
     "text-mask": "git://github.com/text-mask/text-mask.git",
     "reframe.js": "*",
-    "ie9-oninput-polyfill": "git://github.com/buzinas/ie9-oninput-polyfill.git"
+    "ie9-oninput-polyfill": "git://github.com/buzinas/ie9-oninput-polyfill.git",
+    "material-shadows": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
