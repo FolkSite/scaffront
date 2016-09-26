@@ -180,7 +180,8 @@
     "text-mask": "git://github.com/text-mask/text-mask.git",
     "reframe.js": "*",
     "ie9-oninput-polyfill": "git://github.com/buzinas/ie9-oninput-polyfill.git",
-    "material-shadows": "*"
+    "material-shadows": "*",
+    "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
