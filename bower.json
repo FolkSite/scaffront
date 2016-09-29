@@ -181,7 +181,8 @@
     "reframe.js": "*",
     "ie9-oninput-polyfill": "git://github.com/buzinas/ie9-oninput-polyfill.git",
     "material-shadows": "*",
-    "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git"
+    "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git",
+    "pure": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
