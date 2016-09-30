@@ -183,7 +183,8 @@
     "material-shadows": "*",
     "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git",
     "pure": "*",
-    "clipboard": "*"
+    "clipboard": "*",
+    "open-color": "git://github.com/yeun/open-color.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
