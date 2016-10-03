@@ -184,7 +184,8 @@
     "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git",
     "pure": "*",
     "clipboard": "*",
-    "open-color": "git://github.com/yeun/open-color.git"
+    "open-color": "git://github.com/yeun/open-color.git",
+    "wenk": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
