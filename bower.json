@@ -185,7 +185,8 @@
     "pure": "*",
     "clipboard": "*",
     "open-color": "git://github.com/yeun/open-color.git",
-    "wenk": "*"
+    "wenk": "*",
+    "accounting": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
