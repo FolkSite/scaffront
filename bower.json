@@ -38,7 +38,7 @@
     "singularity": "*",
     "singularity-quick-spanner": "*",
     "slick-carousel": "*",
-    "filament-sticky": "~0.1.6",
+    "filament-sticky": "*",
     "filament-tablesaw": "~2.0.2",
     "select2": "~4.0.1",
     "Swiper": "swiper#~3.3.1",
@@ -187,7 +187,8 @@
     "open-color": "git://github.com/yeun/open-color.git",
     "wenk": "*",
     "accounting": "*",
-    "hyperform": "*"
+    "hyperform": "*",
+    "jquery-sticky": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
