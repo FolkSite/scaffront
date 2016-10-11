@@ -189,7 +189,8 @@
     "accounting": "*",
     "hyperform": "*",
     "jquery-sticky": "*",
-    "webfontloader": "*"
+    "webfontloader": "*",
+    "css-element-queries": "git://github.com/marcj/css-element-queries.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
