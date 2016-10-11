@@ -188,7 +188,8 @@
     "wenk": "*",
     "accounting": "*",
     "hyperform": "*",
-    "jquery-sticky": "*"
+    "jquery-sticky": "*",
+    "webfontloader": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
