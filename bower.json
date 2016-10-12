@@ -181,6 +181,7 @@
     "reframe.js": "*",
     "ie9-oninput-polyfill": "git://github.com/buzinas/ie9-oninput-polyfill.git",
     "material-shadows": "*",
+    "material-colors": "*",
     "viewport-units-buggyfill": "git://github.com/rodneyrehm/viewport-units-buggyfill.git",
     "pure": "*",
     "clipboard": "*",
@@ -190,7 +191,8 @@
     "hyperform": "*",
     "jquery-sticky": "*",
     "webfontloader": "*",
-    "css-element-queries": "git://github.com/marcj/css-element-queries.git"
+    "css-element-queries": "git://github.com/marcj/css-element-queries.git",
+    "include-media": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
