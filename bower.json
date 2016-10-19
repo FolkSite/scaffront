@@ -192,7 +192,8 @@
     "webfontloader": "*",
     "css-element-queries": "git://github.com/marcj/css-element-queries.git",
     "include-media": "*",
-    "steady": "*"
+    "steady": "*",
+    "pepjs": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
