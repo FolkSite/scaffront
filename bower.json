@@ -193,7 +193,8 @@
     "css-element-queries": "git://github.com/marcj/css-element-queries.git",
     "include-media": "*",
     "steady": "*",
-    "pepjs": "*"
+    "pepjs": "*",
+    "shave": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
