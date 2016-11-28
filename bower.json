@@ -194,7 +194,8 @@
     "include-media": "*",
     "steady": "*",
     "pepjs": "*",
-    "shave": "*"
+    "shave": "*",
+    "izitoast": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
