@@ -196,7 +196,8 @@
     "pepjs": "*",
     "shave": "*",
     "izitoast": "*",
-    "pulltorefreshjs": "*"
+    "pulltorefreshjs": "*",
+    "smoothscroll": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
