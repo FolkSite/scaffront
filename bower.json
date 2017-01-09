@@ -197,7 +197,8 @@
     "shave": "*",
     "izitoast": "*",
     "pulltorefreshjs": "*",
-    "smoothscroll": "*"
+    "smoothscroll": "*",
+    "flatpickr": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
