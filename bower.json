@@ -198,7 +198,8 @@
     "izitoast": "*",
     "pulltorefreshjs": "*",
     "smoothscroll": "*",
-    "flatpickr": "*"
+    "flatpickr": "*",
+    "tilt.js": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
