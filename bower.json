@@ -199,7 +199,7 @@
     "pulltorefreshjs": "*",
     "smoothscroll": "*",
     "flatpickr": "*",
-    "tilt.js": "*"
+    "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
