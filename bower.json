@@ -199,7 +199,8 @@
     "pulltorefreshjs": "*",
     "smoothscroll": "*",
     "flatpickr": "*",
-    "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git"
+    "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git",
+    "card-info": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
