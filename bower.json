@@ -200,7 +200,8 @@
     "smoothscroll": "*",
     "flatpickr": "*",
     "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git",
-    "card-info": "*"
+    "card-info": "*",
+    "across-tabs": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
