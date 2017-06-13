@@ -202,7 +202,10 @@
     "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git",
     "card-info": "*",
     "across-tabs": "*",
-    "sass-config-manager": "*"
+    "sass-config-manager": "*",
+    "isInViewport": "*",
+    "jquery-viewport": "*",
+    "sticky-kit": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
