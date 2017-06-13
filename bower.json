@@ -201,7 +201,8 @@
     "flatpickr": "*",
     "vanilla-tilt": "git://github.com/micku7zu/vanilla-tilt.js.git",
     "card-info": "*",
-    "across-tabs": "*"
+    "across-tabs": "*",
+    "sass-config-manager": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
