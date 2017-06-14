@@ -205,7 +205,8 @@
     "sass-config-manager": "*",
     "isInViewport": "*",
     "jquery-viewport": "*",
-    "sticky-kit": "*"
+    "sticky-kit": "*",
+    "scrollmonitor": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.2"
